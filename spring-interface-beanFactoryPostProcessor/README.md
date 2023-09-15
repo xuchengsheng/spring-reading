@@ -109,7 +109,7 @@ MySimpleBean instance: com.xcs.spring.config.MySimpleBean@11392934
 MySimpleBean instance: com.xcs.spring.config.MySimpleBean@6892b3b6
 ```
 
-### 四、时序图
+### 五、时序图
 
 ```mermaid
 sequenceDiagram
@@ -133,7 +133,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext->>BeanFactoryPostProcessorApplication:初始化完成
 ```
 
-### 五、源码分析
+### 六、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -296,7 +296,7 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 }
 ```
 
-### 六、注意事项
+### 七、注意事项
 
 **考虑其他的`BeanFactoryPostProcessor`**：在大型应用程序中，可能存在多个`BeanFactoryPostProcessor`。你需要确保它们不会互相冲突或导致不一致的bean定义。
 
@@ -308,8 +308,8 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 **谨慎使用**：虽然`BeanFactoryPostProcessor`是一个非常强大接口，允许你修改bean的定义。这意味着你可以更改bean的类、作用域、属性等。我们要在做这些更改时要非常小心，想想为什么要修改？影响的范围有多少？，以免引入不一致或不可预测的行为。
 
-### 七、总结
+### 八、总结
 
-到此我们做个总结吧，BeanFactoryPostProcessor是Spring中一个非常有用的接口，允许我们在bean实例化之前，但所有bean定义加载完之后，介入并修改bean的定义。此功能使得我们可以在bean开始其生命周期之前做一些微调，为后续的bean实例化、初始化提供更为灵活的控制。然后我们在也做了一个小小最佳实践，首先通过AnnotationConfigApplicationContext和MyConfiguration配置类，我们定义了MySimpleBean和MyBeanFactoryPostProcessor两个bean。虽然MySimpleBean默认是单例的，但由于MyBeanFactoryPostProcessor的介入，它的作用域被改为原型。MySimpleBean的show方法显示了bean的实例引用，从而证明了这一改变。最终，每次请求MySimpleBean都得到了一个新的实例，这从两个不同的输出地址得以验证，表明作用域的修改是成功的。在源码分析部分中，在Spring启动过程中，我们基于AnnotationConfigApplicationContext作为Spring容器，传入MyConfiguration作为配置类。其中，refresh()方法是容器初始化的核心，它在执行时调用了invokeBeanFactoryPostProcessors(beanFactory)，用于执行实现了BeanFactoryPostProcessor接口的方法。核心逻辑在PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors()中，该方法根据处理器的类型（如PriorityOrdered, Ordered）对其进行排序，确保不同类型的处理器按预期顺序执行。自定义的BeanFactoryPostProcessor实现最终也会在这个流程中被调用，允许用户对bean定义进行自定义操作，如修改属性、增强功能、改变作用域等。这整个机制为Spring提供了极大的灵活性，允许我们在Spring初始化bean前介入并进行自定义处理。
+到此我们做个总结吧，`BeanFactoryPostProcessor`是Spring中一个非常有用的接口，允许我们在bean实例化之前，但所有bean定义加载完之后，介入并修改bean的定义。此功能使得我们可以在bean开始其生命周期之前做一些微调，为后续的bean实例化、初始化提供更为灵活的控制。然后我们在也做了一个小小最佳实践，首先通过`AnnotationConfigApplicationContext`和`MyConfiguration`配置类，我们定义了`MySimpleBean`和`MyBeanFactoryPostProcessor`两个bean。虽然`MySimpleBean`默认是单例的，但由于`MyBeanFactoryPostProcessor`的介入，它的作用域被改为原型。`MySimpleBean`的`show`方法显示了bean的实例引用，从而证明了这一改变。最终，每次请求`MySimpleBean`都得到了一个新的实例，这从两个不同的输出地址得以验证，表明作用域的修改是成功的。在源码分析部分中，在Spring启动过程中，我们基于`AnnotationConfigApplicationContext`作为Spring容器，传入`MyConfiguration`作为配置类。其中，refresh()方法是容器初始化的核心，它在执行时调用了`invokeBeanFactoryPostProcessors(beanFactory)`，用于执行实现了`BeanFactoryPostProcessor`接口的方法。核心逻辑在`PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors()`中，该方法根据处理器的类型（如`PriorityOrdered`, `Ordered`）对其进行排序，确保不同类型的处理器按预期顺序执行。自定义的`BeanFactoryPostProcessor`实现最终也会在这个流程中被调用，允许用户对bean定义进行自定义操作，如修改属性、增强功能、改变作用域等。这整个机制为Spring提供了极大的灵活性，允许我们在Spring初始化bean前介入并进行自定义处理。
 
 好了本次源码分析就到此，希望你能学到有用的知识。
