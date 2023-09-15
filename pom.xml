@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <groupId>com.xcs.spring</groupId>
+    <artifactId>spring-reading</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>spring-reading</name>
+    <description>spring-reading</description>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <java.version>11</java.version>
+        <spring.version>5.3.10</spring.version>
+    </properties>
+
+    <modules>
+        <module>spring-interface-beanFactoryPostProcessor</module>
+        <module>spring-interface-beanPostProcessor</module>
+        <module>spring-interface-environment</module>
+        <module>spring-interface-applicationListener</module>
+        <module>spring-interface-importSelector</module>
+        <module>spring-interface-importBeanDefinitionRegistrar</module>
+        <module>spring-interface-resource</module>
+        <module>spring-interface-embeddedValueResolver</module>
+        <module>spring-interface-factoryBean</module>
+        <module>spring-annotation-configuration</module>
+        <module>spring-annotation-bean</module>
+        <module>spring-annotation-import</module>
+        <module>spring-annotation-propertySource</module>
+        <module>spring-annotation-componentScan</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

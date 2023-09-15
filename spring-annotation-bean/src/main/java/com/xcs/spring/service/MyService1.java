@@ -1,0 +1,11 @@
+package com.xcs.spring.service;
+
+import org.springframework.stereotype.Service;
+
+/**
+ * @author 林雷
+ * @date 2023年08月14日 17时14分
+ **/
+@Service
+public class MyService1 {
+}
