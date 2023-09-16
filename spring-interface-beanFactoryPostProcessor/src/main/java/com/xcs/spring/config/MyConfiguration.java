@@ -17,7 +17,7 @@ public class MyConfiguration {
     }
 
     @Bean
-    public MyBeanFactoryPostProcessor myBeanFactoryPostProcessor(){
+    public static MyBeanFactoryPostProcessor myBeanFactoryPostProcessor(){
         return new MyBeanFactoryPostProcessor();
     }
 }
