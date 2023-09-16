@@ -277,7 +277,7 @@ public static void invokeBeanFactoryPostProcessors(
 
 ~~~mermaid
 sequenceDiagram
-    Title:BeanDefinitionRegistryPostProcessor回调排序时序图
+    Title: BeanDefinitionRegistryPostProcessor回调排序时序图
     participant Init as invokeBeanFactoryPostProcessors
     participant BDRPP_PO as BDRPP(PriorityOrdered)
     participant BDRPP_O as BDRPP(Ordered)
@@ -289,10 +289,9 @@ sequenceDiagram
     BDRPP_O-->>Init: 完成
     Init->>BDRPP: 回调
     BDRPP-->>Init: 完成
-   
+    
     Note right of BDRPP: 提示: 
-    Note right of BDRPP: BDRPP = BeanDefinitionRegistryPostProcessor
-
+    Note right of BDRPP: BDRPP = BeanFactoryPostProcessor
 ~~~
 
 `invokeBeanDefinitionRegistryPostProcessors`方法中，循环调用了实现`BeanDefinitionRegistryPostProcessor`接口中的`postProcessBeanDefinitionRegistry(registry)`方法
