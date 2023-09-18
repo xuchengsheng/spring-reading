@@ -33,6 +33,8 @@
         <module>spring-interface-embeddedValueResolver</module>
         <module>spring-interface-factoryBean</module>
         <module>spring-interface-beanDefinitionRegistryPostProcessor</module>
+        <module>spring-interface-instantiationAwareBeanPostProcessor</module>
+        <module>spring-interface-destructionAwareBeanPostProcessor</module>
     </modules>
 
     <dependencies>
