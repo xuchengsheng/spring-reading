@@ -4,7 +4,7 @@
 
 ### 一、接口描述
 
-`InstantiationAwareBeanPostProcessor` 提供了在 bean 实例化之前和之后的回调。这意味着您有机会在实际的目标 bean 实例之前返回一个代理，或者影响 bean 的构造。
+`InstantiationAwareBeanPostProcessor` 提供了在 bean 实例化之前和之后的回调。这意味着我们有机会在实际的目标 bean 实例之前返回一个代理，或者影响 bean 的构造。
 
 ### 二、接口源码
 
@@ -533,7 +533,7 @@ protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, 
 }
 ```
 
-简单的实现`InstantiationAwareBeanPostProcessor`接口的类`MyInstantiationAwareBeanPostProcessor`，然后重写了`postProcessBeforeInstantiation`方法，此方法在bean实例化之前被调用。在bean实例化之前，您可以选择返回一个不同的bean实例来替换原来要实例化的bean。如果您从此方法返回非null的对象，Spring将使用您返回的这个对象作为bean，并不会进入标准的实例化过程。如果返回null，则Spring将继续其正常的bean实例化过程，在`postProcessBeforeInstantiation`中我们仅是打印一个消息表示正在准备实例化该bean，并返回null。返回null意味着不中断正常的实例化过程。以上就是关于`InstantiationAwareBeanPostProcessor`类中的`postProcessBeforeInstantiation`方法的源码分析全过程，剩下两个方法请看后续分析。
+简单的实现`InstantiationAwareBeanPostProcessor`接口的类`MyInstantiationAwareBeanPostProcessor`，然后重写了`postProcessBeforeInstantiation`方法，此方法在bean实例化之前被调用。在bean实例化之前，我们可以选择返回一个不同的bean实例来替换原来要实例化的bean。如果我们从此方法返回非null的对象，Spring将使用我们返回的这个对象作为bean，并不会进入标准的实例化过程。如果返回null，则Spring将继续其正常的bean实例化过程，在`postProcessBeforeInstantiation`中我们仅是打印一个消息表示正在准备实例化该bean，并返回null。返回null意味着不中断正常的实例化过程。以上就是关于`InstantiationAwareBeanPostProcessor`类中的`postProcessBeforeInstantiation`方法的源码分析全过程，剩下两个方法请看后续分析。
 
 ```java
 public class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {
@@ -657,7 +657,7 @@ public class MyInstantiationAwareBeanPostProcessor implements InstantiationAware
 
 **返回非空的bean**：如果在`postProcessBeforeInstantiation`方法中返回了非空的bean，那么正常的bean实例化和属性设置流程将被短路。这意味着`postProcessAfterInstantiation`和`postProcessProperties`等方法将不会被调用。另外也会导致`BeanPostProcessor`类中的`postProcessBeforeInitialization`也不会被调用
 
-**避免修改非目标bean**：如果您的`InstantiationAwareBeanPostProcessor`只对特定类型或名称的bean进行操作，确保在执行任何操作之前进行适当的检查。
+**避免修改非目标bean**：如果我们的`InstantiationAwareBeanPostProcessor`只对特定类型或名称的bean进行操作，确保在执行任何操作之前进行适当的检查。
 
 ### 八、总结
 
