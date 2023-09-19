@@ -411,7 +411,7 @@ public class MyDestructionAwareBeanPostProcessor implements DestructionAwareBean
 - 由于我们在这个方法中检查了 bean 是否是 `ConnectionServiceImpl` 的实例，所以 `closeConnection` 方法被调用，从而关闭连接。
 - 这确保了在 bean 的生命周期结束时，资源被适当地释放。
 
-**总结输出**:
+**运行结果**:
 
 - 最终，控制台上的输出证明了在 bean 的生命周期开始时资源被打开，在生命周期结束时资源被关闭。
 

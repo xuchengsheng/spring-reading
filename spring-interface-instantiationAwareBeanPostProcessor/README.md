@@ -1,6 +1,17 @@
 ## InstantiationAwareBeanPostProcessor
 
-[TOC]
+- [InstantiationAwareBeanPostProcessor](#instantiationawarebeanpostprocessor)
+  - [一、接口描述](#一接口描述)
+  - [二、接口源码](#二接口源码)
+  - [三、主要功能](#三主要功能)
+  - [四、最佳实践](#四最佳实践)
+  - [五、时序图](#五时序图)
+  - [六、源码分析](#六源码分析)
+  - [七、注意事项](#七注意事项)
+  - [八、总结](#八总结)
+    - [8.1、最佳实践总结](#81最佳实践总结)
+    - [8.2、源码分析总结](#82源码分析总结)
+
 
 ### 一、接口描述
 
@@ -8,7 +19,7 @@
 
 ### 二、接口源码
 
-`InstantiationAwareBeanPostProcessor` 是 Spring 框架自 1.2 版本开始引入的一个核心接口。其目的在于提供更细粒度的 bean 生命周期管理，特别是在 bean 的实例化阶段。尽管这个接口是公开的，但它主要针对 Spring 内部的需求进行设计。对于常规的业务开发，我们往往只需要使用 `BeanPostProcessor` 接口，它为 bean 的生命周期提供了足够的回调方法，满足大多数应用场景的需求。为了方便开发者使用，Spring 还提供了一个名为 `InstantiationAwareBeanPostProcessorAdapter` 的适配器类。这个类已为我们默认实现了所有方法（基本上是空操作），使得我们可以只关注自己需要的回调方法，无需为其他方法提供冗余的实现。最后，如果我们深入探讨此接口的核心实现，我们会发现 `AbstractAutoProxyCreator` 和 `LazyInitTargetSourceCreator` 两个关键类。前者是 Spring AOP 的基石，它负责自动为匹配的 bean 创建代理，实现面向切面的编程；后者与 bean 的懒初始化策略有关，允许 bean 在首次请求时才被初始化和装配。
+`InstantiationAwareBeanPostProcessor` 是 Spring 框架自 1.2 版本开始引入的一个核心接口。其目的在于提供更细粒度的 bean 生命周期管理，特别是在 bean 的实例化阶段。尽管这个接口是公开的，但它主要针对 Spring 内部的需求进行设计。对于常规的业务开发，我们往往只需要使用 `BeanPostProcessor` 接口，它为 bean 的生命周期提供了足够的回调方法，满足大多数应用场景的需求。为了方便我们使用，Spring 还提供了一个名为 `InstantiationAwareBeanPostProcessorAdapter` 的适配器类。这个类已为我们默认实现了所有方法（基本上是空操作），使得我们可以只关注自己需要的回调方法，无需为其他方法提供冗余的实现。最后，如果我们深入探讨此接口的核心实现，我们会发现 `AbstractAutoProxyCreator` 和 `LazyInitTargetSourceCreator` 两个关键类。前者是 Spring AOP 的基石，它负责自动为匹配的 bean 创建代理，实现面向切面的编程；后者与 bean 的懒初始化策略有关，允许 bean 在首次请求时才被初始化和装配。
 
 ```java
 /**
@@ -103,7 +114,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 + 实例化后的处理：在 bean 实例化后但在属性注入之前调用，这个回调为你提供了在 Spring 自动装配或属性设置之前对 bean 进行自定义处理的机会。
 + 属性处理：允许你在 Spring 进行属性注入之前对 bean 的属性值进行处理或替换，这是在进行自定义属性注入或验证 bean 属性的理想之处。
 
-### 四、使用示例
+### 四、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`DataBase`类型的bean，最后打印了该bean的几个属性。这样我们就可以确认bean的状态啦。
 
@@ -279,7 +290,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-`refresh()`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法，其他方法不是本次源码阅读的重点暂时忽略，在`finishBeanFactoryInitialization(beanFactory)`方法会对实例化所有剩余非懒加载的单列Bean对象。
+`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法，其他方法不是本次源码阅读的重点暂时忽略，在`finishBeanFactoryInitialization(beanFactory)`方法会对实例化所有剩余非懒加载的单列Bean对象。
 
 ```java
 @Override
@@ -291,7 +302,7 @@ public void refresh() throws BeansException, IllegalStateException {
 }
 ```
 
-在`finishBeanFactoryInitialization`方法中，会继续调用`DefaultListableBeanFactory`类中的`preInstantiateSingletons`方法来完成所有剩余非懒加载的单列Bean对象。
+在`org.springframework.context.support.AbstractApplicationContext#finishBeanFactoryInitialization`方法中，会继续调用`DefaultListableBeanFactory`类中的`preInstantiateSingletons`方法来完成所有剩余非懒加载的单列Bean对象。
 
 ```java
 protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
@@ -301,7 +312,7 @@ protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory b
 }
 ```
 
-在`preInstantiateSingletons`方法中，主要的核心目的是预先实例化所有非懒加载的单例bean。在Spring的上下文初始化完成后，该方法会被触发，以确保所有单例bean都被正确地创建并初始化。其中`getBean(beanName)`是此方法的核心操作。对于容器中定义的每一个单例bean，它都会调用`getBean`方法，这将触发bean的实例化、初始化及其依赖的注入。如果bean之前没有被创建过，那么这个调用会导致其被实例化和初始化。
+在`org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons`方法中，主要的核心目的是预先实例化所有非懒加载的单例bean。在Spring的上下文初始化完成后，该方法会被触发，以确保所有单例bean都被正确地创建并初始化。其中`getBean(beanName)`是此方法的核心操作。对于容器中定义的每一个单例bean，它都会调用`getBean`方法，这将触发bean的实例化、初始化及其依赖的注入。如果bean之前没有被创建过，那么这个调用会导致其被实例化和初始化。
 
 ```java
 public void preInstantiateSingletons() throws BeansException {
@@ -354,7 +365,7 @@ public void preInstantiateSingletons() throws BeansException {
 }
 ```
 
-在`getBean`方法中，又调用了`doGetBean`方法来实际执行创建Bean的过程，传递给它bean的名称和一些其他默认的参数值。此处，`doGetBean`负责大部分工作，如查找bean定义、创建bean（如果尚未创建）、处理依赖关系等。
+在`org.springframework.beans.factory.support.AbstractBeanFactory#getBean()`方法中，又调用了`doGetBean`方法来实际执行创建Bean的过程，传递给它bean的名称和一些其他默认的参数值。此处，`doGetBean`负责大部分工作，如查找bean定义、创建bean（如果尚未创建）、处理依赖关系等。
 
 ```java
 @Override
@@ -363,7 +374,7 @@ public Object getBean(String name) throws BeansException {
 }
 ```
 
-在`doGetBean`方法中，首先检查所请求的bean是否是一个单例并且已经创建。如果尚未创建，它将创建一个新的实例。在这个过程中，它处理可能的异常情况，如循环引用，并确保返回的bean是正确的类型。这是Spring容器bean生命周期管理的核心部分。
+在`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中，首先检查所请求的bean是否是一个单例并且已经创建。如果尚未创建，它将创建一个新的实例。在这个过程中，它处理可能的异常情况，如循环引用，并确保返回的bean是正确的类型。这是Spring容器bean生命周期管理的核心部分。
 
 ```java
 protected <T> T doGetBean(
@@ -397,7 +408,7 @@ protected <T> T doGetBean(
 }
 ```
 
-在`getSingleton`方法中，主要负责从单例缓存中获取一个已存在的bean实例，或者使用提供的`ObjectFactory`创建一个新的实例。这是确保bean在Spring容器中作为单例存在的关键部分。
+在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton()`方法中，主要负责从单例缓存中获取一个已存在的bean实例，或者使用提供的`ObjectFactory`创建一个新的实例。这是确保bean在Spring容器中作为单例存在的关键部分。
 
 ```java
 public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
@@ -449,7 +460,7 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 }
 ```
 
-在`createBean`方法中，首先尝试调用`resolveBeforeInstantiation`，这个方法给`InstantiationAwareBeanPostProcessor`一个机会，允许它们返回一个代理对象，而不是目标bean的实例。如果这一步返回了一个非空的对象（也就是说，一个`InstantiationAwareBeanPostProcessor`创建了一个代理对象），那么这个代理对象将作为该bean的实例返回，跳过正常的bean创建过程。如果上面的步骤没有返回任何对象，那么代码将执行`doCreateBean`方法，这个方法负责实际的bean实例化、属性注入和初始化。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean()`方法中，首先尝试调用`resolveBeforeInstantiation`，这个方法给`InstantiationAwareBeanPostProcessor`一个机会，允许它们返回一个代理对象，而不是目标bean的实例。如果这一步返回了一个非空的对象（也就是说，一个`InstantiationAwareBeanPostProcessor`创建了一个代理对象），那么这个代理对象将作为该bean的实例返回，跳过正常的bean创建过程。如果上面的步骤没有返回任何对象，那么代码将执行`doCreateBean`方法，这个方法负责实际的bean实例化、属性注入和初始化。
 
 ```java
 @Override
@@ -489,7 +500,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable O
 }
 ```
 
-在`resolveBeforeInstantiation` 方法中，首先尝试在bean实际实例化之前提前完成bean的实例化。这通常是为了返回一个代理对象。`applyBeanPostProcessorsBeforeInstantiation` 方法，尝试使用 `InstantiationAwareBeanPostProcessor` 的 `postProcessBeforeInstantiation` 方法来预先实例化bean。如果上一步成功创建了bean（例如，返回了一个代理对象），那么这个bean还会经过所有注册的 `BeanPostProcessor` 的 `postProcessAfterInitialization` 方法，这是对bean进行初始化后的最后处理。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` 方法中，首先尝试在bean实际实例化之前提前完成bean的实例化。这通常是为了返回一个代理对象。`applyBeanPostProcessorsBeforeInstantiation` 方法，尝试使用 `InstantiationAwareBeanPostProcessor` 的 `postProcessBeforeInstantiation` 方法来预先实例化bean。如果上一步成功创建了bean（例如，返回了一个代理对象），那么这个bean还会经过所有注册的 `BeanPostProcessor` 的 `postProcessAfterInitialization` 方法，这是对bean进行初始化后的最后处理。
 
 ```java
 protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
@@ -519,7 +530,7 @@ protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition 
 }
 ```
 
-在`applyBeanPostProcessorsBeforeInstantiation` 方法中，回调每一个`InstantiationAwareBeanPostProcessor`接口的`postProcessBeforeInstantiation`方法。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation` 方法中，回调每一个`InstantiationAwareBeanPostProcessor`接口的`postProcessBeforeInstantiation`方法。
 
 ```java
 protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
@@ -560,7 +571,7 @@ try {
 }
 ```
 
-在`doCreateBean`方法中，主要负责两大步骤，第一步是属性注入，第二步是bean初始化，确保bean是完全配置和准备好的。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中，主要负责两大步骤，第一步是属性注入，第二步是bean初始化，确保bean是完全配置和准备好的。
 
 ```java
 protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
@@ -585,7 +596,7 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 }
 ```
 
-在`populateBean`方法中，首先会调用所有的`InstantiationAwareBeanPostProcessors`的`postProcessAfterInstantiation`方法，以给它们一个机会在属性设置之前修改bean的状态。如果`postProcessAfterInstantiation`方法返回的是true，它首先会尝试使用`postProcessProperties`方法来处理属性值。如果这个方法返回`null`，则会继续使用老版本的`postProcessPropertyValues`方法。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean`方法中，首先会调用所有的`InstantiationAwareBeanPostProcessors`的`postProcessAfterInstantiation`方法，以给它们一个机会在属性设置之前修改bean的状态。如果`postProcessAfterInstantiation`方法返回的是true，它首先会尝试使用`postProcessProperties`方法来处理属性值。如果这个方法返回`null`，则会继续使用老版本的`postProcessPropertyValues`方法。
 
 ```java
 protected void populateBean(String beanName, RootBeanDefinition mbd, @Nullable BeanWrapper bw) {
@@ -661,6 +672,58 @@ public class MyInstantiationAwareBeanPostProcessor implements InstantiationAware
 
 ### 八、总结
 
-在我们的最佳实践中，使用`AnnotationConfigApplicationContext`创建Spring上下文，获取并打印`DataBase`类型bean的几个属性，以便于我们查看该bean在被处理后的状态。通过`@Bean`注解定义了`MyInstantiationAwareBeanPostProcessor`和`DataBase`两个beans。这是为了确保当Spring上下文启动时，这两个bean被Spring容器正确地管理和执行。然后实现了`InstantiationAwareBeanPostProcessor`接口来拦截bean的生命周期，在`postProcessBeforeInstantiation`打印出通知消息。在`postProcessAfterInstantiation`设置一个标记并打印出通知消息。在`postProcessProperties`屏蔽了密码，并打印出相关消息。通过此最佳实践，我们可以理解`InstantiationAwareBeanPostProcessor`的能力，它提供了在bean实例化及其属性设置过程中进行拦截和处理的功能。然后我们进行了源码分析，使用`AnnotationConfigApplicationContext`启动应用，注册配置类`MyConfiguration`。然后执行了`refresh()`方法是上下文初始化的关键，它启动Spring容器，扫描、注册、并初始化所有的beans。在`refresh()`过程中，`finishBeanFactoryInitialization(beanFactory)`方法被调用，它进一步调用`beanFactory.preInstantiateSingletons()`以确保所有非懒加载的单例beans都被预实例化。对于每个单例bean，`getBean(beanName)`方法被调用，这会触发bean的实例化、属性注入和初始化过程。`doGetBean`方法决定bean是否已经存在或是否需要创建新的实例。如果bean需要被创建，`createBean`方法被调用。在`createBean`中，`resolveBeforeInstantiation`方法给`InstantiationAwareBeanPostProcessor`机会在正常的实例化之前提前返回一个bean实例（如代理对象）。如果这个步骤没有返回代理对象或其他bean，那么正常的bean实例化、属性注入和初始化过程会继续。`populateBean`方法负责属性注入，它首先调用`InstantiationAwareBeanPostProcessor`的`postProcessAfterInstantiation`方法，给后处理器机会在属性设置前做修改。如果后处理器允许继续属性填充，那么属性值会进一步通过`postProcessProperties`或`postProcessPropertyValues`方法被处理。
+#### 8.1、最佳实践总结
 
-好了本次源码分析就到此，希望你能学到有用的知识。
+**启动与上下文初始化**:
+
+- 使用`AnnotationConfigApplicationContext`来启动应用，并注册了配置类`MyConfiguration`。
+- 从Spring上下文中获取了一个`DataBase`类型的bean并打印了它的属性，这是为了验证bean状态的更改是否成功。
+
+**配置类与Bean定义**:
+
+- 通过`MyConfiguration`配置类，两个Bean（`DataBase`和`MyInstantiationAwareBeanPostProcessor`）被定义。其中`MyInstantiationAwareBeanPostProcessor`是一个后处理器，它会在Spring容器中的其他Bean实例化时触发。
+
+**拦截实例化过程**:
+
+- `MyInstantiationAwareBeanPostProcessor`类实现了Spring的`InstantiationAwareBeanPostProcessor`接口，这允许它介入bean的实例化、初始化和属性设置过程。
+- 在`postProcessBeforeInstantiation`方法中，当`DataBase` bean开始实例化之前，一个通知消息被打印。
+- 在`postProcessAfterInstantiation`方法中，bean已经实例化，此时会设置一个标记属性并打印一条通知消息。
+- 在`postProcessProperties`方法中，修改了`DataBase` bean的密码属性，并打印了通知消息。
+
+**DataBase接口与实现**:
+
+- 定义了一个`DataBase`接口，该接口定义了数据库连接的基本属性及其getters和setters。
+- 在`DataBaseImpl`类中，实现了这个接口，并使用`@Value`注解为属性设置了默认值。
+
+**运行结果**:
+
+- 从输出中可以看到，`dataBase` bean从准备实例化到实例化的过程都被成功拦截，并且密码已经被屏蔽。
+
+#### 8.2、源码分析总结
+
+**启动及Bean获取**
+
+- 应用程序启动时，`AnnotationConfigApplicationContext`类被用于初始化Spring上下文，并注册了配置类`MyConfiguration`。
+- 然后，应用程序从Spring上下文中获取名为`DataBase`的bean实例并打印它的一些属性。
+
+**注册Bean及后处理器**
+
+- 通过`MyConfiguration`配置类，注册了两个Bean，其中一个是`MyInstantiationAwareBeanPostProcessor`，这个后处理器用于在Bean实例化过程中介入。
+
+**实例化前的拦截**
+
+- 在Bean实例化之前，Spring首先调用`postProcessBeforeInstantiation`方法。这里，我们只是简单地打印了一条消息并返回了null，表示让Spring继续执行标准的Bean实例化。
+
+**Bean属性注入**
+
+- 在Bean实例化之后但属性注入之前，Spring调用`postProcessProperties`方法。
+- 在这个示例中，我们修改了`password`属性的值为`"******"`并打印了一条消息。
+
+**Bean实例化后的处理**
+
+- 紧接着，`postProcessAfterInstantiation`方法被调用。这里，我们简单地设置了`postInstantiationFlag`属性并打印了一条消息。
+
+**Bean的完成**
+
+- 在所有这些拦截器运行后，Spring会继续进行属性注入、Bean初始化等后续工作。
+- 之后，Bean将完全初始化并准备好供应用程序使用。
