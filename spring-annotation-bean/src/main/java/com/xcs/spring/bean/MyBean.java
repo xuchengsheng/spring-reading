@@ -1,7 +1,7 @@
 package com.xcs.spring.bean;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月25日 10时22分
  **/
 public class MyBean {

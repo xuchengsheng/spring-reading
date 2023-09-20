@@ -8,7 +8,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月14日 14时17分
  **/
 public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {

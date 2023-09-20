@@ -6,7 +6,7 @@ import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月29日 11时08分
  **/
 public class CustomDeferredImportSelector implements DeferredImportSelector {

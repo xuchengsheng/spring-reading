@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月28日 11时17分
  **/
 public class CustomRegistrar implements ImportBeanDefinitionRegistrar {

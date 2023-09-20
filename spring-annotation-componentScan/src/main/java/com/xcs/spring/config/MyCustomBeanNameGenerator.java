@@ -5,7 +5,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月14日 15时38分
  **/
 public class MyCustomBeanNameGenerator implements BeanNameGenerator {

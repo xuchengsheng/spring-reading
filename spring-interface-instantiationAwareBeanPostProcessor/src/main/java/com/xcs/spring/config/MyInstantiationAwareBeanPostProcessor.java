@@ -7,7 +7,7 @@ import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月16日 16时12分
  **/
 public class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {

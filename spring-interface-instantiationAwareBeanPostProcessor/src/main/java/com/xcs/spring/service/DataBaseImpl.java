@@ -4,7 +4,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月16日 16时10分
  **/
 public class DataBaseImpl implements DataBase , InitializingBean {

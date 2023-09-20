@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月28日 11时12分
  **/
 public class CustomImportSelector implements ImportSelector {

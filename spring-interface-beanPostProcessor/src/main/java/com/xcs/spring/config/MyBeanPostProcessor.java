@@ -5,7 +5,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月19日 16时42分
  **/
 public class MyBeanPostProcessor implements BeanPostProcessor {

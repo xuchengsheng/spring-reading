@@ -418,7 +418,7 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 }
 ```
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean()`方法中，首先尝试调用`resolveBeforeInstantiation`，这个方法给`InstantiationAwareBeanPostProcessor`一个机会，允许它们返回一个代理对象，而不是目标bean的实例。如果这一步返回了一个非空的对象（也就是说，一个`InstantiationAwareBeanPostProcessor`创建了一个代理对象），那么这个代理对象将作为该bean的实例返回，跳过正常的bean创建过程。如果上面的步骤没有返回任何对象，那么代码将执行`doCreateBean`方法，这个方法负责实际的bean实例化、属性注入和初始化。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean()`方法中，主要的逻辑是调用 `doCreateBean`，这是真正进行 bean 实例化、属性填充和初始化的地方。这个方法会返回新创建的 bean 实例。
 
 ```java
 @Override
@@ -530,7 +530,7 @@ public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, St
 }
 ```
 
-在`com.xcs.spring.config.MyBeanPostProcessor`方法中，将 `MyServiceImpl` 中的 `message` 属性，为其添加 `Prefix:`  前缀。在`postProcessAfterInitialization`方法中，将 `MyServiceImpl` 中的 `message` 属性，为其添加 `:Suffix`  后缀。
+最后执行到我们自定义的逻辑中，将 `MyServiceImpl` 中的 `message` 属性，为其添加 `Prefix:`  前缀。在`postProcessAfterInitialization`方法中，将 `MyServiceImpl` 中的 `message` 属性，为其添加 `:Suffix`  后缀。
 
 ```java
 public class MyBeanPostProcessor implements BeanPostProcessor {
@@ -596,39 +596,28 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
 #### 8.2、源码分析总结
 
-**启动及初始化上下文**:
+**Spring上下文初始化**: 通过`AnnotationConfigApplicationContext`的构造函数，Spring上下文会被初始化。这个过程中，`refresh()`方法是核心。
 
-- 使用`AnnotationConfigApplicationContext`进行Java配置方式的Spring上下文初始化。
-- 注册配置类，并刷新上下文，这触发了Spring容器的启动和bean生命周期的开始。
+**实例化单例Beans**: 在`refresh()`方法中，`finishBeanFactoryInitialization(beanFactory)`方法负责实例化所有剩余的非懒加载单例beans。
 
-**`refresh()`方法**:
+**预实例化**: `preInstantiateSingletons()`方法负责预实例化所有的非懒加载的单例beans。对于每一个bean, 它都会调用`getBean`方法。
 
-- 是`AbstractApplicationContext`的核心方法，负责完整的容器刷新流程。
-- 重点关注的是`finishBeanFactoryInitialization(beanFactory)`方法，其负责初始化所有的非懒加载单例bean。
+**获取Bean**: `getBean()`方法负责获取bean实例，其核心是`doGetBean`方法，它会处理bean的实例化、初始化以及依赖注入。
 
-**预先实例化非懒加载的单例bean**:
+**单例保证**: 在获取单例bean时, 如果bean已存在于单例缓存中，直接返回，否则会创建一个新的实例。
 
-- `preInstantiateSingletons()`方法循环遍历所有的bean定义，并为非懒加载的单例bean进行初始化。
-- 它对每个bean都调用了`getBean(beanName)`，从而触发了bean的创建过程。
+**Bean创建**: `createBean`方法调用`doCreateBean`来真正进行bean的实例化、属性填充和初始化。
 
-**`getBean()`方法**:
+**属性填充与初始化**: `doCreateBean`方法有两个主要步骤:
 
-- 是容器用于获取bean的核心方法。
-- 在内部，它调用了`doGetBean`，此方法处理bean的查找、创建和依赖注入。
+- `populateBean`: 属性注入
+- `initializeBean`: 执行bean的初始化方法，同时调用`BeanPostProcessor`的方法。
 
-**实际的bean创建过程**:
+**BeanPostProcessors回调**:
 
-- `doCreateBean`方法首先尝试用`InstantiationAwareBeanPostProcessor`创建代理对象（如果适用）。
-- 如果不返回代理对象，就会进入正常的bean创建、属性填充和初始化流程。
+- `initializeBean`会分别调用`applyBeanPostProcessorsBeforeInitialization`和`applyBeanPostProcessorsAfterInitialization`方法，分别在bean初始化前后进行处理。
+- 每个`BeanPostProcessor`都会参与上述的回调，允许对bean进行修改或增强。
 
-**`BeanPostProcessor`的角色**:
+**自定义处理**:
 
-- `BeanPostProcessor`接口是Spring中的核心扩展点，允许对bean实例进行额外的处理。
-- 在`initializeBean`方法中，我们可以看到`BeanPostProcessor`的两个主要回调方法——`postProcessBeforeInitialization`和`postProcessAfterInitialization`。
-- 这些方法提供了在bean初始化之前和之后进行额外处理的机会，如修改bean属性或返回代理对象。
-
-**示例中的`MyBeanPostProcessor`**:
-
-- 我们定义的自定义`BeanPostProcessor`修改了`MyServiceImpl` bean的`message`属性。
-- 在初始化前，给`message`属性加了`Prefix:`前缀；在初始化后，又加了`:Suffix`后缀。
-- 最终的输出是对bean属性进行了修改的结果。
+- 最后，我们的自定义`BeanPostProcessor` (`MyBeanPostProcessor`) 进行了特定的处理。在bean初始化前，为`message`添加了`Prefix:`，在bean初始化后，为`message`添加了`:Suffix`。

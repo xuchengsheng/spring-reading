@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ScopeMetadata;
 import org.springframework.context.annotation.ScopeMetadataResolver;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月14日 17时07分
  **/
 public class MyCustomScopeMetadataResolver implements ScopeMetadataResolver {

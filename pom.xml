@@ -35,6 +35,7 @@
         <module>spring-interface-beanDefinitionRegistryPostProcessor</module>
         <module>spring-interface-instantiationAwareBeanPostProcessor</module>
         <module>spring-interface-destructionAwareBeanPostProcessor</module>
+        <module>spring-interface-mergedBeanDefinitionPostProcessor</module>
     </modules>
 
     <dependencies>

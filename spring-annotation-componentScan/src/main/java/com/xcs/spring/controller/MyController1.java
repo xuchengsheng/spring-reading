@@ -3,7 +3,7 @@ package com.xcs.spring.controller;
 import org.springframework.stereotype.Controller;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月14日 17时14分
  **/
 @Controller

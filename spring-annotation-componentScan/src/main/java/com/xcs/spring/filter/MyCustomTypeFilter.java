@@ -7,7 +7,7 @@ import org.springframework.core.type.filter.TypeFilter;
 import java.io.IOException;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年08月15日 14时15分
  **/
 public class MyCustomTypeFilter implements TypeFilter {

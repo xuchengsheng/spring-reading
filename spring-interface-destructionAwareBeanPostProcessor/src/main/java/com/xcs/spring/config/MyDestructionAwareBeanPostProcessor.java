@@ -5,7 +5,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月18日 16时13分
  **/
 public class MyDestructionAwareBeanPostProcessor implements DestructionAwareBeanPostProcessor {

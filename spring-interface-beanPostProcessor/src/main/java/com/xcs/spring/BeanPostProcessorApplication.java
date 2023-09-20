@@ -5,7 +5,7 @@ import com.xcs.spring.service.MyService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月16日 16时09分
  **/
 public class BeanPostProcessorApplication {
