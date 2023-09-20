@@ -19,7 +19,7 @@
 
 ### 二、接口源码
 
-`DestructionAwareBeanPostProcessor` 是 Spring 框架自 1.0.1 版本开始引入的一个核心接口。其目的在于提供更细粒度的 bean 生命周期管理，特别是在 bean 即将被销毁时允许执行自定义的逻辑。另外它也是 `BeanPostProcessor` 的一个子接口。
+`DestructionAwareBeanPostProcessor` 是 Spring 框架自 1.0.1 版本开始引入的一个核心接口。该接口定义了两个主要的方法：`postProcessBeforeInitialization` 和 `postProcessAfterInitialization`，分别在 Bean 的初始化前后调用。
 
 ```java
 /**
