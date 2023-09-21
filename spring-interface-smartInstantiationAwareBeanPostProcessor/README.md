@@ -572,7 +572,7 @@ public class MySmartInstantiationAwareBeanPostProcessor implements SmartInstanti
 
 **返回非空值的考虑**：`determineCandidateConstructors`：当这个方法返回非空值时，Spring 容器将不会再尝试使用其他方式自动选择构造函数，`predictBeanType`：返回的类型应该尽可能准确地反映后处理器预期的最终 bean 类型，以确保类型匹配和自动装配的正确性。
 
-**与 `InstantiationAwareBeanPostProcessor` 的区别**：虽然 `SmartInstantiationAwareBeanPostProcessor` 扩展了 `InstantiationAwareBeanPostProcessor`，但它添加了更多的回调和复杂性。除非您确实需要这些额外的功能，否则最好仅使用 `InstantiationAwareBeanPostProcessor`。
+**与 `InstantiationAwareBeanPostProcessor` 的区别**：虽然 `SmartInstantiationAwareBeanPostProcessor` 扩展了 `InstantiationAwareBeanPostProcessor`，但它添加了更多的回调和复杂性。除非我们确实需要这些额外的功能，否则最好仅使用 `InstantiationAwareBeanPostProcessor`。
 
 ### 八、总结
 
