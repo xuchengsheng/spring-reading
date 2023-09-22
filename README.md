@@ -26,8 +26,8 @@
 
 ## 💻 我的 GitHub 统计
 
-
-![lizheming's Github stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&show_icons=true)
+![Github Stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&count_private=true&show_icons=true)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=xuchengsheng&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
 ## 🌱Spring 源码阅读系列
 
