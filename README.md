@@ -4,8 +4,8 @@
 
 🌱 **Spring 源码阅读系列**
 
-+ [关于BeanFactoryPostProcessor源码分析](spring-interface-beanFactoryPostProcessor/README.md) - 深入了解 BeanFactoryPostProcessor 的工作原理及其在 Spring 中的角色。
-+ [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface-beanDefinitionRegistryPostProcessor/README.md) - 分析 BeanDefinitionRegistryPostProcessor 如何影响 bean 的注册过程。
++ [关于BeanFactoryPostProcessor源码分析](spring-interface-beanFactoryPostProcessor/README.md)
++ [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface-beanDefinitionRegistryPostProcessor/README.md)
 + [关于BeanPostProcessor源码分析](spring-interface-beanPostProcessor/README.md)
 + [关于InstantiationAwareBeanPostProcessor源码分析](spring-interface-instantiationAwareBeanPostProcessor/README.md)
 + [关于DestructionAwareBeanPostProcessor源码分析](spring-interface-destructionAwareBeanPostProcessor/README.md)
