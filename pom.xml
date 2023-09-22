@@ -38,6 +38,7 @@
         <module>spring-interface-mergedBeanDefinitionPostProcessor</module>
         <module>spring-interface-smartInstantiationAwareBeanPostProcessor</module>
         <module>spring-interface-initializingBean</module>
+        <module>spring-interface-disposableBean</module>
     </modules>
 
     <dependencies>

@@ -16,3 +16,5 @@
 + [关于SmartInstantiationAwareBeanPostProcessor源码分析](spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
 
 + [关于InitializingBean源码分析](spring-interface-initializingBean/README.md)
+
++ [关于DisposableBean源码分析](spring-interface-disposableBean/README.md)
