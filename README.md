@@ -1,22 +1,35 @@
-# Hi there 👋, 我是 Lex!
+## 👋 简介
+<img align='right' src='https://octodex.github.com/images/hula_loop_octodex03.gif' width='200'>
 
-我是一个对 Spring 框架充满热情的程序员。为了帮助那些希望深入了解 Spring 框架的程序员们，我创建了这个 “Spring 源码阅读系列”。通过这个系列，我希望能够与你们共同探索 Spring 的内部工作机制。
+![status](https://img.shields.io/badge/status-up-brightgreen) ![Gender](https://img.shields.io/badge/gender-%F0%9F%A4%B5-lightgrey) ![](https://img.shields.io/static/v1?label=wechat&message=xcs19930428&color=7BB32E&logo=wechat) ![](https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng)
 
-🔗 **与我联系**
+大家好呀，我是Lex。我是一名拥有8年经验的Java 后端开发人员，也是一个对 Spring 框架充满热情的程序员。为了帮助那些希望深入了解 Spring 框架的程序员们，我创建了这个 “Spring 源码阅读系列”。通过这个系列，我希望能够与你们共同探索 Spring 的内部工作机制。如果您有同样的兴趣或问题，请联系我！
 
-- 🐦 [Twitter]
-- 🌐 [我的博客](https://blog.csdn.net/duzhuang2399?type=blog)
-- ✉ [发送邮件](mailto:xuchengshengsuper@163.com)
+## ⚡ 技术
 
-💡 **欢迎贡献！**
+![Docker](https://img.shields.io/badge/-Docker-000?&logo=Docker)
+![Kubernetes](https://img.shields.io/badge/-Kubernetes-000?&logo=Kubernetes)
+![Linux](https://img.shields.io/badge/-Linux-000?&logo=Linux)
+![Node.js](https://img.shields.io/badge/-Node.js-000?&logo=node.js)
+![React](https://img.shields.io/badge/-React-000?&logo=React)
+![Redis](https://img.shields.io/badge/-Redis-000?&logo=Redis)
+![Spring](https://img.shields.io/badge/-Spring-000?&logo=Spring)
+![MySQL](https://img.shields.io/badge/-SQL-000?&logo=MySQL)
+
+## 📫 与我联系
+
+✉️ [Email](xuchengshengsuper@163.com) | 💬 [Issue](https://github.com/xuchengsheng/spring-reading/issues) | 🌐 [CSDN](https://blog.csdn.net/duzhuang2399?type=blog)  Me about everything!
+
+## ⛵ 欢迎贡献！
 
 如果你发现任何错误或者有改进建议，欢迎提交 issue 或者 pull request。你的反馈对于我非常宝贵！
 
-📊 **我的 GitHub 统计**
+## 💻 我的 GitHub 统计
 
-![你的名字或昵称's GitHub stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&show_icons=true&theme=radical)
 
-🌱 **Spring 源码阅读系列**
+![lizheming's Github stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&show_icons=true)
+
+## 🌱Spring 源码阅读系列
 
 + IOC容器
   + 关于IOC容器中获取Bean的过程源码分析
