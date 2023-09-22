@@ -14,7 +14,8 @@
 ![React](https://img.shields.io/badge/-React-000?&logo=React)
 ![Redis](https://img.shields.io/badge/-Redis-000?&logo=Redis)
 ![Spring](https://img.shields.io/badge/-Spring-000?&logo=Spring)
-![MySQL](https://img.shields.io/badge/-SQL-000?&logo=MySQL)
+![MySQL](https://img.shields.io/badge/-MySQL-000?&logo=MySQL)
+![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github)
 
 ## 📫 与我联系
 
