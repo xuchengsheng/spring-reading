@@ -14,3 +14,5 @@
 + [关于MergedBeanDefinitionPostProcessor源码分析](spring-interface-mergedBeanDefinitionPostProcessor/README.md)
 
 + [关于SmartInstantiationAwareBeanPostProcessor源码分析](spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
+
++ [关于InitializingBean源码分析](spring-interface-initializingBean/README.md)
