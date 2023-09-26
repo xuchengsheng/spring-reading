@@ -280,7 +280,7 @@ public class InstantiationAwareBeanPostProcessorApplication {
 }
 ```
 
-首先我们来看看源码中的，构造函数中，执行了三个步骤，我们重点关注`refresh()`方法
+在`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中，执行了三个步骤，我们重点关注`refresh()`方法
 
 ```java
 public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
@@ -290,7 +290,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法，其他方法不是本次源码阅读的重点暂时忽略，在`finishBeanFactoryInitialization(beanFactory)`方法会对实例化所有剩余非懒加载的单列Bean对象。
+在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
 ```java
 @Override
@@ -319,47 +319,7 @@ public void preInstantiateSingletons() throws BeansException {
     // ... [代码部分省略以简化]
     // 循环遍历所有bean的名称
     for (String beanName : beanNames) {
-        // 获取合并后的bean定义，这包括了从父容器继承的属性
-        RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
-
-        // 检查bean是否不是抽象的、是否是单例的，以及是否不是懒加载的
-        if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
-            
-            // 判断当前bean是否是一个FactoryBean
-            if (isFactoryBean(beanName)) {
-                // 获取FactoryBean实例
-                Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
-
-                // 如果bean确实是FactoryBean的实例
-                if (bean instanceof FactoryBean) {
-                    FactoryBean<?> factory = (FactoryBean<?>) bean;
-
-                    boolean isEagerInit;
-                    
-                    // 判断当前环境是否有安全管理器，并且工厂bean是否是SmartFactoryBean的实例
-                    if (System.getSecurityManager() != null && factory instanceof SmartFactoryBean) {
-                        // 使用AccessController确保在受限制的环境中安全地调用isEagerInit方法
-                        isEagerInit = AccessController.doPrivileged(
-                            (PrivilegedAction<Boolean>) ((SmartFactoryBean<?>) factory)::isEagerInit,
-                            getAccessControlContext());
-                    }
-                    else {
-                        // 检查FactoryBean是否是SmartFactoryBean，并且是否需要立即初始化
-                        isEagerInit = (factory instanceof SmartFactoryBean &&
-                                       ((SmartFactoryBean<?>) factory).isEagerInit());
-                    }
-                    
-                    // 如果工厂bean需要立即初始化，则获取bean实例，这将触发bean的创建
-                    if (isEagerInit) {
-                        getBean(beanName);
-                    }
-                }
-            }
-            // 如果不是FactoryBean，则直接获取bean实例，这将触发bean的创建
-            else {
-                getBean(beanName);
-            }
-        }
+        getBean(beanName);
     }
     // ... [代码部分省略以简化]
 }
@@ -470,7 +430,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable O
     // ... [代码部分省略以简化]
     
     try {
-        // 给BeanPostProcessors一个机会返回一个代理对象，而不是目标bean实例。
+        // 1. 给BeanPostProcessors一个机会返回一个代理对象，而不是目标bean实例。
         // 如果这步返回了一个非null的bean，那么这个bean将被返回，跳过正常的bean实例化过程。
         Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
         if (bean != null) {
@@ -483,7 +443,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable O
 
     try {
         // 正常的bean实例化、属性注入和初始化。
-        // 这里是真正进行bean创建的部分。
+        // 2. 这里是真正进行bean创建的部分。
         Object beanInstance = doCreateBean(beanName, mbdToUse, args);
         // 记录bean成功创建的日志
         if (logger.isTraceEnabled()) {
@@ -500,7 +460,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable O
 }
 ```
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` 方法中，首先尝试在bean实际实例化之前提前完成bean的实例化。这通常是为了返回一个代理对象。`applyBeanPostProcessorsBeforeInstantiation` 方法，尝试使用 `InstantiationAwareBeanPostProcessor` 的 `postProcessBeforeInstantiation` 方法来预先实例化bean。如果上一步成功创建了bean（例如，返回了一个代理对象），那么这个bean还会经过所有注册的 `BeanPostProcessor` 的 `postProcessAfterInitialization` 方法，这是对bean进行初始化后的最后处理。
+我们来到`createBean(beanName,mbd,args)`方法中的第一步，在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` 方法中，首先尝试在bean实际实例化之前提前完成bean的实例化。这通常是为了返回一个代理对象。`applyBeanPostProcessorsBeforeInstantiation` 方法，尝试使用 `InstantiationAwareBeanPostProcessor` 的 `postProcessBeforeInstantiation` 方法来预先实例化bean。如果上一步成功创建了bean（例如，返回了一个代理对象），那么这个bean还会经过所有注册的 `BeanPostProcessor` 的 `postProcessAfterInitialization` 方法，这是对bean进行初始化后的最后处理。
 
 ```java
 protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
@@ -559,19 +519,7 @@ public class MyInstantiationAwareBeanPostProcessor implements InstantiationAware
 }
 ```
 
-刚刚上面说到如果在`resolveBeforeInstantiation`方法中返回的是null，表示上面的步骤没有返回任何对象，那么代码将执行`doCreateBean`方法，这个方法负责实际的bean实例化、属性注入和初始化。
-
-```java
-try {
-    Object beanInstance = doCreateBean(beanName, mbdToUse, args);
-    if (logger.isTraceEnabled()) {
-        logger.trace("Finished creating instance of bean '" + beanName + "'");
-    }
-    return beanInstance;
-}
-```
-
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中，主要负责两大步骤，第一步是属性注入，第二步是bean初始化，确保bean是完全配置和准备好的。
+我们来到`createBean(beanName,mbd,args)`方法中的第二步，在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中，主要负责两大步骤，第一步是属性注入，第二步是bean初始化，确保bean是完全配置和准备好的。
 
 ```java
 protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
