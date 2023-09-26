@@ -147,6 +147,8 @@ sequenceDiagram
 
 ### 六、源码分析
 
+首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
+
 ```java
 public class InitializingBeanApplication {
 
@@ -156,7 +158,7 @@ public class InitializingBeanApplication {
 }
 ```
 
-首先我们来看看源码中的，构造函数中，执行了三个步骤，我们重点关注`refresh()`方法
+在`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中，执行了三个步骤，我们重点关注`refresh()`方法
 
 ```java
 public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
@@ -166,7 +168,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法，其他方法不是本次源码阅读的重点暂时忽略，在`finishBeanFactoryInitialization(beanFactory)`方法会对实例化所有剩余非懒加载的单列Bean对象。
+在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
 ```java
 @Override
@@ -178,6 +180,21 @@ public void refresh() throws BeansException, IllegalStateException {
 }
 ```
 
+在`org.springframework.context.support.AbstractApplicationContext#finishBeanFactoryInitialization`方法中，会继续调用`DefaultListableBeanFactory`类中的`preInstantiateSingletons`方法来完成所有剩余非懒加载的单列Bean对象。
+
+```java
+/**
+ * 完成此工厂的bean初始化，实例化所有剩余的非延迟初始化单例bean。
+ * 
+ * @param beanFactory 要初始化的bean工厂
+ */
+protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+    // ... [代码部分省略以简化]
+    // 完成所有剩余非懒加载的单列Bean对象。
+    beanFactory.preInstantiateSingletons();
+}
+```
+
 在`org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons`方法中，主要的核心目的是预先实例化所有非懒加载的单例bean。在Spring的上下文初始化完成后，该方法会被触发，以确保所有单例bean都被正确地创建并初始化。其中`getBean(beanName)`是此方法的核心操作。对于容器中定义的每一个单例bean，它都会调用`getBean`方法，这将触发bean的实例化、初始化及其依赖的注入。如果bean之前没有被创建过，那么这个调用会导致其被实例化和初始化。
 
 ```java
@@ -185,47 +202,7 @@ public void preInstantiateSingletons() throws BeansException {
     // ... [代码部分省略以简化]
     // 循环遍历所有bean的名称
     for (String beanName : beanNames) {
-        // 获取合并后的bean定义，这包括了从父容器继承的属性
-        RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
-
-        // 检查bean是否不是抽象的、是否是单例的，以及是否不是懒加载的
-        if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
-            
-            // 判断当前bean是否是一个FactoryBean
-            if (isFactoryBean(beanName)) {
-                // 获取FactoryBean实例
-                Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
-
-                // 如果bean确实是FactoryBean的实例
-                if (bean instanceof FactoryBean) {
-                    FactoryBean<?> factory = (FactoryBean<?>) bean;
-
-                    boolean isEagerInit;
-                    
-                    // 判断当前环境是否有安全管理器，并且工厂bean是否是SmartFactoryBean的实例
-                    if (System.getSecurityManager() != null && factory instanceof SmartFactoryBean) {
-                        // 使用AccessController确保在受限制的环境中安全地调用isEagerInit方法
-                        isEagerInit = AccessController.doPrivileged(
-                            (PrivilegedAction<Boolean>) ((SmartFactoryBean<?>) factory)::isEagerInit,
-                            getAccessControlContext());
-                    }
-                    else {
-                        // 检查FactoryBean是否是SmartFactoryBean，并且是否需要立即初始化
-                        isEagerInit = (factory instanceof SmartFactoryBean &&
-                                       ((SmartFactoryBean<?>) factory).isEagerInit());
-                    }
-                    
-                    // 如果工厂bean需要立即初始化，则获取bean实例，这将触发bean的创建
-                    if (isEagerInit) {
-                        getBean(beanName);
-                    }
-                }
-            }
-            // 如果不是FactoryBean，则直接获取bean实例，这将触发bean的创建
-            else {
-                getBean(beanName);
-            }
-        }
+        getBean(beanName);
     }
     // ... [代码部分省略以简化]
 }
@@ -258,10 +235,7 @@ protected <T> T doGetBean(
                 return createBean(beanName, mbd, args);
             }
             catch (BeansException ex) {
-                // 如果在创建bean过程中出现异常，从单例缓存中移除它
-                // 这样做是为了防止循环引用的情况
-                destroySingleton(beanName);
-                throw ex;
+                // ... [代码部分省略以简化]
             }
         });
         // 对于某些bean（例如FactoryBeans），可能需要进一步处理以获取真正的bean实例
@@ -290,15 +264,6 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
         if (singletonObject == null) {
             // ... [代码部分省略以简化]
 
-            // 在创建单例之前执行某些操作，如记录创建状态
-            beforeSingletonCreation(beanName);
-
-            boolean newSingleton = false;
-            boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
-            if (recordSuppressedExceptions) {
-                this.suppressedExceptions = new LinkedHashSet<>();
-            }
-
             try {
                 // 使用工厂创建新的单例实例
                 singletonObject = singletonFactory.getObject();
@@ -314,10 +279,7 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
                 // ... [代码部分省略以简化]
             }
 
-            // 如果成功创建了新的单例，将其加入缓存
-            if (newSingleton) {
-                addSingleton(beanName, singletonObject);
-            }
+            // ... [代码部分省略以简化]
         }
 
         // 返回单例对象
@@ -363,7 +325,11 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
     // 声明一个对象，后续可能用于存放初始化后的bean或它的代理对象
     Object exposedObject = bean;
 
+    // ... [代码部分省略以简化]
+    
     try {
+        // ... [代码部分省略以简化]
+        
         // bean初始化
         exposedObject = initializeBean(beanName, exposedObject, mbd);
     } 
@@ -376,17 +342,21 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 }
 ```
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#initializeBean`方法中，调用 bean 的初始化方法，`afterPropertiesSet` 
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#initializeBean`方法中，如果bean实现了`InitializingBean`接口，则它的`afterPropertiesSet`方法会在此处被调用。此外，如果bean配置中定义了自定义的初始化方法，spring会在这里被调用。
 
 ```java
 protected Object initializeBean(String beanName, Object bean, @Nullable RootBeanDefinition mbd) {
 
+    // ... [代码部分省略以简化]
+    
     try {
         invokeInitMethods(beanName, wrappedBean, mbd);
     }
     catch (Throwable ex) {
         // ... [代码部分省略以简化]
     }
+    
+    // ... [代码部分省略以简化]
 
     return wrappedBean;
 }
