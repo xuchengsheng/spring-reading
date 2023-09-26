@@ -352,10 +352,7 @@ protected <T> T doGetBean(
                 return createBean(beanName, mbd, args);
             }
             catch (BeansException ex) {
-                // 如果在创建bean过程中出现异常，从单例缓存中移除它
-                // 这样做是为了防止循环引用的情况
-                destroySingleton(beanName);
-                throw ex;
+                // ... [代码部分省略以简化]
             }
         });
         // 对于某些bean（例如FactoryBeans），可能需要进一步处理以获取真正的bean实例
@@ -372,8 +369,7 @@ protected <T> T doGetBean(
 
 ```java
 public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
-    // 断言bean名称不能为空
-    Assert.notNull(beanName, "Bean name must not be null");
+    // ... [代码部分省略以简化]
 
     // 同步访问单例对象缓存，确保线程安全
     synchronized (this.singletonObjects) {
@@ -383,15 +379,6 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
         // 如果缓存中没有找到
         if (singletonObject == null) {
             // ... [代码部分省略以简化]
-
-            // 在创建单例之前执行某些操作，如记录创建状态
-            beforeSingletonCreation(beanName);
-
-            boolean newSingleton = false;
-            boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
-            if (recordSuppressedExceptions) {
-                this.suppressedExceptions = new LinkedHashSet<>();
-            }
 
             try {
                 // 使用工厂创建新的单例实例
@@ -408,10 +395,7 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
                 // ... [代码部分省略以简化]
             }
 
-            // 如果成功创建了新的单例，将其加入缓存
-            if (newSingleton) {
-                addSingleton(beanName, singletonObject);
-            }
+            // ... [代码部分省略以简化]
         }
 
         // 返回单例对象
