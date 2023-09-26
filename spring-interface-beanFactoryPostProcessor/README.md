@@ -332,19 +332,11 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 #### 8.1、最佳实践总结
 
-**初始化与配置**：
+**初始化与配置**：使用`AnnotationConfigApplicationContext`, 我们成功地启动了Spring容器并加载了`MyConfiguration`配置。在`MyConfiguration`中, 我们定义了两个核心bean：`MySimpleBean`和`MyBeanFactoryPostProcessor`.
 
-- 使用`AnnotationConfigApplicationContext`, 我们成功地启动了Spring容器并加载了`MyConfiguration`配置。
-- 在`MyConfiguration`中, 我们定义了两个核心bean：`MySimpleBean`和`MyBeanFactoryPostProcessor`.
+**修改Bean的作用域**：虽然`MySimpleBean`默认是单例，但通过`MyBeanFactoryPostProcessor`，我们改变了这一默认行为，将其转变为原型作用域。这种转变是通过覆盖`postProcessBeanFactory`方法并更改`mySimpleBean`的bean定义来完成的。
 
-**修改Bean的作用域**：
-
-- 虽然`MySimpleBean`默认是单例，但通过`MyBeanFactoryPostProcessor`，我们改变了这一默认行为，将其转变为原型作用域。
-- 这种转变是通过覆盖`postProcessBeanFactory`方法并更改`mySimpleBean`的bean定义来完成的。
-
-**验证修改**：
-
-- 当我们从主应用程序获取`MySimpleBean`的两个实例并调用它们的`show`方法时，输出的实例地址明确地告诉我们这两个bean是不同的实例。
+**验证修改**：当我们从主应用程序获取`MySimpleBean`的两个实例并调用它们的`show`方法时，输出的实例地址明确地告诉我们这两个bean是不同的实例。
 
 #### 8.2、源码分析总结
 
