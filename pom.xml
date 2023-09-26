@@ -39,6 +39,7 @@
         <module>spring-interface-smartInstantiationAwareBeanPostProcessor</module>
         <module>spring-interface-initializingBean</module>
         <module>spring-interface-disposableBean</module>
+        <module>spring-core-ioc</module>
     </modules>
 
     <dependencies>

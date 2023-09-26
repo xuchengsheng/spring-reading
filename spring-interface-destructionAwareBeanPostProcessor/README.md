@@ -62,7 +62,7 @@ public interface DestructionAwareBeanPostProcessor extends BeanPostProcessor {
 
 ### 三、主要功能
 
-+ 销毁前逻辑：使用 `postProcessBeforeDestruction(Object bean, String beanName)` 方法，我们可以为 bean 执行自定义的销毁逻辑。当一个 bean 被容器标记为销毁时，此方法将被调用。（例如，容器关闭时进行资源释放，状态记录，依赖清理）
++ **销毁前逻辑：**使用 `postProcessBeforeDestruction(Object bean, String beanName)` 方法，我们可以为 bean 执行自定义的销毁逻辑。当一个 bean 被容器标记为销毁时，此方法将被调用。（例如，容器关闭时进行资源释放，状态记录，依赖清理）
 
 ### 四、最佳实践
 
