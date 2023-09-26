@@ -1130,8 +1130,8 @@ public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, St
 
 #### 6.3、Bean销毁过程源码分析
 
-+ [关于DestructionAwareBeanPostProcessor源码分析](spring-interface-destructionAwareBeanPostProcessor/README.md)
-+ [关于DisposableBean源码分析](spring-interface-disposableBean/README.md)
++ [关于DestructionAwareBeanPostProcessor源码分析](../spring-interface-destructionAwareBeanPostProcessor/README.md)
++ [关于DisposableBean源码分析](../spring-interface-disposableBean/README.md)
 
 ### 七、注意事项
 
@@ -1175,7 +1175,7 @@ public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, St
 
 **Bean获取与创建**：`AbstractBeanFactory`类中的`getBean`方法负责获取bean。如果bean尚未创建，则会进一步调用`doGetBean`方法进行创建。这个方法处理了从缓存获取单例bean的逻辑，循环引用的问题，以及根据bean的作用域创建bean实例的逻辑。
 
-**单例Bean的获取与创建**：`DefaultSingletonBeanRegistry`类中的`getSingleton`方法负责从单例缓存中获取bean，或者通过提供的singletonFactory进行创建。这个方法确保了线程安全地创建单例，并处理了与创建失败、并发和循环引用相关的问题。
+**单例Bean的获取与创建**：`DefaultSingletonBeanRegistry`类中的`getSingleton`方法负责从单例缓存中获取bean，或者通过提供的`singletonFactory`进行创建。这个方法确保了线程安全地创建单例，并处理了与创建失败、并发和循环引用相关的问题。
 
 **Bean创建前后的处理**：在创建单例bean之前和之后，系统通过`beforeSingletonCreation`和`afterSingletonCreation`方法进行相应的处理，如标记bean正在创建，以及后续的清理工作。
 
