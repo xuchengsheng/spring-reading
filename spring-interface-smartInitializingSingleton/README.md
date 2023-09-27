@@ -246,44 +246,24 @@ public void preInstantiateSingletons() throws BeansException {
 
 #### 8.1、最佳实践总结
 
-**启动入口**：
+**启动入口**：在示例的启动类`SmartInitializingSingletonApplication`中，我们使用了`AnnotationConfigApplicationContext`来加载和初始化Spring容器。我们为上下文提供了一个Java配置类`MyConfiguration`，该类定义了应该由Spring扫描和管理的bean。
 
-在示例的启动类`SmartInitializingSingletonApplication`中，我们使用了`AnnotationConfigApplicationContext`来加载和初始化Spring容器。我们为上下文提供了一个Java配置类`MyConfiguration`，该类定义了应该由Spring扫描和管理的bean。
+**配置**：在`MyConfiguration`类中，我们使用`@Bean`注解显式地定义了`MySmartInitializingSingleton`这个bean。这确保了`MySmartInitializingSingleton`被Spring容器管理并在适当的时机执行。
 
-**配置**：
+**实现SmartInitializingSingleton接口**：`MySmartInitializingSingleton`实现了`SmartInitializingSingleton`接口。当所有其他的单例bean都被完全初始化后，`afterSingletonsInstantiated()`方法被调用。在这个方法中，我们启动了`MyService`类中定义的定时任务。
 
-在`MyConfiguration`类中，我们使用`@Bean`注解显式地定义了`MySmartInitializingSingleton`这个bean。这确保了`MySmartInitializingSingleton`被Spring容器管理并在适当的时机执行。
+**定时任务**：`MyService`中定义了一个使用Java的`Timer`模拟的定时任务。这个任务会每隔2秒打印当前时间和"hello world"这个消息。在实际应用中，可能会使用更复杂的调度机制，如Spring的`TaskScheduler`或Quartz等。
 
-**实现SmartInitializingSingleton接口**：
-
-`MySmartInitializingSingleton`实现了`SmartInitializingSingleton`接口。当所有其他的单例bean都被完全初始化后，`afterSingletonsInstantiated()`方法被调用。在这个方法中，我们启动了`MyService`类中定义的定时任务。
-
-**定时任务**：
-
-`MyService`中定义了一个使用Java的`Timer`模拟的定时任务。这个任务会每隔2秒打印当前时间和"hello world"这个消息。在实际应用中，可能会使用更复杂的调度机制，如Spring的`TaskScheduler`或Quartz等。
-
-**结果**：
-
-启动示例应用后，可以观察到每隔2秒在控制台上都会输出格式化的当前时间后跟着"hello world"这样的消息，证明定时任务已经成功启动并在运行。
+**结果**：启动示例应用后，可以观察到每隔2秒在控制台上都会输出格式化的当前时间后跟着"hello world"这样的消息，证明定时任务已经成功启动并在运行。
 
 #### 8.2、源码分析总结
 
-**应用启动**:
+**应用启动**：一切从`SmartInitializingSingletonApplication`的主函数开始，其中初始化了`AnnotationConfigApplicationContext`，这是Spring用于Java注解配置的上下文。
 
-一切从`SmartInitializingSingletonApplication`的主函数开始，其中初始化了`AnnotationConfigApplicationContext`，这是Spring用于Java注解配置的上下文。
+**AnnotationConfigApplicationContext构造函数**：在`AnnotationConfigApplicationContext`的构造函数中，执行了三个主要步骤，其中最关键的是`refresh()`方法。
 
-**AnnotationConfigApplicationContext构造函数**：
+**执行refresh方法**：`refresh()`方法是Spring上下文刷新的核心。在这里，重点是`finishBeanFactoryInitialization(beanFactory)`，它负责实例化所有剩余的非懒加载单例Bean。
 
-在`AnnotationConfigApplicationContext`的构造函数中，执行了三个主要步骤，其中最关键的是`refresh()`方法。
+**完成BeanFactory初始化**：在`finishBeanFactoryInitialization`方法中，为了完成上述任务，它进一步调用了`beanFactory.preInstantiateSingletons()`。
 
-**执行refresh方法**:
-
-`refresh()`方法是Spring上下文刷新的核心。在这里，重点是`finishBeanFactoryInitialization(beanFactory)`，它负责实例化所有剩余的非懒加载单例Bean。
-
-**完成BeanFactory初始化**:
-
-在`finishBeanFactoryInitialization`方法中，为了完成上述任务，它进一步调用了`beanFactory.preInstantiateSingletons()`。
-
-**预实例化单例**:
-
-这步是最关键的。在`DefaultListableBeanFactory`的`preInstantiateSingletons`方法中，所有单例beans都被实例化。紧接着，为那些实现了`SmartInitializingSingleton`接口的beans触发了`afterSingletonsInstantiated`回调，确保这些回调在所有其他单例beans完全实例化后才被执行。
+**预实例化单例**：这步是最关键的。在`DefaultListableBeanFactory`的`preInstantiateSingletons`方法中，所有单例beans都被实例化。紧接着，为那些实现了`SmartInitializingSingleton`接口的beans触发了`afterSingletonsInstantiated`回调，确保这些回调在所有其他单例beans完全实例化后才被执行。
