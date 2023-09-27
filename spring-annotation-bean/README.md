@@ -25,7 +25,7 @@
 
 ### 一、前置条件
 
-+ [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface-beanDefinitionRegistryPostProcessor/README.md)
++ [关于BeanDefinitionRegistryPostProcessor源码分析](../spring-interface-beanDefinitionRegistryPostProcessor/README.md)
 
 ### 二、注解描述
 
