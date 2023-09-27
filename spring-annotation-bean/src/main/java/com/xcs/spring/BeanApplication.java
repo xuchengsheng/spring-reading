@@ -1,6 +1,7 @@
 package com.xcs.spring;
 
-import com.xcs.spring.config.MyBeanConfig;
+import com.xcs.spring.bean.MyBean;
+import com.xcs.spring.config.MyConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -10,10 +11,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class BeanApplication {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyBeanConfig.class);
-        for (String beanDefinitionName : context.getBeanDefinitionNames()) {
-            System.out.println("beanName = " + beanDefinitionName);
-        }
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
+        System.out.println(context.getBean(MyBean.class));
         context.close();
     }
 }
