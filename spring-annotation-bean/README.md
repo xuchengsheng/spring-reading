@@ -175,7 +175,7 @@ MyBean.destroy
 
 ~~~mermaid
 sequenceDiagram
-title:@Bean注册时序图
+Title: @Bean注册时序图
 BeanApplication->>AnnotationConfigApplicationContext: AnnotationConfigApplicationContext(componentClasses)<br>创建应用上下文
 AnnotationConfigApplicationContext->>AbstractApplicationContext: refresh()<br>刷新应用上下文
 AbstractApplicationContext->>AbstractApplicationContext: invokeBeanFactoryPostProcessors(beanFactory)<br>调用BeanFactory后置处理器
