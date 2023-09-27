@@ -53,6 +53,23 @@
   + [关于InitializingBean源码分析](spring-interface-initializingBean/README.md)
 
   + [关于DisposableBean源码分析](spring-interface-disposableBean/README.md)
+
+  + [关于SmartInitializingSingleton源码分析](spring-interface-smartInitializingSingleton/README.md)
+
++ Aware接口
+  + 关于ApplicationContextAware源码分析
+  + 关于ApplicationEventPublisherAware源码分析
+  + 关于BeanClassLoaderAware源码分析
+  + 关于BeanFactoryAware源码分析
+  + 关于BeanNameAware源码分析
+  + 关于BootstrapContextAware源码分析
+  + 关于LoadTimeWeaverAware源码分析
+  + 关于MessageSourceAware源码分析
+  + 关于NotificationPublisherAware源码分析
+  + 关于ResourceLoaderAware源码分析
+  + 关于ServletConfigAware源码分析
+  + 关于ServletContextAware源码分析
+  + 关于EnvironmentAware源码分析
 + 核心注解
 
   + 关于@Bean源码分析

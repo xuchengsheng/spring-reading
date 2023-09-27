@@ -40,6 +40,7 @@
         <module>spring-interface-initializingBean</module>
         <module>spring-interface-disposableBean</module>
         <module>spring-core-ioc</module>
+        <module>spring-interface-smartInitializingSingleton</module>
     </modules>
 
     <dependencies>
