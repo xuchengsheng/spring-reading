@@ -202,7 +202,7 @@ ConfigurationClassBeanDefinitionReader->>DefaultListableBeanFactory: registerBea
 
 ~~~mermaid
 sequenceDiagram
-title:@Bean初始化方法时序图
+Title: @Bean初始化方法时序图
 BeanApplication->>AnnotationConfigApplicationContext: AnnotationConfigApplicationContext(componentClasses)<br>创建应用上下文
 AnnotationConfigApplicationContext->>AbstractApplicationContext: refresh()<br>刷新应用上下文
 AbstractApplicationContext->>AbstractApplicationContext: finishBeanFactoryInitialization(beanFactory)<br>完成BeanFactory的初始化
@@ -226,7 +226,7 @@ AbstractBeanFactory-->>DefaultListableBeanFactory: 返回最终创建的Bean
 
 ~~~mermaid
 sequenceDiagram
-title:@Bean销毁方法时序图
+Title: @Bean销毁方法时序图
 BeanApplication->>AnnotationConfigApplicationContext: AnnotationConfigApplicationContext(componentClasses)<br>创建应用上下文
 AnnotationConfigApplicationContext-->>BeanApplication: 应用上下文初始化完成并返回应用
 BeanApplication->>AbstractApplicationContext: close()<br>请求关闭应用上下文
