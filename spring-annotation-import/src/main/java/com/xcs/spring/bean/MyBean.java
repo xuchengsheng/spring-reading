@@ -6,16 +6,4 @@ package com.xcs.spring.bean;
  **/
 public class MyBean {
 
-    private String describe;
-
-    public MyBean(String describe) {
-        this.describe = describe;
-    }
-
-    @Override
-    public String toString() {
-        return "MyBean{" +
-                "describe='" + describe + '\'' +
-                '}';
-    }
 }

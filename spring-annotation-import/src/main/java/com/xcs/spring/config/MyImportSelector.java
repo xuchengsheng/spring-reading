@@ -8,7 +8,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * @author xcs
  * @date 2023年08月28日 11时12分
  **/
-public class CustomImportSelector implements ImportSelector {
+public class MyImportSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
         return new String[]{MyBeanA.class.getName()};
