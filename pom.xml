@@ -42,6 +42,7 @@
         <module>spring-core-ioc</module>
         <module>spring-interface-smartInitializingSingleton</module>
         <module>spring-aware-beanNameAware</module>
+        <module>spring-aware-beanFactoryAware</module>
     </modules>
 
     <dependencies>

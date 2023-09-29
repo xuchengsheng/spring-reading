@@ -59,7 +59,7 @@
   + 关于ApplicationContextAware源码分析
   + 关于ApplicationEventPublisherAware源码分析
   + 关于BeanClassLoaderAware源码分析
-  + 关于BeanFactoryAware源码分析
+  + [关于BeanFactoryAware源码分析](spring-aware-beanFactoryAware/README.md)
   + [关于BeanNameAware源码分析](spring-aware-beanNameAware/README.md)
   + 关于BootstrapContextAware源码分析
   + 关于LoadTimeWeaverAware源码分析
