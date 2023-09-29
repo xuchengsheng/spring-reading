@@ -41,6 +41,7 @@
         <module>spring-interface-disposableBean</module>
         <module>spring-core-ioc</module>
         <module>spring-interface-smartInitializingSingleton</module>
+        <module>spring-aware-beanNameAware</module>
     </modules>
 
     <dependencies>
