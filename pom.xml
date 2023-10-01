@@ -43,6 +43,7 @@
         <module>spring-interface-smartInitializingSingleton</module>
         <module>spring-aware-beanNameAware</module>
         <module>spring-aware-beanFactoryAware</module>
+        <module>spring-aware-beanClassLoaderAware</module>
     </modules>
 
     <dependencies>
