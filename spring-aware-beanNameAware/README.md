@@ -132,7 +132,7 @@ Module myWeChatPayService has been registered.
 ~~~mermaid
 sequenceDiagram
     Title: BeanNameAware时序图
-    participant InitializingBeanApplication
+    participant BeanNameAwareApplication
     participant AnnotationConfigApplicationContext
     participant AbstractApplicationContext
     participant DefaultListableBeanFactory
@@ -141,7 +141,7 @@ sequenceDiagram
     participant AbstractAutowireCapableBeanFactory
     participant MyBasePayService
     
-    InitializingBeanApplication->>AnnotationConfigApplicationContext:AnnotationConfigApplicationContext(componentClasses)<br>创建上下文
+    BeanNameAwareApplication->>AnnotationConfigApplicationContext:AnnotationConfigApplicationContext(componentClasses)<br>创建上下文
     AnnotationConfigApplicationContext->>AbstractApplicationContext:refresh()<br>刷新上下文
     AbstractApplicationContext->>AbstractApplicationContext:finishBeanFactoryInitialization(beanFactory)<br>初始化Bean工厂
     AbstractApplicationContext->>DefaultListableBeanFactory:preInstantiateSingletons()<br>实例化单例
@@ -156,7 +156,7 @@ sequenceDiagram
     AbstractAutowireCapableBeanFactory->>MyBasePayService:setBeanName(beanName)<br>设置Bean名称
     AbstractAutowireCapableBeanFactory-->>AbstractBeanFactory:返回Bean对象
     AbstractBeanFactory-->>DefaultListableBeanFactory:返回Bean对象
-    AnnotationConfigApplicationContext-->>InitializingBeanApplication:初始化完成
+    AnnotationConfigApplicationContext-->>BeanNameAwareApplication:初始化完成
 ~~~
 
 ### 六、源码分析
