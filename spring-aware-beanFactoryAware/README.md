@@ -88,7 +88,7 @@ public class MyConfiguration {
 }
 ```
 
-**`UserValidator`**是一个简单的验证器接口，具有一个方法 `validate`，用于验证用户名和密码是否有效。SimpleUserValidator是一个实现。它进行简单的验证，仅检查用户名和密码是否为非空。**`ComplexUserValidator` 是 `UserValidator` 接口的另一个实现。这个验证器有点复杂，除了检查用户名和密码是否为空外，还检查用户名的长度是否大于 5 以及密码的长度是否大于 8。
+**UserValidator**是一个简单的验证器接口，具有一个方法 `validate`，用于验证用户名和密码是否有效。SimpleUserValidator是一个实现。它进行简单的验证，仅检查用户名和密码是否为非空。`ComplexUserValidator` 是 `UserValidator` 接口的另一个实现。这个验证器有点复杂，除了检查用户名和密码是否为空外，还检查用户名的长度是否大于 5 以及密码的长度是否大于 8。
 
 ```java
 public interface UserValidator {
@@ -163,8 +163,8 @@ public class UserService implements BeanFactoryAware, InitializingBean {
 
 ~~~mermaid
 sequenceDiagram
-    Title: BeanNameAware时序图
-    participant InitializingBeanApplication
+    Title: BeanFactoryAware时序图
+    participant BeanFactoryAwareApplication
     participant AnnotationConfigApplicationContext
     participant AbstractApplicationContext
     participant DefaultListableBeanFactory
@@ -173,7 +173,7 @@ sequenceDiagram
     participant AbstractAutowireCapableBeanFactory
     participant UserService
     
-    InitializingBeanApplication->>AnnotationConfigApplicationContext:AnnotationConfigApplicationContext(componentClasses)<br>创建上下文
+    BeanFactoryAwareApplication->>AnnotationConfigApplicationContext:AnnotationConfigApplicationContext(componentClasses)<br>创建上下文
     AnnotationConfigApplicationContext->>AbstractApplicationContext:refresh()<br>刷新上下文
     AbstractApplicationContext->>AbstractApplicationContext:finishBeanFactoryInitialization(beanFactory)<br>初始化Bean工厂
     AbstractApplicationContext->>DefaultListableBeanFactory:preInstantiateSingletons()<br>实例化单例
@@ -188,7 +188,7 @@ sequenceDiagram
     AbstractAutowireCapableBeanFactory->>UserService:setBeanFactory(beanFactory)<br>设置beanFactory
     AbstractAutowireCapableBeanFactory-->>AbstractBeanFactory:返回Bean对象
     AbstractBeanFactory-->>DefaultListableBeanFactory:返回Bean对象
-    AnnotationConfigApplicationContext-->>InitializingBeanApplication:初始化完成
+    AnnotationConfigApplicationContext-->>BeanFactoryAwareApplication:初始化完成
 
 ~~~
 
