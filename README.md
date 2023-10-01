@@ -56,7 +56,7 @@
 
   + [关于SmartInitializingSingleton源码分析](spring-interface-smartInitializingSingleton/README.md)
 + Aware接口
-  + 关于ApplicationContextAware源码分析
+  + [关于ApplicationContextAware源码分析](spring-aware-applicationContextAware/README.md)
   + 关于ApplicationEventPublisherAware源码分析
   + [关于BeanClassLoaderAware源码分析](spring-aware-beanClassLoaderAware/README.md)
   + [关于BeanFactoryAware源码分析](spring-aware-beanFactoryAware/README.md)
