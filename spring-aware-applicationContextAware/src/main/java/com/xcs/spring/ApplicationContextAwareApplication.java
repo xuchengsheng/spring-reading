@@ -12,7 +12,7 @@ public class ApplicationContextAwareApplication {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        MyApplicationContextAware myApplicationContextAware = context.getBean(MyApplicationContextAware.class);
-        myApplicationContextAware.publish("hello world");
+        MyApplicationContextAware contextAware = context.getBean(MyApplicationContextAware.class);
+        contextAware.publish("hello world");
     }
 }

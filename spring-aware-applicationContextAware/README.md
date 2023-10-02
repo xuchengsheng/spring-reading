@@ -92,8 +92,8 @@ public class ApplicationContextAwareApplication {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        MyApplicationContextAware myApplicationContextAware = context.getBean(MyApplicationContextAware.class);
-        myApplicationContextAware.publish("hello world");
+        MyApplicationContextAware contextAware = context.getBean(MyApplicationContextAware.class);
+        contextAware.publish("hello world");
     }
 }
 ```
@@ -196,10 +196,10 @@ sequenceDiagram
     AbstractBeanFactory->>AbstractAutowireCapableBeanFactory:createBean(beanName,mbd,args)<br>创建Bean
     AbstractAutowireCapableBeanFactory->>AbstractAutowireCapableBeanFactory:doCreateBean(beanName,mbd,args)<br>执行Bean创建
     AbstractAutowireCapableBeanFactory->>AbstractAutowireCapableBeanFactory:initializeBean(beanName,bean,mbd)<br>负责bean的初始化
-	AbstractAutowireCapableBeanFactory->>AbstractAutowireCapableBeanFactory:applyBeanPostProcessorsBeforeInitialization(existingBean, beanName)
-    AbstractAutowireCapableBeanFactory->>ApplicationContextAwareProcessor:postProcessBeforeInitialization(bean,beanName)
-    ApplicationContextAwareProcessor->>ApplicationContextAwareProcessor:invokeAwareInterfaces(bean)
-    ApplicationContextAwareProcessor->>MyApplicationContextAware:setApplicationContext(context)
+	AbstractAutowireCapableBeanFactory->>AbstractAutowireCapableBeanFactory:applyBeanPostProcessorsBeforeInitialization(existingBean, beanName)<br>调用前置处理器
+    AbstractAutowireCapableBeanFactory->>ApplicationContextAwareProcessor:postProcessBeforeInitialization(bean,beanName)<br>触发Aware处理
+    ApplicationContextAwareProcessor->>ApplicationContextAwareProcessor:invokeAwareInterfaces(bean)<br>执行Aware回调
+    ApplicationContextAwareProcessor->>MyApplicationContextAware:setApplicationContext(context)<br>设置应用上下文
     AbstractAutowireCapableBeanFactory-->>AbstractBeanFactory:返回Bean对象
     AbstractBeanFactory-->>DefaultListableBeanFactory:返回Bean对象
     AnnotationConfigApplicationContext-->>ApplicationContextAwareApplication:初始化完成
@@ -215,8 +215,8 @@ public class ApplicationContextAwareApplication {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        MyApplicationContextAware myApplicationContextAware = context.getBean(MyApplicationContextAware.class);
-        myApplicationContextAware.publish("hello world");
+        MyApplicationContextAware contextAware = context.getBean(MyApplicationContextAware.class);
+        contextAware.publish("hello world");
     }
 }
 ```
@@ -466,24 +466,8 @@ public Object postProcessBeforeInitialization(Object bean, String beanName) thro
 
 ```java
 private void invokeAwareInterfaces(Object bean) {
-    if (bean instanceof EnvironmentAware) {
-        ((EnvironmentAware) bean).setEnvironment(this.applicationContext.getEnvironment());
-    }
-    if (bean instanceof EmbeddedValueResolverAware) {
-        ((EmbeddedValueResolverAware) bean).setEmbeddedValueResolver(this.embeddedValueResolver);
-    }
-    if (bean instanceof ResourceLoaderAware) {
-        ((ResourceLoaderAware) bean).setResourceLoader(this.applicationContext);
-    }
-    if (bean instanceof ApplicationEventPublisherAware) {
-        ((ApplicationEventPublisherAware) bean).setApplicationEventPublisher(this.applicationContext);
-    }
-    if (bean instanceof MessageSourceAware) {
-        ((MessageSourceAware) bean).setMessageSource(this.applicationContext);
-    }
-    if (bean instanceof ApplicationStartupAware) {
-        ((ApplicationStartupAware) bean).setApplicationStartup(this.applicationContext.getApplicationStartup());
-    }
+    // ... [代码部分省略以简化]
+    
     // 对ApplicationContextAware接口进行回调
     if (bean instanceof ApplicationContextAware) {
         ((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
