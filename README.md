@@ -35,27 +35,17 @@
 + IOC容器
   + [关于IOC容器源码分析](spring-core-ioc/README.md)
 + 后置处理器与初始化
-
   + [关于BeanFactoryPostProcessor源码分析](spring-interface-beanFactoryPostProcessor/README.md)
-
   + [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface-beanDefinitionRegistryPostProcessor/README.md)
-
   + [关于BeanPostProcessor源码分析](spring-interface-beanPostProcessor/README.md)
-
   + [关于InstantiationAwareBeanPostProcessor源码分析](spring-interface-instantiationAwareBeanPostProcessor/README.md)
-
   + [关于DestructionAwareBeanPostProcessor源码分析](spring-interface-destructionAwareBeanPostProcessor/README.md)
-
   + [关于MergedBeanDefinitionPostProcessor源码分析](spring-interface-mergedBeanDefinitionPostProcessor/README.md)
-
   + [关于SmartInstantiationAwareBeanPostProcessor源码分析](spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
-
   + [关于InitializingBean源码分析](spring-interface-initializingBean/README.md)
-
   + [关于DisposableBean源码分析](spring-interface-disposableBean/README.md)
-
   + [关于SmartInitializingSingleton源码分析](spring-interface-smartInitializingSingleton/README.md)
-+ Aware接口
++ Aware接
   + [关于ApplicationContextAware源码分析](spring-aware-applicationContextAware/README.md)
   + [关于ApplicationEventPublisherAware源码分析](spring-aware-applicationEventPublisherAware/README.md)
   + [关于BeanClassLoaderAware源码分析](spring-aware-beanClassLoaderAware/README.md)
@@ -68,7 +58,7 @@
   + 关于ResourceLoaderAware源码分析
   + 关于ServletConfigAware源码分析
   + 关于ServletContextAware源码分析
-  + 关于EnvironmentAware源码分析
+  + [关于EnvironmentAware源码分析](spring-aware-environmentAware/README.md)
 + 核心注解
   + [关于@Bean源码分析](spring-annotation-bean/README.md)
   + [关于@ComponentScan源码分析](spring-annotation-componentScan/README.md)
