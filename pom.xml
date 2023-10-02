@@ -45,6 +45,7 @@
         <module>spring-aware-beanFactoryAware</module>
         <module>spring-aware-beanClassLoaderAware</module>
         <module>spring-aware-applicationContextAware</module>
+        <module>spring-aware-applicationEventPublisherAware</module>
     </modules>
 
     <dependencies>
