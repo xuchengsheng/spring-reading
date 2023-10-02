@@ -47,6 +47,7 @@
         <module>spring-aware-applicationContextAware</module>
         <module>spring-aware-applicationEventPublisherAware</module>
         <module>spring-aware-environmentAware</module>
+        <module>spring-aware-resourceLoaderAware</module>
     </modules>
 
     <dependencies>

@@ -55,7 +55,7 @@
   + 关于LoadTimeWeaverAware源码分析
   + 关于MessageSourceAware源码分析
   + 关于NotificationPublisherAware源码分析
-  + 关于ResourceLoaderAware源码分析
+  + [关于ResourceLoaderAware源码分析](spring-aware-resourceLoaderAware/README.md)
   + 关于ServletConfigAware源码分析
   + 关于ServletContextAware源码分析
   + [关于EnvironmentAware源码分析](spring-aware-environmentAware/README.md)
