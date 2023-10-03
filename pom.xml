@@ -50,6 +50,7 @@
         <module>spring-aware-resourceLoaderAware</module>
         <module>spring-aware-embeddedValueResolverAware</module>
         <module>spring-aware-messageSourceAware</module>
+        <module>spring-aware-applicationStartupAware</module>
     </modules>
 
     <dependencies>
