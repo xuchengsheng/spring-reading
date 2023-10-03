@@ -49,6 +49,7 @@
         <module>spring-aware-environmentAware</module>
         <module>spring-aware-resourceLoaderAware</module>
         <module>spring-aware-embeddedValueResolverAware</module>
+        <module>spring-aware-messageSourceAware</module>
     </modules>
 
     <dependencies>
