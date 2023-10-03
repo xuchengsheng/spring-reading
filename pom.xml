@@ -48,6 +48,7 @@
         <module>spring-aware-applicationEventPublisherAware</module>
         <module>spring-aware-environmentAware</module>
         <module>spring-aware-resourceLoaderAware</module>
+        <module>spring-aware-embeddedValueResolverAware</module>
     </modules>
 
     <dependencies>

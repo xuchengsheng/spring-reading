@@ -46,19 +46,21 @@
   + [关于DisposableBean源码分析](spring-interface-disposableBean/README.md)
   + [关于SmartInitializingSingleton源码分析](spring-interface-smartInitializingSingleton/README.md)
 + Aware接
-  + [关于ApplicationContextAware源码分析](spring-aware-applicationContextAware/README.md)
-  + [关于ApplicationEventPublisherAware源码分析](spring-aware-applicationEventPublisherAware/README.md)
+  + [关于BeanNameAware源码分析](spring-aware-beanNameAware/README.md)
   + [关于BeanClassLoaderAware源码分析](spring-aware-beanClassLoaderAware/README.md)
   + [关于BeanFactoryAware源码分析](spring-aware-beanFactoryAware/README.md)
-  + [关于BeanNameAware源码分析](spring-aware-beanNameAware/README.md)
+  + [关于EnvironmentAware源码分析](spring-aware-environmentAware/README.md)
+  + [关于EmbeddedValueResolverAware源码分析](spring-aware-embeddedValueResolverAware/README.md)
+  + [关于ResourceLoaderAware源码分析](spring-aware-resourceLoaderAware/README.md)
+  + [关于ApplicationEventPublisherAware源码分析](spring-aware-applicationEventPublisherAware/README.md)
+  + [关于ApplicationContextAware源码分析](spring-aware-applicationContextAware/README.md)
+  + 关于MessageSourceAware源码分析
   + 关于BootstrapContextAware源码分析
   + 关于LoadTimeWeaverAware源码分析
-  + 关于MessageSourceAware源码分析
   + 关于NotificationPublisherAware源码分析
-  + [关于ResourceLoaderAware源码分析](spring-aware-resourceLoaderAware/README.md)
   + 关于ServletConfigAware源码分析
   + 关于ServletContextAware源码分析
-  + [关于EnvironmentAware源码分析](spring-aware-environmentAware/README.md)
+  
 + 核心注解
   + [关于@Bean源码分析](spring-annotation-bean/README.md)
   + [关于@ComponentScan源码分析](spring-annotation-componentScan/README.md)
