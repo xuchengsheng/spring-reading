@@ -51,6 +51,7 @@
         <module>spring-aware-embeddedValueResolverAware</module>
         <module>spring-aware-messageSourceAware</module>
         <module>spring-aware-applicationStartupAware</module>
+        <module>spring-aware-importAware</module>
     </modules>
 
     <dependencies>
