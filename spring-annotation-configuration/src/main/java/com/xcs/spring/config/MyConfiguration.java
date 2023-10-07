@@ -1,4 +1,4 @@
-package com.xcs.spring;
+package com.xcs.spring.config;
 
 import com.xcs.spring.bean.MyBean;
 import org.springframework.context.annotation.Bean;

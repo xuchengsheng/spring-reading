@@ -1,8 +1,7 @@
 package com.xcs.spring;
 
+import com.xcs.spring.config.MyConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.io.IOException;
 
 /**
  * @author xcs
@@ -16,13 +15,5 @@ public class ConfigurationApplication {
 
         System.out.println(configuration.myBean());
         System.out.println(configuration.myBean());
-
-        System.out.println("MyConfiguration = " + configuration.getClass().getName());
-
-        try {
-            System.in.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
