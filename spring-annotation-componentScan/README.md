@@ -550,6 +550,8 @@ protected void processConfigurationClass(ConfigurationClass configClass, Predica
 protected final SourceClass doProcessConfigurationClass(
     ConfigurationClass configClass, SourceClass sourceClass, Predicate<String> filter)
     throws IOException {
+    
+    // ... [代码部分省略以简化]
 
     // 处理任何 @ComponentScan 注解
     // 获取当前类（sourceClass）的所有 @ComponentScan 和 @ComponentScans 注解的属性
@@ -579,6 +581,8 @@ protected final SourceClass doProcessConfigurationClass(
             }
         }
     }
+    
+    // ... [代码部分省略以简化]
 
     // 没有父类 -> 处理完成
     return null;
