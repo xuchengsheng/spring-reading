@@ -1,6 +1,6 @@
 package com.xcs.spring;
 
-import com.xcs.spring.config.MyComponentScanConfig;
+import com.xcs.spring.config.MyConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class ComponentScanApplication {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyComponentScanConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
         for (String beanDefinitionName : context.getBeanDefinitionNames()) {
             System.out.println("beanName = " + beanDefinitionName);
         }
