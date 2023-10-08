@@ -683,25 +683,25 @@ private Object resolveBeanReference(Method beanMethod, Object[] beanMethodArgs,
 
 ### 九、常见问题
 
-#### 7.2 @Configuration中full模式与lite模式如何选择？
+#### 9.2 @Configuration中full模式与lite模式如何选择？
 
 `@Configuration` 注解有两种模式：`full` 和 `lite`。它们在功能和性能上有所不同。了解它们的优缺点有助于为特定的场景做出合适的选择。
 
-##### 7.2.1 Full 模式
+##### 9.2.1 Full 模式
 
 - 启用方式：在 `@Configuration` 注解中不设置 `proxyBeanMethods` 或将其设置为 `true`。
 - 功能：当在配置类中的 `@Bean` 方法内部调用另一个 `@Bean` 方法时，Spring 会确保返回的是容器中的单例bean，而不是一个新的实例。这是通过CGLIB代理实现的。
 - 优势：保持单例语义，确保容器中的单例Bean在配置类中的调用中始终是单例的。
 - 劣势：需要通过CGLIB创建配置类的子类，可能带来一些性能开销，增加了启动时间，可能与某些库不兼容，这些库期望操作实际类而不是其CGLIB代理。
 
-##### 7.2.2 Lite 模式
+##### 9.2.2 Lite 模式
 
 - 启用方式：在 `@Configuration` 注解中设置 `proxyBeanMethods` 为 `false`。
 - 功能：禁用CGLIB代理。`@Bean` 方法之间的调用就像普通的Java方法调用，每次都会创建一个新的实例。
 - 优势：更快的启动时间，因为不需要通过CGLIB增强配置类，对于简单的注入，这种模式可能更为简洁和直接。
 - 劣势：不保持单例语义。如果在一个 `@Bean` 方法内部调用另一个 `@Bean` 方法，会创建一个新的bean实例。
 
-##### 7.2.3 如何选择
+##### 9.2.3 如何选择
 
 - 如果你的配置中需要确保在配置类中调用的bean始终是Spring容器中的单例bean，选择full模式。
 - 如果你的配置类只是简单地定义beans并注入依赖，且不需要在配置类方法之间共享单例实例，选择lite模式。
