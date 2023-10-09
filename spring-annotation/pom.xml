@@ -18,6 +18,7 @@
         <module>spring-annotation-import</module>
         <module>spring-annotation-propertySource</module>
         <module>spring-annotation-componentScan</module>
+        <module>spring-annotation-dependsOn</module>
     </modules>
 
 </project>
