@@ -39,52 +39,31 @@
 + IOC容器
   + [关于IOC容器源码分析](spring-core-ioc/README.md)
 + 后置处理器与初始化
-  + [关于BeanFactoryPostProcessor源码分析](spring-interface-beanFactoryPostProcessor/README.md)
-  + [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface-beanDefinitionRegistryPostProcessor/README.md)
-  + [关于BeanPostProcessor源码分析](spring-interface-beanPostProcessor/README.md)
-  + [关于InstantiationAwareBeanPostProcessor源码分析](spring-interface-instantiationAwareBeanPostProcessor/README.md)
-  + [关于DestructionAwareBeanPostProcessor源码分析](spring-interface-destructionAwareBeanPostProcessor/README.md)
-  + [关于MergedBeanDefinitionPostProcessor源码分析](spring-interface-mergedBeanDefinitionPostProcessor/README.md)
-  + [关于SmartInstantiationAwareBeanPostProcessor源码分析](spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
-  + [关于InitializingBean源码分析](spring-interface-initializingBean/README.md)
-  + [关于DisposableBean源码分析](spring-interface-disposableBean/README.md)
-  + [关于SmartInitializingSingleton源码分析](spring-interface-smartInitializingSingleton/README.md)
+  + [关于BeanFactoryPostProcessor源码分析](spring-interface/spring-interface-beanFactoryPostProcessor/README.md)
+  + [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md)
+  + [关于BeanPostProcessor源码分析](spring-interface/spring-interface-beanPostProcessor/README.md)
+  + [关于InstantiationAwareBeanPostProcessor源码分析](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)
+  + [关于DestructionAwareBeanPostProcessor源码分析](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)
+  + [关于MergedBeanDefinitionPostProcessor源码分析](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)
+  + [关于SmartInstantiationAwareBeanPostProcessor源码分析](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
+  + [关于InitializingBean源码分析](spring-interface/spring-interface-initializingBean/README.md)
+  + [关于DisposableBean源码分析](spring-interface/spring-interface-disposableBean/README.md)
+  + [关于SmartInitializingSingleton源码分析](spring-interface/spring-interface-smartInitializingSingleton/README.md)
 + Aware接口
-  + [关于BeanNameAware源码分析](spring-aware-beanNameAware/README.md)
-  + [关于BeanClassLoaderAware源码分析](spring-aware-beanClassLoaderAware/README.md)
-  + [关于BeanFactoryAware源码分析](spring-aware-beanFactoryAware/README.md)
-  + [关于EnvironmentAware源码分析](spring-aware-environmentAware/README.md)
-  + [关于EmbeddedValueResolverAware源码分析](spring-aware-embeddedValueResolverAware/README.md)
-  + [关于ResourceLoaderAware源码分析](spring-aware-resourceLoaderAware/README.md)
-  + [关于ApplicationEventPublisherAware源码分析](spring-aware-applicationEventPublisherAware/README.md)
-  + [关于MessageSourceAware源码分析](spring-aware-messageSourceAware/README.md)
-  + [关于ApplicationStartupAware源码分析](spring-aware-applicationStartupAware/README.md)
-  + [关于ApplicationContextAware源码分析](spring-aware-applicationContextAware/README.md)
-  + [关于ImportAware源码分析](spring-aware-importAware/README.md)
+  + [关于BeanNameAware源码分析](spring-aware/spring-aware-beanNameAware/README.md)
+  + [关于BeanClassLoaderAware源码分析](spring-aware/spring-aware-beanClassLoaderAware/README.md)
+  + [关于BeanFactoryAware源码分析](spring-aware/spring-aware-beanFactoryAware/README.md)
+  + [关于EnvironmentAware源码分析](spring-aware/spring-aware-environmentAware/README.md)
+  + [关于EmbeddedValueResolverAware源码分析](spring-aware/spring-aware-embeddedValueResolverAware/README.md)
+  + [关于ResourceLoaderAware源码分析](spring-aware/spring-aware-resourceLoaderAware/README.md)
+  + [关于ApplicationEventPublisherAware源码分析](spring-aware/spring-aware-applicationEventPublisherAware/README.md)
+  + [关于MessageSourceAware源码分析](spring-aware/spring-aware-messageSourceAware/README.md)
+  + [关于ApplicationStartupAware源码分析](spring-aware/spring-aware-applicationStartupAware/README.md)
+  + [关于ApplicationContextAware源码分析](spring-aware/spring-aware-applicationContextAware/README.md)
+  + [关于ImportAware源码分析](spring-aware/spring-aware-importAware/README.md)
 + 核心注解
-  + [关于@Configuration源码分析](spring-annotation-configuration/README.md)
-  + [关于@ComponentScan源码分析](spring-annotation-componentScan/README.md)
-  + [关于@Bean源码分析](spring-annotation-bean/README.md)
-  + [关于@Import源码分析](spring-annotation-import/README.md)
-  + [关于@PropertySource源码分析](spring-annotation-propertySource/README.md)
-+ Bean工厂
-  + 关于BeanFactory源码分析
-  + 关于HierarchicalBeanFactory源码分析
-  + 关于ListableBeanFactory源码分析
-  + 关于AutowireCapableBeanFactory源码分析
-  + 关于ConfigurableBeanFactory源码分析
-  + 关于SingletonBeanRegistry源码分析
-  + 关于BeanDefinition源码分析
-  + 关于BeanDefinitionRegistry源码分析
-  + 关于FactoryBean源码分析
-+ 应用上下文
-  - 关于ApplicationContext源码分析
-  - 关于ConfigurableApplicationContext源码分析
-  - 关于WebApplicationContext源码分析
-  - 关于ApplicationEventPublisher源码分析
-  - 关于ApplicationListener源码分析
-+ 环境变量
-  - 关于Environment源码分析
-  - 关于PropertyResolver源码分析
-  - 关于PropertySources源码分析
-  - 关于Profile源码分析
+  + [关于@Configuration源码分析](spring-annotation/spring-annotation-configuration/README.md)
+  + [关于@ComponentScan源码分析](spring-annotation/spring-annotation-componentScan/README.md)
+  + [关于@Bean源码分析](spring-annotation/spring-annotation-bean/README.md)
+  + [关于@Import源码分析](spring-annotation/spring-annotation-import/README.md)
+  + [关于@PropertySource源码分析](spring-annotation/spring-annotation-propertySource/README.md)

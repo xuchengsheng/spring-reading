@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-reading</artifactId>
+        <groupId>com.xcs.spring</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>spring-interface</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>spring-interface-beanFactoryPostProcessor</module>
+        <module>spring-interface-beanPostProcessor</module>
+        <module>spring-interface-environment</module>
+        <module>spring-interface-applicationListener</module>
+        <module>spring-interface-importSelector</module>
+        <module>spring-interface-importBeanDefinitionRegistrar</module>
+        <module>spring-interface-resource</module>
+        <module>spring-interface-embeddedValueResolver</module>
+        <module>spring-interface-factoryBean</module>
+        <module>spring-interface-beanDefinitionRegistryPostProcessor</module>
+        <module>spring-interface-instantiationAwareBeanPostProcessor</module>
+        <module>spring-interface-destructionAwareBeanPostProcessor</module>
+        <module>spring-interface-mergedBeanDefinitionPostProcessor</module>
+        <module>spring-interface-smartInstantiationAwareBeanPostProcessor</module>
+        <module>spring-interface-initializingBean</module>
+        <module>spring-interface-disposableBean</module>
+        <module>spring-interface-smartInitializingSingleton</module>
+    </modules>
+
+</project>

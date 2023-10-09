@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-reading</artifactId>
+        <groupId>com.xcs.spring</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>spring-aware</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>spring-aware-beanNameAware</module>
+        <module>spring-aware-beanFactoryAware</module>
+        <module>spring-aware-beanClassLoaderAware</module>
+        <module>spring-aware-applicationContextAware</module>
+        <module>spring-aware-applicationEventPublisherAware</module>
+        <module>spring-aware-environmentAware</module>
+        <module>spring-aware-resourceLoaderAware</module>
+        <module>spring-aware-embeddedValueResolverAware</module>
+        <module>spring-aware-messageSourceAware</module>
+        <module>spring-aware-applicationStartupAware</module>
+        <module>spring-aware-importAware</module>
+    </modules>
+
+</project>
