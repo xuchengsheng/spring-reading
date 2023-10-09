@@ -36,34 +36,49 @@
 
 ## 🌱Spring 源码阅读系列
 
-+ IOC容器
-  + [关于IOC容器源码分析](spring-core-ioc/README.md)
-+ 后置处理器与初始化
-  + [关于BeanFactoryPostProcessor源码分析](spring-interface/spring-interface-beanFactoryPostProcessor/README.md)
-  + [关于BeanDefinitionRegistryPostProcessor源码分析](spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md)
-  + [关于BeanPostProcessor源码分析](spring-interface/spring-interface-beanPostProcessor/README.md)
-  + [关于InstantiationAwareBeanPostProcessor源码分析](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)
-  + [关于DestructionAwareBeanPostProcessor源码分析](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)
-  + [关于MergedBeanDefinitionPostProcessor源码分析](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)
-  + [关于SmartInstantiationAwareBeanPostProcessor源码分析](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
-  + [关于InitializingBean源码分析](spring-interface/spring-interface-initializingBean/README.md)
-  + [关于DisposableBean源码分析](spring-interface/spring-interface-disposableBean/README.md)
-  + [关于SmartInitializingSingleton源码分析](spring-interface/spring-interface-smartInitializingSingleton/README.md)
-+ Aware接口
-  + [关于BeanNameAware源码分析](spring-aware/spring-aware-beanNameAware/README.md)
-  + [关于BeanClassLoaderAware源码分析](spring-aware/spring-aware-beanClassLoaderAware/README.md)
-  + [关于BeanFactoryAware源码分析](spring-aware/spring-aware-beanFactoryAware/README.md)
-  + [关于EnvironmentAware源码分析](spring-aware/spring-aware-environmentAware/README.md)
-  + [关于EmbeddedValueResolverAware源码分析](spring-aware/spring-aware-embeddedValueResolverAware/README.md)
-  + [关于ResourceLoaderAware源码分析](spring-aware/spring-aware-resourceLoaderAware/README.md)
-  + [关于ApplicationEventPublisherAware源码分析](spring-aware/spring-aware-applicationEventPublisherAware/README.md)
-  + [关于MessageSourceAware源码分析](spring-aware/spring-aware-messageSourceAware/README.md)
-  + [关于ApplicationStartupAware源码分析](spring-aware/spring-aware-applicationStartupAware/README.md)
-  + [关于ApplicationContextAware源码分析](spring-aware/spring-aware-applicationContextAware/README.md)
-  + [关于ImportAware源码分析](spring-aware/spring-aware-importAware/README.md)
-+ 核心注解
-  + [关于@Configuration源码分析](spring-annotation/spring-annotation-configuration/README.md)
-  + [关于@ComponentScan源码分析](spring-annotation/spring-annotation-componentScan/README.md)
-  + [关于@Bean源码分析](spring-annotation/spring-annotation-bean/README.md)
-  + [关于@Import源码分析](spring-annotation/spring-annotation-import/README.md)
-  + [关于@PropertySource源码分析](spring-annotation/spring-annotation-propertySource/README.md)
+### 🌱 IOC容器
+
+*探索 Spring 的核心部分，并理解其对象管理的高级策略。*
+
+- [**深入理解IOC容器**](spring-core-ioc/README.md) - 探寻 Spring 如何实现控制反转，提供强大的依赖管理。
+
+### 💡 后置处理器与初始化
+
+*深入 Spring 的后处理技巧，揭示它如何优雅地初始化和管理 beans。*
+
+- [**解密BeanFactoryPostProcessor的魔法**](spring-interface/spring-interface-beanFactoryPostProcessor/README.md) - 理解 Spring 如何在 bean 初始化之前进行微调。
+- [**BeanDefinitionRegistryPostProcessor的奥秘**](spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md) - 揭示如何修改应用的 bean 定义。
+- [**BeanPostProcessor之旅**](spring-interface/spring-interface-beanPostProcessor/README.md) - 探索如何在 bean 实例化后进行拦截。
+- [**深究InstantiationAwareBeanPostProcessor**](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md) - 理解它如何在实例化 bean 之前进行操作。
+- [**探查DestructionAwareBeanPostProcessor**](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md) - 揭露它如何管理 bean 的销毁生命周期。
+- [**MergedBeanDefinitionPostProcessor的力量**](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md) - 理解如何合并 bean 的定义。
+- [**SmartInstantiationAwareBeanPostProcessor的魅力**](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md) - 深入了解其智能实例化的策略。
+- [**探索InitializingBean的秘密**](spring-interface/spring-interface-initializingBean/README.md) - 揭露如何在 bean 初始化后进行操作。
+- [**解读DisposableBean的功能**](spring-interface/spring-interface-disposableBean/README.md) - 探查它如何确保 bean 的正确销毁。
+- [**SmartInitializingSingleton的核心**](spring-interface/spring-interface-smartInitializingSingleton/README.md) - 理解它如何在所有单例 bean 初始化后进行操作。
+
+### 🛠 Aware接口
+
+*探索 Spring 的自我感知能力，如何赋予 beans 更多的上下文感知特性。*
+
+- [**深究BeanNameAware**](spring-aware/spring-aware-beanNameAware/README.md) - 当一个 bean 需要知道其在容器中的名字时。
+- [**BeanClassLoaderAware的探查**](spring-aware/spring-aware-beanClassLoaderAware/README.md) - 揭示如何为 bean 提供类加载器的引用。
+- [**深度了解BeanFactoryAware**](spring-aware/spring-aware-beanFactoryAware/README.md) - 探索 bean 如何与其工厂互动。
+- [**环境感知: EnvironmentAware**](spring-aware/spring-aware-environmentAware/README.md) - 了解 bean 如何感知并与其运行的环境互动。
+- [**嵌入式值解析: EmbeddedValueResolverAware**](spring-aware/spring-aware-embeddedValueResolverAware/README.md) - 探查如何提供字符串值解析策略给 bean。
+- [**资源加载策略: ResourceLoaderAware**](spring-aware/spring-aware-resourceLoaderAware/README.md) - 理解如何为 bean 提供一个资源加载器。
+- [**事件发布感知: ApplicationEventPublisherAware**](spring-aware/spring-aware-applicationEventPublisherAware/README.md) - 揭露 bean 如何发布事件到应用上下文。
+- [**消息源感知: MessageSourceAware**](spring-aware/spring-aware-messageSourceAware/README.md) - 深入了解 bean 如何访问消息源。
+- [**应用启动感知: ApplicationStartupAware**](spring-aware/spring-aware-applicationStartupAware/README.md) - 理解 bean 如何感知应用的启动过程。
+- [**上下文感知: ApplicationContextAware**](spring-aware/spring-aware-applicationContextAware/README.md) - 探索 bean 如何访问其运行的应用上下文。
+- [**导入感知: ImportAware**](spring-aware/spring-aware-importAware/README.md) - 揭露 bean 如何知道与其关联的导入元数据。
+
+### 🎖 核心注解
+
+*了解 Spring 如何通过注解驱动开发，简化和加强代码。*
+
+- [**解析@Configuration的力量**](spring-annotation/spring-annotation-configuration/README.md) - 揭露如何使用 Java 配置定义 beans。
+- [**组件扫描的魅力: @ComponentScan**](spring-annotation/spring-annotation-componentScan/README.md) - 探索如何自动检测和注册 beans。
+- [**深入@Bean的秘密**](spring-annotation/spring-annotation-bean/README.md) - 理解如何通过 Java 方法定义 beans。
+- [**@Import的高级策略**](spring-annotation/spring-annotation-import/README.md) - 揭示如何导入其他配置类或组件。
+- [**属性源探查: @PropertySource**](spring-annotation/spring-annotation-propertySource/README.md) - 深入了解如何为应用上下文添加属性源。
