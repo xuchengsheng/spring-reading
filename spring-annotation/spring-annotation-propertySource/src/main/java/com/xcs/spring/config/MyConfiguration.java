@@ -9,6 +9,6 @@ import org.springframework.context.annotation.PropertySource;
  **/
 @Configuration
 @PropertySource("classpath:my-application.yml")
-public class MyBeanConfig {
+public class MyConfiguration {
 
 }

@@ -1,6 +1,6 @@
 package com.xcs.spring;
 
-import com.xcs.spring.config.MyBeanConfig;
+import com.xcs.spring.config.MyConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class PropertySourceApplication {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyBeanConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
         System.out.println("apiVersion = " + context.getEnvironment().getProperty("apiVersion"));
         System.out.println("kind = " + context.getEnvironment().getProperty("kind"));
     }
