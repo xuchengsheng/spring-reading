@@ -1,7 +1,8 @@
 package com.xcs.spring.config;
 
-import com.xcs.spring.bean.MethodBeanFirst;
-import com.xcs.spring.bean.MethodBeanSecond;
+import com.xcs.spring.bean.BeanA;
+import com.xcs.spring.bean.BeanB;
+import com.xcs.spring.bean.BeanC;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,13 +17,17 @@ import org.springframework.context.annotation.DependsOn;
 public class MyConfiguration {
 
     @Bean
-    @DependsOn("methodBeanSecond")
-    public MethodBeanFirst methodBeanFirst() {
-        return new MethodBeanFirst();
+    public BeanA beanA() {
+        return new BeanA();
     }
 
     @Bean
-    public MethodBeanSecond methodBeanSecond() {
-        return new MethodBeanSecond();
+    public BeanB beanB() {
+        return new BeanB();
+    }
+
+    @Bean
+    public BeanC beanC() {
+        return new BeanC();
     }
 }
