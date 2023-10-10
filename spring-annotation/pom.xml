@@ -19,6 +19,7 @@
         <module>spring-annotation-propertySource</module>
         <module>spring-annotation-componentScan</module>
         <module>spring-annotation-dependsOn</module>
+        <module>spring-annotation-lazy</module>
     </modules>
 
 </project>
