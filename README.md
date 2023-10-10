@@ -82,4 +82,4 @@
 - [**深入@Bean的秘密**](spring-annotation/spring-annotation-bean/README.md) - 理解如何通过 Java 方法定义 beans。
 - [**@Import的高级策略**](spring-annotation/spring-annotation-import/README.md) - 揭示如何导入其他配置类或组件。
 - [**属性源探查: @PropertySource**](spring-annotation/spring-annotation-propertySource/README.md) - 深入了解如何为应用上下文添加属性源。
-- [**属性源探查: @DependsOn**](spring-annotation/spring-annotation-dependsOn/README.md) - 如何使用 @DependsOn 注解精确控制 Spring Beans 的加载顺序。
+- [**如何使用: @DependsOn**](spring-annotation/spring-annotation-dependsOn/README.md) - 精确控制 Spring Beans 的加载顺序。
