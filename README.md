@@ -86,4 +86,3 @@
 ## 💻我的 GitHub 统计
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
-![Github Stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&count_private=true&show_icons=true)
