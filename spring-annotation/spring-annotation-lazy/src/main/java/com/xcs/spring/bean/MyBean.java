@@ -7,6 +7,6 @@ public class MyBean {
     }
 
     public void show() {
-        System.out.println("hello world");
+        System.out.println("hello world!");
     }
 }

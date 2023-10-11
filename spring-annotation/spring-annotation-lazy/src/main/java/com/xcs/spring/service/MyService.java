@@ -11,7 +11,7 @@ public class MyService  {
     private MyBean myBean;
 
     public void show() {
-        System.out.println("@Lazy MyBean = " + myBean.getClass());
+        System.out.println("MyBean Class = " + myBean.getClass());
         myBean.show();
     }
 }

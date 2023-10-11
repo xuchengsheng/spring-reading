@@ -13,11 +13,10 @@ public class LazyApplication {
     public static void main(String[] args) {
         System.out.println("启动 Spring ApplicationContext...");
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        System.out.println("完成启动 Spring ApplicationContext...");
+        System.out.println("启动完成 Spring ApplicationContext...");
 
-        System.out.println("准备获取MyService...");
+        System.out.println("获取MyService...");
         MyService myService = context.getBean(MyService.class);
-        System.out.println("成功获取MyService...-->" + myService);
 
         System.out.println("调用show方法...");
         myService.show();
