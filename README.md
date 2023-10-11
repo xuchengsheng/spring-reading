@@ -29,11 +29,6 @@
 
 如果你发现任何错误或者有改进建议，欢迎提交 issue 或者 pull request。你的反馈对于我非常宝贵！
 
-## 💻我的 GitHub 统计
-
-![Github Stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&count_private=true&show_icons=true)
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=xuchengsheng&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
-
 ## 🌱Spring 源码阅读系列
 
 ### 🌱 IOC容器
@@ -87,3 +82,8 @@
 ## 🔄持续更新中
 
 为了给大家提供最新、最有价值的内容，我会坚持每天更新这个仓库。每一天，你都可以期待看到一些新的内容或者对已有内容的改进。如果你有任何建议或反馈，欢迎随时联系我。我非常珍视每一个反馈，因为这是我持续改进的动力。
+
+## 💻我的 GitHub 统计
+
+[![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
+![Github Stats](https://github-readme-stats.vercel.app/api?username=xuchengsheng&count_private=true&show_icons=true)
