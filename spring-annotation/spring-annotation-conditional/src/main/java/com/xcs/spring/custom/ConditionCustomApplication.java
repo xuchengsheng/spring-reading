@@ -10,7 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class ConditionCustomApplication {
 
     public static void main(String[] args) {
-        System.setProperty("enable.custom","true");
+        System.setProperty("enable.custom","false");
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyCustomConfiguration.class);
         for (String beanDefinitionName : context.getBeanDefinitionNames()) {
             System.out.println("beanDefinitionName = " + beanDefinitionName);

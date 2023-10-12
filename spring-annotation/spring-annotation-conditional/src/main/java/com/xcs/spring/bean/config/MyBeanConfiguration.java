@@ -17,7 +17,6 @@ public class MyBeanConfiguration {
     }
 
     @Bean
-    @Conditional(BeanPropertyCondition.class)
     public User2 user2() {
         return new User2();
     }
