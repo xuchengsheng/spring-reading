@@ -3,37 +3,37 @@
 ## @Configuration
 
 - [@Configuration](#configuration)
-  - [一、注解描述](#一注解描述)
-  - [二、注解源码](#二注解源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-    - [4.1、proxyBeanMethods设置为true](#41proxybeanmethods设置为true)
-    - [4.2、proxyBeanMethods设置为false](#42proxybeanmethods设置为false)
-  - [五、时序图](#五时序图)
-    - [5.1、初始化流程](#51初始化流程)
-    - [5.2、注册流程](#52注册流程)
-    - [5.3、增强流程](#53增强流程)
-  - [六、源码分析](#六源码分析)
-    - [6.1、初始化流程](#61初始化流程)
-    - [6.2、注册流程](#62注册流程)
-    - [6.3、增强流程](#63增强流程)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
-  - [九、常见问题](#九常见问题)
-    - [9.2 @Configuration中full模式与lite模式如何选择？](#92-configuration中full模式与lite模式如何选择)
-      - [9.2.1 Full 模式](#921-full-模式)
-      - [9.2.2 Lite 模式](#922-lite-模式)
-      - [9.2.3 如何选择](#923-如何选择)
+  - [一、基本信息](#一基本信息)
+  - [二、注解描述](#二注解描述)
+  - [三、注解源码](#三注解源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+    - [proxyBeanMethods设置为true](#proxybeanmethods设置为true)
+    - [proxyBeanMethods设置为false](#proxybeanmethods设置为false)
+  - [六、时序图](#六时序图)
+    - [初始化流程](#初始化流程)
+    - [注册流程](#注册流程)
+    - [增强流程](#增强流程)
+  - [七、源码分析](#七源码分析)
+    - [初始化流程](#初始化流程-1)
+    - [注册流程](#注册流程-1)
+    - [增强流程](#增强流程-1)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
+  - [十、常见问题](#十常见问题)
+
+
+### 一、基本信息
 
 ✒️ **作者**  - Lex  📝 **博客** - [点击浏览我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132212963) 📚 **文章目录** - [点击查看所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [点击查看@Configuration源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-configuration/README.md) 
 
-### 一、注解描述
+### 二、注解描述
 
 `@Configuration` 是 Spring 框架中提供的一个核心注解，它指示一个类声明了一个或多个 `@Bean` 定义方法，这些方法由 Spring 容器管理并执行，以便在运行时为 bean 实例化、配置和初始化对象。
 
-### 二、注解源码
+### 三、注解源码
 
 `@Configuration`注解是 Spring 框架自 3.0 版本开始引入的一个核心注解，标记一个类为 Spring 的配置类，该类可能包含一个或多个 `@Bean` 方法来定义和配置 Spring beans，其中一个`value` 属性允许用户明确指定与 `@Configuration` 类关联的 Spring bean 定义的名称。如果未指定，名称会自动生成，另外一个`proxyBeanMethods` 属性决定是否应代理 `@Bean` 方法来强制实施 bean 生命周期行为，如确保返回的是单例 bean 实例。
 
@@ -102,7 +102,7 @@ public @interface Configuration {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
 1. **Bean定义方法**
    + `@Configuration` 类中可以包含一个或多个使用 `@Bean` 注解的方法，这些方法用于创建和配置应用程序上下文中的 beans。
@@ -122,9 +122,9 @@ public @interface Configuration {
 1. **与其他注解结合**：
    + `@Configuration` 类通常与其他 Spring 注解（如 `@ComponentScan`、`@PropertySource` 等）结合使用，以提供全面的配置机制。
 
-### 四、最佳实践
+### 五、最佳实践
 
-#### 4.1、proxyBeanMethods设置为true
+#### proxyBeanMethods设置为true
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyConfiguration`类型的bean，最后调用了 `myBean` 方法两次，并将其结果打印到控制台。
 
@@ -170,7 +170,7 @@ com.xcs.spring.bean.MyBean@f736069
 com.xcs.spring.bean.MyBean@f736069
 ```
 
-#### 4.2、proxyBeanMethods设置为false
+#### proxyBeanMethods设置为false
 
 将 `proxyBeanMethods` 设置为 `false` 时，此代理行为被禁用。这意味着，如果我们在配置类内部多次调用同一个 `@Bean` 方法，每次都会创建一个新的实例。
 
@@ -192,11 +192,11 @@ com.xcs.spring.bean.MyBean@3b69e7d1
 com.xcs.spring.bean.MyBean@815b41f
 ```
 
-### 五、时序图
+### 六、时序图
 
 时序图主要分为三个关键步骤
 
-#### 5.1、初始化流程
+#### 初始化流程
 
 - 当 `AnnotationConfigApplicationContext` 被实例化时，它开始初始化过程。
 - 在这个过程中，`AnnotatedBeanDefinitionReader` 会被创建。这个读取器负责解析带注解的类，并将其转化为 Spring 可理解的 `BeanDefinition`。
@@ -215,7 +215,7 @@ AnnotationConfigUtils-->>AnnotationConfigUtils: registerPostProcessor(registry,d
 AnnotationConfigUtils-->>DefaultListableBeanFactory: registerBeanDefinition(beanName, beanDefinition)<br>注册Bean定义
 ~~~
 
-#### 5.2、注册流程
+#### 注册流程
 
 - 使用 `AnnotationConfigApplicationContext` 的 `register` 方法，配置类（带有 `@Bean` 方法的类）会被注册到Spring上下文中。
 - `AnnotatedBeanDefinitionReader` 负责解析这些配置类，并创建相应的 `BeanDefinition`。
@@ -233,7 +233,7 @@ AnnotatedBeanDefinitionReader-->>BeanDefinitionReaderUtils: registerBeanDefiniti
 BeanDefinitionReaderUtils-->>DefaultListableBeanFactory: registerBeanDefinition(beanName,beanDefinition)<br>工厂存Bean定义
 ~~~
 
-#### 5.3、增强流程
+#### 增强流程
 
 - 当容器开始刷新（通过 `refresh` 方法），它会启动 beans 的创建和初始化过程。
 - 在这个过程中，所有的 `BeanFactoryPostProcessor` 会被触发，特别是 `ConfigurationClassPostProcessor`。
@@ -254,7 +254,7 @@ ConfigurationClassEnhancer-->>ConfigurationClassEnhancer: createClass(enhancer)<
 ConfigurationClassEnhancer-->>ConfigurationClassPostProcessor: 增强后的Class类
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyConfiguration`类型的bean，最后调用了 `myBean` 方法两次，并将其结果打印到控制台。
 
@@ -284,7 +284,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-#### 6.1、初始化流程
+#### 初始化流程
 
 我们首先来到`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中步骤1。在`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`方法中，`AnnotationConfigApplicationContext` 的无参数构造函数中，初始化了 `AnnotatedBeanDefinitionReader` 和 `ClassPathBeanDefinitionScanner` 这两个核心组件。
 
@@ -347,7 +347,7 @@ public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 }
 ```
 
-#### 6.2、注册流程
+#### 注册流程
 
 然后我们来到`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中步骤2。在org.springframework.context.annotation.AnnotationConfigApplicationContext#register方法中，主要是允许我们注册一个或多个组件类（例如，那些使用 `@Component`, `@Service`, `@Repository`, `@Controller`, `@Configuration` 等注解的类）到Spring容器。
 
@@ -422,7 +422,7 @@ public static void registerBeanDefinition(
 }
 ```
 
-#### 6.3、增强流程
+#### 增强流程
 
 然后我们来到`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中步骤3。在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
@@ -653,7 +653,7 @@ private Object resolveBeanReference(Method beanMethod, Object[] beanMethodArgs,
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
 1. **单例保证**：
    - 在 `@Configuration` 类中，如果一个方法被标记为 `@Bean` 并被多次调用，它不会多次实例化一个 bean，而是返回同一个实例。这是因为 CGLIB 增强了 `@Configuration` 类，以确保 bean 的单例特性。
@@ -666,16 +666,16 @@ private Object resolveBeanReference(Method beanMethod, Object[] beanMethodArgs,
 5. **避免使用 `final`**：
    - 由于 `@Configuration` 类是通过 CGLIB 增强的，因此它们不能是 `final` 类型，同样，它们的方法也不能声明为 `final`。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
 1. **`proxyBeanMethods = true`（默认）**：
    - 当在 `@Configuration` 类中调用一个由 `@Bean` 注解的方法时，Spring 容器确保每次都返回同一个 bean 实例。这是通过 CGLIB 代理实现的，该代理拦截对该方法的所有调用并返回 bean 的单例实例。这就是为什么在 `ConfigurationApplication` 的 `main` 方法中，两次调用 `myBean()` 方法都返回具有相同 hashcode 的 `MyBean` 实例。
 2. **`proxyBeanMethods = false`**：
    - 在这种配置下，`@Configuration` 类中的方法不再被代理。因此，如果在配置类内部多次调用同一个 `@Bean` 方法，每次调用都会创建一个新的 bean 实例。在 `ConfigurationApplication` 的 `main` 方法中，两次调用 `myBean()` 方法会返回具有不同 hashcode 的 `MyBean` 实例，这证明了两次调用返回了两个不同的对象。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
 1. **初始化流程**:
    - 当使用 `AnnotationConfigApplicationContext` 启动 Spring 应用时，会调用其构造函数，该函数执行三个主要步骤：初始化、注册和刷新。
@@ -691,30 +691,40 @@ private Object resolveBeanReference(Method beanMethod, Object[] beanMethodArgs,
    - 这个代理确保对配置类中的 `@Bean` 方法的每次调用都返回同一个 bean 实例，除非它是原型作用域的。
    - 当应用上下文启动完成后，对于任何请求的 bean，代理的 `@Bean` 方法会从 Spring 容器中返回已存在的 bean 实例，而不是重新创建一个新的实例。
 
-### 九、常见问题
+### 十、常见问题
 
-#### 9.2 @Configuration中full模式与lite模式如何选择？
+1. **@Configuration中full模式与lite模式如何选择？**
 
-`@Configuration` 注解有两种模式：`full` 和 `lite`。它们在功能和性能上有所不同。了解它们的优缺点有助于为特定的场景做出合适的选择。
+   `@Configuration` 注解有两种模式：`full` 和 `lite`。它们在功能和性能上有所不同。了解它们的优缺点有助于为特定的场景做出合适的选择。
 
-##### 9.2.1 Full 模式
+   + Full 模式
 
-- 启用方式：在 `@Configuration` 注解中不设置 `proxyBeanMethods` 或将其设置为 `true`。
-- 功能：当在配置类中的 `@Bean` 方法内部调用另一个 `@Bean` 方法时，Spring 会确保返回的是容器中的单例bean，而不是一个新的实例。这是通过CGLIB代理实现的。
-- 优势：保持单例语义，确保容器中的单例Bean在配置类中的调用中始终是单例的。
-- 劣势：需要通过CGLIB创建配置类的子类，可能带来一些性能开销，增加了启动时间，可能与某些库不兼容，这些库期望操作实际类而不是其CGLIB代理。
+     - 启用方式：在 `@Configuration` 注解中不设置 `proxyBeanMethods` 或将其设置为 `true`。
 
-##### 9.2.2 Lite 模式
+     - 功能：当在配置类中的 `@Bean` 方法内部调用另一个 `@Bean` 方法时，Spring 会确保返回的是容器中的单例bean，而不是一个新的实例。这是通过CGLIB代理实现的。
 
-- 启用方式：在 `@Configuration` 注解中设置 `proxyBeanMethods` 为 `false`。
-- 功能：禁用CGLIB代理。`@Bean` 方法之间的调用就像普通的Java方法调用，每次都会创建一个新的实例。
-- 优势：更快的启动时间，因为不需要通过CGLIB增强配置类，对于简单的注入，这种模式可能更为简洁和直接。
-- 劣势：不保持单例语义。如果在一个 `@Bean` 方法内部调用另一个 `@Bean` 方法，会创建一个新的bean实例。
+     - 优势：保持单例语义，确保容器中的单例Bean在配置类中的调用中始终是单例的。
 
-##### 9.2.3 如何选择
+     - 劣势：需要通过CGLIB创建配置类的子类，可能带来一些性能开销，增加了启动时间，可能与某些库不兼容，这些库期望操作实际类而不是其CGLIB代理。
 
-- 如果我们的配置中需要确保在配置类中调用的bean始终是Spring容器中的单例bean，选择full模式。
-- 如果我们的配置类只是简单地定义beans并注入依赖，且不需要在配置类方法之间共享单例实例，选择lite模式。
-- 如果我们关心应用的启动性能，特别是在云环境或微服务中，使用lite模式可能更合适，因为它避免了额外的CGLIB处理。
+   + +Lite 模式
 
-最终，根据项目的具体需求和场景选择合适的模式。如果没有特殊的单例需求，推荐使用lite模式，因为它更简单且启动性能更好。
+     - 启用方式：在 `@Configuration` 注解中设置 `proxyBeanMethods` 为 `false`。
+
+     - 功能：禁用CGLIB代理。`@Bean` 方法之间的调用就像普通的Java方法调用，每次都会创建一个新的实例。
+
+     - 优势：更快的启动时间，因为不需要通过CGLIB增强配置类，对于简单的注入，这种模式可能更为简洁和直接。
+
+     - 劣势：不保持单例语义。如果在一个 `@Bean` 方法内部调用另一个 `@Bean` 方法，会创建一个新的bean实例。
+
+
+   + 如何选择
+
+     - 如果我们的配置中需要确保在配置类中调用的bean始终是Spring容器中的单例bean，选择full模式。
+
+     - 如果我们的配置类只是简单地定义beans并注入依赖，且不需要在配置类方法之间共享单例实例，选择lite模式。
+
+     - 如果我们关心应用的启动性能，特别是在云环境或微服务中，使用lite模式可能更合适，因为它避免了额外的CGLIB处理。
+
+
+​	最终，根据项目的具体需求和场景选择合适的模式。如果没有特殊的单例需求，推荐使用lite模式，因为它更简单且启动性能更好。
