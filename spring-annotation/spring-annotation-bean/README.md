@@ -1,37 +1,34 @@
 ## @Bean
 
 - [@Bean](#bean)
-  - [一、前置条件](#一前置条件)
+  - [一、基本信息](#一基本信息)
   - [二、注解描述](#二注解描述)
-  - [三、接口源码](#三接口源码)
+  - [三、注解源码](#三注解源码)
   - [四、主要功能](#四主要功能)
   - [五、最佳实践](#五最佳实践)
   - [六、时序图](#六时序图)
-    - [6.1、@Bean注册时序图](#61bean注册时序图)
-    - [6.2、@Bean初始化方法时序图](#62bean初始化方法时序图)
-    - [6.3、@Bean销毁方法时序图](#63bean销毁方法时序图)
+    - [@Bean注册时序图](#bean注册时序图)
+    - [@Bean初始化方法时序图](#bean初始化方法时序图)
+    - [@Bean销毁方法时序图](#bean销毁方法时序图)
   - [七、源码分析](#七源码分析)
-    - [7.1、@Bean注册源码分析](#71bean注册源码分析)
-    - [7.2、@Bean初始化源码分析](#72bean初始化源码分析)
-    - [7.3、@Bean销毁源码分析](#73bean销毁源码分析)
+    - [@Bean注册源码分析](#bean注册源码分析)
+    - [@Bean初始化源码分析](#bean初始化源码分析)
+    - [@Bean销毁源码分析](#bean销毁源码分析)
   - [八、注意事项](#八注意事项)
   - [九、总结](#九总结)
-    - [9.1、最佳实践总结](#91最佳实践总结)
-    - [9.2、源码分析总结](#92源码分析总结)
-      - [@Bean 注册源码分析总结](#bean-注册源码分析总结)
-      - [@Bean初始化源码分析总结](#bean初始化源码分析总结)
-      - [@Bean销毁源码分析总结](#bean销毁源码分析总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、前置条件
+### 一、基本信息
 
-+ [关于BeanDefinitionRegistryPostProcessor源码分析](../../spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md)
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132498762) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@Bean源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-annotation/spring-annotation-bean)
 
 ### 二、注解描述
 
 `@Bean` 是 Spring 框架的核心注解，用于标记一个方法，表明这个方法返回值应被注册为 Spring 容器中的一个对象（Bean）。与传统的 XML 配置方式相比，它提供了一种更加简洁和直观的方式来定义 Bean。通常，`@Bean` 与 `@Configuration` 注解一起使用，后者标记一个类为 Spring 的配置类。方法名默认作为 Bean 的 ID，但也可以通过 `@Bean` 的 `name` 属性自定义。这种声明式的 Bean 定义方式在 Java 代码中提供了强大的灵活性，允许我们利用 Java 的完整特性来配置和初始化对象。此外，结合其他 Spring 特性，如 `@Autowired`，可以轻松实现依赖注入，进一步简化了应用的配置和组件管理。总之，通过 `@Bean` 注解，Spring 为现代化的应用开发提供了强大的支持，使得代码更为整洁和易于维护。
 
-### 三、接口源码
+### 三、注解源码
 
 `@Bean`注解是 Spring 框架自 3.0 版本开始引入的一个核心注解，这个注解表明一个方法会返回一个对象，该对象应该被注册为 Spring 应用上下文中的一个 bean。
 
@@ -104,19 +101,26 @@ public @interface Bean {
 
 ### 四、主要功能
 
-**Bean 的创建与注册**: `@Bean` 注解用于标记一个方法，该方法返回的对象会被 Spring 容器管理。这意味着当应用上下文启动时，该方法会被调用，并且它的返回值会被添加到容器中作为一个 bean。
+1. **Bean 的创建与注册**:
+   + `@Bean` 注解用于标记一个方法，该方法返回的对象会被 Spring 容器管理。这意味着当应用上下文启动时，该方法会被调用，并且它的返回值会被添加到容器中作为一个 bean。
 
-**自定义 Bean 名称**: 虽然默认的 bean 名称是标注 `@Bean` 的方法的名称，但可以通过 `@Bean` 的 `name` 属性为 bean 指定一个或多个名称。
+2. **自定义 Bean 名称**
+   + 虽然默认的 bean 名称是标注 `@Bean` 的方法的名称，但可以通过 `@Bean` 的 `name` 属性为 bean 指定一个或多个名称。
 
-**生命周期管理**: 通过 `initMethod` 和 `destroyMethod` 属性，可以为 bean 指定初始化和销毁的回调方法。当 bean 被创建或销毁时，这些方法会被调用。
+3. **生命周期管理**
+   + 通过 `initMethod` 和 `destroyMethod` 属性，可以为 bean 指定初始化和销毁的回调方法。当 bean 被创建或销毁时，这些方法会被调用。
 
-**替代 XML 配置**: 在早期的 Spring 版本中，bean 通常是在 XML 文件中定义的。使用 `@Bean` 注解可以完全用 Java 配置来替代 XML，从而使配置更为集中和类型安全。
+4. **替代 XML 配置**
+   + 在早期的 Spring 版本中，bean 通常是在 XML 文件中定义的。使用 `@Bean` 注解可以完全用 Java 配置来替代 XML，从而使配置更为集中和类型安全。
 
-**灵活的依赖注入**: 在 `@Bean` 方法内部，可以直接调用其他 `@Bean` 方法，实现依赖的注入。这种方式保证了类型安全，并使得代码与配置紧密结合。
+5. **灵活的依赖注入**
+   + 在 `@Bean` 方法内部，可以直接调用其他 `@Bean` 方法，实现依赖的注入。这种方式保证了类型安全，并使得代码与配置紧密结合。
 
-**与其他注解结合**: `@Bean` 注解经常与其他 Spring 注解一起使用，如 `@Scope`（定义 bean 的范围，如单例或原型），`@Lazy`（延迟 bean 的初始化），`@Primary`（当存在多个相同类型的 bean 时，标记一个为首选）等，为 bean 提供更详细的配置。
+6. **与其他注解结合**
+   + `@Bean` 注解经常与其他 Spring 注解一起使用，如 `@Scope`（定义 bean 的范围，如单例或原型），`@Lazy`（延迟 bean 的初始化），`@Primary`（当存在多个相同类型的 bean 时，标记一个为首选）等，为 bean 提供更详细的配置。
 
-**控制自动装配行为**: 通过 `autowireCandidate` 属性，可以控制该 bean 是否应被视为自动装配的候选对象，当其他 bean 需要进行类型匹配的自动装配时。
+7. **控制自动装配行为**
+   + 通过 `autowireCandidate` 属性，可以控制该 bean 是否应被视为自动装配的候选对象，当其他 bean 需要进行类型匹配的自动装配时。
 
 ### 五、最佳实践
 
@@ -171,7 +175,7 @@ MyBean.destroy
 
 ### 六、时序图
 
-#### 6.1、@Bean注册时序图
+#### @Bean注册时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -198,7 +202,7 @@ ConfigurationClassBeanDefinitionReader->>ConfigurationClassBeanDefinitionReader:
 ConfigurationClassBeanDefinitionReader->>DefaultListableBeanFactory: registerBeanDefinition(beanName, beanDefToRegister)<br>在BeanFactory中注册Bean定义
 ~~~
 
-#### 6.2、@Bean初始化方法时序图
+#### @Bean初始化方法时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -222,7 +226,7 @@ AbstractBeanFactory-->>DefaultListableBeanFactory: 返回最终创建的Bean
 
 ~~~
 
-#### 6.3、@Bean销毁方法时序图
+#### @Bean销毁方法时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -244,7 +248,7 @@ Method->>MyBean: destroy()<br>执行Bean的destroy方法
 
 ### 七、源码分析
 
-#### 7.1、@Bean注册源码分析
+#### @Bean注册源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyBean`类型的bean，最后调用`context.close()`方法关闭容器。
 
@@ -593,7 +597,7 @@ private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
 }
 ```
 
-#### 7.2、@Bean初始化源码分析
+#### @Bean初始化源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyBean`类型的bean，最后调用`context.close()`方法关闭容器。
 
@@ -858,7 +862,7 @@ protected void invokeCustomInitMethod(String beanName, Object bean, RootBeanDefi
 }
 ```
 
-#### 7.3、@Bean销毁源码分析
+#### @Bean销毁源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyBean`类型的bean，最后调用`context.close()`方法关闭容器。
 
@@ -1033,94 +1037,128 @@ private void invokeCustomDestroyMethod(final Method destroyMethod) {
 
 ### 八、注意事项
 
-**方法名称即Bean名称**：默认情况下，使用`@Bean`注解的方法名称将用作Bean的名称。如果需要自定义bean的名称，可以在`@Bean`注解中指定名称，如`@Bean("customBeanName")`。
+1. **方法名称即Bean名称**
+   + 默认情况下，使用`@Bean`注解的方法名称将用作Bean的名称。如果需要自定义bean的名称，可以在`@Bean`注解中指定名称，如`@Bean("customBeanName")`。
 
-**返回类型**：确保`@Bean`方法的返回类型与实际创建的bean对象匹配。
+2. **返回类型**
+   + 确保`@Bean`方法的返回类型与实际创建的bean对象匹配。
 
-**调用其他`@Bean`方法**：在一个配置类中，可以调用一个`@Bean`方法来注入另一个`@Bean`方法的结果。这是因为`@Bean`方法在调用时是通过Spring代理进行的，这确保了单例beans的单一实例性。
+3. **调用其他`@Bean`方法**
+   + 在一个配置类中，可以调用一个`@Bean`方法来注入另一个`@Bean`方法的结果。这是因为`@Bean`方法在调用时是通过Spring代理进行的，这确保了单例beans的单一实例性。
 
-**作用域**：使用`@Scope`注解与`@Bean`一起可以定义Bean的作用域，例如单例（默认）、原型、请求、会话等。
+4. **作用域**
+   + 使用`@Scope`注解与`@Bean`一起可以定义Bean的作用域，例如单例（默认）、原型、请求、会话等。
 
-**生命周期回调**：`@Bean`注解允许指定`initMethod`和`destroyMethod`，这些方法分别在bean初始化和销毁时被调用。
+5. **生命周期回调**
+   + `@Bean`注解允许指定`initMethod`和`destroyMethod`，这些方法分别在bean初始化和销毁时被调用。
 
-**避免重复定义**：确保不在XML和Java配置中同时定义同一个bean。如果必须这样做，确保bean的名称和定义相同，否则会出现不可预测的行为。
+6. **避免重复定义**
+   + 确保不在XML和Java配置中同时定义同一个bean。如果必须这样做，确保bean的名称和定义相同，否则会出现不可预测的行为。
 
-**慎用`@Lazy`**：`@Lazy`注解使得bean在首次请求时才被初始化。如果一个bean需要在应用启动时就初始化，那么不应该标记为延迟初始化。
+7. **慎用`@Lazy`**
+   + `@Lazy`注解使得bean在首次请求时才被初始化。如果一个bean需要在应用启动时就初始化，那么不应该标记为延迟初始化。
 
-**参数化`@Bean`方法**：`@Bean`方法可以接受参数，这些参数会从Spring容器中自动解析。这在创建一个bean依赖于另一个bean时特别有用。
+8. **参数化`@Bean`方法**
+   + `@Bean`方法可以接受参数，这些参数会从Spring容器中自动解析。这在创建一个bean依赖于另一个bean时特别有用。
 
-**考虑线程安全性**：特别是对于原型作用域的bean，确保bean是线程安全的，或者不会在多个线程之间共享。
+9. **考虑线程安全性**
+   + 特别是对于原型作用域的bean，确保bean是线程安全的，或者不会在多个线程之间共享。
 
-**使用条件注解**：配合`@Conditional`或其他相关注解，可以在满足某些条件时才创建bean。
+10. **使用条件注解**
+    + 配合`@Conditional`或其他相关注解，可以在满足某些条件时才创建bean。
 
-**`@Bean`与`@Component`的区别**：虽然两者都用于定义bean，但`@Bean`通常用于方法，特别是在Java配置类中，而`@Component`（及其特化：`@Service`、`@Repository`、`@Controller`等）用于类。
+11. **`@Bean`与`@Component`的区别**
+    + 虽然两者都用于定义bean，但`@Bean`通常用于方法，特别是在Java配置类中，而`@Component`（及其特化：`@Service`、`@Repository`、`@Controller`等）用于类。
 
-**注意潜在的循环依赖**：如果两个`@Bean`方法相互调用，可能会出现循环依赖。Spring可以解决单例作用域的bean之间的循环依赖，但不推荐这样做。
+12. **注意潜在的循环依赖**
+    + 如果两个`@Bean`方法相互调用，可能会出现循环依赖。Spring可以解决单例作用域的bean之间的循环依赖，但不推荐这样做。
 
-**配置类应被Spring管理**：确保包含`@Bean`方法的类由Spring管理，并标记为`@Configuration`。这确保`@Bean`方法由Spring的代理调用，从而支持上述提到的特性，如单例保证和循环引用。
+13. **配置类应被Spring管理**
+    + 确保包含`@Bean`方法的类由Spring管理，并标记为`@Configuration`。这确保`@Bean`方法由Spring的代理调用，从而支持上述提到的特性，如单例保证和循环引用。
 
 ### 九、总结
 
-#### 9.1、最佳实践总结
+#### 最佳实践总结
 
-**应用启动**:使用`AnnotationConfigApplicationContext`可以基于Java注解来启动和配置Spring的上下文。在上述示例中，我们传递了一个Java配置类 `MyConfiguration` 作为参数来初始化这个上下文。
+1. **应用启动**
+   + 使用`AnnotationConfigApplicationContext`可以基于Java注解来启动和配置Spring的上下文。在上述示例中，我们传递了一个Java配置类 `MyConfiguration` 作为参数来初始化这个上下文。
 
-**配置类的使用**:使用 `@Configuration` 注解标记配置类，表明这个类包含Spring的bean定义。在配置类中，可以使用 `@Bean` 注解来定义bean。这个注解的方法的名称默认会作为bean的名称，返回的实例则为Spring容器管理的bean实例。
+2. **配置类的使用**
+   + 使用 `@Configuration` 注解标记配置类，表明这个类包含Spring的bean定义。在配置类中，可以使用 `@Bean` 注解来定义bean。这个注解的方法的名称默认会作为bean的名称，返回的实例则为Spring容器管理的bean实例。
 
-**Bean的生命周期**:通过 `@Bean` 注解的 `initMethod` 和 `destroyMethod` 属性，可以为bean定义初始化和销毁时要调用的方法。这为bean提供了一种自定义的初始化和清理机制。当bean被Spring容器实例化时，指定的初始化方法会被调用；当bean被销毁或容器关闭时，指定的销毁方法会被调用。
+3. **Bean的生命周期**
+   + 通过 `@Bean` 注解的 `initMethod` 和 `destroyMethod` 属性，可以为bean定义初始化和销毁时要调用的方法。这为bean提供了一种自定义的初始化和清理机制。当bean被Spring容器实例化时，指定的初始化方法会被调用；当bean被销毁或容器关闭时，指定的销毁方法会被调用。
 
-#### 9.2、源码分析总结
+#### 源码分析总结
 
-##### @Bean 注册源码分析总结
+1. **@Bean 注册源码分析总结**
 
-**启动及配置加载**：使用 `AnnotationConfigApplicationContext` 初始化Spring上下文，并传入 `MyConfiguration` 配置类。该上下文构造函数将执行 `register()` 和 `refresh()` 方法。
+   + **启动及配置加载**
+     + 使用 `AnnotationConfigApplicationContext` 初始化Spring上下文，并传入 `MyConfiguration` 配置类。该上下文构造函数将执行 `register()` 和 `refresh()` 方法。
 
-**Bean定义的解析**：`refresh()` 方法触发上下文的刷新，其中涉及到对bean定义的处理。调用 `invokeBeanFactoryPostProcessors()` 方法来处理bean工厂后置处理器。
+   + **Bean定义的解析**
+     + `refresh()` 方法触发上下文的刷新，其中涉及到对bean定义的处理。调用 `invokeBeanFactoryPostProcessors()` 方法来处理bean工厂后置处理器。
 
-**处理配置类**：`BeanDefinitionRegistryPostProcessor` 是特殊的 `BeanFactoryPostProcessor`，它会在所有其他bean定义被加载之前运行。这个流程主要通过 `ConfigurationClassPostProcessor` 实现，该类负责处理标有 `@Configuration` 的类。
+   + **处理配置类**
+     + `BeanDefinitionRegistryPostProcessor` 是特殊的 `BeanFactoryPostProcessor`，它会在所有其他bean定义被加载之前运行。这个流程主要通过 `ConfigurationClassPostProcessor` 实现，该类负责处理标有 `@Configuration` 的类。
 
-**解析 `@Bean` 方法**：对每个 `@Configuration` 类执行解析，将其中的 `@Bean` 方法解析为bean定义。这涉及读取方法元数据，并将其转化为一个Spring可以理解和管理的 `BeanDefinition` 对象。
+   + **解析 `@Bean` 方法**
+     + 对每个 `@Configuration` 类执行解析，将其中的 `@Bean` 方法解析为bean定义。这涉及读取方法元数据，并将其转化为一个Spring可以理解和管理的 `BeanDefinition` 对象。
 
-**处理bean作用域与代理**：如果在 `@Bean` 方法上有 `@Scope` 注解，会根据其属性处理bean的作用域。根据需要，可能会为bean创建一个代理，这是通过 `ScopedProxyCreator` 来完成的。
+   + **处理bean作用域与代理**
+     + 如果在 `@Bean` 方法上有 `@Scope` 注解，会根据其属性处理bean的作用域。根据需要，可能会为bean创建一个代理，这是通过 `ScopedProxyCreator` 来完成的。
 
-**bean定义的注册**：最终，解析出的bean定义会被注册到Spring的bean定义注册表中，这样在上下文启动后，这些定义的bean就可以被实例化和使用了。
+   + **bean定义的注册**
+     + 最终，解析出的bean定义会被注册到Spring的bean定义注册表中，这样在上下文启动后，这些定义的bean就可以被实例化和使用了。
 
+2. **@Bean初始化源码分析总结**
 
+   + **启动**
+     + 当使用`AnnotationConfigApplicationContext`并提供`MyConfiguration`类作为参数时，Spring容器开始初始化。
 
-##### @Bean初始化源码分析总结
+   + **刷新上下文**
+     +  通过调用`refresh()`方法，Spring上下文被刷新。这是在上下文中创建和初始化所有bean的关键阶段。
 
-**启动**： 当使用`AnnotationConfigApplicationContext`并提供`MyConfiguration`类作为参数时，Spring容器开始初始化。
+   + **初始化Bean工厂**
+     +  方法`finishBeanFactoryInitialization`会确保所有非懒加载的单例bean都被初始化。它调用`DefaultListableBeanFactory`中的`preInstantiateSingletons`方法，该方法循环遍历容器中定义的每一个单例bean并使用`getBean`方法进行初始化。
 
-**刷新上下文**： 通过调用`refresh()`方法，Spring上下文被刷新。这是在上下文中创建和初始化所有bean的关键阶段。
+   + **获取Bean**：
+     + 在获取bean时，首先会检查是否已存在此单例bean。如果不存在，则会创建它。核心方法是`doGetBean`，它管理整个bean的生命周期，从查找bean定义到初始化bean。
 
-**初始化Bean工厂**： 方法`finishBeanFactoryInitialization`会确保所有非懒加载的单例bean都被初始化。它调用`DefaultListableBeanFactory`中的`preInstantiateSingletons`方法，该方法循环遍历容器中定义的每一个单例bean并使用`getBean`方法进行初始化。
+   + **单例处理**
+     + `getSingleton`方法管理单例bean的缓存。它首先尝试从缓存中获取bean，如果未找到，则使用提供的`ObjectFactory`创建一个新的实例。
 
-**获取Bean**： 在获取bean时，首先会检查是否已存在此单例bean。如果不存在，则会创建它。核心方法是`doGetBean`，它管理整个bean的生命周期，从查找bean定义到初始化bean。
+   + **创建Bean**
+     +  如果需要，`createBean`方法将负责实例化bean。最终，真正的bean创建工作是在`doCreateBean`方法中完成的。
 
-**单例处理**：`getSingleton`方法管理单例bean的缓存。它首先尝试从缓存中获取bean，如果未找到，则使用提供的`ObjectFactory`创建一个新的实例。
+   + **初始化Bean**
+     +  一旦bean被实例化，就需要进行初始化。如果bean实现了`InitializingBean`接口，那么它的`afterPropertiesSet`方法会被调用。此外，如果bean配置中定义了自定义的初始化方法，该方法也会在此时被调用。
 
-**创建Bean**： 如果需要，`createBean`方法将负责实例化bean。最终，真正的bean创建工作是在`doCreateBean`方法中完成的。
+   + **反射调用**
+     + 最终，如果定义了自定义的初始化方法，Spring会使用Java的反射API来调用它。
 
-**初始化Bean**： 一旦bean被实例化，就需要进行初始化。如果bean实现了`InitializingBean`接口，那么它的`afterPropertiesSet`方法会被调用。此外，如果bean配置中定义了自定义的初始化方法，该方法也会在此时被调用。
+3. **@Bean销毁源码分析总结**
 
-**反射调用**： 最终，如果定义了自定义的初始化方法，Spring会使用Java的反射API来调用它。
+   + **启动和关闭**
+     + 通过`AnnotationConfigApplicationContext`，Spring容器初始化后，`context.close()`方法会被调用以关闭容器。
 
+   + **关闭上下文**
+     + `close()`方法首先同步`startupShutdownMonitor`，确保在特定时刻只有一个线程能关闭上下文，接着调用`doClose`方法执行实际关闭操作。
 
+   + **销毁Beans**
+     + 在`doClose`方法中，`destroyBeans`方法被调用以销毁所有缓存中的单例bean。
 
-##### @Bean销毁源码分析总结
+   + **销毁单例Beans**
+     + `destroyBeans`方法会调用BeanFactory的`destroySingletons`方法来销毁所有缓存的单例beans。
 
-**启动和关闭**：通过`AnnotationConfigApplicationContext`，Spring容器初始化后，`context.close()`方法会被调用以关闭容器。
+   + **遍历并销毁**
+     + 在`destroySingletons`中，所有缓存的单例bean都会被遍历。对于每一个bean，`destroySingleton`方法会被调用来执行销毁操作。
 
-**关闭上下文**：close()`方法首先同步`startupShutdownMonitor`，确保在特定时刻只有一个线程能关闭上下文，接着调用`doClose`方法执行实际关闭操作。
+   + **实际的销毁操作**
+     + 在`destroySingleton`中，会从`disposableBeans`列表中移除对应的bean，并执行实际的销毁操作。
 
-**销毁Beans**：在`doClose`方法中，`destroyBeans`方法被调用以销毁所有缓存中的单例bean。
+   + **自定义销毁逻辑**
+     + 如果bean实现了`DisposableBean`接口或者定义了自定义的销毁方法，Spring容器会确保在销毁bean时调用这些方法。销毁方法可以是定义在bean配置中的任何方法，不需要特定的方法签名。
 
-**销毁单例Beans**：`destroyBeans`方法会调用BeanFactory的`destroySingletons`方法来销毁所有缓存的单例beans。
-
-**遍历并销毁**：在`destroySingletons`中，所有缓存的单例bean都会被遍历。对于每一个bean，`destroySingleton`方法会被调用来执行销毁操作。
-
-**实际的销毁操作**：在`destroySingleton`中，会从`disposableBeans`列表中移除对应的bean，并执行实际的销毁操作。
-
-**自定义销毁逻辑**：如果bean实现了`DisposableBean`接口或者定义了自定义的销毁方法，Spring容器会确保在销毁bean时调用这些方法。销毁方法可以是定义在bean配置中的任何方法，不需要特定的方法签名。
-
-**反射调用销毁方法**：最后，Spring使用Java反射API来动态地调用bean的自定义销毁方法。
+   + **反射调用销毁方法**
+     + 最后，Spring使用Java反射API来动态地调用bean的自定义销毁方法。
