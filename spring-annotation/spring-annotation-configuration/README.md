@@ -27,7 +27,7 @@
 
 ### 一、基本信息
 
-✒️ **作者**  - Lex  📝 **博客** - [点击浏览我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132212963) 📚 **文章目录** - [点击查看所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [点击查看@Configuration源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-configuration/README.md) 
+✒️ **作者**  - Lex  📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132212963) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@Configuration源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-configuration/README.md) 
 
 ### 二、注解描述
 
