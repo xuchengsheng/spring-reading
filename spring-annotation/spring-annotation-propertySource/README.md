@@ -1,23 +1,27 @@
 ## @PropertySource
-
 - [@PropertySource](#propertysource)
-  - [一、注解描述](#一注解描述)
-  - [二、注解源码](#二注解源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、注解描述](#二注解描述)
+  - [三、注解源码](#三注解源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、注解描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133800438) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@PropertySource源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-annotation/spring-annotation-propertySource)
+
+### 二、注解描述
 
 `@PropertySource` 注解，用于指定外部的属性文件，从而将该文件中的键值对加载到 Spring 的 `Environment` 中。这样，我们就可以在应用程序中轻松地访问和使用这些属性值。
 
-### 二、注解源码
+### 三、注解源码
 
 `@Configuration`注解是 Spring 框架自 3.1 版本开始引入的一个核心注解，`@PropertySource` 是用于在 Spring 框架中声明属性源的注解。它允许我们指定外部属性文件（例如 `.properties` 或 `.xml` 文件），并将这些文件中的键值对加载到 Spring 的 `Environment` 中，从而使得应用程序可以轻松访问和使用这些属性值。
 
@@ -90,18 +94,26 @@ public @interface PropertySource {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-1. **加载属性文件**：使我们能够指定一个或多个外部属性文件（如 `.properties` 或 `.xml` 文件），并将其加载到 Spring 的上下文中。
-2. **声明资源位置**：`@PropertySource` 提供一个 `value` 属性，用于指定外部属性文件的位置，如 `classpath:/com/myco/app.properties` 或 `file:/path/to/file.xml`。
-3. **属性覆盖**：当使用多个 `@PropertySource` 注解或 `PropertySources` 注解（该注解允许我们指定多个 `@PropertySource`）时，后声明的属性源会覆盖先声明的属性源中的同名属性。
-4. **处理资源找不到的情况**：通过 `ignoreResourceNotFound` 属性，我们可以指定当资源找不到时是否抛出异常。这在某些属性文件是可选的情况下特别有用。
-5. **指定文件编码**：通过 `encoding` 属性，我们可以为资源文件指定特定的字符编码，如 "UTF-8"。
-6. **自定义属性源工厂**：使用 `factory` 属性，我们可以为属性源指定一个自定义的 `PropertySourceFactory`，用于解析和加载属性。
-7. **支持占位符解析**：在 `@PropertySource` 指定的文件中的属性值可以使用 `${...}` 占位符，这些占位符将被解析为在 `Environment` 中已经加载的其他属性的值。
-8. **与 `Environment` 交互**：一旦属性文件被加载到 `Environment` 中，可以通过 `@Autowired` 注入 `Environment` 来查询和使用这些属性。
+1. **加载属性文件**
+   + 使我们能够指定一个或多个外部属性文件（如 `.properties` 或 `.xml` 文件），并将其加载到 Spring 的上下文中。
+2. **声明资源位置**
+   + `@PropertySource` 提供一个 `value` 属性，用于指定外部属性文件的位置，如 `classpath:/com/myco/app.properties` 或 `file:/path/to/file.xml`。
+3. **属性覆盖**
+   + 当使用多个 `@PropertySource` 注解或 `PropertySources` 注解（该注解允许我们指定多个 `@PropertySource`）时，后声明的属性源会覆盖先声明的属性源中的同名属性。
+4. **处理资源找不到的情况**
+   + 通过 `ignoreResourceNotFound` 属性，我们可以指定当资源找不到时是否抛出异常。这在某些属性文件是可选的情况下特别有用。
+5. **指定文件编码**
+   + 通过 `encoding` 属性，我们可以为资源文件指定特定的字符编码，如 "UTF-8"。
+6. **自定义属性源工厂**
+   + 使用 `factory` 属性，我们可以为属性源指定一个自定义的 `PropertySourceFactory`，用于解析和加载属性。
+7. **支持占位符解析**
+   + 在 `@PropertySource` 指定的文件中的属性值可以使用 `${...}` 占位符，这些占位符将被解析为在 `Environment` 中已经加载的其他属性的值。
+8. **与 `Environment` 交互**
+   + 一旦属性文件被加载到 `Environment` 中，可以通过 `@Autowired` 注入 `Environment` 来查询和使用这些属性。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从中获取两个属性：`apiVersion` 和 `kind`。
 
@@ -140,7 +152,7 @@ apiVersion = v1
 kind = ConfigMap
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -168,7 +180,7 @@ ConfigurationClassParser->>ConfigurationClassParser: addPropertySource(propertyS
 ConfigurationClassParser->>MutablePropertySources:addLast(propertySource)<br>添加最低优先级的属性源
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从中获取两个属性：`apiVersion` 和 `kind`。
 
@@ -465,46 +477,55 @@ private void addPropertySource(PropertySource<?> propertySource) {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-1. **文件位置**：确保你提供的文件路径是正确的。例如，`classpath:` 前缀表示文件应该在类路径中，而 `file:` 前缀则表示文件应该在文件系统的特定位置。
-2. **占位符**：在 `@PropertySource` 的 `value` 属性中，你可以使用 `${...}` 占位符，它们将会被已注册的任何属性源解析。
-3. **处理重复的属性源名称**：如果你有多个 `@PropertySource` 注解（或使用 `@PropertySources` 注解）且它们具有相同的名称，那么它们会合并。后声明的 `@PropertySource` 将覆盖先前声明的同名 `@PropertySource`。
-4. **属性源的顺序**：属性源的顺序很重要，因为在多个属性源中定义的同名属性将使用先找到的值。你可以使用 `PropertySource` 的 `name` 属性来明确指定属性源的名称，以控制其在环境中的顺序。
-5. **忽略找不到的资源**：你可以使用 `ignoreResourceNotFound` 属性来指定当属性文件找不到时是否应该抛出异常。默认情况下，这是 `false`，意味着如果属性文件找不到，会抛出异常。设置为 `true` 可以让Spring在找不到文件时安静地继续运行。
-6. **字符编码**：从Spring 4.3开始，`@PropertySource` 注解有一个 `encoding` 属性，允许你为给定的资源指定特定的字符编码。
-7. **自定义属性源工厂**：如果你需要特殊的逻辑来创建属性源，可以使用 `factory` 属性来指定一个自定义的 `PropertySourceFactory`。
-8. **激活属性占位符解析**：仅仅使用 `@PropertySource` 并不会激活属性占位符解析。为了替换你的bean定义中的 `${...}` 占位符，你还需要添加 `@Bean` 定义为 `PropertySourcesPlaceholderConfigurer`。
-9. **与Profiles结合**：你可以与Spring的Profile功能结合使用 `@PropertySource`，以根据不同的环境加载不同的属性文件。
+1. **文件位置**
+   + 确保你提供的文件路径是正确的。例如，`classpath:` 前缀表示文件应该在类路径中，而 `file:` 前缀则表示文件应该在文件系统的特定位置。
+2. **占位符**
+   + 在 `@PropertySource` 的 `value` 属性中，你可以使用 `${...}` 占位符，它们将会被已注册的任何属性源解析。
+3. **处理重复的属性源名称**
+   + 如果你有多个 `@PropertySource` 注解（或使用 `@PropertySources` 注解）且它们具有相同的名称，那么它们会合并。后声明的 `@PropertySource` 将覆盖先前声明的同名 `@PropertySource`。
+4. **属性源的顺序**
+   + 属性源的顺序很重要，因为在多个属性源中定义的同名属性将使用先找到的值。你可以使用 `PropertySource` 的 `name` 属性来明确指定属性源的名称，以控制其在环境中的顺序。
+5. **忽略找不到的资源**
+   + 你可以使用 `ignoreResourceNotFound` 属性来指定当属性文件找不到时是否应该抛出异常。默认情况下，这是 `false`，意味着如果属性文件找不到，会抛出异常。设置为 `true` 可以让Spring在找不到文件时安静地继续运行。
+6. **字符编码**
+   + 从Spring 4.3开始，`@PropertySource` 注解有一个 `encoding` 属性，允许你为给定的资源指定特定的字符编码。
+7. **自定义属性源工厂**
+   + 如果你需要特殊的逻辑来创建属性源，可以使用 `factory` 属性来指定一个自定义的 `PropertySourceFactory`。
+8. **激活属性占位符解析**
+   + 仅仅使用 `@PropertySource` 并不会激活属性占位符解析。为了替换你的bean定义中的 `${...}` 占位符，你还需要添加 `@Bean` 定义为 `PropertySourcesPlaceholderConfigurer`。
+9. **与Profiles结合**
+   + 你可以与Spring的Profile功能结合使用 `@PropertySource`，以根据不同的环境加载不同的属性文件。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
 1. **初始化上下文**
-   使用 `AnnotationConfigApplicationContext` 作为Spring容器的初始化方式，它允许从Java注解中配置Spring容器。
+   + 使用 `AnnotationConfigApplicationContext` 作为Spring容器的初始化方式，它允许从Java注解中配置Spring容器。
 2. **定义配置类**
-   创建一个名为 `MyConfiguration` 的类，并使用 `@Configuration` 注解来标记它，表示这是一个基于Java的Spring配置类。
+   + 创建一个名为 `MyConfiguration` 的类，并使用 `@Configuration` 注解来标记它，表示这是一个基于Java的Spring配置类。
 3. **指定属性源**
-   在 `MyConfiguration` 类中，使用 `@PropertySource` 注解指定了一个外部属性文件的位置，文件名为 `my-application.yml`。
+   + 在 `MyConfiguration` 类中，使用 `@PropertySource` 注解指定了一个外部属性文件的位置，文件名为 `my-application.yml`。
 4. **定义属性内容**
-   在 `my-application.yml` 文件中定义了两个属性：`apiVersion` 和 `kind`。
+   + 在 `my-application.yml` 文件中定义了两个属性：`apiVersion` 和 `kind`。
 5. **加载并访问属性**
-   运行应用程序后，使用Spring的 `Environment` API来访问这些属性，并将其输出到控制台。
+   + 运行应用程序后，使用Spring的 `Environment` API来访问这些属性，并将其输出到控制台。
 6. **运行结果**
-   从YAML文件成功加载的属性在控制台上显示为 `apiVersion = v1` 和 `kind = ConfigMap`。
+   + 从YAML文件成功加载的属性在控制台上显示为 `apiVersion = v1` 和 `kind = ConfigMap`。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
 1. **上下文初始化**
-   通过使用 `AnnotationConfigApplicationContext`, Spring 上下文被初始化。该类允许Spring容器从Java注解中进行配置。传递的配置类是 `MyConfiguration`，该类定义了要从中加载的属性源。
+   + 通过使用 `AnnotationConfigApplicationContext`, Spring 上下文被初始化。该类允许Spring容器从Java注解中进行配置。传递的配置类是 `MyConfiguration`，该类定义了要从中加载的属性源。
 2. **处理@PropertySource注解**
-   在配置类处理期间，Spring 检查每个配置类以查找 `@PropertySource` 注解。如果找到，则属性源的相关数据（例如其位置和其他属性）被提取出来。
+   + 在配置类处理期间，Spring 检查每个配置类以查找 `@PropertySource` 注解。如果找到，则属性源的相关数据（例如其位置和其他属性）被提取出来。
 3. **资源位置解析**
-   对于 `@PropertySource` 注解中定义的每个属性文件位置，Spring 尝试加载和解析该文件。它首先解析任何占位符，然后尝试加载资源。
+   + 对于 `@PropertySource` 注解中定义的每个属性文件位置，Spring 尝试加载和解析该文件。它首先解析任何占位符，然后尝试加载资源。
 4. **创建属性源**
-   使用 `DefaultPropertySourceFactory`, Spring 创建一个属性源。这个工厂可以从给定的资源（例如 .properties 或 .yml 文件）创建一个属性源。
+   + 使用 `DefaultPropertySourceFactory`, Spring 创建一个属性源。这个工厂可以从给定的资源（例如 .properties 或 .yml 文件）创建一个属性源。
 5. **向环境中添加属性源**
-   一旦属性源被创建，它就被添加到Spring的运行时环境中。如果已经存在具有相同名称的属性源，新的属性源可能会与旧的合并，或者会以适当的方式进行处理。
+   + 一旦属性源被创建，它就被添加到Spring的运行时环境中。如果已经存在具有相同名称的属性源，新的属性源可能会与旧的合并，或者会以适当的方式进行处理。
 6. **处理完成**
-   在完成所有配置类和属性源的处理之后，Spring上下文继续其正常的启动过程，最终在应用程序运行时提供这些属性。
+   + 在完成所有配置类和属性源的处理之后，Spring上下文继续其正常的启动过程，最终在应用程序运行时提供这些属性。
