@@ -545,30 +545,30 @@ private Condition getCondition(String conditionClassName, @Nullable ClassLoader 
 
 1. **基于`@Bean`的条件配置**
 
-   - **场景描述**：在单个bean的创建上应用条件。
-
-   - **实现方法**：通过在`@Bean`注解方法上直接使用`@Conditional`。
-
+   - **场景描述**
+  - 在单个bean的创建上应用条件。
+   - **实现方法**
+  - 通过在`@Bean`注解方法上直接使用`@Conditional`。
    - **结果**：
      - 当条件满足（如`enable.bean`为`true`），特定的bean（如`user1`）会被注册。
      - 当条件不满足，该bean不会被注册。
 
 2. **基于`@Configuration`的条件配置**
 
-   - **场景描述**：控制整个配置类的激活状态，从而影响该配置中定义的所有beans。
-
-   - **实现方法**：在`@Configuration`注解的类上直接使用`@Conditional`。
-
+   - **场景描述**
+  - 控制整个配置类的激活状态，从而影响该配置中定义的所有beans。
+   - **实现方法**
+  - 在`@Configuration`注解的类上直接使用`@Conditional`。
    - **结果**：
      - 当条件满足（如`enable.config`为`true`），配置类被激活，其内部的所有beans（如`user3`和`user4`）都会被注册。
      - 当条件不满足，配置类及其内部定义的所有beans都不会被注册。
 
 3. **使用自定义组合注解**
 
-   - **场景描述**：创建自己的条件注解，以提供更清晰、更简洁的语法，或为特定的业务逻辑封装条件逻辑。
-
-   - **实现方法**：定义一个新的注解（如`@ConditionalOnCustomActive`），并使用`@Conditional`元注解将其关联到特定的条件类。
-
+   - **场景描述**
+     - 创建自己的条件注解，以提供更清晰、更简洁的语法，或为特定的业务逻辑封装条件逻辑。
+   - **实现方法**
+     - 定义一个新的注解（如`@ConditionalOnCustomActive`），并使用`@Conditional`元注解将其关联到特定的条件类。
    - **结果**：
      - 当条件满足（如`enable.custom`为`true`），带有`@ConditionalOnCustomActive`注解的配置类或bean会被注册。
      - 当条件不满足，它们不会被注册。
