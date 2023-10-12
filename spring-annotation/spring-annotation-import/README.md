@@ -2,22 +2,25 @@
 
 - [@Import](#import)
   - [一、注解描述](#一注解描述)
-  - [二、接口源码](#二接口源码)
+  - [二、注解源码](#二注解源码)
   - [三、主要功能](#三主要功能)
   - [四、最佳实践](#四最佳实践)
   - [五、时序图](#五时序图)
   - [六、源码分析](#六源码分析)
   - [七、注意事项](#七注意事项)
   - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
+### 一、基本信息
 
-### 一、注解描述
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132806548) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@Import源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-annotation/spring-annotation-import)
+
+### 二、注解描述
 
 `@Import` 是 Spring 框架的核心注解，用于导入配置类或组件到当前的 Spring 上下文中。它可以用于导入常规的 `@Configuration` 类、常规组件类，或实现了 `ImportSelector` 和 `ImportBeanDefinitionRegistrar` 接口的类。`ImportSelector` 允许根据条件动态地选择要导入的组件，而 `ImportBeanDefinitionRegistrar` 提供了一种以编程方式注册bean的方法。使用 `@Import` 注解，我们可以更灵活、模块化地组织 Spring 的配置，确保上下文中有所需的所有组件和配置。
 
-### 二、接口源码
+### 三、注解源码
 
 `@Import` 是 Spring 框架自 3.0 版本开始引入的一个核心注解。允许我们导入一个或多个组件类，这些类通常是 `@Configuration` 类。它在功能上相当于 Spring XML 中的 `<import/>` 元素，导入类型`@Configuration`类、`ImportSelector`、`ImportBeanDefinitionRegistrar`的实现以及其他常规组件类，在导入的 `@Configuration` 类中声明的 bean 定义应使用 `@Autowired` 进行注入。
 
@@ -63,17 +66,21 @@ public @interface Import {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**导入配置类**：允许一个 `@Configuration` 类引入另一个 `@Configuration` 类。
+1. **导入配置类**
+   + 允许一个 `@Configuration` 类引入另一个 `@Configuration` 类。
 
-**导入选择器**：通过实现 `ImportSelector` 接口，可以动态地选择和导入配置类。
+2. **导入选择器**
+   + 通过实现 `ImportSelector` 接口，可以动态地选择和导入配置类。
 
-**手动注册Bean**：通过实现 `ImportBeanDefinitionRegistrar` 接口，可以在运行时手动注册 bean。
+3. **手动注册Bean**
+   + 通过实现 `ImportBeanDefinitionRegistrar` 接口，可以在运行时手动注册 bean。
 
-**导入常规组件类**：从 Spring 4.2 开始，还可以导入常规的组件类。
+4. **导入常规组件类**
+   + 从 Spring 4.2 开始，还可以导入常规的组件类。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后遍历并打印所有的bean定义名。
 
@@ -154,7 +161,7 @@ public class MyBeanC {
 }
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -210,7 +217,7 @@ sequenceDiagram
     MyImportBeanDefinitionRegistrar->>DefaultListableBeanFactory:registerBeanDefinition(beanName,beanDefinition)<br>在bean工厂中注册bean定义
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后遍历并打印所有的bean定义名。
 
@@ -718,49 +725,71 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**避免循环引用**：确保您没有创建循环引用，即一个配置类导入另一个配置类，而后者又反过来导入前者。
+1. **避免循环引用**
+   + 确保我们没有创建循环引用，即一个配置类导入另一个配置类，而后者又反过来导入前者。
 
-**与`@ComponentScan`的关系**：`@Import`和`@ComponentScan`都可以用于注册bean，但是它们的用途稍有不同。`@ComponentScan`用于自动扫描和注册bean，而`@Import`用于明确地导入其他配置类。
+2. **与`@ComponentScan`的关系**
+   + `@Import`和`@ComponentScan`都可以用于注册bean，但是它们的用途稍有不同。`@ComponentScan`用于自动扫描和注册bean，而`@Import`用于明确地导入其他配置类。
 
-**属性覆盖**：如果从多个配置类中导入相同的bean定义，并设置了不同的属性或值，那么后导入的bean定义将覆盖先导入的bean定义。
+3. **属性覆盖**
+   + 如果从多个配置类中导入相同的bean定义，并设置了不同的属性或值，那么后导入的bean定义将覆盖先导入的bean定义。
 
-**与`@Profile`的关系**：可以结合使用`@Import`和`@Profile`，这样只有在特定的激活配置文件中才会导入某个配置类。
+4. **与`@Profile`的关系**
+   + 可以结合使用`@Import`和`@Profile`，这样只有在特定的激活配置文件中才会导入某个配置类。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动类**：通过`ImportApplication`类，我们初始化了Spring的上下文环境，选择了`AnnotationConfigApplicationContext`，这是Spring提供的使用Java注解配置方式。在该上下文中，我们指定了`MyConfiguration`作为主要的配置类，并遍历了上下文中所有已注册的bean名称。
+1. **启动类**
+   + 通过`ImportApplication`类，我们初始化了Spring的上下文环境，选择了`AnnotationConfigApplicationContext`，这是Spring提供的使用Java注解配置方式。在该上下文中，我们指定了`MyConfiguration`作为主要的配置类，并遍历了上下文中所有已注册的bean名称。
 
-**主配置类**：`MyConfiguration`类通过使用`@Import`注解导入了四种不同类型的组件或选择器：
+2. **主配置类**
 
-- `MyBean`：一个普通的Java类。
-- `MyImportSelector`：一个实现了`ImportSelector`接口的类。
-- `MyDeferredImportSelector`：一个实现了`DeferredImportSelector`接口的类。
-- `MyImportBeanDefinitionRegistrar`：一个实现了`ImportBeanDefinitionRegistrar`接口的类。
+   + `MyConfiguration`类通过使用`@Import`注解导入了四种不同类型的组件或选择器：
 
-**选择器与注册器**：
+     - `MyBean`：一个普通的Java类。
 
-- `MyImportSelector`通过实现`ImportSelector`接口，动态地选择并导入了`MyBeanA`类。
-- `MyDeferredImportSelector`作为`DeferredImportSelector`的实现，延迟地选择并导入了`MyBeanB`类。与`ImportSelector`不同，它允许在所有其他配置类被处理后再进行导入。
-- `MyImportBeanDefinitionRegistrar`提供了手动注册bean的功能。在这个示例中，它将`MyBeanC`手动注册到了Spring上下文中。
+     - `MyImportSelector`：一个实现了`ImportSelector`接口的类。
 
-**组件定义**：示例中包含四个Java类，分别为`MyBean`、`MyBeanA`、`MyBeanB`和`MyBeanC`，它们都被上述的选择器或注册器选择并导入到Spring上下文中。
+     - `MyDeferredImportSelector`：一个实现了`DeferredImportSelector`接口的类。
 
-#### 8.2、源码分析总结
+     - `MyImportBeanDefinitionRegistrar`：一个实现了`ImportBeanDefinitionRegistrar`接口的类。
 
-**启动阶段**：在Spring启动时，会使用`AnnotationConfigApplicationContext`来加载和解析配置类，这个配置类可能包含有`@Import`注解。
 
-**解析配置类**：在`AnnotationConfigApplicationContext`的构造函数中，通过`refresh()`方法开始刷新容器并解析Bean定义。进一步，在`AbstractApplicationContext#refresh`方法中，会调用`invokeBeanFactoryPostProcessors`方法来处理在上下文中注册为bean的工厂处理器。
+3. **选择器与注册器**：
 
-**处理`@Import`注解**：处理过程中会特别关注`BeanDefinitionRegistryPostProcessor`，这是`BeanFactoryPostProcessor`的子接口，专门用于在所有其他bean定义加载之前修改默认的bean定义。然后，系统解析配置类并验证其内容，这主要涉及查找该类中的@Bean方法、组件扫描指令等，并将这些信息注册到Spring容器中。
+   - `MyImportSelector`通过实现`ImportSelector`接口，动态地选择并导入了`MyBeanA`类。
 
-**处理`ImportSelector`和`DeferredImportSelector`**：在上述解析过程中，如果配置类包含一个实现了`ImportSelector`或`DeferredImportSelector`接口的类，那么它们将被用来选择并导入其他的类。在示例中，`MyImportSelector`和`MyDeferredImportSelector`是这样的选择器，分别导入`MyBeanA`和`MyBeanB`。
+   - `MyDeferredImportSelector`作为`DeferredImportSelector`的实现，延迟地选择并导入了`MyBeanB`类。与`ImportSelector`不同，它允许在所有其他配置类被处理后再进行导入。
 
-**处理`ImportBeanDefinitionRegistrar`**：在加载Bean定义的过程中，也会处理与`ConfigurationClass`关联的所有`ImportBeanDefinitionRegistrar`。这些注册器允许在解析时动态地、以编程方式地添加额外的Bean定义，如`MyImportBeanDefinitionRegistrar`示例中为`MyBeanC`进行的手动注册。
+   - `MyImportBeanDefinitionRegistrar`提供了手动注册bean的功能。在这个示例中，它将`MyBeanC`手动注册到了Spring上下文中。
 
-**注册导入的配置类**：如果一个`@Configuration`类是由于`@Import`或其他机制导入的，Spring不仅会处理它的`@Bean`方法和其他注解，还会为这个类本身注册一个Bean定义，以便它也可以被注入到其他Bean或由应用程序检索。
 
-**额外Bean的注册**：通过`ImportBeanDefinitionRegistrar`和其自定义逻辑，能够根据需要将任意数量的额外Bean定义注册到容器中。
+4. **组件定义**
+   + 在我们最佳实践中包含四个Java类，分别为`MyBean`、`MyBeanA`、`MyBeanB`和`MyBeanC`，它们都被上述的选择器或注册器选择并导入到Spring上下文中。
+
+#### 源码分析总结
+
+1. **启动阶段**
+   + 在Spring启动时，会使用`AnnotationConfigApplicationContext`来加载和解析配置类，这个配置类可能包含有`@Import`注解。
+
+2. **解析配置类**
+   + 在`AnnotationConfigApplicationContext`的构造函数中，通过`refresh()`方法开始刷新容器并解析Bean定义。进一步，在`AbstractApplicationContext#refresh`方法中，会调用`invokeBeanFactoryPostProcessors`方法来处理在上下文中注册为bean的工厂处理器。
+
+3. **处理`@Import`注解**
+   + 处理过程中会特别关注`BeanDefinitionRegistryPostProcessor`，这是`BeanFactoryPostProcessor`的子接口，专门用于在所有其他bean定义加载之前修改默认的bean定义。然后，系统解析配置类并验证其内容，这主要涉及查找该类中的@Bean方法、组件扫描指令等，并将这些信息注册到Spring容器中。
+
+4. **处理`ImportSelector`和`DeferredImportSelector`**
+   + 在上述解析过程中，如果配置类包含一个实现了`ImportSelector`或`DeferredImportSelector`接口的类，那么它们将被用来选择并导入其他的类。在示例中，`MyImportSelector`和`MyDeferredImportSelector`是这样的选择器，分别导入`MyBeanA`和`MyBeanB`。
+
+5. **处理`ImportBeanDefinitionRegistrar`**
+   + 在加载Bean定义的过程中，也会处理与`ConfigurationClass`关联的所有`ImportBeanDefinitionRegistrar`。这些注册器允许在解析时动态地、以编程方式地添加额外的Bean定义，如`MyImportBeanDefinitionRegistrar`示例中为`MyBeanC`进行的手动注册。
+
+6. **注册导入的配置类**
+   + 如果一个`@Configuration`类是由于`@Import`或其他机制导入的，Spring不仅会处理它的`@Bean`方法和其他注解，还会为这个类本身注册一个Bean定义，以便它也可以被注入到其他Bean或由应用程序检索。
+
+7. **额外Bean的注册**
+   + 通过`ImportBeanDefinitionRegistrar`和其自定义逻辑，能够根据需要将任意数量的额外Bean定义注册到容器中。
