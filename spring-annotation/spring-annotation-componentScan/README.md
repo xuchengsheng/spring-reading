@@ -1,23 +1,28 @@
 ## @ComponentScan
 
 - [@ComponentScan](#componentscan)
-  - [一、接口描述](#一接口描述)
-  - [二、注解源码](#二注解源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、注解描述](#二注解描述)
+  - [三、注解源码](#三注解源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、接口描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132346179) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@Configuration源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-componentScan/README.md)
+
+### 二、注解描述
 
 `@ComponentScan` 注解，用于自动扫描特定包（和其子包）中的组件，并自动注册为 Spring 容器中的 bean。当我们使用 Spring Boot，它默认会扫描主应用程序所在的包以及子包。但是，如果我们需要更细粒度的控制，或者我们在使用传统的 Spring 而非 Spring Boot，那么我们可能会明确地使用 `@ComponentScan`。
 
-### 二、注解源码
+### 三、注解源码
 
 `@ComponentScan`注解是 Spring 框架自 3.1 版本开始引入的一个核心注解，用于指导如何扫描组件。与 `@Configuration` 配合使用，其功能与 Spring XML 的 `<context:component-scan>` 类似。除了允许指定要扫描的包，它还提供了多种属性，如命名生成器、范围解析器、代理设置等，以精细地控制组件的扫描和注册过程。若不指定扫描包，它默认从注解声明的位置开始。与此同时，`@Filter` 注解定义了类型过滤器，特别用于 `@ComponentScan` 中的组件包含和排除设置。它允许基于特定类型、类或模式来筛选组件。
 
@@ -259,17 +264,21 @@ public enum FilterType {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**指定扫描的包**：通过 `basePackages` 和 `basePackageClasses` 属性，用户可以明确告诉 Spring 在哪些包中查找带有 `@Component`、`@Service`、`@Repository` 和 `@Controller` 等注解的类。
+1. **指定扫描的包**
+   + 通过 `basePackages` 和 `basePackageClasses` 属性，用户可以明确告诉 Spring 在哪些包中查找带有 `@Component`、`@Service`、`@Repository` 和 `@Controller` 等注解的类。
 
-**自动扫描**：如果用户没有明确指定要扫描的包，则默认从声明 `@ComponentScan` 的类所在的包开始进行扫描。
+2. **自动扫描**
+   + 如果用户没有明确指定要扫描的包，则默认从声明 `@ComponentScan` 的类所在的包开始进行扫描。
 
-**过滤扫描的组件**：通过 `includeFilters` 和 `excludeFilters` 属性，用户可以更精细地控制哪些组件应被扫描或排除。
+3. **过滤扫描的组件**
+   + 通过 `includeFilters` 和 `excludeFilters` 属性，用户可以更精细地控制哪些组件应被扫描或排除。
 
-**其他配置**：此注解还提供了其他属性，如 `nameGenerator`（为检测到的组件命名）、`scopeResolver`（解析组件的范围）、`scopedProxy`（是否为组件生成代理）等，以提供更高级的配置。
+4. **其他配置**
+   + 此注解还提供了其他属性，如 `nameGenerator`（为检测到的组件命名）、`scopeResolver`（解析组件的范围）、`scopedProxy`（是否为组件生成代理）等，以提供更高级的配置。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。在初始化上下文后，该程序会遍历并打印所有在 Spring 容器中定义的 beans 的名字。
 
@@ -349,7 +358,7 @@ beanName = userService
 beanName = specialComponent
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -381,7 +390,7 @@ BeanDefinitionReaderUtils->>DefaultListableBeanFactory:registerBeanDefinition(be
 ClassPathBeanDefinitionScanner-->>ComponentScanAnnotationParser:返回BeanDefinition
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。在初始化上下文后，该程序会遍历并打印所有在 Spring 容器中定义的 beans 的名字。
 
@@ -928,55 +937,77 @@ public static void registerBeanDefinition(
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**默认扫描**：如果未指定具体的包，`@ComponentScan` 默认会扫描声明此注解的类所在的包及其子包。
+**默认扫描**
 
-**性能考虑**：避免扫描不必要的包，因为这可能导致性能问题。尤其是在大型项目中，指定扫描的精确路径可以加速启动时间。
++ 如果未指定具体的包，`@ComponentScan` 默认会扫描声明此注解的类所在的包及其子包。
 
-**默认过滤器**：默认情况下，`@ComponentScan` 使用的过滤器会搜索带有 `@Component`, `@Service`, `@Repository`, 和 `@Controller` 的类。可以通过 `includeFilters` 和 `excludeFilters` 属性进行定制。
+**性能考虑**
 
-**冲突的 Bean 名称**：确保没有重复的 Bean 名称，否则可能会导致 `BeanDefinitionStoreException`。
++ 避免扫描不必要的包，因为这可能导致性能问题。尤其是在大型项目中，指定扫描的精确路径可以加速启动时间。
 
-**使用 `basePackages` 和 `basePackageClasses`**：`basePackages` 允许我们指定要扫描的包的名称，而 `basePackageClasses` 允许我们指定一个或多个类，Spring 将扫描这些类所在的包。
+**默认过滤器**
 
-**避免使用多个配置**：不建议在同一个配置类中使用多个 `@ComponentScan`。如果确实需要，考虑使用 `@ComponentScans`。
++ 默认情况下，`@ComponentScan` 使用的过滤器会搜索带有 `@Component`, `@Service`, `@Repository`, 和 `@Controller` 的类。可以通过 `includeFilters` 和 `excludeFilters` 属性进行定制。
 
-**代理模式**：考虑如何使用 `scopedProxy` 属性，特别是当我们使用非单例作用域的 beans 时。
+**冲突的 Bean 名称**
 
-**注解属性的覆盖**：当多个 `@ComponentScan` 在多个配置类中定义时，后面的定义将覆盖前面的定义。这里需要我们自己去确认。
++ 确保没有重复的 Bean 名称，否则可能会导致 `BeanDefinitionStoreException`。
 
-**对于大型项目，考虑使用模块化**：在大型项目中，为了更好的管理和维护，可以考虑将应用分成多个模块，每个模块有其自己的配置类和 `@ComponentScan`。
+**使用 `basePackages` 和 `basePackageClasses`**
 
-### 八、总结
++ `basePackages` 允许我们指定要扫描的包的名称，而 `basePackageClasses` 允许我们指定一个或多个类，Spring 将扫描这些类所在的包。
 
-#### 8.1、最佳实践总结
+**避免使用多个配置**
 
-1. **应用启动**：在 `ComponentScanApplication` 的主方法中，使用 `AnnotationConfigApplicationContext` 初始化了 Spring 上下文，并将配置类 `MyConfiguration` 传递给它。这告诉 Spring 在 `MyConfiguration` 类中查找配置信息。
-2. **配置类**：`MyConfiguration` 类被标记为 `@Configuration`，表明它是一个配置类。这个类进一步使用 `@ComponentScan` 注解指定了 Spring 应该在哪里寻找组件。具体来说，Spring 将扫描 `com.xcs.spring` 包及其所有子包。
-3. **扫描规则**：在 `@ComponentScan` 中，我们使用 `includeFilters` 明确指定 `SpecialComponent` 类被包含在 Spring 容器中，即使它没有使用任何 Spring 注解。同时，使用 `excludeFilters` 指定 `AdminService` 类不应该被 Spring 容器管理，即使它被标记为一个 `@Service`。
++ 不建议在同一个配置类中使用多个 `@ComponentScan`。如果确实需要，考虑使用 `@ComponentScans`。
+
+**代理模式**
+
++ 考虑如何使用 `scopedProxy` 属性，特别是当我们使用非单例作用域的 beans 时。
+
+**注解属性的覆盖**
+
++ 当多个 `@ComponentScan` 在多个配置类中定义时，后面的定义将覆盖前面的定义。这里需要我们自己去确认。
+
+**对于大型项目，考虑使用模块化**
+
++ 在大型项目中，为了更好的管理和维护，可以考虑将应用分成多个模块，每个模块有其自己的配置类和 `@ComponentScan`。
+
+### 九、总结
+
+#### 最佳实践总结
+
+1. **应用启动**
+   + 在 `ComponentScanApplication` 的主方法中，使用 `AnnotationConfigApplicationContext` 初始化了 Spring 上下文，并将配置类 `MyConfiguration` 传递给它。这告诉 Spring 在 `MyConfiguration` 类中查找配置信息。
+2. **配置类**
+   + `MyConfiguration` 类被标记为 `@Configuration`，表明它是一个配置类。这个类进一步使用 `@ComponentScan` 注解指定了 Spring 应该在哪里寻找组件。具体来说，Spring 将扫描 `com.xcs.spring` 包及其所有子包。
+3. **扫描规则**
+   + 在 `@ComponentScan` 中，我们使用 `includeFilters` 明确指定 `SpecialComponent` 类被包含在 Spring 容器中，即使它没有使用任何 Spring 注解。同时，使用 `excludeFilters` 指定 `AdminService` 类不应该被 Spring 容器管理，即使它被标记为一个 `@Service`。
 4. **组件类**：
    - `UserRepository` 类在 `com.xcs.spring.repository` 包中，并被标记为 `@Repository`，因此它自动被 Spring 容器管理。
    - `UserService` 类在 `com.xcs.spring.service` 包中，并被标记为 `@Service`，因此它也自动被 Spring 容器管理。
    - `AdminService` 虽然也被标记为 `@Service`，但由于 `@ComponentScan` 的 `excludeFilters` 配置，它没有被 Spring 容器管理。
    - `SpecialComponent` 类没有使用任何 Spring 注解，但由于 `@ComponentScan` 的 `includeFilters` 配置，它被 Spring 容器管理。
-5. **运行结果**：当应用启动时，所有被 Spring 容器管理的 beans 的名字都被打印出来，这包括了 `UserRepository`, `UserService`, 和 `SpecialComponent`。不包括 `AdminService`，因为它被排除了。
+5. **运行结果**
+   + 当应用启动时，所有被 Spring 容器管理的 beans 的名字都被打印出来，这包括了 `UserRepository`, `UserService`, 和 `SpecialComponent`。不包括 `AdminService`，因为它被排除了。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
 1. **应用启动**
-   通过 `AnnotationConfigApplicationContext` 的构造方法，传入配置类 `MyConfiguration`，来启动Spring应用。
+   + 通过 `AnnotationConfigApplicationContext` 的构造方法，传入配置类 `MyConfiguration`，来启动Spring应用。
 2. **刷新上下文**
-   在构造方法内部，调用了 `refresh()` 方法开始执行容器的刷新操作。
+   + 在构造方法内部，调用了 `refresh()` 方法开始执行容器的刷新操作。
 3. **执行BeanFactory的后处理器**
-   `invokeBeanFactoryPostProcessors(beanFactory)` 方法被调用，它主要执行 `BeanDefinitionRegistryPostProcessor` 和 `BeanFactoryPostProcessor`。其中， `BeanDefinitionRegistryPostProcessor` 是在所有其他bean定义加载之前，用来修改默认的bean定义。
+   + `invokeBeanFactoryPostProcessors(beanFactory)` 方法被调用，它主要执行 `BeanDefinitionRegistryPostProcessor` 和 `BeanFactoryPostProcessor`。其中， `BeanDefinitionRegistryPostProcessor` 是在所有其他bean定义加载之前，用来修改默认的bean定义。
 4. **处理配置类**
-   `ConfigurationClassPostProcessor` 是一个核心的后处理器，它会解析配置类（如带有 `@Configuration` 的类），找到 `@ComponentScan` 注解并解析它的属性，然后进行组件扫描。
+   + `ConfigurationClassPostProcessor` 是一个核心的后处理器，它会解析配置类（如带有 `@Configuration` 的类），找到 `@ComponentScan` 注解并解析它的属性，然后进行组件扫描。
 5. **执行组件扫描**
-   通过 `ComponentScanAnnotationParser` 类进行详细的扫描操作。它创建一个 `ClassPathBeanDefinitionScanner` 对象，设置其属性（如是否使用默认过滤器、资源加载器、作用域解析器、资源模式、包含和排除的过滤器等），然后扫描指定的基础包。
+   + 通过 `ComponentScanAnnotationParser` 类进行详细的扫描操作。它创建一个 `ClassPathBeanDefinitionScanner` 对象，设置其属性（如是否使用默认过滤器、资源加载器、作用域解析器、资源模式、包含和排除的过滤器等），然后扫描指定的基础包。
 6. **扫描候选组件**
-   对于每个基础包，它会查找所有的组件，并为这些组件创建 `BeanDefinition` 对象。
+   + 对于每个基础包，它会查找所有的组件，并为这些组件创建 `BeanDefinition` 对象。
 7. **注册Bean定义**
-   找到的组件都会被注册到Spring容器中。这是通过调用 `registerBeanDefinition` 方法来完成的。如果在容器中已存在同名的bean定义，会进行冲突检查。
+   + 找到的组件都会被注册到Spring容器中。这是通过调用 `registerBeanDefinition` 方法来完成的。如果在容器中已存在同名的bean定义，会进行冲突检查。
 8. **完成组件扫描**
-   当所有的基础包都被扫描完成，`@ComponentScan` 的操作就执行结束了。
+   + 当所有的基础包都被扫描完成，`@ComponentScan` 的操作就执行结束了。
