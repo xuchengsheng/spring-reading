@@ -1,29 +1,34 @@
 ## @DependsOn
 
 - [@DependsOn](#dependson)
-  - [一、注解描述](#一注解描述)
-  - [二、注解源码](#二注解源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-    - [5.1、Bean注册时序图](#51bean注册时序图)
-    - [5.2、Bean创建时序图](#52bean创建时序图)
-    - [5.3、Bean销毁时序图](#53bean销毁时序图)
+  - [一、基本信息](#一基本信息)
+  - [二、注解描述](#二注解描述)
+  - [三、注解源码](#三注解源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+    - [Bean注册时序图](#bean注册时序图)
+    - [Bean创建时序图](#bean创建时序图)
+    - [Bean销毁时序图](#bean销毁时序图)
   - [六、源码分析](#六源码分析)
-    - [6.1、Bean注册源码分析](#61bean注册源码分析)
-    - [6.2、Bean创建源码分析](#62bean创建源码分析)
-    - [6.3、Bean销毁源码分析](#63bean销毁源码分析)
+    - [Bean注册源码分析](#bean注册源码分析)
+    - [Bean创建源码分析](#bean创建源码分析)
+    - [Bean销毁源码分析](#bean销毁源码分析)
   - [七、注意事项](#七注意事项)
   - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、注解描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133800615) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@DependsOn源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-annotation/spring-annotation-dependsOn)
+
+### 二、注解描述
 
 `@DependsOn`注解，用于定义 Bean 初始化顺序。有时，我们可能会碰到某些 Bean 需要在其他 Bean 之前被初始化的情况。在这种情况下，我们可以使用 `@DependsOn` 注解来明确指定 Bean 的初始化顺序。
 
-### 二、注解源码
+### 三、注解源码
 
 `@DependsOn`注解是 Spring 框架自 3.0 版本开始引入的一个核心注解，其中`value`属性是 `@DependsOn` 注解的主要属性，它允许我们定义当前bean依赖的其他bean的名称。
 
@@ -58,13 +63,16 @@ public @interface DependsOn {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-1. **初始化顺序**：使用 `@DependsOn` 可以确保某个或某些 bean 在当前 bean 之前被初始化。这在某个 bean 的初始化逻辑依赖于另一个 bean 的副作用时特别有用。
-2. **销毁顺序（仅限单例 bean）**：除了影响初始化顺序，`@DependsOn` 也会影响单例 bean 的销毁顺序。依赖关系中的 bean 会在它们所依赖的 bean 之前被销毁。
-3. **指定多个依赖**：`@DependsOn` 允许我们指定多个依赖，这意味着我们可以确保多个 bean 都在当前 bean 之前被初始化。
+1. **初始化顺序**
+   + 使用 `@DependsOn` 可以确保某个或某些 bean 在当前 bean 之前被初始化。这在某个 bean 的初始化逻辑依赖于另一个 bean 的副作用时特别有用。
+2. **销毁顺序（仅限单例 bean）**
+   + 除了影响初始化顺序，`@DependsOn` 也会影响单例 bean 的销毁顺序。依赖关系中的 bean 会在它们所依赖的 bean 之前被销毁。
+3. **指定多个依赖**
+   + `@DependsOn` 允许我们指定多个依赖，这意味着我们可以确保多个 bean 都在当前 bean 之前被初始化。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，最后调用`context.close()`方法关闭容器。
 
@@ -165,9 +173,9 @@ PS
 3. `BeanC` (`BeanC Destroyed` 将会被打印)
 ```
 
-### 五、时序图
+### 六、时序图
 
-#### 5.1、Bean注册时序图
+#### Bean注册时序图
 
 ~~~mermaid
 sequenceDiagram 
@@ -183,7 +191,7 @@ AnnotatedBeanDefinitionReader->>BeanDefinitionReaderUtils: registerBeanDefinitio
 BeanDefinitionReaderUtils->>DefaultListableBeanFactory: registerBeanDefinition(beanName,beanDefinition)<br>工厂存Bean定义
 ~~~
 
-#### 5.2、Bean创建时序图
+#### Bean创建时序图
 
 ~~~mermaid
 sequenceDiagram 
@@ -201,7 +209,7 @@ DefaultSingletonBeanRegistry->>AbstractBeanFactory:返回是否存在依赖 true
 AbstractBeanFactory->>-AbstractBeanFactory:getBean(name)<br>获取被依赖bean实例(递归)
 ~~~
 
-#### 5.3、Bean销毁时序图
+#### Bean销毁时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -246,7 +254,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-#### 6.1、Bean注册源码分析
+#### Bean注册源码分析
 
 首先我们来到`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中步骤2。在`org.springframework.context.annotation.AnnotationConfigApplicationContext#register`方法中，主要是允许我们注册一个或多个组件类（例如，那些使用 `@Component`, `@Service`, `@Repository`, `@Controller`, `@Configuration` 等注解的类）到Spring容器。
 
@@ -340,7 +348,7 @@ static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, Anno
 }
 ```
 
-#### 6.2、Bean创建源码分析
+#### Bean创建源码分析
 
 然后我们来到`org.springframework.context.annotation.AnnotationConfigApplicationContext#AnnotationConfigApplicationContext`构造函数中步骤3。在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中，我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
@@ -500,7 +508,7 @@ public void registerDependentBean(String beanName, String dependentBeanName) {
 }
 ```
 
-#### 6.3、Bean销毁源码分析
+#### Bean销毁源码分析
 
 在`org.springframework.context.support.AbstractApplicationContext#close`方法中，首先是启动了一个同步块，它同步在 `startupShutdownMonitor` 对象上。这确保了在给定时刻只有一个线程可以执行这个块内的代码，防止多线程导致的资源竞争或数据不一致，然后是调用了 `doClose` 方法，最后是为 JVM 注册了一个关闭钩子。
 
@@ -607,18 +615,26 @@ protected void destroyBean(String beanName, @Nullable DisposableBean bean) {
 
 ### 七、注意事项
 
-1. **避免循环依赖**：确保不创建一个循环依赖的场景，即 Bean A 依赖 Bean B，同时 Bean B 又依赖 Bean A。这会导致 Spring 容器无法成功初始化这两个 beans。
-2. **不要过度使用**：只在真正需要控制初始化顺序时使用这个注解。过度使用可能使代码更难理解和维护。
-3. **与构造器/属性注入结合使用**：即使我们使用了 `@DependsOn`，如果一个 bean 需要另一个 bean 作为构造函数参数或属性，我们还是应该使用 `@Autowired` 或 XML 配置进行注入。
-4. **销毁顺序**：`@DependsOn` 也会影响 beans 的销毁顺序。如果 Bean A 依赖于 Bean B，那么在销毁时，Bean A 会在 Bean B 之后被销毁。
-5. **不是为运行时依赖**：请注意，`@DependsOn` 只确保初始化顺序。如果我们的 bean 在运行时需要另一个 bean，那么我们应该考虑其他方法，如注入。
-6. **与 `@Lazy` 结合使用**：如果我们的 bean 使用了 `@Lazy` 注解（表示它会延迟初始化），同时又用 `@DependsOn` 指定了依赖，那么这可能会导致意外的初始化顺序，因为延迟初始化的 bean 可能不会按预期的顺序被初始化。
-7. **组件扫描与显式声明**：如果我们使用组件扫描（通过 `@ComponentScan`）并且在类级别使用了 `@DependsOn`，那么这个注解会生效。但如果通过 XML 定义了该 bean，并且还在类上使用了 `@DependsOn`，那么注解会被忽略，我们应该使用 XML 的 `depends-on` 属性来声明依赖。
-8. **不适用于 `@Bean` 方法的参数**：如果我们在 Java 配置类中使用 `@Bean` 方法定义 beans，并尝试通过方法参数注入依赖，那么 `@DependsOn` 不会对这些依赖产生影响，因为方法参数自然地声明了初始化顺序。
+1. **避免循环依赖**
+   + 确保不创建一个循环依赖的场景，即 Bean A 依赖 Bean B，同时 Bean B 又依赖 Bean A。这会导致 Spring 容器无法成功初始化这两个 beans。
+2. **不要过度使用**
+   + 只在真正需要控制初始化顺序时使用这个注解。过度使用可能使代码更难理解和维护。
+3. **与构造器/属性注入结合使用**
+   + 即使我们使用了 `@DependsOn`，如果一个 bean 需要另一个 bean 作为构造函数参数或属性，我们还是应该使用 `@Autowired` 或 XML 配置进行注入。
+4. **销毁顺序**
+   + `@DependsOn` 也会影响 beans 的销毁顺序。如果 Bean A 依赖于 Bean B，那么在销毁时，Bean A 会在 Bean B 之后被销毁。
+5. **不是为运行时依赖**
+   + 请注意，`@DependsOn` 只确保初始化顺序。如果我们的 bean 在运行时需要另一个 bean，那么我们应该考虑其他方法，如注入。
+6. **与 `@Lazy` 结合使用**
+   + 如果我们的 bean 使用了 `@Lazy` 注解（表示它会延迟初始化），同时又用 `@DependsOn` 指定了依赖，那么这可能会导致意外的初始化顺序，因为延迟初始化的 bean 可能不会按预期的顺序被初始化。
+7. **组件扫描与显式声明**
+   + 如果我们使用组件扫描（通过 `@ComponentScan`）并且在类级别使用了 `@DependsOn`，那么这个注解会生效。但如果通过 XML 定义了该 bean，并且还在类上使用了 `@DependsOn`，那么注解会被忽略，我们应该使用 XML 的 `depends-on` 属性来声明依赖。
+8. **不适用于 `@Bean` 方法的参数**
+   + 如果我们在 Java 配置类中使用 `@Bean` 方法定义 beans，并尝试通过方法参数注入依赖，那么 `@DependsOn` 不会对这些依赖产生影响，因为方法参数自然地声明了初始化顺序。
 
 ### 八、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
 1. **启动类设置**
    + 我们使用 `AnnotationConfigApplicationContext` 来启动 Spring 容器，并指定了 `MyConfiguration` 作为配置类。当程序运行完毕，我们关闭了该容器。
@@ -629,7 +645,7 @@ protected void destroyBean(String beanName, @Nullable DisposableBean bean) {
 4. **结果与结论**
    + 我们运行程序时，初始化的顺序遵循了我们通过 `@DependsOn` 注解定义的依赖关系。同样地，销毁的顺序与初始化顺序相反，这确保了所有的依赖都在被依赖的 bean 之前被销毁。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
 1. **启动和注册**
    + 使用 `AnnotationConfigApplicationContext` 启动 Spring 容器，并将配置类注册到 Spring 上下文中。
