@@ -1,28 +1,33 @@
 ## @Lazy
 
 - [@Lazy](#lazy)
-  - [一、注解描述](#一注解描述)
-  - [二、注解源码](#二注解源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-    - [5.1、Bean注册时序图](#51bean注册时序图)
-    - [5.2、Bean延迟创建时序图](#52bean延迟创建时序图)
-    - [5.3、Bean延迟注入时序图](#53bean延迟注入时序图)
-  - [六、源码分析](#六源码分析)
-    - [6.1、延迟初始化](#61延迟初始化)
-    - [6.2、延迟注入](#62延迟注入)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、注解描述](#二注解描述)
+  - [三、注解源码](#三注解源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+    - [Bean注册时序图](#bean注册时序图)
+    - [Bean延迟创建时序图](#bean延迟创建时序图)
+    - [Bean延迟注入时序图](#bean延迟注入时序图)
+  - [七、源码分析](#七源码分析)
+    - [延迟初始化](#延迟初始化)
+    - [延迟注入](#延迟注入)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、注解描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133800805) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [@Lazy源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-annotation/spring-annotation-lazy)
+
+### 二、注解描述
 
 `@Lazy`注解，它的主要用途是延迟依赖注入的初始化。通常情况下，当 ApplicationContext 被启动和刷新时，所有的单例 bean 会被立即初始化。但有时，可能希望某些 bean 在首次使用时才被初始化。
 
-### 二、注解源码
+### 三、注解源码
 
 `@Lazy`注解是 Spring 框架自 3.0 版本开始引入的一个核心注解，用于控制 bean 的懒加载行为。默认情况下，当 `@Lazy` 被应用，bean 不会在 Spring 容器启动时立即初始化，而是在首次被引用或请求时。这适用于通过 `@Component` 或 `@Bean` 定义的 bean。此外，`@Lazy` 还可以用于注入点，如 `@Autowired`，创建一个懒解析代理，从而实现延迟注入。当用在 `@Configuration` 类上时，它影响该配置中所有的 `@Bean` 定义。
 
@@ -64,14 +69,14 @@ public @interface Lazy {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
 1. **延迟初始化**
    + 当 `@Lazy` 注解应用于一个 `@Bean` 或 `@Component` 上时，该 bean 不会在 Spring 容器启动时立即初始化。而是直到首次被引用或请求时才进行初始化。
 2. **延迟注入**
    + 当 `@Lazy` 注解应用于 `@Autowired` 或其他注入点上时，它导致为所注入的依赖关系创建一个懒解析代理，实现首次访问时的延迟注入。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后从中获取一个 `MyService` bean 并调用其 `show` 方法。
 
@@ -164,9 +169,9 @@ MyBean 的构造函数被调用了!
 hello world!
 ```
 
-### 五、时序图
+### 六、时序图
 
-#### 5.1、Bean注册时序图
+#### Bean注册时序图
 
 ~~~mermaid
 sequenceDiagram 
@@ -185,7 +190,7 @@ AnnotationConfigUtils->>AnnotationConfigUtils:attributesFor(metadata, Lazy.class
 AnnotationConfigUtils->>AbstractBeanDefinition:setLazyInit(lazyInit)<br>设置懒加载属性
 ~~~
 
-#### 5.2、Bean延迟创建时序图
+#### Bean延迟创建时序图
 
 ~~~mermaid
 sequenceDiagram 
@@ -203,7 +208,7 @@ else Bean不是懒加载
 end
 ~~~
 
-#### 5.3、Bean延迟注入时序图
+#### Bean延迟注入时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -236,7 +241,7 @@ DefaultListableBeanFactory->>AutowiredFieldElement:返回被代理的对象
 AutowiredFieldElement->>Field:field.set(bean, value)注入被代理的对象
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后从中获取一个 `MyService` bean 并调用其 `show` 方法。
 
@@ -289,7 +294,7 @@ protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory b
 }
 ```
 
-#### 6.1、延迟初始化
+#### 延迟初始化
 
 在`org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons`方法中，确保所有非懒加载的单例 beans 在容器启动时都被初始化，除非它们显式地标记为懒加载。这也是为什么 `@Lazy` 注解对于那些想要推迟 bean 初始化的场景非常有用。
 
@@ -338,7 +343,7 @@ public void preInstantiateSingletons() throws BeansException {
 }
 ```
 
-#### 6.2、延迟注入
+#### 延迟注入
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#getBean()`方法中，又调用了`doGetBean`方法来实际执行创建Bean的过程，传递给它bean的名称和一些其他默认的参数值。此处，`doGetBean`负责大部分工作，如查找bean定义、创建bean（如果尚未创建）、处理依赖关系等。
 
@@ -663,7 +668,7 @@ protected Object buildLazyResolutionProxy(final DependencyDescriptor descriptor,
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
 1. **默认行为**
    + 如果没有使用 `@Lazy` 注解，Spring 容器会在启动时立即实例化单例 bean。通过使用 `@Lazy`，我们可以改变这个行为，使得 bean 只在首次请求时被初始化。
@@ -680,9 +685,9 @@ protected Object buildLazyResolutionProxy(final DependencyDescriptor descriptor,
 7. **在组件类上使用**
    + 对于直接或间接使用 `@Component`、`@Service`、`@Repository` 或 `@Controller` 注解的类，可以使用 `@Lazy` 注解来使这些组件在首次被注入或查找时才被初始化。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
 1. **上下文初始化**:
    - 使用 `AnnotationConfigApplicationContext` 初始化应用上下文是针对基于Java的配置的推荐做法。
@@ -700,7 +705,7 @@ protected Object buildLazyResolutionProxy(final DependencyDescriptor descriptor,
    - 通过在bean的初始化和方法调用中添加日志或打印语句，可以验证和观察懒加载和代理的行为。
    - 这对于确保应用的预期行为和性能调优非常有用。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
 1. **启动及初始化**:
    - 使用`AnnotationConfigApplicationContext`初始化应用上下文。
