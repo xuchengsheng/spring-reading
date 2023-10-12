@@ -1,3 +1,5 @@
+
+
 ## @Configuration
 
 - [@Configuration](#configuration)
@@ -25,6 +27,7 @@
       - [9.2.2 Lite 模式](#922-lite-模式)
       - [9.2.3 如何选择](#923-如何选择)
 
+✒️ **作者**  - Lex  📝 **博客** - [点击浏览我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/132212963) 📚 **文章目录** - [点击查看所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [点击查看@Configuration源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-configuration/README.md) 
 
 ### 一、注解描述
 
@@ -101,17 +104,23 @@ public @interface Configuration {
 
 ### 三、主要功能
 
-**Bean定义方法**：`@Configuration` 类中可以包含一个或多个使用 `@Bean` 注解的方法，这些方法用于创建和配置应用程序上下文中的 beans。
+1. **Bean定义方法**
+   + `@Configuration` 类中可以包含一个或多个使用 `@Bean` 注解的方法，这些方法用于创建和配置应用程序上下文中的 beans。
 
-**代理支持**：当 `@Configuration` 中的 `proxyBeanMethods` 属性设置为 `true`（这是默认值）时，`@Bean` 方法会被代理以确保正确的 bean 生命周期。这允许在一个配置类中，一个 `@Bean` 方法调用另一个 `@Bean` 方法并返回单例 bean 实例。
+1. **代理支持**
+   + 当 `@Configuration` 中的 `proxyBeanMethods` 属性设置为 `true`（这是默认值）时，`@Bean` 方法会被代理以确保正确的 bean 生命周期。这允许在一个配置类中，一个 `@Bean` 方法调用另一个 `@Bean` 方法并返回单例 bean 实例。
 
-**组件扫描**：由于 `@Configuration` 注解本身带有 `@Component` 注解，因此它可以被 Spring 的组件扫描机制自动检测。这意味着在启用组件扫描的应用程序上下文中，只需声明 `@Configuration` 类而无需明确注册。
+1. **组件扫描**
+   + 由于 `@Configuration` 注解本身带有 `@Component` 注解，因此它可以被 Spring 的组件扫描机制自动检测。这意味着在启用组件扫描的应用程序上下文中，只需声明 `@Configuration` 类而无需明确注册。
 
-**模块化和组合**：通过使用 `@Import` 注解，你可以将多个 `@Configuration` 类组合在一起，从而实现配置的模块化。此外，`@Profile` 注解可以与 `@Configuration` 一起使用，以提供基于环境或其他条件的配置。
+1. **模块化和组合**
+   + 通过使用 `@Import` 注解，我们可以将多个 `@Configuration` 类组合在一起，从而实现配置的模块化。此外，`@Profile` 注解可以与 `@Configuration` 一起使用，以提供基于环境或其他条件的配置。
 
-**属性源和属性占位符**：`@Configuration` 类可以与 `@PropertySource` 注解结合使用，从而将属性文件的值导入 Spring 环境。这些值可以使用 `@Value` 注解或直接通过 `Environment` API 注入到 beans 中。
+1. **属性源和属性占位符**
+   + `@Configuration` 类可以与 `@PropertySource` 注解结合使用，从而将属性文件的值导入 Spring 环境。这些值可以使用 `@Value` 注解或直接通过 `Environment` API 注入到 beans 中。
 
-**与其他注解结合**：`@Configuration` 类通常与其他 Spring 注解（如 `@ComponentScan`、`@PropertySource` 等）结合使用，以提供全面的配置机制。
+1. **与其他注解结合**：
+   + `@Configuration` 类通常与其他 Spring 注解（如 `@ComponentScan`、`@PropertySource` 等）结合使用，以提供全面的配置机制。
 
 ### 四、最佳实践
 
@@ -163,7 +172,7 @@ com.xcs.spring.bean.MyBean@f736069
 
 #### 4.2、proxyBeanMethods设置为false
 
-将 `proxyBeanMethods` 设置为 `false` 时，此代理行为被禁用。这意味着，如果你在配置类内部多次调用同一个 `@Bean` 方法，每次都会创建一个新的实例。
+将 `proxyBeanMethods` 设置为 `false` 时，此代理行为被禁用。这意味着，如果我们在配置类内部多次调用同一个 `@Bean` 方法，每次都会创建一个新的实例。
 
 ```java
 @Configuration(proxyBeanMethods = false)
@@ -176,7 +185,7 @@ public class MyConfiguration {
 }
 ```
 
-运行结果发现，两次对 `MyBean` 对象的引用，这两个引用具有不相同的 hashcode (`@3b69e7d1`，`@815b41f`)，表示它们引用的是不相同的对象。因为我们在 `@Configuration` 注解设置了 `proxyBeanMethods = false`，并在 `ConfigurationApplication` 的 `main` 方法中两次调用 `myBean()` 方法，每次调用都会创建一个新的 `MyBean` 实例，这就是为什么你看到两个不同的 hashcodes。
+运行结果发现，两次对 `MyBean` 对象的引用，这两个引用具有不相同的 hashcode (`@3b69e7d1`，`@815b41f`)，表示它们引用的是不相同的对象。因为我们在 `@Configuration` 注解设置了 `proxyBeanMethods = false`，并在 `ConfigurationApplication` 的 `main` 方法中两次调用 `myBean()` 方法，每次调用都会创建一个新的 `MyBean` 实例，这就是为什么我们看到两个不同的 hashcodes。
 
 ```
 com.xcs.spring.bean.MyBean@3b69e7d1
@@ -704,8 +713,8 @@ private Object resolveBeanReference(Method beanMethod, Object[] beanMethodArgs,
 
 ##### 9.2.3 如何选择
 
-- 如果你的配置中需要确保在配置类中调用的bean始终是Spring容器中的单例bean，选择full模式。
-- 如果你的配置类只是简单地定义beans并注入依赖，且不需要在配置类方法之间共享单例实例，选择lite模式。
-- 如果你关心应用的启动性能，特别是在云环境或微服务中，使用lite模式可能更合适，因为它避免了额外的CGLIB处理。
+- 如果我们的配置中需要确保在配置类中调用的bean始终是Spring容器中的单例bean，选择full模式。
+- 如果我们的配置类只是简单地定义beans并注入依赖，且不需要在配置类方法之间共享单例实例，选择lite模式。
+- 如果我们关心应用的启动性能，特别是在云环境或微服务中，使用lite模式可能更合适，因为它避免了额外的CGLIB处理。
 
 最终，根据项目的具体需求和场景选择合适的模式。如果没有特殊的单例需求，推荐使用lite模式，因为它更简单且启动性能更好。
