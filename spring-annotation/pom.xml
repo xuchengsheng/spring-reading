@@ -21,6 +21,7 @@
         <module>spring-annotation-dependsOn</module>
         <module>spring-annotation-lazy</module>
         <module>spring-annotation-conditional</module>
+        <module>spring-annotation-value</module>
     </modules>
 
 </project>
