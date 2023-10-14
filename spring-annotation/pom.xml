@@ -22,6 +22,7 @@
         <module>spring-annotation-lazy</module>
         <module>spring-annotation-conditional</module>
         <module>spring-annotation-value</module>
+        <module>spring-annotation-autowired</module>
     </modules>
 
 </project>
