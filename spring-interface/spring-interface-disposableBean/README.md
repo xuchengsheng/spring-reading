@@ -1,22 +1,28 @@
 ## DisposableBean
 
 - [DisposableBean](#disposablebean)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845687) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [DisposableBean源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-interface/spring-interface-disposableBean)
+
+### 二、接口描述
 
 `DisposableBean` 接口允许执行某些资源清理操作，比如我们可以使用这个接口来确保某些资源，比如文件句柄、网络连接、数据库连接等，被正确地释放或清理。
 
-### 二、接口源码
+### 三、接口源码
 
 `DisposableBean` 是 Spring 框架自 12.08.2003 开始引入的一个核心接口。如果bean在销毁时希望释放资源，那么可以实现此接口，另外实现 Java 的 `AutoCloseable` 接口以达到同样的目的
 
@@ -50,11 +56,12 @@ public interface DisposableBean {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**销毁回调**：当 bean 被 Spring 容器销毁时，如果它实现了 `DisposableBean` 接口，容器会自动调用其 `destroy()` 方法。这为 beans 提供了一个机会在销毁之前执行任何必要的清理操作。
+1. **销毁回调**
+   + 当 bean 被 Spring 容器销毁时，如果它实现了 `DisposableBean` 接口，容器会自动调用其 `destroy()` 方法。这为 beans 提供了一个机会在销毁之前执行任何必要的清理操作。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，最后调用`context.close()`方法关闭容器。
 
@@ -111,7 +118,7 @@ Database connection established
 Database connection closed
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -139,7 +146,7 @@ sequenceDiagram
     AbstractApplicationContext-->>DisposableBeanApplication:请求关闭上下文结束
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后通过调用 `context.close()` 方法来关闭应用上下文。
 
@@ -314,61 +321,81 @@ public class MyDisposableBean implements DisposableBean {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**不要过度依赖**: 尽管 `DisposableBean` 提供了一种定义销毁逻辑的标准方法，但更推荐使用 `@PreDestroy` 注解或在 bean 定义中指定 `destroy-method` 属性。这些方法通常更简单，更具有声明性，并且避免了不必要的代码耦合。
+1. **不要过度依赖**
+   + 尽管 `DisposableBean` 提供了一种定义销毁逻辑的标准方法，但更推荐使用 `@PreDestroy` 注解或在 bean 定义中指定 `destroy-method` 属性。这些方法通常更简单，更具有声明性，并且避免了不必要的代码耦合。
 
-**原型 bean**: 对于原型作用域的 beans，Spring 不会管理它们的完整生命周期。这意味着对于原型 beans，`DisposableBean` 的 `destroy()` 方法不会被自动调用。应确保通过其他方式处理这些 bean 的资源释放。
+2. **原型 bean**
+   + 对于原型作用域的 beans，Spring 不会管理它们的完整生命周期。这意味着对于原型 beans，`DisposableBean` 的 `destroy()` 方法不会被自动调用。应确保通过其他方式处理这些 bean 的资源释放。
 
-**与初始化方法配合**: 如果我们正在使用 `DisposableBean` 来处理销毁逻辑，可能也会考虑使用 `InitializingBean` 来处理初始化逻辑。但同样，推荐使用 `@PostConstruct` 注解或 `init-method` 属性来定义初始化方法。
+3. **与初始化方法配合**
+   + 如果我们正在使用 `DisposableBean` 来处理销毁逻辑，可能也会考虑使用 `InitializingBean` 来处理初始化逻辑。但同样，推荐使用 `@PostConstruct` 注解或 `init-method` 属性来定义初始化方法。
 
-**避免重复代码**: 如果多个 beans 具有相似的销毁逻辑，考虑将这些逻辑提取到一个共享方法或帮助类中，以减少重复代码和增强可维护性。
+4. **避免重复代码**
+   + 如果多个 beans 具有相似的销毁逻辑，考虑将这些逻辑提取到一个共享方法或帮助类中，以减少重复代码和增强可维护性。
 
-**避免长时间运行的操作**: `destroy()` 方法应该快速执行并释放资源。避免在其中执行可能耗时的操作，因为这可能会延迟应用的关闭过程。
+5. **避免长时间运行的操作**
+   + `destroy()` 方法应该快速执行并释放资源。避免在其中执行可能耗时的操作，因为这可能会延迟应用的关闭过程。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**应用启动**: 我们创建了一个启动类 `DisposableBeanApplication`，其中初始化了一个基于注解的应用上下文 `AnnotationConfigApplicationContext`。这个上下文根据 `MyConfiguration` 类配置了 Spring 容器。
+1. **应用启动**
+   + 我们创建了一个启动类 `DisposableBeanApplication`，其中初始化了一个基于注解的应用上下文 `AnnotationConfigApplicationContext`。这个上下文根据 `MyConfiguration` 类配置了 Spring 容器。
 
-**Java配置**: 在 `MyConfiguration` 类中，我们使用 `@Bean` 注解定义了一个名为 `myDisposableBean` 的 bean。这确保了 `MyDisposableBean` 类的实例被 Spring 容器管理。
+2. **Java配置**
+   + 在 `MyConfiguration` 类中，我们使用 `@Bean` 注解定义了一个名为 `myDisposableBean` 的 bean。这确保了 `MyDisposableBean` 类的实例被 Spring 容器管理。
 
-**资源管理**: `MyDisposableBean` 类模拟了数据库的连接和断开过程。当这个类被实例化时，它模拟建立了一个数据库连接。然后，当这个 bean 被销毁时（由于上下文的关闭），它的 `destroy()` 方法被调用，模拟了数据库连接的关闭。
+3. **资源管理**
+   + `MyDisposableBean` 类模拟了数据库的连接和断开过程。当这个类被实例化时，它模拟建立了一个数据库连接。然后，当这个 bean 被销毁时（由于上下文的关闭），它的 `destroy()` 方法被调用，模拟了数据库连接的关闭。
 
-**应用关闭**: 在启动类的 `main` 方法的最后，通过调用 `context.close()` 方法来关闭应用上下文。这导致容器销毁所有单例 beans。在这个过程中，`MyDisposableBean` bean 的 `destroy()` 方法被调用，从而模拟关闭了数据库连接。
+4. **应用关闭**
+   + 在启动类的 `main` 方法的最后，通过调用 `context.close()` 方法来关闭应用上下文。这导致容器销毁所有单例 beans。在这个过程中，`MyDisposableBean` bean 的 `destroy()` 方法被调用，从而模拟关闭了数据库连接。
 
-**输出结果**: 运行程序时，我们首先看到 `"Database connection established"`，这是 `MyDisposableBean` 构造函数中的输出，表示模拟的数据库连接已经建立。随后，当应用上下文关闭时，我们看到 `"Database connection closed"`，这是 `MyDisposableBean` 的 `destroy()` 方法中的输出，表示模拟的数据库连接已经关闭。
+5. **输出结果**
+   + 运行程序时，我们首先看到 `"Database connection established"`，这是 `MyDisposableBean` 构造函数中的输出，表示模拟的数据库连接已经建立。随后，当应用上下文关闭时，我们看到 `"Database connection closed"`，这是 `MyDisposableBean` 的 `destroy()` 方法中的输出，表示模拟的数据库连接已经关闭。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动和关闭**:
+1. **启动和关闭**:
 
-- 我们创建了 `DisposableBeanApplication` 启动类，其中初始化了一个基于注解的应用上下文 `AnnotationConfigApplicationContext`。
-- 通过传递 `MyConfiguration` 类作为构造参数来配置 Spring 容器。
-- 使用 `context.close()` 方法来关闭应用上下文，触发资源的清理和释放。
+   - 我们创建了 `DisposableBeanApplication` 启动类，其中初始化了一个基于注解的应用上下文 `AnnotationConfigApplicationContext`。
 
-**关闭的同步操作**:
+   - 通过传递 `MyConfiguration` 类作为构造参数来配置 Spring 容器。
 
-- 在 `AbstractApplicationContext#close` 方法中，启动了一个同步块，确保在给定时刻只有一个线程可以关闭应用上下文，防止资源竞争或数据不一致。
-- 关闭上下文后，任何先前注册的 JVM 关闭钩子都会被移除，因为上下文已经明确地被关闭了。
+   - 使用 `context.close()` 方法来关闭应用上下文，触发资源的清理和释放。
 
-**实际关闭操作**:
 
-- 在 `AbstractApplicationContext#doClose` 方法中，调用 `destroyBeans` 方法来销毁容器中的 beans。
+2. **关闭的同步操作**:
 
-**销毁beans**:
+   - 在 `AbstractApplicationContext#close` 方法中，启动了一个同步块，确保在给定时刻只有一个线程可以关闭应用上下文，防止资源竞争或数据不一致。
 
-- 通过 `AbstractApplicationContext#destroyBeans` 方法，`BeanFactory` 调用其 `destroySingletons` 方法来销毁所有缓存的单例 beans。
-- 在 `DefaultListableBeanFactory` 中，首先确保调用了其父类的销毁逻辑。
-- `DefaultSingletonBeanRegistry#destroySingletons` 会获取所有需要销毁的 beans 的名称，并以创建的相反顺序进行销毁，以正确处理依赖关系。
+   - 关闭上下文后，任何先前注册的 JVM 关闭钩子都会被移除，因为上下文已经明确地被关闭了。
 
-**具体的bean销毁**:
 
-- 对于每个要销毁的 bean，都会调用 `DefaultSingletonBeanRegistry#destroySingleton` 方法。
-- 如果 bean 实现了 `DisposableBean` 接口，它的 `destroy` 方法会被调用。
-- 为了确保线程安全，许多操作都在同步块中执行，特别是当操作 `disposableBeans` 时。
+3. **实际关闭操作**:
+   - 在 `AbstractApplicationContext#doClose` 方法中，调用 `destroyBeans` 方法来销毁容器中的 beans。
 
-**自定义销毁逻辑**:
 
-- 最终，到达我们定义的 `MyDisposableBean` 类。当这个类的实例被销毁时，它会模拟关闭一个数据库连接。
+4. **销毁beans**:
+
+   - 通过 `AbstractApplicationContext#destroyBeans` 方法，`BeanFactory` 调用其 `destroySingletons` 方法来销毁所有缓存的单例 beans。
+
+   - 在 `DefaultListableBeanFactory` 中，首先确保调用了其父类的销毁逻辑。
+
+   - `DefaultSingletonBeanRegistry#destroySingletons` 会获取所有需要销毁的 beans 的名称，并以创建的相反顺序进行销毁，以正确处理依赖关系。
+
+
+5. **具体的bean销毁**:
+
+   - 对于每个要销毁的 bean，都会调用 `DefaultSingletonBeanRegistry#destroySingleton` 方法。
+
+   - 如果 bean 实现了 `DisposableBean` 接口，它的 `destroy` 方法会被调用。
+
+   - 为了确保线程安全，许多操作都在同步块中执行，特别是当操作 `disposableBeans` 时。
+
+
+6. **自定义销毁逻辑**:
+   - 最终，到达我们定义的 `MyDisposableBean` 类。当这个类的实例被销毁时，它会模拟关闭一个数据库连接。
