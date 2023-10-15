@@ -1,23 +1,28 @@
 ## BeanFactoryPostProcessor
 
 - [BeanFactoryPostProcessor](#beanfactorypostprocessor)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、接口描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133844965) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [BeanFactoryPostProcessor源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-interface/spring-interface-beanFactoryPostProcessor)
+
+### 二、接口描述
 
 `BeanFactoryPostProcessor` 是一个接口，任何实现此接口的类都必须提供`postProcessBeanFactory`方法的实现。此方法提供了一个机会，在bean实例化之前修改bean的定义。
 
-### 二、接口源码
+### 三、接口源码
 
 `BeanFactoryPostProcessor` 是 Spring 框架自 06.07.2003 开始引入的一个核心接口。此接口提供了一个强大的方式来修改bean的属性和依赖关系，使得我们可以根据特定的配置或环境条件动态地调整这些值。
 
@@ -48,14 +53,21 @@ public interface BeanFactoryPostProcessor {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-+ **修改Bean定义**：在Spring加载所有bean定义后，但在它开始实例化这些bean之前，`BeanFactoryPostProcessor`会被调用。这意味着我们可以使用它来修改这些bean定义。
-+ **更改属性值**：你可以更改bean的属性或依赖，这在某些场景下，如需要根据环境或其他外部因素动态地配置bean时，会非常有用。
-+ **添加或删除Bean定义**：不仅可以修改现有的bean定义，还可以添加新的bean定义或删除现有的bean定义。
-+ **应用多个BeanFactoryPostProcessors**：如果有多个`BeanFactoryPostProcessor`，你可以通过实现`Ordered`接口来控制它们的执行顺序。
+1. **修改Bean定义**
+   + 在Spring加载所有bean定义后，但在它开始实例化这些bean之前，`BeanFactoryPostProcessor`会被调用。这意味着我们可以使用它来修改这些bean定义。
 
-### 四、最佳实践
+2. **更改属性值**
+   + 我们可以更改bean的属性或依赖，这在某些场景下，如需要根据环境或其他外部因素动态地配置bean时，会非常有用。
+
+3. **添加或删除Bean定义**
+   + 不仅可以修改现有的bean定义，还可以添加新的bean定义或删除现有的bean定义。
+
+4. **应用多个BeanFactoryPostProcessors**
+   + 如果有多个`BeanFactoryPostProcessor`，我们可以通过实现`Ordered`接口来控制它们的执行顺序。
+
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后我们会调用`mySimpleBean1`和`mySimpleBean2`中的`show()`方法，我们可以判断`MySimpleBean`的作用域是单例还是原型。如果它们指向同一个实例，那么它是单例的；否则，它是原型的。
 
@@ -103,7 +115,7 @@ public class MySimpleBean {
 }
 ```
 
-这个 `MyBeanFactoryPostProcessor` 类是一个简单的 `BeanFactoryPostProcessor` 的实现，它在被调用时，会从`beanFactory`工厂中获取名为`mySimpleBean`的bean定义，默认情况下，所有的bean都是单例的，然后将`mySimpleBean`的作用域从单例改为原型。在实际应用中，你可能会在 `postProcessBeanFactory` 方法内部执行更复杂的操作，例如修改 bean 的属性、对Bean对象进行代理做功能增强处理、更改它们的作用域或添加新的 bean 定义等。
+这个 `MyBeanFactoryPostProcessor` 类是一个简单的 `BeanFactoryPostProcessor` 的实现，它在被调用时，会从`beanFactory`工厂中获取名为`mySimpleBean`的bean定义，默认情况下，所有的bean都是单例的，然后将`mySimpleBean`的作用域从单例改为原型。在实际应用中，我们可能会在 `postProcessBeanFactory` 方法内部执行更复杂的操作，例如修改 bean 的属性、对Bean对象进行代理做功能增强处理、更改它们的作用域或添加新的 bean 定义等。
 
 ```java
 public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
@@ -129,7 +141,7 @@ MySimpleBean instance: com.xcs.spring.config.MySimpleBean@11392934
 MySimpleBean instance: com.xcs.spring.config.MySimpleBean@6892b3b6
 ```
 
-### 五、时序图
+### 六、时序图
 
 ```mermaid
 sequenceDiagram
@@ -153,7 +165,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext->>BeanFactoryPostProcessorApplication:初始化完成
 ```
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。从Spring上下文中获取MySimpleBean的两个实例，调用这两个实例的show方法，如果MySimpleBean是单例的，那么这两个实例应该是同一个对象，反之则不是。
 
@@ -316,36 +328,49 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**考虑其他的`BeanFactoryPostProcessor`**：在大型应用程序中，可能存在多个`BeanFactoryPostProcessor`。你需要确保它们不会互相冲突或导致不一致的bean定义。
+1. **考虑其他的`BeanFactoryPostProcessor`**
+   + 在大型应用程序中，可能存在多个`BeanFactoryPostProcessor`。我们需要确保它们不会互相冲突或导致不一致的bean定义。
 
-**注意执行顺序**：如果有多个`BeanFactoryPostProcessor`，它们的执行顺序可能会影响结果。使用`Ordered`接口或`PriorityOrdered`接口来明确设置执行顺序。
+2. **注意执行顺序**
+   + 如果有多个`BeanFactoryPostProcessor`，它们的执行顺序可能会影响结果。使用`Ordered`接口或`PriorityOrdered`接口来明确设置执行顺序。
 
-**避免循环依赖**：修改bean定义可能会引入循环依赖。确保你充分理解bean之间的依赖关系，并尝试避免修改这些关系。比如当你修改了`BeanDefinition`构造函数，等等情况都有可能引入循环依赖。
+3. **避免循环依赖**
+   + 修改bean定义可能会引入循环依赖。确保我们充分理解bean之间的依赖关系，并尝试避免修改这些关系。比如当我们修改了`BeanDefinition`构造函数，等等情况都有可能引入循环依赖。
 
-**不要过度使用**：虽然`BeanFactoryPostProcessor`是一个非常强大接口，但这并不意味着我们就应该频繁使用它。只在真正需要的时候使用它，并考虑是否有其他更简单、更直观的方法可以达到同样的目的。
+4. **不要过度使用**
+   + 虽然`BeanFactoryPostProcessor`是一个非常强大接口，但这并不意味着我们就应该频繁使用它。只在真正需要的时候使用它，并考虑是否有其他更简单、更直观的方法可以达到同样的目的。
 
-**谨慎使用**：虽然`BeanFactoryPostProcessor`是一个非常强大接口，允许你修改bean的定义。这意味着你可以更改bean的类、作用域、属性等。我们要在做这些更改时要非常小心，想想为什么要修改？影响的范围有多少？，以免引入不一致或不可预测的行为。
+5. **谨慎使用**
+   + 虽然`BeanFactoryPostProcessor`是一个非常强大接口，允许我们修改bean的定义。这意味着我们可以更改bean的类、作用域、属性等。我们要在做这些更改时要非常小心，想想为什么要修改？影响的范围有多少？，以免引入不一致或不可预测的行为。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**初始化与配置**：使用`AnnotationConfigApplicationContext`, 我们成功地启动了Spring容器并加载了`MyConfiguration`配置。在`MyConfiguration`中, 我们定义了两个核心bean：`MySimpleBean`和`MyBeanFactoryPostProcessor`.
+1. **初始化与配置**
+   + 使用`AnnotationConfigApplicationContext`, 我们成功地启动了Spring容器并加载了`MyConfiguration`配置。在`MyConfiguration`中, 我们定义了两个核心bean：`MySimpleBean`和`MyBeanFactoryPostProcessor`.
 
-**修改Bean的作用域**：虽然`MySimpleBean`默认是单例，但通过`MyBeanFactoryPostProcessor`，我们改变了这一默认行为，将其转变为原型作用域。这种转变是通过覆盖`postProcessBeanFactory`方法并更改`mySimpleBean`的bean定义来完成的。
+2. **修改Bean的作用域**
+   + 虽然`MySimpleBean`默认是单例，但通过`MyBeanFactoryPostProcessor`，我们改变了这一默认行为，将其转变为原型作用域。这种转变是通过覆盖`postProcessBeanFactory`方法并更改`mySimpleBean`的bean定义来完成的。
 
-**验证修改**：当我们从主应用程序获取`MySimpleBean`的两个实例并调用它们的`show`方法时，输出的实例地址明确地告诉我们这两个bean是不同的实例。
+3. **验证修改**
+   + 当我们从主应用程序获取`MySimpleBean`的两个实例并调用它们的`show`方法时，输出的实例地址明确地告诉我们这两个bean是不同的实例。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动与上下文**：利用 `AnnotationConfigApplicationContext`，我们初始化了Spring容器，并加载了`MyConfiguration`作为主要配置。
+1. **启动与上下文**
+   + 利用 `AnnotationConfigApplicationContext`，我们初始化了Spring容器，并加载了`MyConfiguration`作为主要配置。
 
-**核心调用**：Spring容器的`refresh`方法中，`invokeBeanFactoryPostProcessors(beanFactory)`确保所有的`BeanFactoryPostProcessor`得到适当的调用。
+2. **核心调用**
+   + Spring容器的`refresh`方法中，`invokeBeanFactoryPostProcessors(beanFactory)`确保所有的`BeanFactoryPostProcessor`得到适当的调用。
 
-**回调顺序**：在Spring中，实现了`BeanFactoryPostProcessor`接口的bean不是随机调用的。Spring确保它们按照`PriorityOrdered`、`Ordered`和无顺序的层次结构进行分类和调用。
+3. **回调顺序**
+   + 在Spring中，实现了`BeanFactoryPostProcessor`接口的bean不是随机调用的。Spring确保它们按照`PriorityOrdered`、`Ordered`和无顺序的层次结构进行分类和调用。
 
-**自定义逻辑**：当我们实现`BeanFactoryPostProcessor`接口并提供自定义逻辑时（例如更改Bean的作用域），该逻辑将在上述过程的适当阶段被调用。
+4. **自定义逻辑**
+   + 当我们实现`BeanFactoryPostProcessor`接口并提供自定义逻辑时（例如更改Bean的作用域），该逻辑将在上述过程的适当阶段被调用。
 
-**具体实践**：通过具体示例，我们查看了如何利用`BeanFactoryPostProcessor`在bean实例化前更改bean定义。在我们的例子中，`MySimpleBean`的作用域从单例被更改为原型。
+5. **具体实践**
+   + 通过具体示例，我们查看了如何利用`BeanFactoryPostProcessor`在bean实例化前更改bean定义。在我们的例子中，`MySimpleBean`的作用域从单例被更改为原型。
