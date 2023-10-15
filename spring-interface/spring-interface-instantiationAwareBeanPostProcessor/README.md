@@ -1,25 +1,30 @@
 ## InstantiationAwareBeanPostProcessor
 
 - [InstantiationAwareBeanPostProcessor](#instantiationawarebeanpostprocessor)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、接口描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845204) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [InstantiationAwareBeanPostProcessor源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-interface/spring-interface-instantiationAwareBeanPostProcessor)
+
+### 二、接口描述
 
 `InstantiationAwareBeanPostProcessor` 提供了在 bean 实例化之前和之后的回调。这意味着我们有机会在实际的目标 bean 实例之前返回一个代理，或者影响 bean 的构造。
 
-### 二、接口源码
+### 三、接口源码
 
-`InstantiationAwareBeanPostProcessor` 是 Spring 框架自 1.2 版本开始引入的一个核心接口。其目的在于提供更细粒度的 bean 生命周期管理，特别是在 bean 的实例化阶段。尽管这个接口是公开的，但它主要针对 Spring 内部的需求进行设计。对于常规的业务开发，我们往往只需要使用 `BeanPostProcessor` 接口，它为 bean 的生命周期提供了足够的回调方法，满足大多数应用场景的需求。为了方便我们使用，Spring 还提供了一个名为 `InstantiationAwareBeanPostProcessorAdapter` 的适配器类。这个类已为我们默认实现了所有方法（基本上是空操作），使得我们可以只关注自己需要的回调方法，无需为其他方法提供冗余的实现。最后，如果我们深入探讨此接口的核心实现，我们会发现 `AbstractAutoProxyCreator` 和 `LazyInitTargetSourceCreator` 两个关键类。前者是 Spring AOP 的基石，它负责自动为匹配的 bean 创建代理，实现面向切面的编程；后者与 bean 的懒初始化策略有关，允许 bean 在首次请求时才被初始化和装配。
+`InstantiationAwareBeanPostProcessor` 是 Spring 框架自 1.2 版本开始引入的一个核心接口。**`postProcessBeforeInstantiation`**：在 bean 实例化之前调用。它允许我们返回 bean 的另一个实例，例如一个代理，这将阻止 Spring 实例化目标 bean。**`postProcessAfterInstantiation`**：在 bean 实例化之后但在设置任何属性之前调用。这可用于基于字段的依赖注入或其他自定义初始化任务。**`postProcessPropertyValues`**：在 bean 上设置属性值之前调用此方法。它允许我们修改属性，添加新属性，或返回一个完全不同的属性集。
 
 ```java
 /**
@@ -108,13 +113,18 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-+ 实例化前的处理：在 bean 实际被实例化之前调用，允许你返回一个代理对象来替代真正的目标 bean，这样你可以避免 bean 的默认实例化过程，这是 AOP 和代理创建中非常有用的一个步骤。
-+ 实例化后的处理：在 bean 实例化后但在属性注入之前调用，这个回调为你提供了在 Spring 自动装配或属性设置之前对 bean 进行自定义处理的机会。
-+ 属性处理：允许你在 Spring 进行属性注入之前对 bean 的属性值进行处理或替换，这是在进行自定义属性注入或验证 bean 属性的理想之处。
+1. **实例化前的处理**
+   + 在 bean 实际被实例化之前调用，允许你返回一个代理对象来替代真正的目标 bean，这样你可以避免 bean 的默认实例化过程，这是 AOP 和代理创建中非常有用的一个步骤。
 
-### 四、最佳实践
+2. **实例化后的处理**
+   + 在 bean 实例化后但在属性注入之前调用，这个回调为你提供了在 Spring 自动装配或属性设置之前对 bean 进行自定义处理的机会。
+
+3. **属性处理**
+   + 允许你在 Spring 进行属性注入之前对 bean 的属性值进行处理或替换，这是在进行自定义属性注入或验证 bean 属性的理想之处。
+
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`DataBase`类型的bean，最后打印了该bean的几个属性。这样我们就可以确认bean的状态啦。
 
@@ -225,7 +235,7 @@ password = ******
 postInstantiationFlag = true
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -263,7 +273,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext->>InstantiationAwareBeanPostProcessorApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后通过调用`context.getBean(DataBase.class)`，应用程序从Spring容器中获取了一个名为`DataBase`的bean实例，并打印了用户名，密码，标志位。
 
@@ -594,68 +604,84 @@ public class MyInstantiationAwareBeanPostProcessor implements InstantiationAware
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**影响性能**：这种后置处理器会在每个bean的创建过程中调用多次。尽量确保后处理器的逻辑简单且执行速度快，以减少对应用性能的影响。如果你在这三个方法`postProcessBeforeInstantiation`，`postProcessAfterInstantiation`，`postProcessProperties`中执行了复杂的逻辑，如数据库查询、远程调用或其他IO操作，由于每个bean的创建都会触发后处理器，这意味着上述方法将被频繁调用，这会严重影响应用启动时间和bean的创建性能。
+1. **影响性能**
+   + 这种后置处理器会在每个bean的创建过程中调用多次。尽量确保后处理器的逻辑简单且执行速度快，以减少对应用性能的影响。如果你在这三个方法`postProcessBeforeInstantiation`，`postProcessAfterInstantiation`，`postProcessProperties`中执行了复杂的逻辑，如数据库查询、远程调用或其他IO操作，由于每个bean的创建都会触发后处理器，这意味着上述方法将被频繁调用，这会严重影响应用启动时间和bean的创建性能。
 
-**返回非空的bean**：如果在`postProcessBeforeInstantiation`方法中返回了非空的bean，那么正常的bean实例化和属性设置流程将被短路。这意味着`postProcessAfterInstantiation`和`postProcessProperties`等方法将不会被调用。另外也会导致`BeanPostProcessor`类中的`postProcessBeforeInitialization`也不会被调用
+2. **返回非空的bean**
+   + 如果在`postProcessBeforeInstantiation`方法中返回了非空的bean，那么正常的bean实例化和属性设置流程将被短路。这意味着`postProcessAfterInstantiation`和`postProcessProperties`等方法将不会被调用。另外也会导致`BeanPostProcessor`类中的`postProcessBeforeInitialization`也不会被调用
 
-**避免修改非目标bean**：如果我们的`InstantiationAwareBeanPostProcessor`只对特定类型或名称的bean进行操作，确保在执行任何操作之前进行适当的检查。
+3. **避免修改非目标bean**
+   + 如果我们的`InstantiationAwareBeanPostProcessor`只对特定类型或名称的bean进行操作，确保在执行任何操作之前进行适当的检查。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动与上下文初始化**:
+1. **启动与上下文初始化**:
 
-- 使用`AnnotationConfigApplicationContext`来启动应用，并注册了配置类`MyConfiguration`。
-- 从Spring上下文中获取了一个`DataBase`类型的bean并打印了它的属性，这是为了验证bean状态的更改是否成功。
+   - 使用`AnnotationConfigApplicationContext`来启动应用，并注册了配置类`MyConfiguration`。
 
-**配置类与Bean定义**:
+   - 从Spring上下文中获取了一个`DataBase`类型的bean并打印了它的属性，这是为了验证bean状态的更改是否成功。
 
-- 通过`MyConfiguration`配置类，两个Bean（`DataBase`和`MyInstantiationAwareBeanPostProcessor`）被定义。其中`MyInstantiationAwareBeanPostProcessor`是一个后处理器，它会在Spring容器中的其他Bean实例化时触发。
 
-**拦截实例化过程**:
+2. **配置类与Bean定义**:
+   - 通过`MyConfiguration`配置类，两个Bean（`DataBase`和`MyInstantiationAwareBeanPostProcessor`）被定义。其中`MyInstantiationAwareBeanPostProcessor`是一个后处理器，它会在Spring容器中的其他Bean实例化时触发。
 
-- `MyInstantiationAwareBeanPostProcessor`类实现了Spring的`InstantiationAwareBeanPostProcessor`接口，这允许它介入bean的实例化、初始化和属性设置过程。
-- 在`postProcessBeforeInstantiation`方法中，当`DataBase` bean开始实例化之前，一个通知消息被打印。
-- 在`postProcessAfterInstantiation`方法中，bean已经实例化，此时会设置一个标记属性并打印一条通知消息。
-- 在`postProcessProperties`方法中，修改了`DataBase` bean的密码属性，并打印了通知消息。
 
-**DataBase接口与实现**:
+3. **拦截实例化过程**:
 
-- 定义了一个`DataBase`接口，该接口定义了数据库连接的基本属性及其getters和setters。
-- 在`DataBaseImpl`类中，实现了这个接口，并使用`@Value`注解为属性设置了默认值。
+   - `MyInstantiationAwareBeanPostProcessor`类实现了Spring的`InstantiationAwareBeanPostProcessor`接口，这允许它介入bean的实例化、初始化和属性设置过程。
 
-**运行结果**:
+   - 在`postProcessBeforeInstantiation`方法中，当`DataBase` bean开始实例化之前，一个通知消息被打印。
 
-- 从输出中可以看到，`dataBase` bean从准备实例化到实例化的过程都被成功拦截，并且密码已经被屏蔽。
+   - 在`postProcessAfterInstantiation`方法中，bean已经实例化，此时会设置一个标记属性并打印一条通知消息。
 
-#### 8.2、源码分析总结
+   - 在`postProcessProperties`方法中，修改了`DataBase` bean的密码属性，并打印了通知消息。
 
-**启动及Bean获取**
 
-- 应用程序启动时，`AnnotationConfigApplicationContext`类被用于初始化Spring上下文，并注册了配置类`MyConfiguration`。
-- 然后，应用程序从Spring上下文中获取名为`DataBase`的bean实例并打印它的一些属性。
+4. **DataBase接口与实现**:
 
-**注册Bean及后处理器**
+   - 定义了一个`DataBase`接口，该接口定义了数据库连接的基本属性及其getters和setters。
 
-- 通过`MyConfiguration`配置类，注册了两个Bean，其中一个是`MyInstantiationAwareBeanPostProcessor`，这个后处理器用于在Bean实例化过程中介入。
+   - 在`DataBaseImpl`类中，实现了这个接口，并使用`@Value`注解为属性设置了默认值。
 
-**实例化前的拦截**
 
-- 在Bean实例化之前，Spring首先调用`postProcessBeforeInstantiation`方法。这里，我们只是简单地打印了一条消息并返回了null，表示让Spring继续执行标准的Bean实例化。
+5. **运行结果**:
+   - 从输出中可以看到，`dataBase` bean从准备实例化到实例化的过程都被成功拦截，并且密码已经被屏蔽。
 
-**Bean属性注入**
 
-- 在Bean实例化之后但属性注入之前，Spring调用`postProcessProperties`方法。
-- 在这个示例中，我们修改了`password`属性的值为`"******"`并打印了一条消息。
+#### 源码分析总结
 
-**Bean实例化后的处理**
+1. **启动及Bean获取**
 
-- 紧接着，`postProcessAfterInstantiation`方法被调用。这里，我们简单地设置了`postInstantiationFlag`属性并打印了一条消息。
+   - 应用程序启动时，`AnnotationConfigApplicationContext`类被用于初始化Spring上下文，并注册了配置类`MyConfiguration`。
 
-**Bean的完成**
+   - 然后，应用程序从Spring上下文中获取名为`DataBase`的bean实例并打印它的一些属性。
 
-- 在所有这些拦截器运行后，Spring会继续进行属性注入、Bean初始化等后续工作。
-- 之后，Bean将完全初始化并准备好供应用程序使用。
+
+2. **注册Bean及后处理器**
+   - 通过`MyConfiguration`配置类，注册了两个Bean，其中一个是`MyInstantiationAwareBeanPostProcessor`，这个后处理器用于在Bean实例化过程中介入。
+
+
+3. **实例化前的拦截**
+   - 在Bean实例化之前，Spring首先调用`postProcessBeforeInstantiation`方法。这里，我们只是简单地打印了一条消息并返回了null，表示让Spring继续执行标准的Bean实例化。
+
+
+4. **Bean属性注入**
+
+   - 在Bean实例化之后但属性注入之前，Spring调用`postProcessProperties`方法。
+
+   - 在这个示例中，我们修改了`password`属性的值为`"******"`并打印了一条消息。
+
+
+5. **Bean实例化后的处理**
+   - 紧接着，`postProcessAfterInstantiation`方法被调用。这里，我们简单地设置了`postInstantiationFlag`属性并打印了一条消息。
+
+
+6. **Bean的完成**
+
+   - 在所有这些拦截器运行后，Spring会继续进行属性注入、Bean初始化等后续工作。
+
+   - 之后，Bean将完全初始化并准备好供应用程序使用。
