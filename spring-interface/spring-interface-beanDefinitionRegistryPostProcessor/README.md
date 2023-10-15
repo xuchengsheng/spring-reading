@@ -82,7 +82,7 @@ public class BeanDefinitionRegistryPostProcessorApplication {
 }
 ```
 
-这里使用`@Bean`注解，为了确保 `MyBeanDefinitionRegistryPostProcessor` 被 Spring 容器执行，你需要将它注册为一个 bean，该后处理器可以新增一个`BeanDefinition`。
+这里使用`@Bean`注解，为了确保 `MyBeanDefinitionRegistryPostProcessor` 被 Spring 容器执行，我们需要将它注册为一个 bean，该后处理器可以新增一个`BeanDefinition`。
 
 ```java
 @Configuration
@@ -363,7 +363,7 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
    + 一个常见的陷阱是，定义在 `@Configuration` 类中返回 `BeanDefinitionRegistryPostProcessor` 的非静态 `@Bean` 方法可能导致配置类过早实例化。为避免这一问题，这种方法应该被声明为 `static`。在本次最近实践中我们也是用到了static来修饰我们的`MyBeanDefinitionRegistryPostProcessor`
 
 3. **不要过度使用**
-   + 虽然 `BeanDefinitionRegistryPostProcessor` 提供了强大的功能，但不应该在不需要修改或动态添加 Bean 定义的情况下滥用它，除非你是框架开发者。在我们绝大部分业务系统中，我觉得我们其实只要使用`@Component`、`@Service`、`@Repository`、`@Controller` 和 `@Configuration` 注解应该足够使用。
+   + 虽然 `BeanDefinitionRegistryPostProcessor` 提供了强大的功能，但不应该在不需要修改或动态添加 Bean 定义的情况下滥用它，除非我们是框架我们。在我们绝大部分业务系统中，我觉得我们其实只要使用`@Component`、`@Service`、`@Repository`、`@Controller` 和 `@Configuration` 注解应该足够使用。
 
 ### 九、总结
 
