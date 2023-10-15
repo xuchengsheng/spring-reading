@@ -12,11 +12,15 @@
     - [8.1、最佳实践总结](#81最佳实践总结)
     - [8.2、源码分析总结](#82源码分析总结)
 
-### 一、接口描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845609) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [InitializingBean源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-interface/spring-interface-initializingBean)
+
+### 二、接口描述
 
 `InitializingBean` 接口，主要用于在 bean 的所有属性被初始化后，但在 bean 被实际使用之前，执行某些初始化逻辑或设置。
 
-### 二、接口源码
+### 三、接口源码
 
 `InitializingBean` 接口，实现此接口的 beans 会在所有属性都设置完毕后，由 `BeanFactory` 调用其 `afterPropertiesSet()` 方法。
 
@@ -48,17 +52,21 @@ public interface InitializingBean {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**初始化回调**：`InitializingBean` 接口为 Spring 容器提供了一个机制，以确保在 bean 的所有属性都被设置后，但在 bean 被其他组件使用之前，可以执行某些初始化逻辑或操作。
+1. **初始化回调**
+   + `InitializingBean` 接口为 Spring 容器提供了一个机制，以确保在 bean 的所有属性都被设置后，但在 bean 被其他组件使用之前，可以执行某些初始化逻辑或操作。
 
-**属性验证**：在 `afterPropertiesSet` 方法中，开发者可以验证 bean 的属性是否都已正确设置，特别是一些必要的属性。
+2. **属性验证**
+   + 在 `afterPropertiesSet` 方法中，我们可以验证 bean 的属性是否都已正确设置，特别是一些必要的属性。
 
-**自定义初始化逻辑**：如果 bean 需要进行特定的初始化操作，如开启资源、连接数据库、启动某些线程或其他任何初始化活动，那么这些操作可以在 `afterPropertiesSet` 方法中进行。
+3. **自定义初始化逻辑**
+   + 如果 bean 需要进行特定的初始化操作，如开启资源、连接数据库、启动某些线程或其他任何初始化活动，那么这些操作可以在 `afterPropertiesSet` 方法中进行。
 
-**生命周期管理**：`InitializingBean` 是 Spring 生命周期中的一个关键点，它在属性注入 (`Property Injection`) 之后和使用 bean 之前被调用。这提供了一个干净的生命周期钩子，可以用来确保 bean 在被使用之前是完全准备好的。
+4. **生命周期管理**
+   + `InitializingBean` 是 Spring 生命周期中的一个关键点，它在属性注入 (`Property Injection`) 之后和使用 bean 之前被调用。这提供了一个干净的生命周期钩子，可以用来确保 bean 在被使用之前是完全准备好的。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -113,7 +121,7 @@ public class MyInitializingBean implements InitializingBean {
 MyInitializingBean 初始化完毕，数据已加载!
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -145,7 +153,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>InitializingBeanApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -407,48 +415,67 @@ public class MyInitializingBean implements InitializingBean {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**使用 @PostConstruct**: 尽管 `InitializingBean` 提供了一个初始化 bean 的方式，但现代的 Spring 开发者更倾向于使用 `@PostConstruct` 注解，因为它是 JSR-250 的一部分，不依赖于 Spring 特定的接口。
+1. **使用 @PostConstruct**
+   + 尽管 `InitializingBean` 提供了一个初始化 bean 的方式，但现代的 Spring 我们更倾向于使用 `@PostConstruct` 注解，因为它是 JSR-250 的一部分，不依赖于 Spring 特定的接口。
 
-**避免业务逻辑**: 在 `afterPropertiesSet` 方法中，应该只包含与初始化相关的逻辑。避免将核心的业务逻辑放在这里。
+2. **避免业务逻辑**
+   + 在 `afterPropertiesSet` 方法中，应该只包含与初始化相关的逻辑。避免将核心的业务逻辑放在这里。
 
-**处理异常**: `afterPropertiesSet` 方法允许抛出异常。确保你处理了可能出现的所有异常，特别是可能阻止 bean 正确初始化的那些。
+3. **处理异常**
+   + `afterPropertiesSet` 方法允许抛出异常。确保我们处理了可能出现的所有异常，特别是可能阻止 bean 正确初始化的那些。
 
-**明确的初始化顺序**: 请记住，`afterPropertiesSet` 是在所有属性都设置之后调用的，但在任何自定义的 init 方法和 `@PostConstruct` 方法之前。
+4. **明确的初始化顺序**:
+   + 请记住，`afterPropertiesSet` 是在所有属性都设置之后调用的，但在任何自定义的 init 方法和 `@PostConstruct` 方法之前。
 
-**不要过于依赖**: 尽量避免让太多的 beans 实现 `InitializingBean`，因为这可能会使代码难以阅读和管理。如果可能，考虑使用其他的初始化方法。如 `@PostConstruct` 注解。
+5. **不要过于依赖**
+   + 尽量避免让太多的 beans 实现 `InitializingBean`，因为这可能会使代码难以阅读和管理。如果可能，考虑使用其他的初始化方法。如 `@PostConstruct` 注解。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动类**: 在 `InitializingBeanApplication` 类中，我们使用 `AnnotationConfigApplicationContext` 为上下文环境。这种上下文环境使用 Java 注解来配置 Spring 容器，而不是传统的 XML。通过传递 `MyConfiguration` 类作为构造参数，我们告诉 Spring 在哪里找到 bean 的定义。
+1. **启动类**
+   + 在 `InitializingBeanApplication` 类中，我们使用 `AnnotationConfigApplicationContext` 为上下文环境。这种上下文环境使用 Java 注解来配置 Spring 容器，而不是传统的 XML。通过传递 `MyConfiguration` 类作为构造参数，我们告诉 Spring 在哪里找到 bean 的定义。
 
-**配置类**: `MyConfiguration` 类使用 `@Configuration` 注解，标识它为一个 Spring 配置类。在该类中，我们定义了一个名为 `myInitializingBean` 的 bean，它返回一个新的 `MyInitializingBean` 实例。这样，我们确保 `MyInitializingBean` 类将由 Spring 容器管理，并且其生命周期方法（如 `afterPropertiesSet()`）会被调用。
+2. **配置类**
+   + `MyConfiguration` 类使用 `@Configuration` 注解，标识它为一个 Spring 配置类。在该类中，我们定义了一个名为 `myInitializingBean` 的 bean，它返回一个新的 `MyInitializingBean` 实例。这样，我们确保 `MyInitializingBean` 类将由 Spring 容器管理，并且其生命周期方法（如 `afterPropertiesSet()`）会被调用。
 
-**初始化逻辑**: `MyInitializingBean` 类实现了 `InitializingBean` 接口，并重写了其 `afterPropertiesSet()` 方法。在这个方法中，我们模拟了数据加载的过程，简单地向 `data` 列表中添加了三条字符串数据。当 Spring 容器初始化这个 bean 时，它会自动调用 `afterPropertiesSet()` 方法，从而执行这个初始化逻辑。
+3. **初始化逻辑**
+   + `MyInitializingBean` 类实现了 `InitializingBean` 接口，并重写了其 `afterPropertiesSet()` 方法。在这个方法中，我们模拟了数据加载的过程，简单地向 `data` 列表中添加了三条字符串数据。当 Spring 容器初始化这个 bean 时，它会自动调用 `afterPropertiesSet()` 方法，从而执行这个初始化逻辑。
 
-**运行结果**: 当我们运行应用程序时，由于 `MyInitializingBean` 已经被 Spring 容器管理并初始化，`afterPropertiesSet()` 方法被调用，因此我们会在控制台上看到 "`MyInitializingBean 初始化完毕，数据已加载!`" 的输出。
+4. **运行结果**
+   + 当我们运行应用程序时，由于 `MyInitializingBean` 已经被 Spring 容器管理并初始化，`afterPropertiesSet()` 方法被调用，因此我们会在控制台上看到 "`MyInitializingBean 初始化完毕，数据已加载!`" 的输出。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动上下文**：使用 `AnnotationConfigApplicationContext` 以 Java 注解方式启动 Spring 上下文，传入 `MyConfiguration` 配置类为参数，此时 Spring 容器启动并初始化。
+1. **启动上下文**
+   + 使用 `AnnotationConfigApplicationContext` 以 Java 注解方式启动 Spring 上下文，传入 `MyConfiguration` 配置类为参数，此时 Spring 容器启动并初始化。
 
-**构造函数中的重点**：`AnnotationConfigApplicationContext` 的构造函数执行了 `register` 和 `refresh` 方法，其中 `refresh` 是我们关注的核心。
+2. **构造函数中的重点**
+   + `AnnotationConfigApplicationContext` 的构造函数执行了 `register` 和 `refresh` 方法，其中 `refresh` 是我们关注的核心。
 
-**刷新上下文**：在 `refresh` 方法中，Spring 上下文开始其核心的刷新过程，重点是 `finishBeanFactoryInitialization`，它确保实例化所有剩余的非懒加载的单例 Bean。
+3. **刷新上下文**
+   + 在 `refresh` 方法中，Spring 上下文开始其核心的刷新过程，重点是 `finishBeanFactoryInitialization`，它确保实例化所有剩余的非懒加载的单例 Bean。
 
-**预实例化单例 Beans**：方法 `preInstantiateSingletons` 负责预先实例化所有非懒加载的单例 bean。这意味着在 Spring 上下文初始化完成后，所有的单例 beans 都会被实例化，初始化，并注入所需的依赖。
+4. **预实例化单例 Beans**
+   + 方法 `preInstantiateSingletons` 负责预先实例化所有非懒加载的单例 bean。这意味着在 Spring 上下文初始化完成后，所有的单例 beans 都会被实例化，初始化，并注入所需的依赖。
 
-**获取 Bean**：核心方法 `getBean` 和 `doGetBean` 负责从容器中检索 bean。如果 bean 尚未创建，这些方法还会负责 bean 的创建、属性注入和初始化。
+5. **获取 Bean**
+   + 核心方法 `getBean` 和 `doGetBean` 负责从容器中检索 bean。如果 bean 尚未创建，这些方法还会负责 bean 的创建、属性注入和初始化。
 
-**单例注册**：`getSingleton` 方法在 `DefaultSingletonBeanRegistry` 中确保 bean 作为单例存在。如果 bean 未在缓存中找到，它会使用提供的 `ObjectFactory` 创建一个新的实例。
+6. **单例注册**
+   + `getSingleton` 方法在 `DefaultSingletonBeanRegistry` 中确保 bean 作为单例存在。如果 bean 未在缓存中找到，它会使用提供的 `ObjectFactory` 创建一个新的实例。
 
-**创建 Bean**：`createBean` 和 `doCreateBean` 方法负责实际的 bean 创建过程，其中包括实例化、属性注入和初始化。
+7. **创建 Bean**
+   + `createBean` 和 `doCreateBean` 方法负责实际的 bean 创建过程，其中包括实例化、属性注入和初始化。
 
-**初始化 Bean**：方法 `initializeBean` 负责 bean 的初始化，调用其初始化方法。这包括 `InitializingBean` 接口的 `afterPropertiesSet` 方法。
+8. **初始化 Bean**
+   + 方法 `initializeBean` 负责 bean 的初始化，调用其初始化方法。这包括 `InitializingBean` 接口的 `afterPropertiesSet` 方法。
 
-**初始化方法调用**：`invokeInitMethods` 方法会检查 bean 是否实现了 `InitializingBean` 接口。如果实现了，并且 `afterPropertiesSet` 方法不是外部管理的，那么它会被调用。
+9. **初始化方法调用**
+   + `invokeInitMethods` 方法会检查 bean 是否实现了 `InitializingBean` 接口。如果实现了，并且 `afterPropertiesSet` 方法不是外部管理的，那么它会被调用。
 
-**自定义初始化逻辑**：我们自定义的 `MyInitializingBean` 类实现了 `InitializingBean` 接口，并重写了 `afterPropertiesSet` 方法来模拟数据加载的过程。
+10. **自定义初始化逻辑**
+    + 我们自定义的 `MyInitializingBean` 类实现了 `InitializingBean` 接口，并重写了 `afterPropertiesSet` 方法来模拟数据加载的过程。
