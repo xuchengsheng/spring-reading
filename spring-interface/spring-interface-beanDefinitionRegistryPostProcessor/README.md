@@ -12,12 +12,15 @@
     - [8.1、最佳实践总结](#81最佳实践总结)
     - [8.2、源码分析总结](#82源码分析总结)
 
+### 一、基本信息
 
-### 一、接口描述
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133844850) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [BeanDefinitionRegistryPostProcessor源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-interface/spring-interface-beanDefinitionRegistryPostProcessor)
+
+### 二、接口描述
 
 `BeanDefinitionRegistryPostProcessor` 是 Spring 框架中的一个接口，它用于在 Spring 容器的标准初始化过程中允许我们修改应用程序上下文的内部 bean 定义。它继承自 `BeanFactoryPostProcessor` 接口。与 `BeanFactoryPostProcessor` 不同的是，它还提供了对 `BeanDefinitionRegistry` 的访问，这使得我们能够在运行时注册新的 beans 或修改现有的 bean 定义。
 
-### 二、接口源码
+### 三、接口源码
 
 `InstantiationAwareBeanPostProcessor` 是 Spring 框架自 3.0.1 版本开始引入的一个核心接口。最核心的方法是 `postProcessBeanDefinitionRegistry`，它允许我们在运行时注册新的 beans 或修改现有的 bean 定义。
 
@@ -47,15 +50,24 @@ public interface BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProc
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-+ **注册新的 Bean 定义**：该接口提供了一个机制，允许在 Spring 容器完成其标准初始化（即加载所有 bean 定义）之后，但在任何 bean 实例化之前，动态注册新的 bean 定义。
-+ **修改现有的 Bean 定义**：除了能够添加新的 bean 定义，`BeanDefinitionRegistryPostProcessor` 还可以修改已经注册的 bean 定义。例如，它可以修改 bean 的属性值、构造函数参数或其它设置。
-+ **控制 `BeanFactoryPostProcessor` 的执行顺序**：因为 `BeanDefinitionRegistryPostProcessor` 是 `BeanFactoryPostProcessor` 的子接口，它的实现还可以控制 `BeanFactoryPostProcessor` 的执行顺序。这是因为在 Spring 容器启动时，所有的 `BeanDefinitionRegistryPostProcessor` beans 首先会被实例化和调用，然后才是其他的 `BeanFactoryPostProcessor` beans。
-+ **基于条件的 Bean 注册**：可以利用 `BeanDefinitionRegistryPostProcessor` 来基于特定的运行时条件（例如类路径上是否存在某个特定的类）来决定是否注册某个 bean。
-+ **扩展点以实现高级配置**：对于复杂的应用或框架，这个接口提供了一个扩展点，可以在初始化过程中进行更高级的配置，如加载外部的配置或执行特殊的验证逻辑。
+1. **注册新的 Bean 定义**
+   + 该接口提供了一个机制，允许在 Spring 容器完成其标准初始化（即加载所有 bean 定义）之后，但在任何 bean 实例化之前，动态注册新的 bean 定义。
 
-### 四、最佳实践
+2. **修改现有的 Bean 定义**
+   + 除了能够添加新的 bean 定义，`BeanDefinitionRegistryPostProcessor` 还可以修改已经注册的 bean 定义。例如，它可以修改 bean 的属性值、构造函数参数或其它设置。
+
+3. **控制 `BeanFactoryPostProcessor` 的执行顺序**
+   + 因为 `BeanDefinitionRegistryPostProcessor` 是 `BeanFactoryPostProcessor` 的子接口，它的实现还可以控制 `BeanFactoryPostProcessor` 的执行顺序。这是因为在 Spring 容器启动时，所有的 `BeanDefinitionRegistryPostProcessor` beans 首先会被实例化和调用，然后才是其他的 `BeanFactoryPostProcessor` beans。
+
+4. **基于条件的 Bean 注册**
+   + 可以利用 `BeanDefinitionRegistryPostProcessor` 来基于特定的运行时条件（例如类路径上是否存在某个特定的类）来决定是否注册某个 bean。
+
+5. **扩展点以实现高级配置**
+   + 对于复杂的应用或框架，这个接口提供了一个扩展点，可以在初始化过程中进行更高级的配置，如加载外部的配置或执行特殊的验证逻辑。
+
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后我们从`AnnotationConfigApplicationContext`中获取`MySimpleBean`并调用`show`方法。
 
@@ -124,7 +136,7 @@ public class MySimpleBean {
 MySimpleBean instance: com.xcs.spring.config.MySimpleBean@7e5afaa6
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -148,7 +160,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext->>BeanDefinitionRegistryPostProcessorApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后我们从`AnnotationConfigApplicationContext`中获取`MySimpleBean`并调用`show`方法。
 
@@ -173,7 +185,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
+在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中，我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
 ```java
 @Override
@@ -342,38 +354,52 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**调用顺序**：`BeanDefinitionRegistryPostProcessor` 比 `BeanFactoryPostProcessor` 有更高的优先级。这意味着 `BeanDefinitionRegistryPostProcessor` 的 `postProcessBeanDefinitionRegistry` 方法会在任何 `BeanFactoryPostProcessor` 的 `postProcessBeanFactory` 方法之前被调用。如果我们在Spring中有多个 `BeanDefinitionRegistryPostProcessor`，它们之间的执行顺序可能会受到 `Ordered` 或 `PriorityOrdered` 接口的影响，所以要确保正确地实现这些接口以确保预期的执行顺序。
+1. **调用顺序**
+   + `BeanDefinitionRegistryPostProcessor` 比 `BeanFactoryPostProcessor` 有更高的优先级。这意味着 `BeanDefinitionRegistryPostProcessor` 的 `postProcessBeanDefinitionRegistry` 方法会在任何 `BeanFactoryPostProcessor` 的 `postProcessBeanFactory` 方法之前被调用。如果我们在Spring中有多个 `BeanDefinitionRegistryPostProcessor`，它们之间的执行顺序可能会受到 `Ordered` 或 `PriorityOrdered` 接口的影响，所以要确保正确地实现这些接口以确保预期的执行顺序。
 
-**过早实例化**：一个常见的陷阱是，定义在 `@Configuration` 类中返回 `BeanDefinitionRegistryPostProcessor` 的非静态 `@Bean` 方法可能导致配置类过早实例化。为避免这一问题，这种方法应该被声明为 `static`。在本次最近实践中我们也是用到了static来修饰我们的`MyBeanDefinitionRegistryPostProcessor`
+2. **过早实例化**
+   + 一个常见的陷阱是，定义在 `@Configuration` 类中返回 `BeanDefinitionRegistryPostProcessor` 的非静态 `@Bean` 方法可能导致配置类过早实例化。为避免这一问题，这种方法应该被声明为 `static`。在本次最近实践中我们也是用到了static来修饰我们的`MyBeanDefinitionRegistryPostProcessor`
 
-**不要过度使用**：虽然 `BeanDefinitionRegistryPostProcessor` 提供了强大的功能，但不应该在不需要修改或动态添加 Bean 定义的情况下滥用它，除非你是框架开发者。在我们绝大部分业务系统中，我觉得我们其实只要使用`@Component`、`@Service`、`@Repository`、`@Controller` 和 `@Configuration` 注解应该足够使用。
+3. **不要过度使用**
+   + 虽然 `BeanDefinitionRegistryPostProcessor` 提供了强大的功能，但不应该在不需要修改或动态添加 Bean 定义的情况下滥用它，除非你是框架开发者。在我们绝大部分业务系统中，我觉得我们其实只要使用`@Component`、`@Service`、`@Repository`、`@Controller` 和 `@Configuration` 注解应该足够使用。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**应用启动**：启动类 `BeanDefinitionRegistryPostProcessorApplication` 通过 `AnnotationConfigApplicationContext` 初始化 Spring 容器，并加载了 `MyConfiguration` 类作为配置。
+1. **应用启动**
+   + 启动类 `BeanDefinitionRegistryPostProcessorApplication` 通过 `AnnotationConfigApplicationContext` 初始化 Spring 容器，并加载了 `MyConfiguration` 类作为配置。
 
-**配置类定义**：在 `MyConfiguration` 类中，我们通过 `@Bean` 注解定义了一个静态方法，该方法返回一个 `MyBeanDefinitionRegistryPostProcessor` 对象，确保它在 Spring 容器初始化时被执行。
+2. **配置类定义**
+   + 在 `MyConfiguration` 类中，我们通过 `@Bean` 注解定义了一个静态方法，该方法返回一个 `MyBeanDefinitionRegistryPostProcessor` 对象，确保它在 Spring 容器初始化时被执行。
 
-**动态注册**：在我们自定义的 `MyBeanDefinitionRegistryPostProcessor` 实现中，我们重写了 `postProcessBeanDefinitionRegistry` 方法。在这个方法里，我们创建了一个新的 `RootBeanDefinition` 对象来代表 `MySimpleBean` 类，并通过 `registry` 的 `registerBeanDefinition` 方法注册了这个新的 bean 定义，为它指定了名为 `"mySimpleBean"` 的名称。
+3. **动态注册**
+   + 在我们自定义的 `MyBeanDefinitionRegistryPostProcessor` 实现中，我们重写了 `postProcessBeanDefinitionRegistry` 方法。在这个方法里，我们创建了一个新的 `RootBeanDefinition` 对象来代表 `MySimpleBean` 类，并通过 `registry` 的 `registerBeanDefinition` 方法注册了这个新的 bean 定义，为它指定了名为 `"mySimpleBean"` 的名称。
 
-**目标 Bean**：`MySimpleBean` 是一个简单的 bean 类，它的 `show` 方法用于输出它自身的实例信息。
+4. **目标 Bean**
+   + `MySimpleBean` 是一个简单的 bean 类，它的 `show` 方法用于输出它自身的实例信息。
 
-**验证动态注册**：当运行 `BeanDefinitionRegistryPostProcessorApplication` 时，可以观察到控制台首先打印了 "开始新增Bean定义" 和 "完成新增Bean定义"，说明 `postProcessBeanDefinitionRegistry` 方法被正确执行。紧接着，`MySimpleBean` 的实例被创建并打印了它的实例信息，证明 `BeanDefinitionRegistryPostProcessor` 成功地在运行时动态注册了这个 bean。
+5. **验证动态注册**
+   + 当运行 `BeanDefinitionRegistryPostProcessorApplication` 时，可以观察到控制台首先打印了 "开始新增Bean定义" 和 "完成新增Bean定义"，说明 `postProcessBeanDefinitionRegistry` 方法被正确执行。紧接着，`MySimpleBean` 的实例被创建并打印了它的实例信息，证明 `BeanDefinitionRegistryPostProcessor` 成功地在运行时动态注册了这个 bean。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动**：通过 `AnnotationConfigApplicationContext` 来初始化 Spring 容器并加载 `MyConfiguration` 配置类。随后从该上下文中获取 `MySimpleBean` 并调用其 `show` 方法。
+1. **应用启动**
+   + 通过 `AnnotationConfigApplicationContext` 来初始化 Spring 容器并加载 `MyConfiguration` 配置类。随后从该上下文中获取 `MySimpleBean` 并调用其 `show` 方法。
 
-**Spring容器的刷新**：`AnnotationConfigApplicationContext` 的构造函数调用了 `refresh()` 方法，负责启动 Spring 容器的初始化流程。
+2. **Spring容器的刷新**
+   + `AnnotationConfigApplicationContext` 的构造函数调用了 `refresh()` 方法，负责启动 Spring 容器的初始化流程。
 
-**执行Bean工厂的后处理器**：在 `refresh()` 方法中，调用了 `invokeBeanFactoryPostProcessors(beanFactory)` 方法，负责执行所有注册的 `BeanFactoryPostProcessor` 和 `BeanDefinitionRegistryPostProcessor` 接口实现。
+3. **执行Bean工厂的后处理器**
+   + 在 `refresh()` 方法中，调用了 `invokeBeanFactoryPostProcessors(beanFactory)` 方法，负责执行所有注册的 `BeanFactoryPostProcessor` 和 `BeanDefinitionRegistryPostProcessor` 接口实现。
 
-**按优先级执行回调**：Spring 按照不同的优先级（如 `PriorityOrdered` 和 `Ordered`）对 `BeanDefinitionRegistryPostProcessor` 进行排序并回调。这确保了回调的执行顺序。
+4. **按优先级执行回调**
+   + Spring 按照不同的优先级（如 `PriorityOrdered` 和 `Ordered`）对 `BeanDefinitionRegistryPostProcessor` 进行排序并回调。这确保了回调的执行顺序。
 
-**动态注册Bean定义**：在我们自定义的 `MyBeanDefinitionRegistryPostProcessor` 中，我们重写了 `postProcessBeanDefinitionRegistry` 方法。在该方法内部，我们动态地创建了 `MySimpleBean` 的定义，并将其注册到了容器中。
+5. **动态注册Bean定义**：
+   + 在我们自定义的 `MyBeanDefinitionRegistryPostProcessor` 中，我们重写了 `postProcessBeanDefinitionRegistry` 方法。在该方法内部，我们动态地创建了 `MySimpleBean` 的定义，并将其注册到了容器中。
 
-**执行结果**：`MySimpleBean` 成功被动态注册到 Spring 容器中，从而能够在应用启动时被检索并使用。
+6. **执行结果**
+   + `MySimpleBean` 成功被动态注册到 Spring 容器中，从而能够在应用启动时被检索并使用。
