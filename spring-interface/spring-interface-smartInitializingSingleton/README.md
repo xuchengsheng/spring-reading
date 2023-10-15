@@ -1,22 +1,28 @@
 ## SmartInitializingSingleton
 
 - [SmartInitializingSingleton](#smartinitializingsingleton)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
   - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845553) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [SmartInitializingSingleton源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-smartInitializingSingleton)
+
+### 二、接口描述
 
 `SmartInitializingSingleton`接口，用于bean初始化，当所有单例bean都已完全初始化后，用此接口进行回调。
 
-### 二、接口源码
+### 三、接口源码
 
 `SmartInitializingSingleton` 是 Spring 框架自 4.1 版本开始引入的一个核心接口。其中`afterSingletonsInstantiated()`方法会在单例预实例化阶段结束时被调用。它保证所有常规的单例beans在此时已经被创建和初始化。
 
@@ -53,11 +59,12 @@ public interface SmartInitializingSingleton {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**bean已完全初始化后回调**：提供了一个回调机制，允许单例bean在Spring容器中所有其他常规单例bean都已完全初始化之后，执行某些特定的初始化操作。具体来说，当所有的单例bean都被实例化和初始化后，`SmartInitializingSingleton`接口中的`afterSingletonsInstantiated()`方法会被调用。
+1. **bean已完全初始化后回调**
+   + 提供了一个回调机制，允许单例bean在Spring容器中所有其他常规单例bean都已完全初始化之后，执行某些特定的初始化操作。具体来说，当所有的单例bean都被实例化和初始化后，`SmartInitializingSingleton`接口中的`afterSingletonsInstantiated()`方法会被调用。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -144,7 +151,7 @@ public class MyService {
 2023-09-27 10:41:44 hello world 
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -162,7 +169,7 @@ sequenceDiagram
     DefaultListableBeanFactory->>MySmartInitializingSingleton:afterSingletonsInstantiated()<br>所有单例初始化
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 ```java
 public class SmartInitializingSingletonApplication {
@@ -224,46 +231,64 @@ public void preInstantiateSingletons() throws BeansException {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**避免复杂逻辑**： `SmartInitializingSingleton`的设计是为了执行初始化后的逻辑。避免在`afterSingletonsInstantiated()`方法中加入过于复杂的逻辑。
+1. **避免复杂逻辑**：
+   + `SmartInitializingSingleton`的设计是为了执行初始化后的逻辑。避免在`afterSingletonsInstantiated()`方法中加入过于复杂的逻辑。
 
-**注意依赖关系**： 当`afterSingletonsInstantiated()`被调用时，所有的常规单例bean都已经被初始化。但请确保在这个方法中调用的任何bean已经完全初始化并且所有的依赖都被满足。
+2. **注意依赖关系**
+   + 当`afterSingletonsInstantiated()`被调用时，所有的常规单例bean都已经被初始化。但请确保在这个方法中调用的任何bean已经完全初始化并且所有的依赖都被满足。
 
-**避免早期初始化**： 请确保不会意外地触发其他bean的早期初始化，尤其是在`afterSingletonsInstantiated()`方法中。早期初始化可能会导致不可预见的副作用。
+3. **避免早期初始化**
+   + 请确保不会意外地触发其他bean的早期初始化，尤其是在`afterSingletonsInstantiated()`方法中。早期初始化可能会导致不可预见的副作用。
 
-**限制范围**： `SmartInitializingSingleton`仅对常规单例bean起作用。对于在`BeanFactory`启动后按需延迟初始化或其他作用域的beans（如原型作用域），此回调不会被触发。
+4. **限制范围**
+   +  `SmartInitializingSingleton`仅对常规单例bean起作用。对于在`BeanFactory`启动后按需延迟初始化或其他作用域的beans（如原型作用域），此回调不会被触发。
 
-**异步任务**： 如果我们的目的是启动或管理异步任务，最好使用`Lifecycle`接口或考虑其他Spring的启动监听器，如`ApplicationListener<ContextRefreshedEvent>`。`Lifecycle`为运行时管理提供了一个更完善的模型。
+5. **异步任务**
+   +  如果我们的目的是启动或管理异步任务，最好使用`Lifecycle`接口或考虑其他Spring的启动监听器，如`ApplicationListener<ContextRefreshedEvent>`。`Lifecycle`为运行时管理提供了一个更完善的模型。
 
-**确保幂等性**： 如果有可能多次刷新应用程序上下文（虽然在我看来这种情况基本上很少），请确保`afterSingletonsInstantiated()`方法的实现是幂等的，即多次执行与一次执行产生的效果相同。
+6. **确保幂等性**
+   + 如果有可能多次刷新应用程序上下文（虽然在我看来这种情况基本上很少），请确保`afterSingletonsInstantiated()`方法的实现是幂等的，即多次执行与一次执行产生的效果相同。
 
-**与`InitializingBean`和`@PostConstruct`的区别**： `SmartInitializingSingleton`和`InitializingBean`或`@PostConstruct`注解有区别。后两者是bean级别的初始化回调，而`SmartInitializingSingleton`是容器级别的，确保在所有bean初始化之后才执行。
+7. **与`InitializingBean`和`@PostConstruct`的区别**
+   +  `SmartInitializingSingleton`和`InitializingBean`或`@PostConstruct`注解有区别。后两者是bean级别的初始化回调，而`SmartInitializingSingleton`是容器级别的，确保在所有bean初始化之后才执行。
 
-**不要滥用**： 只有在确实需要确保所有其他bean都初始化后才执行某些操作时，才应使用`SmartInitializingSingleton`。如果不需要这种保证，考虑使用更标准的初始化回调。
+8. **不要滥用**
+   + 只有在确实需要确保所有其他bean都初始化后才执行某些操作时，才应使用`SmartInitializingSingleton`。如果不需要这种保证，考虑使用更标准的初始化回调。
 
 ### 八、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动入口**：在示例的启动类`SmartInitializingSingletonApplication`中，我们使用了`AnnotationConfigApplicationContext`来加载和初始化Spring容器。我们为上下文提供了一个Java配置类`MyConfiguration`，该类定义了应该由Spring扫描和管理的bean。
+1. **启动入口**
+   + 在示例的启动类`SmartInitializingSingletonApplication`中，我们使用了`AnnotationConfigApplicationContext`来加载和初始化Spring容器。我们为上下文提供了一个Java配置类`MyConfiguration`，该类定义了应该由Spring扫描和管理的bean。
 
-**配置**：在`MyConfiguration`类中，我们使用`@Bean`注解显式地定义了`MySmartInitializingSingleton`这个bean。这确保了`MySmartInitializingSingleton`被Spring容器管理并在适当的时机执行。
+2. **配置**
+   + 在`MyConfiguration`类中，我们使用`@Bean`注解显式地定义了`MySmartInitializingSingleton`这个bean。这确保了`MySmartInitializingSingleton`被Spring容器管理并在适当的时机执行。
 
-**实现SmartInitializingSingleton接口**：`MySmartInitializingSingleton`实现了`SmartInitializingSingleton`接口。当所有其他的单例bean都被完全初始化后，`afterSingletonsInstantiated()`方法被调用。在这个方法中，我们启动了`MyService`类中定义的定时任务。
+3. **实现SmartInitializingSingleton接口**
+   + `MySmartInitializingSingleton`实现了`SmartInitializingSingleton`接口。当所有其他的单例bean都被完全初始化后，`afterSingletonsInstantiated()`方法被调用。在这个方法中，我们启动了`MyService`类中定义的定时任务。
 
-**定时任务**：`MyService`中定义了一个使用Java的`Timer`模拟的定时任务。这个任务会每隔2秒打印当前时间和"hello world"这个消息。在实际应用中，可能会使用更复杂的调度机制，如Spring的`TaskScheduler`或Quartz等。
+4. **定时任务**
+   + `MyService`中定义了一个使用Java的`Timer`模拟的定时任务。这个任务会每隔2秒打印当前时间和"hello world"这个消息。在实际应用中，可能会使用更复杂的调度机制，如Spring的`TaskScheduler`或Quartz等。
 
-**结果**：启动示例应用后，可以观察到每隔2秒在控制台上都会输出格式化的当前时间后跟着"hello world"这样的消息，证明定时任务已经成功启动并在运行。
+5. **结果**
+   + 启动示例应用后，可以观察到每隔2秒在控制台上都会输出格式化的当前时间后跟着"hello world"这样的消息，证明定时任务已经成功启动并在运行。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动**：一切从`SmartInitializingSingletonApplication`的主函数开始，其中初始化了`AnnotationConfigApplicationContext`，这是Spring用于Java注解配置的上下文。
+1. **应用启动**
+   + 一切从`SmartInitializingSingletonApplication`的主函数开始，其中初始化了`AnnotationConfigApplicationContext`，这是Spring用于Java注解配置的上下文。
 
-**AnnotationConfigApplicationContext构造函数**：在`AnnotationConfigApplicationContext`的构造函数中，执行了三个主要步骤，其中最关键的是`refresh()`方法。
+2. **AnnotationConfigApplicationContext构造函数**
+   + 在`AnnotationConfigApplicationContext`的构造函数中，执行了三个主要步骤，其中最关键的是`refresh()`方法。
 
-**执行refresh方法**：`refresh()`方法是Spring上下文刷新的核心。在这里，重点是`finishBeanFactoryInitialization(beanFactory)`，它负责实例化所有剩余的非懒加载单例Bean。
+3. **执行refresh方法**
+   + `refresh()`方法是Spring上下文刷新的核心。在这里，重点是`finishBeanFactoryInitialization(beanFactory)`，它负责实例化所有剩余的非懒加载单例Bean。
 
-**完成BeanFactory初始化**：在`finishBeanFactoryInitialization`方法中，为了完成上述任务，它进一步调用了`beanFactory.preInstantiateSingletons()`。
+4. **完成BeanFactory初始化**
+   + 在`finishBeanFactoryInitialization`方法中，为了完成上述任务，它进一步调用了`beanFactory.preInstantiateSingletons()`。
 
-**预实例化单例**：这步是最关键的。在`DefaultListableBeanFactory`的`preInstantiateSingletons`方法中，所有单例beans都被实例化。紧接着，为那些实现了`SmartInitializingSingleton`接口的beans触发了`afterSingletonsInstantiated`回调，确保这些回调在所有其他单例beans完全实例化后才被执行。
+5. **预实例化单例**
+   + 这步是最关键的。在`DefaultListableBeanFactory`的`preInstantiateSingletons`方法中，所有单例beans都被实例化。紧接着，为那些实现了`SmartInitializingSingleton`接口的beans触发了`afterSingletonsInstantiated`回调，确保这些回调在所有其他单例beans完全实例化后才被执行。
