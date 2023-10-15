@@ -1,22 +1,28 @@
 ## SmartInstantiationAwareBeanPostProcessor
 
 - [SmartInstantiationAwareBeanPostProcessor](#smartinstantiationawarebeanpostprocessor)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845401) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [SmartInstantiationAwareBeanPostProcessor源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor)
+
+### 二、接口描述
 
 `InstantiationAwareBeanPostProcessor`。接口，能够对 Spring 容器创建的 beans 进行更精细的控制和更多的干预，尤其是在涉及代理和其他高级场景时。
 
-### 二、接口源码
+### 三、接口源码
 
 `SmartInstantiationAwareBeanPostProcessor` 是 Spring 框架自 2.0.3 版本开始引入的一个核心接口，主要用于框架内部。正常情况下我们实现`BeanPostProcessor`接口或者`InstantiationAwareBeanPostProcessorAdapter`接口就能满足自定义需求。
 
@@ -83,15 +89,18 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**预测 Bean 类型 (predictBeanType)**：这个方法允许在实例化 bean 之前预测 bean 的最终类型。这在涉及代理或其他类型转换的场景中特别有用，例如，一个 bean 可能会被一个 AOP 代理包裹，此方法可以返回预期的代理类型而不是实际的目标类型，这有助于 Spring 在创建和连接 bean 时做出更加明智的决策，特别是在涉及类型匹配（如自动装配）时。
+1. **预测 Bean 类型 (predictBeanType)**
+   + 这个方法允许在实例化 bean 之前预测 bean 的最终类型。这在涉及代理或其他类型转换的场景中特别有用，例如，一个 bean 可能会被一个 AOP 代理包裹，此方法可以返回预期的代理类型而不是实际的目标类型，这有助于 Spring 在创建和连接 bean 时做出更加明智的决策，特别是在涉及类型匹配（如自动装配）时。
 
-**确定候选构造函数 (determineCandidateConstructors)**：在 bean 实例化之前，这个方法允许确定用于给定 bean 的构造函数，这为我们提供了一种方式来定制或干预 Spring 默认的构造函数选择逻辑，例如，当存在多个构造函数并且我们想基于特定逻辑选择其中一个时。
+2. **确定候选构造函数 (determineCandidateConstructors)**
+   + 在 bean 实例化之前，这个方法允许确定用于给定 bean 的构造函数，这为我们提供了一种方式来定制或干预 Spring 默认的构造函数选择逻辑，例如，当存在多个构造函数并且我们想基于特定逻辑选择其中一个时。
 
-**获取早期 Bean 引用 (getEarlyBeanReference)**：这个方法提供了一个机会，允许在 bean 完全初始化之前暴露一个包装器或代理，它在处理循环依赖时特别有用，当一个 bean 还未完全初始化但另一个 bean 需要引用它时，这个方法就会被调用，这样，我们可以暴露一个早期的 bean 引用，可能是一个代理，这个代理在完成所有初始化步骤后仍然有效。
+3. **获取早期 Bean 引用 (getEarlyBeanReference)**
+   + 这个方法提供了一个机会，允许在 bean 完全初始化之前暴露一个包装器或代理，它在处理循环依赖时特别有用，当一个 bean 还未完全初始化但另一个 bean 需要引用它时，这个方法就会被调用，这样，我们可以暴露一个早期的 bean 引用，可能是一个代理，这个代理在完成所有初始化步骤后仍然有效。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -222,7 +231,7 @@ Constructor with ServiceA and ServiceB used
 
 <span style="color:red">注意：由于predictBeanType，getEarlyBeanReference方法是Spring框架内部使用无法演示出效果，因此不演示这两个方法。</span>
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -255,7 +264,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>SmartInstantiationAwareBeanPostProcessorApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -280,7 +289,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
+在`org.springframework.context.support.AbstractApplicationContext#refresh`方法中，我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
 ```java
 @Override
@@ -526,60 +535,84 @@ public class MySmartInstantiationAwareBeanPostProcessor implements SmartInstanti
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**性能影响**：每个  `SmartInstantiationAwareBeanPostProcessor`，都会对每个 bean 的创建过程产生额外的开销。因此，应避免创建不必要的 `SmartInstantiationAwareBeanPostProcessor`，并确保其实现尽可能高效。
+1. **性能影响**
+   + 每个  `SmartInstantiationAwareBeanPostProcessor`，都会对每个 bean 的创建过程产生额外的开销。因此，应避免创建不必要的 `SmartInstantiationAwareBeanPostProcessor`，并确保其实现尽可能高效。
 
-**与其他后处理器的交互**：如果有多个 `SmartInstantiationAwareBeanPostProcessor` ，它们会按照注册的顺序被调用。应确保这些后处理器的执行顺序是正确的，避免意外的覆盖或冲突，因为只会使用第一个返回的构造函数。
+2. **与其他后处理器的交互**
+   + 如果有多个 `SmartInstantiationAwareBeanPostProcessor` ，它们会按照注册的顺序被调用。应确保这些后处理器的执行顺序是正确的，避免意外的覆盖或冲突，因为只会使用第一个返回的构造函数。
 
-**返回非空值的考虑**：`determineCandidateConstructors`：当这个方法返回非空值时，Spring 容器将不会再尝试使用其他方式自动选择构造函数，`predictBeanType`：返回的类型应该尽可能准确地反映后处理器预期的最终 bean 类型，以确保类型匹配和自动装配的正确性。
+3. **返回非空值的考虑**
+   + `determineCandidateConstructors`：当这个方法返回非空值时，Spring 容器将不会再尝试使用其他方式自动选择构造函数，`predictBeanType`：返回的类型应该尽可能准确地反映后处理器预期的最终 bean 类型，以确保类型匹配和自动装配的正确性。
 
-**与 `InstantiationAwareBeanPostProcessor` 的区别**：虽然 `SmartInstantiationAwareBeanPostProcessor` 扩展了 `InstantiationAwareBeanPostProcessor`，但它添加了更多的回调和复杂性。除非我们确实需要这些额外的功能，否则最好仅使用 `InstantiationAwareBeanPostProcessor`。
+4. **与 `InstantiationAwareBeanPostProcessor` 的区别**
+   + 虽然 `SmartInstantiationAwareBeanPostProcessor` 扩展了 `InstantiationAwareBeanPostProcessor`，但它添加了更多的回调和复杂性。除非我们确实需要这些额外的功能，否则最好仅使用 `InstantiationAwareBeanPostProcessor`。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**初始化 Spring 容器**：通过 `AnnotationConfigApplicationContext` 初始化 Spring 容器，并使用 `MyConfiguration` 作为配置类。
+1. **初始化 Spring 容器**
+   + 通过 `AnnotationConfigApplicationContext` 初始化 Spring 容器，并使用 `MyConfiguration` 作为配置类。
 
-**注册后处理器**：在 `MyConfiguration` 中，我们注册了自定义的 `SmartInstantiationAwareBeanPostProcessor` 实现 `MySmartInstantiationAwareBeanPostProcessor`。这确保了它会在 Spring 容器中被考虑并执行。
+2. **注册后处理器**
+   + 在 `MyConfiguration` 中，我们注册了自定义的 `SmartInstantiationAwareBeanPostProcessor` 实现 `MySmartInstantiationAwareBeanPostProcessor`。这确保了它会在 Spring 容器中被考虑并执行。
 
-**自定义后处理器的工作**：我们的 `MySmartInstantiationAwareBeanPostProcessor` 重写了 `determineCandidateConstructors` 方法，该方法的目标是返回一组构造函数，供 Spring 选择用于 bean 的实例化。
+3. **自定义后处理器的工作**
+   + 我们的 `MySmartInstantiationAwareBeanPostProcessor` 重写了 `determineCandidateConstructors` 方法，该方法的目标是返回一组构造函数，供 Spring 选择用于 bean 的实例化。
 
-**查找 `@MyAutowired`**：首先，后处理器会查找带有 `@MyAutowired` 注解的构造函数。
+4. **查找 `@MyAutowired`**
+   + 首先，后处理器会查找带有 `@MyAutowired` 注解的构造函数。
 
-**使用默认构造函数**：如果没有带有 `@MyAutowired` 的构造函数，后处理器会查找默认构造函数。
+5. **使用默认构造函数**
+   + 如果没有带有 `@MyAutowired` 的构造函数，后处理器会查找默认构造函数。
 
-**返回所有构造函数**：如果没有找到上述两种情况的构造函数，所有的构造函数将被作为候选返回。
+6. **返回所有构造函数**
+   + 如果没有找到上述两种情况的构造函数，所有的构造函数将被作为候选返回。
 
-**Bean 的实例化**：当 Spring 尝试实例化 `MyService` bean 时，它会使用 `MySmartInstantiationAwareBeanPostProcessor` 中指定的构造函数。在这个示例中，由于我们有一个带有 `@MyAutowired` 注解的构造函数，且两个依赖 `MyServiceA` 和 `MyServiceB` 都可用，这个构造函数被选择并使用，从而输出了 `"Constructor with ServiceA and ServiceB used"`。
+7. **Bean 的实例化**
+   + 当 Spring 尝试实例化 `MyService` bean 时，它会使用 `MySmartInstantiationAwareBeanPostProcessor` 中指定的构造函数。在这个示例中，由于我们有一个带有 `@MyAutowired` 注解的构造函数，且两个依赖 `MyServiceA` 和 `MyServiceB` 都可用，这个构造函数被选择并使用，从而输出了 `"Constructor with ServiceA and ServiceB used"`。
 
-**关于其他方法**：虽然 `SmartInstantiationAwareBeanPostProcessor` 提供了其他方法，如 `predictBeanType` 和 `getEarlyBeanReference`，但这些主要是为 Spring 内部使用。在大多数常规用例中，你可能不需要重写或使用它们。
+8. **关于其他方法**
+   + 虽然 `SmartInstantiationAwareBeanPostProcessor` 提供了其他方法，如 `predictBeanType` 和 `getEarlyBeanReference`，但这些主要是为 Spring 内部使用。在大多数常规用例中，我们可能不需要重写或使用它们。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动和初始化：**
+1. **启动和初始化：**
 
-- 使用`AnnotationConfigApplicationContext`初始化Spring上下文。
-- 构造参数中给定一个配置类，该配置类中定义了自定义的`SmartInstantiationAwareBeanPostProcessor`。
+   - 使用`AnnotationConfigApplicationContext`初始化Spring上下文。
 
-**Bean预实例化过程：**
+   - 构造参数中给定一个配置类，该配置类中定义了自定义的`SmartInstantiationAwareBeanPostProcessor`。
 
-- 在上下文刷新过程中，`finishBeanFactoryInitialization`方法会预实例化所有非懒加载的单例Bean。
-- `preInstantiateSingletons`方法循环遍历所有bean的名称并通过`getBean`方法实例化bean。
-- 如果Bean已经存在并且是单例，则会从单例缓存中返回。否则，会创建一个新的bean实例。
 
-**Bean创建过程：**
+2. **Bean预实例化过程：**
 
-- 创建Bean的核心逻辑在`doCreateBean`方法中。如果bean是单例并且在缓存中不存在，则会创建一个新的bean实例。
-- 在创建bean实例时，首先从`SmartInstantiationAwareBeanPostProcessor`中确定用于bean的构造函数。
-- 这个过程首先尝试使用带有特定注解（如我们的示例中的`@MyAutowired`）的构造函数。
-- 如果没有这样的构造函数，则会选择默认构造函数。
-- 如果没有带有注解的构造函数且没有默认构造函数，则会返回所有可用的构造函数，从而使Spring选择最具体的构造函数。
+   - 在上下文刷新过程中，`finishBeanFactoryInitialization`方法会预实例化所有非懒加载的单例Bean。
 
-**自定义的逻辑：**
+   - `preInstantiateSingletons`方法循环遍历所有bean的名称并通过`getBean`方法实例化bean。
 
-- 自定义的`SmartInstantiationAwareBeanPostProcessor`实现首先检查是否有带有`@MyAutowired`注解的构造函数。
-- 如果有，则这些构造函数会作为候选返回。
-- 如果没有，则后处理器会检查是否存在默认的无参数构造函数。
-- 如果既没有带有`@MyAutowired`注解的构造函数，也没有默认构造函数，则所有构造函数将被作为候选返回。
+   - 如果Bean已经存在并且是单例，则会从单例缓存中返回。否则，会创建一个新的bean实例。
+
+
+3. **Bean创建过程：**
+
+   - 创建Bean的核心逻辑在`doCreateBean`方法中。如果bean是单例并且在缓存中不存在，则会创建一个新的bean实例。
+
+   - 在创建bean实例时，首先从`SmartInstantiationAwareBeanPostProcessor`中确定用于bean的构造函数。
+
+   - 这个过程首先尝试使用带有特定注解（如我们的示例中的`@MyAutowired`）的构造函数。
+
+   - 如果没有这样的构造函数，则会选择默认构造函数。
+
+   - 如果没有带有注解的构造函数且没有默认构造函数，则会返回所有可用的构造函数，从而使Spring选择最具体的构造函数。
+
+
+4. **自定义的逻辑：**
+
+   - 自定义的`SmartInstantiationAwareBeanPostProcessor`实现首先检查是否有带有`@MyAutowired`注解的构造函数。
+   - 如果有，则这些构造函数会作为候选返回。
+
+   - 如果没有，则后处理器会检查是否存在默认的无参数构造函数。
+
+   - 如果既没有带有`@MyAutowired`注解的构造函数，也没有默认构造函数，则所有构造函数将被作为候选返回。
