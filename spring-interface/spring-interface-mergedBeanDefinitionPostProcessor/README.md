@@ -12,6 +12,10 @@
     - [8.1、最佳实践总结](#81最佳实践总结)
     - [8.2、源码分析总结](#82源码分析总结)
 
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845274) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [MergedBeanDefinitionPostProcessor源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-mergedBeanDefinitionPostProcessor)
+
 ### 一、接口描述
 
 `MergedBeanDefinitionPostProcessor` 是 Spring 框架中的一个接口，主要用于在 bean 定义被合并后（但在 bean 实例化之前）进行后处理。它扩展了 `BeanPostProcessor`，增加了处理合并 bean 定义的能力。
@@ -61,11 +65,14 @@ public interface MergedBeanDefinitionPostProcessor extends BeanPostProcessor {
 
 ### 三、主要功能
 
-**处理合并后的 Bean 定义**：在 Spring 中，一个 bean 可以继承另一个 bean 的配置，产生所谓的 "合并后的" bean 定义。这个合并的定义包括原始 bean 定义和任何父 bean 定义中的属性。`MergedBeanDefinitionPostProcessor` 允许开发者在 bean 的实例化和初始化之前，基于这个合并的定义执行定制逻辑。
+1. **处理合并后的 Bean 定义**
+   + 在 Spring 中，一个 bean 可以继承另一个 bean 的配置，产生所谓的 "合并后的" bean 定义。这个合并的定义包括原始 bean 定义和任何父 bean 定义中的属性。`MergedBeanDefinitionPostProcessor` 允许我们在 bean 的实例化和初始化之前，基于这个合并的定义执行定制逻辑。
 
-**缓存元数据**：这个接口常常被用于检查 bean 定义并缓存相关的元数据，从而加速后续的 bean 实例化和初始化。例如，Spring 的 `AutowiredAnnotationBeanPostProcessor` 使用它来缓存 `@Autowired` 和 `@Value` 注解的信息。
+2. **缓存元数据**
+   + 这个接口常常被用于检查 bean 定义并缓存相关的元数据，从而加速后续的 bean 实例化和初始化。例如，Spring 的 `AutowiredAnnotationBeanPostProcessor` 使用它来缓存 `@Autowired` 和 `@Value` 注解的信息。
 
-**修改合并后的 Bean 定义**：虽然不是主要的使用场景，但 `MergedBeanDefinitionPostProcessor` 也允许修改合并后的 bean 定义。但这种修改应该小心进行，并且通常只限于那些真正用于并发修改的定义属性。
+3. **修改合并后的 Bean 定义**
+   + 虽然不是主要的使用场景，但 `MergedBeanDefinitionPostProcessor` 也允许修改合并后的 bean 定义。但这种修改应该小心进行，并且通常只限于那些真正用于并发修改的定义属性。
 
 ### 四、最佳实践
 
@@ -231,7 +238,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-`org.springframework.context.support.AbstractApplicationContext#refresh`方法中我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
+`org.springframework.context.support.AbstractApplicationContext#refresh`方法中，我们重点关注一下`finishBeanFactoryInitialization(beanFactory)`这方法会对实例化所有剩余非懒加载的单列Bean对象，其他方法不是本次源码阅读的重点暂时忽略。
 
 ```java
 @Override
@@ -444,48 +451,68 @@ public class MyMergedBeanDefinitionPostProcessor implements MergedBeanDefinition
 
 ### 七、注意事项
 
-**调用时机**：`postProcessMergedBeanDefinition` 是在 bean 处于一个 "半实例化" 的状态。更确切地说，在此时，bean 的实例已经被创建，但属性注入、初始化方法等还没有执行，这意味着你不应该在此方法中尝试访问 bean 实例。
+1. **调用时机**
+   + `postProcessMergedBeanDefinition` 是在 bean 处于一个 "半实例化" 的状态。更确切地说，在此时，bean 的实例已经被创建，但属性注入、初始化方法等还没有执行，这意味着我们不应该在此方法中尝试访问 bean 实例。
 
-**避免修改不可变属性**：虽然我们可以在 `postProcessMergedBeanDefinition` 方法中修改 `RootBeanDefinition`，但应该小心只修改那些预期为可变的属性。例如（Bean的类名，构造函数参数值，懒加载标记，依赖信息，作用域，等等）
+2. **避免修改不可变属性**
+   + 虽然我们可以在 `postProcessMergedBeanDefinition` 方法中修改 `RootBeanDefinition`，但应该小心只修改那些预期为可变的属性。例如（Bean的类名，构造函数参数值，懒加载标记，依赖信息，作用域，等等）
 
-**影响性能**：如果 `postProcessMergedBeanDefinition` 执行的操作很重，这可能会影响应用的启动性能，因为它会被每个 bean 的创建过程调用。
+3. **影响性能**
+   + 如果 `postProcessMergedBeanDefinition` 执行的操作很重，这可能会影响应用的启动性能，因为它会被每个 bean 的创建过程调用。
 
-**防止无限递归**：如果你在 `postProcessMergedBeanDefinition` 方法中尝试获取其他 beans，这可能会触发那些 beans 的创建，从而再次调用 `postProcessMergedBeanDefinition`。你应该注意避免这种无限递归的情况。
+4. **防止无限递归**
+   + 如果我们在 `postProcessMergedBeanDefinition` 方法中尝试获取其他 beans，这可能会触发那些 beans 的创建，从而再次调用 `postProcessMergedBeanDefinition`。我们应该注意避免这种无限递归的情况。
 
 ### 八、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动类入口**：`MergedBeanDefinitionPostProcessorApplication` 是应用的主入口。在这里，我们使用了 `AnnotationConfigApplicationContext` 来初始化和配置 Spring 容器，并为其提供了一个配置类 `MyConfiguration`。
+1. **启动类入口**
+   + `MergedBeanDefinitionPostProcessorApplication` 是应用的主入口。在这里，我们使用了 `AnnotationConfigApplicationContext` 来初始化和配置 Spring 容器，并为其提供了一个配置类 `MyConfiguration`。
 
-**配置类**：在 `MyConfiguration` 中，我们定义了两个bean：一个是自定义的 `MyMergedBeanDefinitionPostProcessor`，另一个是一个简单的 `MyBean` 类实例。
+2. **配置类**
+   + 在 `MyConfiguration` 中，我们定义了两个bean：一个是自定义的 `MyMergedBeanDefinitionPostProcessor`，另一个是一个简单的 `MyBean` 类实例。
 
-**自定义后处理器**：`MyMergedBeanDefinitionPostProcessor` 实现了 `MergedBeanDefinitionPostProcessor` 接口，允许我们在bean的实例化之前处理和修改其定义。在这个示例中，我们检查bean的字段是否有 `MyValue` 注解。如果有，我们将字段的名称和注解的值存储在一个映射中。然后，在bean的实例化和初始化后，我们检查是否需要为字段设置值。如果字段的当前值是 `null`，我们使用 `MyValue` 注解提供的值来设置它。
+3. **自定义后处理器**
+   + `MyMergedBeanDefinitionPostProcessor` 实现了 `MergedBeanDefinitionPostProcessor` 接口，允许我们在bean的实例化之前处理和修改其定义。在这个示例中，我们检查bean的字段是否有 `MyValue` 注解。如果有，我们将字段的名称和注解的值存储在一个映射中。然后，在bean的实例化和初始化后，我们检查是否需要为字段设置值。如果字段的当前值是 `null`，我们使用 `MyValue` 注解提供的值来设置它。
 
-**自定义注解**：`MyValue` 是一个简单的自定义注解，用于指定一个字段的默认值。
+4. **自定义注解**
+   + `MyValue` 是一个简单的自定义注解，用于指定一个字段的默认值。
 
-**目标Bean**：`MyBean` 是一个简单的Java类，其中一个字段 `message` 被标记为 `MyValue("hello world")`。这意味着，如果在Spring容器初始化此bean时，`message` 字段没有被明确设置一个值，那么它将使用 `MyValue` 注解中的默认值 "hello world"。
+5. **目标Bean**
+   + `MyBean` 是一个简单的Java类，其中一个字段 `message` 被标记为 `MyValue("hello world")`。这意味着，如果在Spring容器初始化此bean时，`message` 字段没有被明确设置一个值，那么它将使用 `MyValue` 注解中的默认值 "hello world"。
 
-**执行结果**：当应用程序运行时，Spring容器会实例化并初始化 `MyBean`。由于 `message` 字段的值未被明确设置，因此 `MyMergedBeanDefinitionPostProcessor` 将使用 `MyValue` 注解中的默认值 "hello world" 为其赋值。最后，应用程序输出 "message = hello world"。
+6. **执行结果**
+   + 当应用程序运行时，Spring容器会实例化并初始化 `MyBean`。由于 `message` 字段的值未被明确设置，因此 `MyMergedBeanDefinitionPostProcessor` 将使用 `MyValue` 注解中的默认值 "hello world" 为其赋值。最后，应用程序输出 "message = hello world"。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动类**：应用的主入口是`MergedBeanDefinitionPostProcessorApplication`。它使用`AnnotationConfigApplicationContext`来初始化Spring容器，并传入配置类`MyConfiguration`。
+1. **启动类**
+   + 应用的主入口是`MergedBeanDefinitionPostProcessorApplication`。它使用`AnnotationConfigApplicationContext`来初始化Spring容器，并传入配置类`MyConfiguration`。
 
-**初始化Spring容器**：在`AnnotationConfigApplicationContext`的构造函数中，除了一些基本的配置外，它主要调用了`refresh()`方法来完成容器的初始化。
+2. **初始化Spring容器**
+   + 在`AnnotationConfigApplicationContext`的构造函数中，除了一些基本的配置外，它主要调用了`refresh()`方法来完成容器的初始化。
 
-**容器刷新**：`refresh()`方法是在`AbstractApplicationContext`中定义的，用于完成容器的初始化。其中，`finishBeanFactoryInitialization(beanFactory)`方法被用来实例化所有非懒加载的单例Bean对象。
+3. **容器刷新**
+   + `refresh()`方法是在`AbstractApplicationContext`中定义的，用于完成容器的初始化。其中，`finishBeanFactoryInitialization(beanFactory)`方法被用来实例化所有非懒加载的单例Bean对象。
 
-**实例化单例Beans**：`preInstantiateSingletons()`方法在`DefaultListableBeanFactory`中被调用，用于预先实例化所有非懒加载的单例bean。该方法通过调用`getBean(beanName)`来实例化和初始化bean。
+4. **实例化单例Beans**
+   + `preInstantiateSingletons()`方法在`DefaultListableBeanFactory`中被调用，用于预先实例化所有非懒加载的单例bean。该方法通过调用`getBean(beanName)`来实例化和初始化bean。
 
-**Bean获取**：`getBean()`方法在`AbstractBeanFactory`中定义，它最终会调用`doGetBean()`方法来完成实际的Bean创建工作。
+5. **Bean获取**
+   + `getBean()`方法在`AbstractBeanFactory`中定义，它最终会调用`doGetBean()`方法来完成实际的Bean创建工作。
 
-**Bean的创建**：`doGetBean()`方法处理bean的查找、创建和依赖处理。如果请求的bean是一个单例并且尚未创建，则它将使用`getSingleton()`方法从单例缓存中获取或创建新的实例。
+6. **Bean的创建**
+   + `doGetBean()`方法处理bean的查找、创建和依赖处理。如果请求的bean是一个单例并且尚未创建，则它将使用`getSingleton()`方法从单例缓存中获取或创建新的实例。
 
-**处理单例Beans**：在`DefaultSingletonBeanRegistry`中，`getSingleton()`方法用于从单例缓存中获取已存在的bean或使用`ObjectFactory`创建新的实例。
+7. **处理单例Beans**
+   + 在`DefaultSingletonBeanRegistry`中，`getSingleton()`方法用于从单例缓存中获取已存在的bean或使用`ObjectFactory`创建新的实例。
 
-**实际Bean的创建**：在`AbstractAutowireCapableBeanFactory`中，`createBean()`方法是Bean创建的入口，它主要调用`doCreateBean()`方法。在`doCreateBean()`中，`applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`方法允许`MergedBeanDefinitionPostProcessors`修改合并的bean定义。
+8. **实际Bean的创建**
+   + 在`AbstractAutowireCapableBeanFactory`中，`createBean()`方法是Bean创建的入口，它主要调用`doCreateBean()`方法。在`doCreateBean()`中，`applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`方法允许`MergedBeanDefinitionPostProcessors`修改合并的bean定义。
 
-**应用合并的Bean定义后处理器**：`applyMergedBeanDefinitionPostProcessors()`方法遍历并调用每个`MergedBeanDefinitionPostProcessor`的`postProcessMergedBeanDefinition()`方法。这为每个合并的Bean定义提供了自定义或查询的机会。
+9. **应用合并的Bean定义后处理器**
+   + `applyMergedBeanDefinitionPostProcessors()`方法遍历并调用每个`MergedBeanDefinitionPostProcessor`的`postProcessMergedBeanDefinition()`方法。这为每个合并的Bean定义提供了自定义或查询的机会。
 
-**自定义后处理器逻辑**：在我们的例子中，`MyMergedBeanDefinitionPostProcessor`对带有`MyValue`注解的属性进行了处理。它在`postProcessMergedBeanDefinition()`中检查每个字段是否有`MyValue`注解，并为这些字段收集默认值。
+10. **自定义后处理器逻辑**
+    + 在我们的例子中，`MyMergedBeanDefinitionPostProcessor`对带有`MyValue`注解的属性进行了处理。它在`postProcessMergedBeanDefinition()`中检查每个字段是否有`MyValue`注解，并为这些字段收集默认值。
