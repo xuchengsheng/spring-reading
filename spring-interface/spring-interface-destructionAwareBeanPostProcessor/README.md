@@ -1,25 +1,30 @@
 ## DestructionAwareBeanPostProcessor
 
 - [DestructionAwareBeanPostProcessor](#destructionawarebeanpostprocessor)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
   - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
 
-### 一、接口描述
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845486) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [DestructionAwareBeanPostProcessor源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-interface/spring-interface-destructionAwareBeanPostProcessor)
+
+### 二、接口描述
 
 `DestructionAwareBeanPostProcessor` 接口，用于提供在 bean 销毁之前进行额外处理或操作的机会。其主要职责是在 bean 即将被销毁时允许执行自定义的逻辑。
 
-### 二、接口源码
+### 三、接口源码
 
-`DestructionAwareBeanPostProcessor` 是 Spring 框架自 1.0.1 版本开始引入的一个核心接口。该接口定义了两个主要的方法：`postProcessBeforeInitialization` 和 `postProcessAfterInitialization`，分别在 Bean 的初始化前后调用。
+`DestructionAwareBeanPostProcessor` 是 Spring 框架自 1.0.1 版本开始引入的一个核心接口。为特定的 bean 类型调用自定义的初始化和销毁回调。这提供了一个机制，允许我们介入 Spring bean 的生命周期，在销毁阶段执行特定逻辑。
 
 ```java
 /**
@@ -60,11 +65,12 @@ public interface DestructionAwareBeanPostProcessor extends BeanPostProcessor {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-+ **销毁前逻辑：**使用 `postProcessBeforeDestruction(Object bean, String beanName)` 方法，我们可以为 bean 执行自定义的销毁逻辑。当一个 bean 被容器标记为销毁时，此方法将被调用。（例如，容器关闭时进行资源释放，状态记录，依赖清理）
+1. **销毁前逻辑**
+   + 使用 `postProcessBeforeDestruction(Object bean, String beanName)` 方法，我们可以为 bean 执行自定义的销毁逻辑。当一个 bean 被容器标记为销毁时，此方法将被调用。（例如，容器关闭时进行资源释放，状态记录，依赖清理）
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后从Spring上下文中获取一个`ConnectionService`类型的bean，并打印`isConnected`的状态。
 
@@ -174,7 +180,7 @@ Is connected: true
 connection closed.
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -202,7 +208,7 @@ sequenceDiagram
     AbstractApplicationContext-->>DestructionAwareBeanPostProcessorApplication:请求关闭上下文结束
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`ConnectionService`类型的bean，并打印`isConnected`的状态。
 
@@ -371,81 +377,108 @@ public class MyDestructionAwareBeanPostProcessor implements DestructionAwareBean
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**性能影响**：每一个 `DestructionAwareBeanPostProcessor` 在 bean 的生命周期结束时都会被调用，所以应该确保其中的代码高效执行，避免产生不必要的性能瓶颈。
+1. **性能影响**
+   + 每一个 `DestructionAwareBeanPostProcessor` 在 bean 的生命周期结束时都会被调用，所以应该确保其中的代码高效执行，避免产生不必要的性能瓶颈。
 
-**检查 `requiresDestruction`**：实现 `requiresDestruction` 方法来指定哪些 beans 需要在销毁时进行处理，可以避免不必要的 `postProcessBeforeDestruction` 调用，从而提高性能。
+2. **检查 `requiresDestruction`**
+   + 实现 `requiresDestruction` 方法来指定哪些 beans 需要在销毁时进行处理，可以避免不必要的 `postProcessBeforeDestruction` 调用，从而提高性能。
 
-**注意线程安全**：如果在多线程环境中使用 Spring，确保 `DestructionAwareBeanPostProcessor` 的实现是线程安全的。
+3. **异常处理**
+   + 在 `postProcessBeforeDestruction` 方法中可能会遇到任何类型的异常，应确保适当地处理这些异常，以避免影响其他 beans 的销毁。
 
-**异常处理**：在 `postProcessBeforeDestruction` 方法中可能会遇到任何类型的异常，应确保适当地处理这些异常，以避免影响其他 beans 的销毁。
+4. **确保与其他 `BeanPostProcessors` 协调**
+   + 如果我们的应用程序中还有其他 `BeanPostProcessors`，确保它们之间的相互作用不会导致问题。
 
-**确保与其他 `BeanPostProcessors` 协调**：如果我们的应用程序中还有其他 `BeanPostProcessors`，确保它们之间的相互作用不会导致问题。
-
-**与 `@PreDestroy` 注解协同工作**：如果 bean 已经使用了 `@PreDestroy` 注解来定义自己的销毁方法，这些方法会在 `postProcessBeforeDestruction` 被调用之前执行。确保这两者的逻辑不会互相干扰。
+5. **与 `@PreDestroy` 注解协同工作**
+   + 如果 bean 已经使用了 `@PreDestroy` 注解来定义自己的销毁方法，这些方法会在 `postProcessBeforeDestruction` 被调用之前执行。确保这两者的逻辑不会互相干扰。
 
 ### 八、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**应用启动**:
+1. **应用启动**:
 
-- 在 `DestructionAwareBeanPostProcessorApplication` 的 `main` 方法中，首先创建了一个 `AnnotationConfigApplicationContext` 上下文，并通过 `MyConfiguration` 类进行配置。
-- 通过该上下文获取了一个名为 `connectionService` 的 `ConnectionService` 类型的 bean。
+   - 在 `DestructionAwareBeanPostProcessorApplication` 的 `main` 方法中，首先创建了一个 `AnnotationConfigApplicationContext` 上下文，并通过 `MyConfiguration` 类进行配置。
 
-**Spring容器的初始化**:
+   - 通过该上下文获取了一个名为 `connectionService` 的 `ConnectionService` 类型的 bean。
 
-- 在初始化过程中，Spring容器将根据 `MyConfiguration` 类创建两个 beans: `MyDestructionAwareBeanPostProcessor` 和 `ConnectionServiceImpl`。
-- 当 `ConnectionServiceImpl` bean 初始化完成后，`MyDestructionAwareBeanPostProcessor` 的 `postProcessAfterInitialization` 方法被调用，此时连接被打开。
-- `MyDestructionAwareBeanPostProcessor` 的作用确保了 `ConnectionServiceImpl` bean 初始化完成后会立即打开连接。
 
-**应用运行期**:
+2. **Spring容器的初始化**:
 
-- 在 `main` 方法中，应用查询了 `ConnectionService` bean 的连接状态，并打印出结果，显示连接为 "打开" 状态。
-- 随后，上下文被关闭，意味着所有的单例 bean 将被销毁。
+   - 在初始化过程中，Spring容器将根据 `MyConfiguration` 类创建两个 beans: `MyDestructionAwareBeanPostProcessor` 和 `ConnectionServiceImpl`。
 
-**销毁阶段**:
+   - 当 `ConnectionServiceImpl` bean 初始化完成后，`MyDestructionAwareBeanPostProcessor` 的 `postProcessAfterInitialization` 方法被调用，此时连接被打开。
 
-- 在上下文关闭时，`MyDestructionAwareBeanPostProcessor` 的 `postProcessBeforeDestruction` 方法会被调用。
-- 由于我们在这个方法中检查了 bean 是否是 `ConnectionServiceImpl` 的实例，所以 `closeConnection` 方法被调用，从而关闭连接。
-- 这确保了在 bean 的生命周期结束时，资源被适当地释放。
+   - `MyDestructionAwareBeanPostProcessor` 的作用确保了 `ConnectionServiceImpl` bean 初始化完成后会立即打开连接。
 
-**运行结果**:
 
-- 最终，控制台上的输出证明了在 bean 的生命周期开始时资源被打开，在生命周期结束时资源被关闭。
+4. **应用运行期**:
 
-#### 8.2、源码分析总结
+   - 在 `main` 方法中，应用查询了 `ConnectionService` bean 的连接状态，并打印出结果，显示连接为 "打开" 状态。
 
-**应用启动**:
+   - 随后，上下文被关闭，意味着所有的单例 bean 将被销毁。
 
-- 应用通过 `AnnotationConfigApplicationContext` 启动，并用 `MyConfiguration` 类进行配置。
-- 然后从Spring容器中获取了一个类型为 `ConnectionService` 的 bean，并检查其连接状态。
 
-**Spring容器销毁**:
+5. **销毁阶段**:
 
-- 通过调用 `context.close()`，应用启动了Spring容器的关闭流程。
-- 关闭流程首先通过同步机制确保在任何时刻都只有一个线程能够执行关闭操作。
-- 内部调用 `doClose` 方法来执行实际的关闭逻辑。
-- JVM 的关闭钩子被移除，表示上下文已经明确关闭。
+   - 在上下文关闭时，`MyDestructionAwareBeanPostProcessor` 的 `postProcessBeforeDestruction` 方法会被调用。
 
-**销毁Beans**:
+   - 由于我们在这个方法中检查了 bean 是否是 `ConnectionServiceImpl` 的实例，所以 `closeConnection` 方法被调用，从而关闭连接。
 
-- 在 `doClose` 方法中，`destroyBeans` 方法被调用，它的主要作用是销毁所有的单例 beans。
-- `destroyBeans` 方法进而调用 `BeanFactory` 的 `destroySingletons` 方法。
+   - 这确保了在 bean 的生命周期结束时，资源被适当地释放。
 
-**销毁单例Beans**:
 
-- `destroySingletons` 方法销毁所有在 `BeanFactory` 中缓存的单例 beans。
-- 它首先获取所有需要被销毁的 beans 的名称，然后反向遍历这些 beans，确保依赖的 beans 先被销毁。
-- 对每一个需要被销毁的 bean，`destroySingleton` 方法被调用。
+6. **运行结果**:
+   - 最终，控制台上的输出证明了在 bean 的生命周期开始时资源被打开，在生命周期结束时资源被关闭。
 
-**执行销毁逻辑**:
 
-- 在 `destroySingleton` 方法中，从 `disposableBeans` 列表中获取到实现了 `DisposableBean` 接口的 bean，然后调用它的 `destroy` 方法。
-- 在 `DisposableBeanAdapter` 的 `destroy` 方法中，所有注册的 `DestructionAwareBeanPostProcessor` 将被遍历，对每一个处理器，都会调用其 `postProcessBeforeDestruction` 方法。
+#### 源码分析总结
 
-**自定义销毁逻辑**:
+1. **应用启动**:
 
-- 最终，我们的自定义 `DestructionAwareBeanPostProcessor` 的 `postProcessBeforeDestruction` 方法被调用。
-- 在这个方法中，检查 bean 是否是 `ConnectionServiceImpl` 的实例。如果是，关闭它的连接。
+   - 应用通过 `AnnotationConfigApplicationContext` 启动，并用 `MyConfiguration` 类进行配置。
+
+   - 然后从Spring容器中获取了一个类型为 `ConnectionService` 的 bean，并检查其连接状态。
+
+
+2. **Spring容器销毁**:
+
+   - 通过调用 `context.close()`，应用启动了Spring容器的关闭流程。
+
+   - 关闭流程首先通过同步机制确保在任何时刻都只有一个线程能够执行关闭操作。
+
+   - 内部调用 `doClose` 方法来执行实际的关闭逻辑。
+
+   - JVM 的关闭钩子被移除，表示上下文已经明确关闭。
+
+
+3. **销毁Beans**:
+
+   - 在 `doClose` 方法中，`destroyBeans` 方法被调用，它的主要作用是销毁所有的单例 beans。
+
+   - `destroyBeans` 方法进而调用 `BeanFactory` 的 `destroySingletons` 方法。
+
+
+4. **销毁单例Beans**:
+
+   - `destroySingletons` 方法销毁所有在 `BeanFactory` 中缓存的单例 beans。
+
+   - 它首先获取所有需要被销毁的 beans 的名称，然后反向遍历这些 beans，确保依赖的 beans 先被销毁。
+
+   - 对每一个需要被销毁的 bean，`destroySingleton` 方法被调用。
+
+
+5. **执行销毁逻辑**:
+
+   - 在 `destroySingleton` 方法中，从 `disposableBeans` 列表中获取到实现了 `DisposableBean` 接口的 bean，然后调用它的 `destroy` 方法。
+
+   - 在 `DisposableBeanAdapter` 的 `destroy` 方法中，所有注册的 `DestructionAwareBeanPostProcessor` 将被遍历，对每一个处理器，都会调用其 `postProcessBeforeDestruction` 方法。
+
+
+6. **自定义销毁逻辑**:
+
+   - 最终，我们的自定义 `DestructionAwareBeanPostProcessor` 的 `postProcessBeforeDestruction` 方法被调用。
+
+   - 在这个方法中，检查 bean 是否是 `ConnectionServiceImpl` 的实例。如果是，关闭它的连接。
