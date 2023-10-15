@@ -2,14 +2,14 @@
 
 - [MergedBeanDefinitionPostProcessor](#mergedbeandefinitionpostprocessor)
   - [一、基本信息](#一基本信息)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
     - [最佳实践总结](#最佳实践总结)
     - [源码分析总结](#源码分析总结)
 
@@ -18,11 +18,11 @@
 
 ✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133845274) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [MergedBeanDefinitionPostProcessor源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-mergedBeanDefinitionPostProcessor)
 
-### 一、接口描述
+### 二、接口描述
 
 `MergedBeanDefinitionPostProcessor` 是 Spring 框架中的一个接口，主要用于在 bean 定义被合并后（但在 bean 实例化之前）进行后处理。它扩展了 `BeanPostProcessor`，增加了处理合并 bean 定义的能力。
 
-### 二、接口源码
+### 三、接口源码
 
 `MergedBeanDefinitionPostProcessor` 是 Spring 框架自 2.5 版本开始引入的一个核心接口。其中的核心方法是`postProcessMergedBeanDefinition` 主要用途为提供了一个自定义或查询合并的 bean 定义的机会，例如应用自定义注释、修改 bean 元数据或基于合并的 bean 定义实现自定义行为。
 
@@ -65,7 +65,7 @@ public interface MergedBeanDefinitionPostProcessor extends BeanPostProcessor {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
 1. **处理合并后的 Bean 定义**
    + 在 Spring 中，一个 bean 可以继承另一个 bean 的配置，产生所谓的 "合并后的" bean 定义。这个合并的定义包括原始 bean 定义和任何父 bean 定义中的属性。`MergedBeanDefinitionPostProcessor` 允许我们在 bean 的实例化和初始化之前，基于这个合并的定义执行定制逻辑。
@@ -76,7 +76,7 @@ public interface MergedBeanDefinitionPostProcessor extends BeanPostProcessor {
 3. **修改合并后的 Bean 定义**
    + 虽然不是主要的使用场景，但 `MergedBeanDefinitionPostProcessor` 也允许修改合并后的 bean 定义。但这种修改应该小心进行，并且通常只限于那些真正用于并发修改的定义属性。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyBean`类型的bean，最后打印了该`getMessage`方法返回的值。
 
@@ -186,7 +186,7 @@ public class MyBean {
 message = hello world
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -217,7 +217,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>MergedBeanDefinitionPostProcessorApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 ```java
 public class MergedBeanDefinitionPostProcessorApplication {
@@ -451,7 +451,7 @@ public class MyMergedBeanDefinitionPostProcessor implements MergedBeanDefinition
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
 1. **调用时机**
    + `postProcessMergedBeanDefinition` 是在 bean 处于一个 "半实例化" 的状态。更确切地说，在此时，bean 的实例已经被创建，但属性注入、初始化方法等还没有执行，这意味着我们不应该在此方法中尝试访问 bean 实例。
@@ -465,7 +465,7 @@ public class MyMergedBeanDefinitionPostProcessor implements MergedBeanDefinition
 4. **防止无限递归**
    + 如果我们在 `postProcessMergedBeanDefinition` 方法中尝试获取其他 beans，这可能会触发那些 beans 的创建，从而再次调用 `postProcessMergedBeanDefinition`。我们应该注意避免这种无限递归的情况。
 
-### 八、总结
+### 九、总结
 
 #### 最佳实践总结
 
