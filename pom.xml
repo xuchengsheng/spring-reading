@@ -22,6 +22,7 @@
         <module>spring-annotation</module>
         <module>spring-aware</module>
         <module>spring-interface</module>
+        <module>spring-jsr-330</module>
     </modules>
 
     <dependencies>
