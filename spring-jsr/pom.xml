@@ -9,16 +9,19 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>spring-jsr-330</artifactId>
+    <artifactId>spring-jsr</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-jsr-inject</module>
-        <module>spring-jsr-qualifier</module>
-        <module>spring-jsr-named</module>
-        <module>spring-jsr-singleton</module>
-        <module>spring-jsr-scope</module>
-        <module>spring-jsr-provider</module>
+        <module>spring-jsr330-inject</module>
+        <module>spring-jsr330-qualifier</module>
+        <module>spring-jsr330-named</module>
+        <module>spring-jsr330-singleton</module>
+        <module>spring-jsr330-scope</module>
+        <module>spring-jsr330-provider</module>
+        <module>spring-jsr250-resource</module>
+        <module>spring-jsr250-postConstruct</module>
+        <module>spring-jsr250-preDestroy</module>
     </modules>
 
     <dependencies>
