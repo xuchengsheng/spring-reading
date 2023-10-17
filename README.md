@@ -78,10 +78,26 @@
 - [**@Import的高级策略**](spring-annotation/spring-annotation-import/README.md) - 揭示如何导入其他配置类或组件。
 - [**属性源探查@PropertySource**](spring-annotation/spring-annotation-propertySource/README.md) - 深入了解如何为应用上下文添加属性源。
 - [**掌控顺序@DependsOn**](spring-annotation/spring-annotation-dependsOn/README.md) - 精确控制 Spring Beans 的加载顺序。
-- [**条件注册解密@Conditional注解**](spring-annotation/spring-annotation-conditional/README.md) - 从基础使用到源码分析，全方位理解Spring的条件注册策略。
+- [**条件注册解密@Conditional**](spring-annotation/spring-annotation-conditional/README.md) - 从基础使用到源码分析，全方位理解Spring的条件注册策略。
 - [**深入探究@Lazy注解**](spring-annotation/spring-annotation-lazy/README.md) - 如何优雅地实现 Spring Beans 的延迟加载。
 - [**属性绑定@Value**](spring-annotation/spring-annotation-value/README.md) - 如何在Spring中优雅地注入配置属性。
 - [**依赖注入@Autowired**](spring-annotation/spring-annotation-autowired/README.md) - 了解如何通过@Autowired实现依赖管理和连接组件。
+
+### 📜 JSR 规范
+
+*理解 Spring 是如何实现和优化 JSR 规范中的注解，深入揭露其与 Java 标准化的紧密结合。*
+
+- [**注入依赖@Inject**](spring-jsr/spring-jsr330-inject/README.md) - Spring中如何通过`@Inject`实现依赖注入。
+- [**具名组件@Named**](spring-jsr/spring-jsr330-named/README.md) - 使用`@Named`为Spring Beans提供具体的标识。
+- [**初始化后操作@PostConstruct**](spring-jsr/spring-jsr250-postConstruct/README.md) - 如何利用`@PostConstruct`在Bean初始化后执行特定操作。
+- [**销毁前操作@PreDestroy**](spring-jsr/spring-jsr250-preDestroy/README.md) - 揭示`@PreDestroy`如何在Bean销毁前执行特定任务。
+- [**资源绑定@Resource**](spring-jsr/spring-jsr250-resource/README.md) - 如何优雅地使用`@Resource`在Spring中注入资源。
+- [**提供者机制Provider**](spring-jsr/spring-jsr330-provider/README.md) - 探索Spring中Provider的作用和如何使用它来提供Bean实例。
+- [**限定符@Qualifier**](spring-jsr/spring-jsr330-qualifier/README.md) - 了解`@Qualifier`的重要性及其在解决注入冲突中的作用。
+- [**作用域定义@Scope**](spring-jsr/spring-jsr330-scope/README.md) - 揭露如何使用`@Scope`定义Bean的生命周期和作用域。
+- [**单例模式@Singleton**](spring-jsr/spring-jsr330-singleton/README.md) - 深入理解`@Singleton`注解，确保Spring Bean的单一实例化。
+
+
 
 ## 🔄持续更新中
 
