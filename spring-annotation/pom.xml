@@ -23,6 +23,7 @@
         <module>spring-annotation-conditional</module>
         <module>spring-annotation-value</module>
         <module>spring-annotation-autowired</module>
+        <module>spring-annotation-profile</module>
     </modules>
 
 </project>
