@@ -1,24 +1,30 @@
 ## EnvironmentAware
 
 - [EnvironmentAware](#environmentaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133915522) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [EnvironmentAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-environmentAware)
+
+### 二、接口描述
 
 `EnvironmentAware` 接口，允许Beans访问`Environment`对象。这是一个回调接口，当实现该接口的Bean被Spring容器管理时，Spring容器会为该Bean设置`Environment`对象。
 
-### 二、接口源码
+### 三、接口源码
 
-`EnvironmentAware` 是 Spring 框架自 3.1 开始引入的一个核心接口。主要目的是允许bean在运行时获取与其运行环境有关的信息。这包括环境属性、配置文件、激活的profile等。
+`EnvironmentAware` 是 Spring 框架自 3.1 开始引入的一个核心接口。实现`EnvironmentAware`接口的对象会在Spring容器中被自动注入一个`Environment`实例。
 
 ```java
 /**
@@ -37,17 +43,21 @@ public interface EnvironmentAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**访问环境属性**：通过实现 `EnvironmentAware`，beans 可以直接访问应用上下文的`Environment`对象。这意味着它们可以读取环境属性，这些属性可能来自多个来源，例如系统属性、JVM参数、操作系统环境变量、属性文件等。
+1. **访问环境属性**
+   + 通过实现 `EnvironmentAware`，beans 可以直接访问应用上下文的`Environment`对象。这意味着它们可以读取环境属性，这些属性可能来自多个来源，例如系统属性、JVM参数、操作系统环境变量、属性文件等。
 
-**识别运行时环境**：beans可以通过`Environment`对象来检查和确定当前激活的Spring profiles。这使得bean可以根据不同的运行环境（例如开发、测试、生产等）进行特定的操作或配置。
+2. **识别运行时环境**
+   + beans可以通过`Environment`对象来检查和确定当前激活的Spring profiles。这使得bean可以根据不同的运行环境（例如开发、测试、生产等）进行特定的操作或配置。
 
-**自动回调**：当Spring容器识别到一个bean实现了`EnvironmentAware`接口时，容器会自动调用 `setEnvironment` 方法并传递当前的 `Environment` 对象。这意味着开发者不需要特意去手动设置或获取它。
+3. **自动回调**
+   + 当Spring容器识别到一个bean实现了`EnvironmentAware`接口时，容器会自动调用 `setEnvironment` 方法并传递当前的 `Environment` 对象。这意味着我们不需要特意去手动设置或获取它。
 
-**框架级别的集成**：此接口提供了一个标准机制，允许框架级别的代码（如其他Spring组件和第三方库）访问和集成`Environment`对象，而不必依赖特定的注入策略或其他机制。
+4. **框架级别的集成**
+   + 此接口提供了一个标准机制，允许框架级别的代码（如其他Spring组件和第三方库）访问和集成`Environment`对象，而不必依赖特定的注入策略或其他机制。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyEnvironmentAware`类型的bean，最后调用`getAppProperty`方法并打印。
 
@@ -101,7 +111,7 @@ public class MyEnvironmentAware implements EnvironmentAware {
 AppProperty = Hello from EnvironmentAware!
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -136,7 +146,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>EnvironmentAwareApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyEnvironmentAware`类型的bean，最后调用`getAppProperty`方法并打印。
 
@@ -421,44 +431,61 @@ public class MyEnvironmentAware implements EnvironmentAware {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**不要过度使用**：虽然`EnvironmentAware`为Bean提供了一个直接访问`Environment`的方法，但这并不意味着所有的Bean都应该使用它。在可能的情况下，首先考虑使用Spring的属性注入功能，例如`@Value`。
+1. **不要过度使用**
+   + 虽然`EnvironmentAware`为Bean提供了一个直接访问`Environment`的方法，但这并不意味着所有的Bean都应该使用它。在可能的情况下，首先考虑使用Spring的属性注入功能，例如`@Value`。
 
-**避免使用硬编码的属性键**：当从`Environment`对象中获取属性时，尽量避免在代码中硬编码属性键。最好是将这些键作为常量或在外部配置中定义。
+2. **避免使用硬编码的属性键**
+   + 当从`Environment`对象中获取属性时，尽量避免在代码中硬编码属性键。最好是将这些键作为常量或在外部配置中定义。
 
-**处理不存在的属性**：当使用`Environment`获取属性时，如果该属性不存在，`Environment`可能会返回`null`。确保在代码中正确处理这种情况，或使用`Environment`提供的默认值方法。
+3. **处理不存在的属性**
+   + 当使用`Environment`获取属性时，如果该属性不存在，`Environment`可能会返回`null`。确保在代码中正确处理这种情况，或使用`Environment`提供的默认值方法。
 
-**记住激活的配置文件**：`Environment`允许我们查询当前激活的配置文件(profiles)。确保我们知道哪些profiles是激活的，尤其是在使用特定于profile的属性时。
+4. **记住激活的配置文件**
+   + `Environment`允许我们查询当前激活的配置文件(profiles)。确保我们知道哪些profiles是激活的，尤其是在使用特定于profile的属性时。
 
-**了解Environment的层次结构**：`Environment`对象可能会从多个来源获取属性（例如系统属性、环境变量、配置文件等）。了解这些来源的优先级和加载顺序，以便正确地理解在存在冲突时哪个属性值会被使用。
+5. **了解Environment的层次结构**
+   + `Environment`对象可能会从多个来源获取属性（例如系统属性、环境变量、配置文件等）。了解这些来源的优先级和加载顺序，以便正确地理解在存在冲突时哪个属性值会被使用。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动过程**：通过`EnvironmentAwareApplication`作为主入口，我们使用了`AnnotationConfigApplicationContext`来启动Spring上下文，并加载了`MyConfiguration`作为配置类。
+1. **启动过程**
+   + 通过`EnvironmentAwareApplication`作为主入口，我们使用了`AnnotationConfigApplicationContext`来启动Spring上下文，并加载了`MyConfiguration`作为配置类。
 
-**加载属性**：在`MyConfiguration`类中，我们使用了`@PropertySource`注解指定了从类路径下的`application.properties`文件加载属性到Spring的环境中。
+2. **加载属性**
+   + 在`MyConfiguration`类中，我们使用了`@PropertySource`注解指定了从类路径下的`application.properties`文件加载属性到Spring的环境中。
 
-**注册Bean**：在配置类`MyConfiguration`中，我们定义了一个bean `MyEnvironmentAware`。这保证了当Spring容器启动时，`MyEnvironmentAware`对象会被创建并由Spring管理。
+3. **注册Bean**
+   + 在配置类`MyConfiguration`中，我们定义了一个bean `MyEnvironmentAware`。这保证了当Spring容器启动时，`MyEnvironmentAware`对象会被创建并由Spring管理。
 
-**访问环境属性**：`MyEnvironmentAware`类实现了`EnvironmentAware`接口，这使得当Spring容器初始化该bean时，它会自动调用`setEnvironment`方法，注入当前的`Environment`对象。我们使用这个方法来读取`app.xcs.property`属性，并将其值存储在`appProperty`私有变量中。
+4. **访问环境属性**
+   + `MyEnvironmentAware`类实现了`EnvironmentAware`接口，这使得当Spring容器初始化该bean时，它会自动调用`setEnvironment`方法，注入当前的`Environment`对象。我们使用这个方法来读取`app.xcs.property`属性，并将其值存储在`appProperty`私有变量中。
 
-**显示属性**：最后，在`EnvironmentAwareApplication`主程序中，我们从Spring上下文中获取了`MyEnvironmentAware` bean，并调用了`getAppProperty`方法来获取属性值，然后将其打印到控制台。
+5. **显示属性**
+   + 最后，在`EnvironmentAwareApplication`主程序中，我们从Spring上下文中获取了`MyEnvironmentAware` bean，并调用了`getAppProperty`方法来获取属性值，然后将其打印到控制台。
 
-**输出**：结果显示为“AppProperty = Hello from EnvironmentAware!”，这证明了`EnvironmentAware`接口和`application.properties`文件成功地结合起来，并且我们已经成功地使用Spring环境获取了配置属性。
+6. **输出**
+   + 结果显示为“AppProperty = Hello from EnvironmentAware!”，这证明了`EnvironmentAware`接口和`application.properties`文件成功地结合起来，并且我们已经成功地使用Spring环境获取了配置属性。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动**： 通过`EnvironmentAwareApplication`作为入口，使用`AnnotationConfigApplicationContext`来初始化Spring的上下文，并加载`MyConfiguration`作为配置类。
+1. **应用启动**
+   + 通过`EnvironmentAwareApplication`作为入口，使用`AnnotationConfigApplicationContext`来初始化Spring的上下文，并加载`MyConfiguration`作为配置类。
 
-**属性加载**： 在`MyConfiguration`类中，利用`@PropertySource`注解，指定从`application.properties`文件加载属性到Spring环境中。
+2. **属性加载**
+   + 在`MyConfiguration`类中，利用`@PropertySource`注解，指定从`application.properties`文件加载属性到Spring环境中。
 
-**Bean注册与初始化**： 在上下文的`refresh()`方法中，调用`finishBeanFactoryInitialization()`确保所有非懒加载的单例bean都被实例化。这个过程在`preInstantiateSingletons()`中通过循环调用`getBean()`完成，该方法将触发bean的创建、初始化及其依赖的注入。
+3. **Bean注册与初始化**
+   +  在上下文的`refresh()`方法中，调用`finishBeanFactoryInitialization()`确保所有非懒加载的单例bean都被实例化。这个过程在`preInstantiateSingletons()`中通过循环调用`getBean()`完成，该方法将触发bean的创建、初始化及其依赖的注入。
 
-**Bean后处理与"感知"**： 在bean的初始化过程中，`ApplicationContextAwareProcessor`负责检查并调用那些实现了Aware接口的bean的特定方法。对于实现了`EnvironmentAware`接口的beans，它会调用`setEnvironment()`方法并传入当前的`Environment`对象。
+4. **Bean后处理与"感知"**
+   + 在bean的初始化过程中，`ApplicationContextAwareProcessor`负责检查并调用那些实现了Aware接口的bean的特定方法。对于实现了`EnvironmentAware`接口的beans，它会调用`setEnvironment()`方法并传入当前的`Environment`对象。
 
-**自定义Bean的处理**： `MyEnvironmentAware`在其`setEnvironment()`方法中，从传入的`Environment`对象中获取了`app.xcs.property`属性，并存储到了它的私有变量`appProperty`中。
+5. **自定义Bean的处理**
+   + `MyEnvironmentAware`在其`setEnvironment()`方法中，从传入的`Environment`对象中获取了`app.xcs.property`属性，并存储到了它的私有变量`appProperty`中。
 
-**应用结果输出**： 在`EnvironmentAwareApplication`的主方法中，从Spring上下文获取了`MyEnvironmentAware` bean并调用其`getAppProperty()`方法，然后将获得的属性值输出到控制台。
+6. **应用结果输出**
+   +  在`EnvironmentAwareApplication`的主方法中，从Spring上下文获取了`MyEnvironmentAware` bean并调用其`getAppProperty()`方法，然后将获得的属性值输出到控制台。

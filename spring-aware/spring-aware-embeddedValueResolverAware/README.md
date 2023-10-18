@@ -1,24 +1,30 @@
 ## EmbeddedValueResolverAware
 
 - [EmbeddedValueResolverAware](#embeddedvalueresolveraware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133914999) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [EmbeddedValueResolverAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-embeddedValueResolverAware)
+
+### 二、接口描述
 
 `EmbeddedValueResolverAware` 接口，主要用于提供一个字符串值解析器，这可以在 Bean 属性中解析占位符和表达式。如果我们熟悉 Spring 的 `${...}` 占位符和 `#{...}` 表达式，那么这个接口将帮助我们在自定义组件中解析这些值。
 
-### 二、接口源码
+### 三、接口源码
 
-`EmbeddedValueResolverAware` 是 Spring 框架自 3.0.3 开始引入的一个核心接口。允许对象在初始化时得到一个 `StringValueResolver`，并使用它来解析嵌入的字符串值，如配置文件中的占位符或 SpEL 表达式。
+`EmbeddedValueResolverAware` 是 Spring 框架自 3.0.3 开始引入的一个核心接口。实现`EmbeddedValueResolverAware`接口的对象会在Spring容器中被自动注入一个`StringValueResolver`实例。
 
 ```java
 /**
@@ -44,15 +50,18 @@ public interface EmbeddedValueResolverAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**解析嵌入的字符串值**： 当我们在 Bean 的属性或构造函数参数中有一个值，如 `${property.name}` 或 `#{some.expression}`，这需要被解析成实际的值时，`StringValueResolver` 可以帮助做这件事。
+1. **解析嵌入的字符串值**
+   + 当我们在 Bean 的属性或构造函数参数中有一个值，如 `${property.name}` 或 `#{some.expression}`，这需要被解析成实际的值时，`StringValueResolver` 可以帮助做这件事。
 
-**避免对 `ConfigurableBeanFactory` 的直接依赖**： 通过使用 `EmbeddedValueResolverAware`，我们可以间接地得到这种解析功能，而不必直接依赖于整个 `ConfigurableBeanFactory`。这提供了一种更轻量级、更关注特定功能的方法来解析嵌入的值。
+2. **避免对 `ConfigurableBeanFactory` 的直接依赖**
+   + 通过使用 `EmbeddedValueResolverAware`，我们可以间接地得到这种解析功能，而不必直接依赖于整个 `ConfigurableBeanFactory`。这提供了一种更轻量级、更关注特定功能的方法来解析嵌入的值。
 
-**自动注入 `StringValueResolver`**： 当我们的 Bean 实现了 `EmbeddedValueResolverAware` 接口，Spring 容器会在 Bean 初始化时自动调用 `setEmbeddedValueResolver` 方法，为其注入一个 `StringValueResolver` 实例。这样，Bean 可以在其生命周期中任何时候使用它来解析字符串值。
+3. **自动注入 `StringValueResolver`**
+   + 当我们的 Bean 实现了 `EmbeddedValueResolverAware` 接口，Spring 容器会在 Bean 初始化时自动调用 `setEmbeddedValueResolver` 方法，为其注入一个 `StringValueResolver` 实例。这样，Bean 可以在其生命周期中任何时候使用它来解析字符串值。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyEmbeddedValueResolverAware`类型的bean，最后调用`resolve`方法。
 
@@ -105,7 +114,7 @@ public class MyEmbeddedValueResolverAware implements EmbeddedValueResolverAware 
 Hello, Lex! Today is 2023-10-03
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -140,7 +149,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>EmbeddedValueResolverAwareApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyEmbeddedValueResolverAware`类型的bean，最后调用`resolve`方法。
 
@@ -427,48 +436,67 @@ public class MyEmbeddedValueResolverAware implements EmbeddedValueResolverAware 
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**正确的环境**： 确保你在 Spring 的环境中使用它，因为 `StringValueResolver` 需要 Spring 上下文来正确解析嵌入的值。
+1. **正确的环境**
+   + 确保我们在 Spring 的环境中使用它，因为 `StringValueResolver` 需要 Spring 上下文来正确解析嵌入的值。
 
-**非延迟依赖注入**： `setEmbeddedValueResolver` 方法在 Bean 初始化时调用。如果你太早地尝试使用 `StringValueResolver`（例如，在构造函数中），它可能还没有被注入。
+2. **非延迟依赖注入**
+   + `setEmbeddedValueResolver` 方法在 Bean 初始化时调用。如果我们太早地尝试使用 `StringValueResolver`（例如，在构造函数中），它可能还没有被注入。
 
-**默认值**： 当使用 `${user.name:xcs}` 语法时，如果 `user.name` 没有在环境中定义，它将使用 `xcs`。这可以避免因缺少配置而导致的错误。
+3. **默认值**
+   + 当使用 `${user.name:xcs}` 语法时，如果 `user.name` 没有在环境中定义，它将使用 `xcs`。这可以避免因缺少配置而导致的错误。
 
-**明确解析的范围**： `EmbeddedValueResolverAware` 通常用于解析占位符和 SpEL 表达式。确保不将它与更复杂的 Bean 解析逻辑混淆。
+4. **明确解析的范围**
+   +  `EmbeddedValueResolverAware` 通常用于解析占位符和 SpEL 表达式。确保不将它与更复杂的 Bean 解析逻辑混淆。
 
-**错误处理**： 当解析一个字符串值失败时，Spring 通常会抛出一个异常。确保在代码中适当地处理这些异常。
+5. **错误处理**
+   + 当解析一个字符串值失败时，Spring 通常会抛出一个异常。确保在代码中适当地处理这些异常。
 
-**与其他 Aware 接口的交互**： 如果你的 Bean 实现了多个 `Aware` 接口，需要确保你理解了每个接口的初始化时机和顺序，以及如何与其他 Aware 方法（如 `setBeanFactory` 或 `setApplicationContext`）交互。
+6. **与其他 Aware 接口的交互**
+   + 如果我们的 Bean 实现了多个 `Aware` 接口，需要确保我们理解了每个接口的初始化时机和顺序，以及如何与其他 Aware 方法（如 `setBeanFactory` 或 `setApplicationContext`）交互。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动类**：在 `EmbeddedValueResolverAwareApplication` 中，我们初始化了 Spring 的 `AnnotationConfigApplicationContext` 并加载了 `MyConfiguration` 作为配置类。接着，我们从上下文中取得 `MyEmbeddedValueResolverAware` 的 Bean，并调用了其 `resolve` 方法。
+1. **启动类**
+   + 在 `EmbeddedValueResolverAwareApplication` 中，我们初始化了 Spring 的 `AnnotationConfigApplicationContext` 并加载了 `MyConfiguration` 作为配置类。接着，我们从上下文中取得 `MyEmbeddedValueResolverAware` 的 Bean，并调用了其 `resolve` 方法。
 
-**配置与Bean声明**：在 `MyConfiguration` 配置类中，我们声明了 `MyEmbeddedValueResolverAware` 为一个 Bean，这确保了它会被 Spring 容器管理，并且会接收到 `StringValueResolver` 的实例注入。
+2. **配置与Bean声明**
+   + 在 `MyConfiguration` 配置类中，我们声明了 `MyEmbeddedValueResolverAware` 为一个 Bean，这确保了它会被 Spring 容器管理，并且会接收到 `StringValueResolver` 的实例注入。
 
-**嵌入值解析**：`MyEmbeddedValueResolverAware` 类实现了 `EmbeddedValueResolverAware` 接口，这意味着在该 Bean 被初始化时，Spring 会自动提供一个 `StringValueResolver` 实例。这个解析器之后被用于解析字符串 "Hello, ${user.name:xcs}! Today is #{T(java.time.LocalDate).now().toString()}"。
+3. **嵌入值解析**
+   + `MyEmbeddedValueResolverAware` 类实现了 `EmbeddedValueResolverAware` 接口，这意味着在该 Bean 被初始化时，Spring 会自动提供一个 `StringValueResolver` 实例。这个解析器之后被用于解析字符串 "Hello, ${user.name:xcs}! Today is #{T(java.time.LocalDate).now().toString()}"。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动**：在`EmbeddedValueResolverAwareApplication`类中，使用`AnnotationConfigApplicationContext`来启动Spring应用并加载`MyConfiguration`配置类。
+1. **应用启动**
+   + 在`EmbeddedValueResolverAwareApplication`类中，使用`AnnotationConfigApplicationContext`来启动Spring应用并加载`MyConfiguration`配置类。
 
-**容器初始化**：在构造函数`AnnotationConfigApplicationContext`中，`refresh()`方法被调用来初始化Spring容器。
+2. **容器初始化**
+   + 在构造函数`AnnotationConfigApplicationContext`中，`refresh()`方法被调用来初始化Spring容器。
 
-**实例化Beans**：在`AbstractApplicationContext`的`refresh()`方法中，`finishBeanFactoryInitialization`方法被调用，确保所有单例Bean被预先实例化。
+3. **实例化Beans**
+   + 在`AbstractApplicationContext`的`refresh()`方法中，`finishBeanFactoryInitialization`方法被调用，确保所有单例Bean被预先实例化。
 
-**Bean预实例化**：`DefaultListableBeanFactory`的`preInstantiateSingletons`方法确保所有非懒加载的单例Beans被实例化。核心操作是调用`getBean(beanName)`。
+4. **Bean预实例化**
+   + `DefaultListableBeanFactory`的`preInstantiateSingletons`方法确保所有非懒加载的单例Beans被实例化。核心操作是调用`getBean(beanName)`。
 
-**获取Bean实例**：`AbstractBeanFactory`的`getBean`方法进一步调用`doGetBean`来真正实例化Bean，处理异常和依赖，并返回Bean实例。
+5. **获取Bean实例**
+   + `AbstractBeanFactory`的`getBean`方法进一步调用`doGetBean`来真正实例化Bean，处理异常和依赖，并返回Bean实例。
 
-**Bean单例获取**：`DefaultSingletonBeanRegistry`的`getSingleton`方法确保Bean以单例形式存在，从缓存获取或使用提供的`ObjectFactory`创建新实例。
+6. **Bean单例获取**
+   + `DefaultSingletonBeanRegistry`的`getSingleton`方法确保Bean以单例形式存在，从缓存获取或使用提供的`ObjectFactory`创建新实例。
 
-**创建Bean实例**：`AbstractAutowireCapableBeanFactory`的`createBean`方法调用`doCreateBean`进行Bean的实际实例化，并进行初始化，确保Bean完全配置并准备就绪。
+7. **创建Bean实例**
+   + `AbstractAutowireCapableBeanFactory`的`createBean`方法调用`doCreateBean`进行Bean的实际实例化，并进行初始化，确保Bean完全配置并准备就绪。
 
-**Bean初始化**：`AbstractAutowireCapableBeanFactory`的`initializeBean`方法确保Bean被正确初始化，其中调用`applyBeanPostProcessorsBeforeInitialization`方法是Spring生命周期中的关键点，允许BeanPostProcessors在Bean初始化之前进行操作。
+8. **Bean初始化**
+   + `AbstractAutowireCapableBeanFactory`的`initializeBean`方法确保Bean被正确初始化，其中调用`applyBeanPostProcessorsBeforeInitialization`方法是Spring生命周期中的关键点，允许BeanPostProcessors在Bean初始化之前进行操作。
 
-**处理Aware接口**：在Bean初始化过程中，`ApplicationContextAwareProcessor`确保实现了`Aware`接口的Beans被正确处理，这些Beans会自动"感知"并获得其运行环境或特定依赖的引用。
+9. **处理Aware接口**
+   + 在Bean初始化过程中，`ApplicationContextAwareProcessor`确保实现了`Aware`接口的Beans被正确处理，这些Beans会自动"感知"并获得其运行环境或特定依赖的引用。
 
-**值解析**：最后，我们的`MyEmbeddedValueResolverAware` Bean接收到了一个`StringValueResolver`实例。此时，当`resolve`方法被调用，它会使用这个解析器来解析嵌入的字符串值，并打印到控制台。
+10. **值解析**
+    + 最后，我们的`MyEmbeddedValueResolverAware` Bean接收到了一个`StringValueResolver`实例。此时，当`resolve`方法被调用，它会使用这个解析器来解析嵌入的字符串值，并打印到控制台。

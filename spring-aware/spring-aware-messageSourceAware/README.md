@@ -1,22 +1,28 @@
 ## MessageSourceAware
 
 - [MessageSourceAware](#messagesourceaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
   - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
 
-`MessageSourceAware` 接口，主要用于对象希望被注入`MessageSource`。`MessageSource`是Spring中用于国际化（i18n）的接口，它提供了从不同的消息资源（例如：属性文件）获取消息的方法。使用`MessageSource`，你可以为应用程序提供国际化的消息支持。
+### 一、基本信息
 
-### 二、接口源码
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133915709) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [MessageSourceAware源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-aware/spring-aware-messageSourceAware)
+
+### 二、接口描述
+
+`MessageSourceAware` 接口，主要用于对象希望被注入`MessageSource`。`MessageSource`是Spring中用于国际化（i18n）的接口，它提供了从不同的消息资源（例如：属性文件）获取消息的方法。使用`MessageSource`，我们可以为应用程序提供国际化的消息支持。
+
+### 三、接口源码
 
 `MessageSourceAware` 是 Spring 框架自 1.1.1 开始引入的一个核心接口。实现`MessageSourceAware`接口的对象会在Spring容器中被自动注入一个`MessageSource`实例。
 
@@ -45,15 +51,18 @@ public interface MessageSourceAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**自动注入**：当一个bean实现了`MessageSourceAware`接口，并且被Spring容器管理时，Spring将会自动调用该bean的`setMessageSource`方法，传入当前应用上下文的`MessageSource`实例。
+1. **自动注入**
+   + 当一个bean实现了`MessageSourceAware`接口，并且被Spring容器管理时，Spring将会自动调用该bean的`setMessageSource`方法，传入当前应用上下文的`MessageSource`实例。
 
-**国际化支持**：通过`MessageSourceAware`，beans可以获得对`MessageSource`的访问权，从而可以根据不同的地区和语言获取相应的消息。这对于需要显示不同语言的错误消息、UI标签或其他用户面向的文本的beans特别有用。
+2. **国际化支持**
+   + 通过`MessageSourceAware`，beans可以获得对`MessageSource`的访问权，从而可以根据不同的地区和语言获取相应的消息。这对于需要显示不同语言的错误消息、UI标签或其他用户面向的文本的beans特别有用。
 
-**简化配置**：虽然我们可以通过常规的依赖注入方法将`MessageSource`注入到beans中，但`MessageSourceAware`提供了一种更加自动化和明确的方法，特别是当我们的bean需要在初始化过程的特定阶段获得`MessageSource`时。
+3. **简化配置**
+   + 虽然我们可以通过常规的依赖注入方法将`MessageSource`注入到beans中，但`MessageSourceAware`提供了一种更加自动化和明确的方法，特别是当我们的bean需要在初始化过程的特定阶段获得`MessageSource`时。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyMessageSourceAware`类型的bean，最后调用`getMessage`方法。
 
@@ -111,10 +120,10 @@ public class MyMessageSourceAware implements MessageSourceAware {
 
 ```java
 English：Hello!
-中文：你好
+中文：我们好
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -149,7 +158,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>MessageSourceAwareApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyMessageSourceAware`类型的bean，最后调用`getMessage`方法。
 
@@ -189,7 +198,7 @@ public void refresh() throws BeansException, IllegalStateException {
 }
 ```
 
-我们来到`org.springframework.context.support.AbstractApplicationContext#refresh`方法中的步骤1，在`org.springframework.context.support.AbstractApplicationContext#initMessageSource`方法中，这个方法确保Spring应用上下文总是有一个`MessageSource` bean可用，无论是否明确定义了它。如果用户没有定义，它会提供一个默认实现。这意味着在Spring上下文中，你总是可以安全地调用`getMessage()`，因为总会有一个`MessageSource`可用。
+我们来到`org.springframework.context.support.AbstractApplicationContext#refresh`方法中的步骤1，在`org.springframework.context.support.AbstractApplicationContext#initMessageSource`方法中，这个方法确保Spring应用上下文总是有一个`MessageSource` bean可用，无论是否明确定义了它。如果用户没有定义，它会提供一个默认实现。这意味着在Spring上下文中，我们总是可以安全地调用`getMessage()`，因为总会有一个`MessageSource`可用。
 
 ```java
 protected void initMessageSource() {
@@ -472,48 +481,67 @@ public class MyMessageSourceAware implements MessageSourceAware {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**明确的配置**： 确保你的Spring上下文中有一个`MessageSource` bean，通常命名为“messageSource”。虽然Spring提供了一个默认的，但为了满足自定义需求，你可能需要明确地配置它。
+1. **明确的配置**
+   + 确保我们的Spring上下文中有一个`MessageSource` bean，通常命名为“messageSource”。虽然Spring提供了一个默认的，但为了满足自定义需求，我们可能需要明确地配置它。
 
-**生命周期时机**： `MessageSourceAware`的`setMessageSource`方法在常规属性设置之后和初始化方法（如`InitializingBean`的`afterPropertiesSet`或任何自定义的init方法）之前被调用。确保你的bean不在其生命周期的早期阶段（例如，在构造函数中）期望使用`MessageSource`。
+2. **生命周期时机**
+   + `MessageSourceAware`的`setMessageSource`方法在常规属性设置之后和初始化方法（如`InitializingBean`的`afterPropertiesSet`或任何自定义的init方法）之前被调用。确保我们的bean不在其生命周期的早期阶段（例如，在构造函数中）期望使用`MessageSource`。
 
-**文件位置和命名**： 如果你使用`ResourceBundleMessageSource`或类似的机制，确保你的属性文件位于类路径上，并且与你在`MessageSource`配置中指定的basename匹配。
+3. **文件位置和命名**
+   + 如果我们使用`ResourceBundleMessageSource`或类似的机制，确保我们的属性文件位于类路径上，并且与我们在`MessageSource`配置中指定的basename匹配。
 
-**编码问题**： 属性文件默认使用ISO-8859-1编码。如果你的消息包含非此编码的字符（例如中文、俄文等），确保使用Unicode转义或正确设置文件的编码。
+4. **编码问题**
+   + 属性文件默认使用ISO-8859-1编码。如果我们的消息包含非此编码的字符（例如中文、俄文等），确保使用Unicode转义或正确设置文件的编码。
 
-**父子上下文**： 在使用Spring的父子上下文（例如，在Web应用中）时，子上下文可以访问父上下文中的`MessageSource`，但反之则不行。确保你在正确的上下文中配置了`MessageSource`。
+5. **父子上下文**
+   + 在使用Spring的父子上下文（例如，在Web应用中）时，子上下文可以访问父上下文中的`MessageSource`，但反之则不行。确保我们在正确的上下文中配置了`MessageSource`。
 
-**避免硬编码**： 尽量不要在代码中硬编码消息键或默认消息。最好在属性文件中管理它们，这样在未来需要更改或添加新的语言支持时，你不需要修改代码。
+6. **避免硬编码**
+   + 尽量不要在代码中硬编码消息键或默认消息。最好在属性文件中管理它们，这样在未来需要更改或添加新的语言支持时，我们不需要修改代码。
 
-**默认消息**： 当使用`MessageSource`检索消息时，考虑提供一个默认消息。这可以在未找到特定消息时提供一个后备，避免抛出异常。
+7. **默认消息**
+   + 当使用`MessageSource`检索消息时，考虑提供一个默认消息。这可以在未找到特定消息时提供一个后备，避免抛出异常。
 
 ### 八、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动类**： 在`MessageSourceAwareApplication`类中，使用了`AnnotationConfigApplicationContext`来启动Spring应用。这个上下文是专为基于Java注解的配置而设计的。启动时，它加载了`MyConfiguration`配置类，并从上下文中获取了`MyMessageSourceAware`bean，随后调用了`getMessage`方法显示消息。
+1. **启动类**
+   + 在`MessageSourceAwareApplication`类中，使用了`AnnotationConfigApplicationContext`来启动Spring应用。这个上下文是专为基于Java注解的配置而设计的。启动时，它加载了`MyConfiguration`配置类，并从上下文中获取了`MyMessageSourceAware`bean，随后调用了`getMessage`方法显示消息。
 
-**配置类**： `MyConfiguration`是一个基于Java的Spring配置类，其中定义了两个bean：`MyMessageSourceAware`和`messageSource`。`messageSource` bean是一个`ResourceBundleMessageSource`实例，用于从`i18n/messages`基本名称的属性文件中读取国际化消息。
+2. **配置类**
+   + `MyConfiguration`是一个基于Java的Spring配置类，其中定义了两个bean：`MyMessageSourceAware`和`messageSource`。`messageSource` bean是一个`ResourceBundleMessageSource`实例，用于从`i18n/messages`基本名称的属性文件中读取国际化消息。
 
-**实现MessageSourceAware接口**： `MyMessageSourceAware`类实现了`MessageSourceAware`接口，这意味着Spring容器会自动注入一个`MessageSource`实例到这个bean中。这是通过`setMessageSource`方法完成的。
+3. **实现MessageSourceAware接口**
+   +  `MyMessageSourceAware`类实现了`MessageSourceAware`接口，这意味着Spring容器会自动注入一个`MessageSource`实例到这个bean中。这是通过`setMessageSource`方法完成的。
 
-**消息检索**： 在`MyMessageSourceAware`的`getMessage`方法中，使用了注入的`MessageSource`来检索和打印两种语言的国际化消息：英文和简体中文。
+4. **消息检索**
+   + 在`MyMessageSourceAware`的`getMessage`方法中，使用了注入的`MessageSource`来检索和打印两种语言的国际化消息：英文和简体中文。
 
-**运行结果**： 当应用程序执行时，它成功地从对应的属性文件中获取并显示了英文和简体中文的国际化消息。
+5. **运行结果**
+   + 当应用程序执行时，它成功地从对应的属性文件中获取并显示了英文和简体中文的国际化消息。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动**：你从`MessageSourceAwareApplication`启动应用，使用`AnnotationConfigApplicationContext`初始化Spring容器，并加载`MyConfiguration`配置。
+1. **应用启动**
+   + 我们从`MessageSourceAwareApplication`启动应用，使用`AnnotationConfigApplicationContext`初始化Spring容器，并加载`MyConfiguration`配置。
 
-**容器初始化**：在`AnnotationConfigApplicationContext`的构造函数中，执行了`register`和`refresh`方法，其中`refresh`是最重要的，它触发了容器的初始化和bean的创建过程。
+2. **容器初始化**
+   + 在`AnnotationConfigApplicationContext`的构造函数中，执行了`register`和`refresh`方法，其中`refresh`是最重要的，它触发了容器的初始化和bean的创建过程。
 
-**消息源初始化**：在容器刷新的`refresh`方法中，首先确保了一个`MessageSource` bean存在，这是通过`initMessageSource`方法完成的。如果没有明确定义`MessageSource` bean，Spring会提供一个默认实现，确保应用上下文总是有一个可用。
+3. **消息源初始化**
+   + 在容器刷新的`refresh`方法中，首先确保了一个`MessageSource` bean存在，这是通过`initMessageSource`方法完成的。如果没有明确定义`MessageSource` bean，Spring会提供一个默认实现，确保应用上下文总是有一个可用。
 
-**bean实例化**：随后，在`refresh`方法中，通过调用`finishBeanFactoryInitialization`方法，容器开始实例化所有非延迟加载的单例bean。
+4. **bean实例化**
+   + 随后，在`refresh`方法中，通过调用`finishBeanFactoryInitialization`方法，容器开始实例化所有非延迟加载的单例bean。
 
-**Bean的生命周期**：在bean的创建过程中，Spring容器会确保所有的生命周期回调都被正确地执行，其中最重要的是`BeanPostProcessors`。这些处理器提供了一个插件机制，允许我们在bean的初始化前后执行自定义的逻辑。
+5. **Bean的生命周期**
+   + 在bean的创建过程中，Spring容器会确保所有的生命周期回调都被正确地执行，其中最重要的是`BeanPostProcessors`。这些处理器提供了一个插件机制，允许我们在bean的初始化前后执行自定义的逻辑。
 
-**处理Aware接口**：`ApplicationContextAwareProcessor`是一个特殊的`BeanPostProcessor`，它关心那些实现了"Aware"接口的beans。对于实现了`MessageSourceAware`的beans，该处理器会自动注入应用上下文的`MessageSource`。
+6. **处理Aware接口**
+   + `ApplicationContextAwareProcessor`是一个特殊的`BeanPostProcessor`，它关心那些实现了"Aware"接口的beans。对于实现了`MessageSourceAware`的beans，该处理器会自动注入应用上下文的`MessageSource`。
 
-**消息检索**：在你的`MyMessageSourceAware`类中，已经成功地获取了`MessageSource`的引用。然后，你调用其`getMessage`方法，从属性文件中检索并打印两个国际化的消息。
+7. **消息检索**
+   + 在我们的`MyMessageSourceAware`类中，已经成功地获取了`MessageSource`的引用。然后，我们调用其`getMessage`方法，从属性文件中检索并打印两个国际化的消息。

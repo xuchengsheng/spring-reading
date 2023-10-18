@@ -1,22 +1,28 @@
 ## ImportAware
 
 - [ImportAware](#importaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133915616) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [ImportAware源码]()
+
+### 二、接口描述
 
 `ImportAware` 接口，提供被导入类的访问功能。当一个类实现了 `ImportAware` 接口，并且被通过 @Import 注解导入到其他配置类中，该类可以获得对导入它的 `AnnotationMetadata` 的访问权。
 
-### 二、接口源码
+### 三、接口源码
 
 `ApplicationStartupAware` 是 Spring 框架自 3.1 开始引入的一个核心接口。实现`ImportAware`接口的对象会在Spring容器中被自动注入一个`AnnotationMetadata`实例。
 
@@ -38,17 +44,21 @@ public interface ImportAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**访问导入类的注解元数据**：当一个类实现了 `ImportAware` 接口，并且它是通过 `@Import` 或其他特定方式被导入的，Spring 容器会自动调用它的 `setImportMetadata` 方法，并传入与导入该类的注解相关的 `AnnotationMetadata`。
+1. **访问导入类的注解元数据**
+   + 当一个类实现了 `ImportAware` 接口，并且它是通过 `@Import` 或其他特定方式被导入的，Spring 容器会自动调用它的 `setImportMetadata` 方法，并传入与导入该类的注解相关的 `AnnotationMetadata`。
 
-**条件性的行为**：通过访问导入类的注解元数据，可以实现基于特定条件的行为。例如，根据导入类上的注解属性，决定是否注册某个 bean，或者为 bean 设置特定的属性值。
+2. **条件性的行为**
+   + 通过访问导入类的注解元数据，可以实现基于特定条件的行为。例如，根据导入类上的注解属性，决定是否注册某个 bean，或者为 bean 设置特定的属性值。
 
-**框架和库的开发**：`ImportAware` 在 Spring 框架内部和某些第三方库中被用于执行特定的初始化和配置任务。例如，某些特性的自动配置可能会根据导入它们的配置类上的注解属性进行调整。
+3. **框架和库的开发**
+   + `ImportAware` 在 Spring 框架内部和某些第三方库中被用于执行特定的初始化和配置任务。例如，某些特性的自动配置可能会根据导入它们的配置类上的注解属性进行调整。
 
-**增强诊断和调试信息**：可以基于导入类的元数据为我们提供更多的上下文信息，这在诊断复杂的配置问题时可能会很有用。
+4. **增强诊断和调试信息**
+   + 可以基于导入类的元数据为我们提供更多的上下文信息，这在诊断复杂的配置问题时可能会很有用。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`String`类型的bean并打印。
 
@@ -137,9 +147,7 @@ Caused by: java.lang.IllegalArgumentException: @EnableXcs is not present on impo
 	... 10 more
 ```
 
-
-
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -174,7 +182,7 @@ sequenceDiagram
 	AnnotationConfigApplicationContext->>ImportAwareApplication: 初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`String`类型的bean并打印。
 
@@ -450,44 +458,61 @@ public class MyImportAware implements ImportAware {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**明确需求**：在决定实现 `ImportAware` 之前，请确保您确实需要知道是哪个类导入了您的组件，并且需要访问其注解元数据。避免不必要的复杂性。
+1. **明确需求**
+   + 在决定实现 `ImportAware` 之前，请确保我们确实需要知道是哪个类导入了我们的组件，并且需要访问其注解元数据。避免不必要的复杂性。
 
-**正确的上下文**：`ImportAware` 只对通过 `@Import` 导入的类有意义。对于其他方式注册的 beans（例如，通过 component scanning 或 XML 配置），`setImportMetadata` 方法可能不会被调用。
+2. **正确的上下文**
+   + `ImportAware` 只对通过 `@Import` 导入的类有意义。对于其他方式注册的 beans（例如，通过 component scanning 或 XML 配置），`setImportMetadata` 方法可能不会被调用。
 
-**小心处理元数据**：当访问 `AnnotationMetadata` 时，确保处理不存在的注解或属性的情况，以避免空指针异常。
+3. **小心处理元数据**
+   + 当访问 `AnnotationMetadata` 时，确保处理不存在的注解或属性的情况，以避免空指针异常。
 
-**注意与其他 `BeanPostProcessor` 的交互**：`ImportAware` 的功能部分是通过 `BeanPostProcessor` 机制实现的。如果您在应用中使用其他 `BeanPostProcessor`，请确保您了解它们之间的交互和执行顺序。
+4. **注意与其他 `BeanPostProcessor` 的交互**
+   + `ImportAware` 的功能部分是通过 `BeanPostProcessor` 机制实现的。如果我们在应用中使用其他 `BeanPostProcessor`，请确保我们了解它们之间的交互和执行顺序。
 
-**不要过度使用**：虽然 `ImportAware` 可以带来一些灵活性，但不应在不需要的地方使用它。过度使用可能会导致配置变得复杂且难以追踪。
+5. **不要过度使用**
+   + 虽然 `ImportAware` 可以带来一些灵活性，但不应在不需要的地方使用它。过度使用可能会导致配置变得复杂且难以追踪。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**初始化与运行**：使用 `AnnotationConfigApplicationContext` 初始化了一个 Spring 上下文，加载了 `MyConfiguration` 配置类，并从上下文中获取了一个类型为 `String` 的 bean。
+1. **初始化与运行**
+   + 使用 `AnnotationConfigApplicationContext` 初始化了一个 Spring 上下文，加载了 `MyConfiguration` 配置类，并从上下文中获取了一个类型为 `String` 的 bean。
 
-**`@EnableXcs` 注解的作用**：`@EnableXcs` 是一个自定义注解，其主要作用是通过 `@Import` 注解导入 `MyImportAware` 类，从而启动 `ImportAware` 功能。
+2. **`@EnableXcs` 注解的作用**
+   + `@EnableXcs` 是一个自定义注解，其主要作用是通过 `@Import` 注解导入 `MyImportAware` 类，从而启动 `ImportAware` 功能。
 
-**`MyImportAware` 类与 `ImportAware`**：`MyImportAware` 实现了 `ImportAware` 接口，允许它获取关于导入它的类的注解信息。在 `setImportMetadata` 方法中，`MyImportAware` 会检查导入它的类是否有 `@EnableXcs` 注解。如果存在 `@EnableXcs` 注解，它会继续并注册一个 `String` 类型的 bean，值为 "This is a custom bean!"。如果不存在，它会抛出异常，提示 `@EnableXcs` 注解不存在于导入它的类上。
+3. **`MyImportAware` 类与 `ImportAware`**
+   + `MyImportAware` 实现了 `ImportAware` 接口，允许它获取关于导入它的类的注解信息。在 `setImportMetadata` 方法中，`MyImportAware` 会检查导入它的类是否有 `@EnableXcs` 注解。如果存在 `@EnableXcs` 注解，它会继续并注册一个 `String` 类型的 bean，值为 "This is a custom bean!"。如果不存在，它会抛出异常，提示 `@EnableXcs` 注解不存在于导入它的类上。
 
-**正常使用**：当 `MyConfiguration` 使用 `@EnableXcs` 注解时，程序可以正常运行，从上下文中获取到的 String 类型的 bean 值为 "This is a custom bean!"。
+4. **正常使用**
+   + 当 `MyConfiguration` 使用 `@EnableXcs` 注解时，程序可以正常运行，从上下文中获取到的 String 类型的 bean 值为 "This is a custom bean!"。
 
-**异常情况**：但如果 `MyConfiguration` 直接使用 `@Import(MyImportAware.class)` 导入 `MyImportAware` 类，而不使用 `@EnableXcs` 注解，会导致 `MyImportAware` 在查找 `@EnableXcs` 注解时发现它不存在，从而抛出异常。
+5. **异常情况**
+   + 但如果 `MyConfiguration` 直接使用 `@Import(MyImportAware.class)` 导入 `MyImportAware` 类，而不使用 `@EnableXcs` 注解，会导致 `MyImportAware` 在查找 `@EnableXcs` 注解时发现它不存在，从而抛出异常。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用程序启动**： 使用 `AnnotationConfigApplicationContext` 初始化 Spring 上下文，加载 `MyConfiguration` 配置类。程序试图从 Spring 上下文中获取一个类型为 `String` 的 bean。
+1. **应用程序启动**
+   + 使用 `AnnotationConfigApplicationContext` 初始化 Spring 上下文，加载 `MyConfiguration` 配置类。程序试图从 Spring 上下文中获取一个类型为 `String` 的 bean。
 
-**上下文刷新**： 在构造 `AnnotationConfigApplicationContext` 时，会调用 `refresh()` 方法，这是 Spring 上下文的初始化和刷新过程的入口点。
+2. **上下文刷新**
+   + 在构造 `AnnotationConfigApplicationContext` 时，会调用 `refresh()` 方法，这是 Spring 上下文的初始化和刷新过程的入口点。
 
-**实例化Beans**： 执行 `finishBeanFactoryInitialization`，该方法负责预实例化上下文中的所有非懒加载单例bean。对于每个bean，它都会调用 `getBean` 方法。
+3. **实例化Beans**
+   + 执行 `finishBeanFactoryInitialization`，该方法负责预实例化上下文中的所有非懒加载单例bean。对于每个bean，它都会调用 `getBean` 方法。
 
-**处理 `ImportAware` Beans**： 如果bean实现了 `ImportAware` 接口，`postProcessBeforeInitialization` 方法会为该 bean 设置导入它的类的注解元数据。在我们的例子中，`MyImportAware` 就是这样一个bean。
+4. **处理 `ImportAware` Beans**
+   + 如果bean实现了 `ImportAware` 接口，`postProcessBeforeInitialization` 方法会为该 bean 设置导入它的类的注解元数据。在我们的例子中，`MyImportAware` 就是这样一个bean。
 
-**检查 `@EnableXcs`**： 在 `MyImportAware` 的 `setImportMetadata` 方法中，它会检查导入它的类是否有 `@EnableXcs` 注解。如果存在该注解，则继续处理；如果不存在，则抛出异常。
+5. **检查 `@EnableXcs`**
+   + 在 `MyImportAware` 的 `setImportMetadata` 方法中，它会检查导入它的类是否有 `@EnableXcs` 注解。如果存在该注解，则继续处理；如果不存在，则抛出异常。
 
-**Bean创建**： 如果导入类上存在 `@EnableXcs` 注解，`MyImportAware` 继续并定义了一个 `String` 类型的 bean。这就是我们从上下文中检索并在控制台上打印的bean。
+6. **Bean创建**
+   + 如果导入类上存在 `@EnableXcs` 注解，`MyImportAware` 继续并定义了一个 `String` 类型的 bean。这就是我们从上下文中检索并在控制台上打印的bean。
 
-**异常处理**： 如果直接使用 `@Import` 导入 `MyImportAware` 而不使用 `@EnableXcs` 注解，会发生异常，因为 `MyImportAware` 期望导入它的类上有 `@EnableXcs` 注解。
+7. **异常处理**
+   + 如果直接使用 `@Import` 导入 `MyImportAware` 而不使用 `@EnableXcs` 注解，会发生异常，因为 `MyImportAware` 期望导入它的类上有 `@EnableXcs` 注解。

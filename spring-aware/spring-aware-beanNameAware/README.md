@@ -1,24 +1,30 @@
 ## BeanNameAware
 
 - [BeanNameAware](#beannameaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN]() 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [BeanNameAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-beanNameAware)
+
+### 二、接口描述
 
 `BeanNameAware` 接口。当一个 Bean 实现了此接口，可以感知其在 Spring 容器中的名称。
 
-### 二、接口源码
+### 三、接口源码
 
-`BeanNameAware` 是 Spring 框架自 01.11.2003 开始引入的一个核心接口。这个接口是为那些想要了解其在 bean 工厂中的名称的 beans 设计的。
+`BeanNameAware` 是 Spring 框架自 01.11.2003 开始引入的一个核心接口。实现`BeanNameAware`接口的对象会在Spring容器中被自动注入Bean的名称。
 
 ```java
 /**
@@ -51,15 +57,18 @@ public interface BeanNameAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**提供 `setBeanName` 方法**：当一个 Bean 实现了 `BeanNameAware` 接口，它需要提供 `setBeanName` 方法的实现。这个方法有一个参数，即该 Bean 在 Spring 容器中的名称。
+1. **提供 `setBeanName` 方法**
+   + 当一个 Bean 实现了 `BeanNameAware` 接口，它需要提供 `setBeanName` 方法的实现。这个方法有一个参数，即该 Bean 在 Spring 容器中的名称。
 
-**自动回调**：当 Spring 容器创建并配置一个实现了 `BeanNameAware` 接口的 Bean 时，容器会自动回调 `setBeanName` 方法，并传入该 Bean 在容器中的名称。这意味着开发者不需要显式地调用这个方法；Spring 容器会自动处理。
+2. **自动回调**
+   + 当 Spring 容器创建并配置一个实现了 `BeanNameAware` 接口的 Bean 时，容器会自动回调 `setBeanName` 方法，并传入该 Bean 在容器中的名称。这意味着我们不需要显式地调用这个方法；Spring 容器会自动处理。
 
-**获取 Bean 的名称**：有时，Bean 可能需要知道其在容器中的名称以执行特定的逻辑或功能，或者为了日志记录或其他目的。通过实现 `BeanNameAware`，Bean 可以轻松获得此信息。
+3. **获取 Bean 的名称**
+   + 有时，Bean 可能需要知道其在容器中的名称以执行特定的逻辑或功能，或者为了日志记录或其他目的。通过实现 `BeanNameAware`，Bean 可以轻松获得此信息。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -127,7 +136,7 @@ Module myAliPayService has been registered.
 Module myWeChatPayService has been registered.
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -159,7 +168,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>BeanNameAwareApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
@@ -413,42 +422,58 @@ public abstract class MyBasePayService implements BeanNameAware, InitializingBea
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**与其他生命周期方法的顺序**：`setBeanName` 方法的调用是在其他许多生命周期方法之前的，例如 `InitializingBean#afterPropertiesSet` 和任何定义的初始化方法。因此，我们不应该在 `setBeanName` 方法内部预期其他配置或初始化逻辑已经完成。
+1. **与其他生命周期方法的顺序**
+   + `setBeanName` 方法的调用是在其他许多生命周期方法之前的，例如 `InitializingBean#afterPropertiesSet` 和任何定义的初始化方法。因此，我们不应该在 `setBeanName` 方法内部预期其他配置或初始化逻辑已经完成。
 
-**仅在容器管理的 Beans 中有效**：只有当 bean 是由 Spring 容器管理时，`BeanNameAware` 才会生效。简单地创建一个类的实例（例如通过 `new` 关键字）并不会触发 `BeanNameAware` 功能。
+2. **仅在容器管理的 Beans 中有效**
+   + 只有当 bean 是由 Spring 容器管理时，`BeanNameAware` 才会生效。简单地创建一个类的实例（例如通过 `new` 关键字）并不会触发 `BeanNameAware` 功能。
 
-**与其他 Aware 接口的组合使用**：当一个 bean 同时实现多个 `Aware` 接口时，需要注意它们的调用顺序。例如，`BeanNameAware`、`BeanFactoryAware` 和 `ApplicationContextAware` 的回调方法调用顺序是固定的。
+3. **与其他 Aware 接口的组合使用**
+   + 当一个 bean 同时实现多个 `Aware` 接口时，需要注意它们的调用顺序。例如，`BeanNameAware`、`BeanFactoryAware` 和 `ApplicationContextAware` 的回调方法调用顺序是固定的。
 
-**Bean 名称的唯一性**：Spring 容器内的 bean 名称是唯一的，但如果使用别名，同一个 bean 可能会有多个名称。当实现 `BeanNameAware` 时，我们获得的是 bean 的主要名称。
+4. **Bean 名称的唯一性**
+   + Spring 容器内的 bean 名称是唯一的，但如果使用别名，同一个 bean 可能会有多个名称。当实现 `BeanNameAware` 时，我们获得的是 bean 的主要名称。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动及配置**：我们使用了 `AnnotationConfigApplicationContext` 作为 Spring 容器的入口，专门为基于 Java 的配置设计。该容器被初始化并加载了 `MyConfiguration` 类，它定义了应用的主要配置。
+1. **启动及配置**
+   + 我们使用了 `AnnotationConfigApplicationContext` 作为 Spring 容器的入口，专门为基于 Java 的配置设计。该容器被初始化并加载了 `MyConfiguration` 类，它定义了应用的主要配置。
 
-**组件扫描**：通过在 `MyConfiguration` 类中使用 `@ComponentScan` 注解，我们告诉 Spring 容器去扫描 "`com.xcs.spring.service`" 包及其子包，以找到和管理 Beans。
+2. **组件扫描**
+   + 通过在 `MyConfiguration` 类中使用 `@ComponentScan` 注解，我们告诉 Spring 容器去扫描 "`com.xcs.spring.service`" 包及其子包，以找到和管理 Beans。
 
-**生命周期管理**：**MyBasePayService** 类展示了如何利用 Spring 的特殊接口，例如 `BeanNameAware`、`InitializingBean` 和 `DisposableBean`，来插入到 Bean 的生命周期的特定阶段。当一个 Bean 实例被创建并管理 by Spring, 它会被赋予一个名称（通过 `BeanNameAware`）、在所有属性设置后初始化（通过 `InitializingBean`）以及在应用结束或 Bean 被销毁时执行特定操作（通过 `DisposableBean`）。
+3. **生命周期管理**
+   + `MyBasePayService`类展示了如何利用 Spring 的特殊接口，例如 `BeanNameAware`、`InitializingBean` 和 `DisposableBean`，来插入到 Bean 的生命周期的特定阶段。当一个 Bean 实例被创建并管理 by Spring, 它会被赋予一个名称（通过 `BeanNameAware`）、在所有属性设置后初始化（通过 `InitializingBean`）以及在应用结束或 Bean 被销毁时执行特定操作（通过 `DisposableBean`）。
 
-**具体的服务实现**：有两个具体的支付服务，`MyAliPayService` 和 `MyWeChatPayService`，它们都继承了 `MyBasePayService`。这意味着它们都自动继承了上述的生命周期管理功能。当 Spring 容器启动时，这两个服务的相关生命周期方法会被调用，如我们从打印的消息中所看到的。
+4. **具体的服务实现**
+   + 有两个具体的支付服务，`MyAliPayService` 和 `MyWeChatPayService`，它们都继承了 `MyBasePayService`。这意味着它们都自动继承了上述的生命周期管理功能。当 Spring 容器启动时，这两个服务的相关生命周期方法会被调用，如我们从打印的消息中所看到的。
 
-**实际效果**：当应用运行时，每个服务类都会打印出其已经被注册和注销的消息，这是由于它们都继承了 `MyBasePayService` 中定义的生命周期方法。
+5. **实际效果**
+   + 当应用运行时，每个服务类都会打印出其已经被注册和注销的消息，这是由于它们都继承了 `MyBasePayService` 中定义的生命周期方法。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动和上下文初始化**：使用`AnnotationConfigApplicationContext`初始化Spring容器，其中传递了配置类`MyConfiguration`。
+1. **启动和上下文初始化**
+   + 使用`AnnotationConfigApplicationContext`初始化Spring容器，其中传递了配置类`MyConfiguration`。
 
-**注册和刷新上下文**：在`AnnotationConfigApplicationContext`构造函数中，`register()`方法注册配置类，而`refresh()`方法开始加载和初始化beans。
+2. **注册和刷新上下文**
+   + 在`AnnotationConfigApplicationContext`构造函数中，`register()`方法注册配置类，而`refresh()`方法开始加载和初始化beans。
 
-**开始bean的实例化**：`refresh()`方法进一步调用了`finishBeanFactoryInitialization(beanFactory)`，该方法负责预先实例化所有非懒加载的单例bean。
+3. **开始bean的实例化**
+   + `refresh()`方法进一步调用了`finishBeanFactoryInitialization(beanFactory)`，该方法负责预先实例化所有非懒加载的单例bean。
 
-**实例化单例bean**：`preInstantiateSingletons()`方法遍历所有bean名称，并通过调用`getBean(beanName)`来实例化和初始化bean。
+4. **实例化单例bean**
+   + `preInstantiateSingletons()`方法遍历所有bean名称，并通过调用`getBean(beanName)`来实例化和初始化bean。
 
-**创建bean实例**：`doGetBean()`是实际进行bean创建的核心方法，它处理了bean的实例化、依赖注入和初始化等逻辑。
+5. **创建bean实例**
+   + `doGetBean()`是实际进行bean创建的核心方法，它处理了bean的实例化、依赖注入和初始化等逻辑。
 
-**处理Aware接口族**：在bean的初始化过程中，`invokeAwareMethods(beanName, bean)`被调用，负责处理实现了`Aware`接口族的beans。这是我们的`BeanNameAware`接口发挥作用的地方，当bean实现此接口时，其`setBeanName`方法会被调用。
+6. **处理Aware接口族**
+   + 在bean的初始化过程中，`invokeAwareMethods(beanName, bean)`被调用，负责处理实现了`Aware`接口族的beans。这是我们的`BeanNameAware`接口发挥作用的地方，当bean实现此接口时，其`setBeanName`方法会被调用。
 
-**用户定义的逻辑**：在`MyBasePayService`类中，我们实现了`BeanNameAware`接口，并重写了`setBeanName`方法来保存bean的名称。此外，还使用了`InitializingBean`和`DisposableBean`接口来在bean的生命周期的特定时刻执行自定义的逻辑。
+7. **用户定义的逻辑**
+   + 在`MyBasePayService`类中，我们实现了`BeanNameAware`接口，并重写了`setBeanName`方法来保存bean的名称。此外，还使用了`InitializingBean`和`DisposableBean`接口来在bean的生命周期的特定时刻执行自定义的逻辑。

@@ -1,22 +1,28 @@
 ## BeanFactoryAware
 
 - [BeanFactoryAware](#beanfactoryaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133914782) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [BeanFactoryAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-beanFactoryAware)
+
+### 二、接口描述
 
 `BeanFactoryAware` 接口，允许 Spring bean 获得其所在的 `BeanFactory` 的引用。当一个 bean 实现了这个接口，Spring 容器在初始化该 bean 时，会自动调用 `setBeanFactory()` 方法，并传递一个 `BeanFactory` 实例。
 
-### 二、接口源码
+### 三、接口源码
 
 `BeanFactoryAware` 是 Spring 框架自 11.03.2003 开始引入的一个核心接口。允许 Spring beans 获知并与其所在的 `BeanFactory` 进行交互。这为 beans 提供了直接访问 `BeanFactory` 的能力，进而可以查询和交互其他的 beans。
 
@@ -55,15 +61,18 @@ public interface BeanFactoryAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**获取 `BeanFactory` 引用**： 通过实现 `BeanFactoryAware` 接口并重写 `setBeanFactory` 方法，bean 在初始化过程中会收到其所属的 `BeanFactory` 的引用。Spring 容器会自动为实现了该接口的 bean 调用 `setBeanFactory` 方法。
+1. **获取 `BeanFactory` 引用**
+   + 通过实现 `BeanFactoryAware` 接口并重写 `setBeanFactory` 方法，bean 在初始化过程中会收到其所属的 `BeanFactory` 的引用。Spring 容器会自动为实现了该接口的 bean 调用 `setBeanFactory` 方法。
 
-**依赖查找**： 一旦 bean 有了 `BeanFactory` 的引用，它就可以使用这个工厂来动态地查找其他 beans。这种方式被称为“依赖查找”（Dependency Lookup），与常见的“依赖注入”（Dependency Injection）方式相对。
+2. **依赖查找**
+   + 一旦 bean 有了 `BeanFactory` 的引用，它就可以使用这个工厂来动态地查找其他 beans。这种方式被称为“依赖查找”（Dependency Lookup），与常见的“依赖注入”（Dependency Injection）方式相对。
 
-**与 `BeanFactory` 进行交互**： 获取 `BeanFactory` 的引用不仅仅是为了查找其他 beans，bean 还可以与其所在的 `BeanFactory` 进行更广泛的互动，例如检查 bean 的作用域、检查 bean 是否为单例、或获取 bean 的别名等。
+3. **与 `BeanFactory` 进行交互**
+   + 获取 `BeanFactory` 的引用不仅仅是为了查找其他 beans，bean 还可以与其所在的 `BeanFactory` 进行更广泛的互动，例如检查 bean 的作用域、检查 bean 是否为单例、或获取 bean 的别名等。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`UserService`类型的bean，最后调用`validateUser`方法。
 
@@ -159,7 +168,7 @@ public class UserService implements BeanFactoryAware, InitializingBean {
 验证账号密码成功
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -192,7 +201,7 @@ sequenceDiagram
 
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`UserService`类型的bean，最后调用`validateUser`方法。
 
@@ -453,42 +462,58 @@ public class UserService implements BeanFactoryAware, InitializingBean {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**生命周期时机**：`setBeanFactory` 方法是在 bean 属性设置之后但在其他初始化方法（如 `@PostConstruct`、`InitializingBean#afterPropertiesSet` 或指定的初始化方法）之前调用的。
+1. **生命周期时机**
+   + `setBeanFactory` 方法是在 bean 属性设置之后但在其他初始化方法（如 `@PostConstruct`、`InitializingBean#afterPropertiesSet` 或指定的初始化方法）之前调用的。
 
-**避免循环依赖**：当 beans 通过 `BeanFactory` 查找其他 beans 时，可能会出现循环依赖的情况。例如，bean A 在其 `setBeanFactory` 方法中查找 bean B，而 bean B 在其 `setBeanFactory` 方法中查找 bean A。这种情况会导致容器初始化失败。
+2. **避免循环依赖**
+   + 当 beans 通过 `BeanFactory` 查找其他 beans 时，可能会出现循环依赖的情况。例如，bean A 在其 `setBeanFactory` 方法中查找 bean B，而 bean B 在其 `setBeanFactory` 方法中查找 bean A。这种情况会导致容器初始化失败。
 
-**知道 bean 的作用域**：当从 `BeanFactory` 获取 beans 时，请记住 bean 的作用域。如果 bean 是原型作用域的，每次 `getBean` 调用都会返回一个新的实例。
+3. **知道 bean 的作用域**
+   + 当从 `BeanFactory` 获取 beans 时，请记住 bean 的作用域。如果 bean 是原型作用域的，每次 `getBean` 调用都会返回一个新的实例。
 
-**不要过度自定义**：除非有很好的理由，否则应避免在 `setBeanFactory` 方法中执行大量的自定义逻辑。这会使 bean 的初始化过程变得复杂，并可能导致不可预见的副作用。
+4. **不要过度自定义**
+   + 除非有很好的理由，否则应避免在 `setBeanFactory` 方法中执行大量的自定义逻辑。这会使 bean 的初始化过程变得复杂，并可能导致不可预见的副作用。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**构建与配置**：在 `BeanNameAwareApplication` 启动类中，使用了 `AnnotationConfigApplicationContext` 来基于 Java 配置类 (`MyConfiguration`) 初始化 Spring 上下文。这是一个 Java-based 的配置方法，与传统的 XML-based 配置相比，更加直观和灵活。
+1. **构建与配置**
+   + 在 `BeanNameAwareApplication` 启动类中，使用了 `AnnotationConfigApplicationContext` 来基于 Java 配置类 (`MyConfiguration`) 初始化 Spring 上下文。这是一个 Java-based 的配置方法，与传统的 XML-based 配置相比，更加直观和灵活。
 
-**组件扫描**：`MyConfiguration` 配置类使用 `@ComponentScan` 注解指定了需要被扫描的包路径。Spring 容器会自动扫描这些包以及其子包下的组件，并将它们注册为 Spring beans。
+2. **组件扫描**
+   + `MyConfiguration` 配置类使用 `@ComponentScan` 注解指定了需要被扫描的包路径。Spring 容器会自动扫描这些包以及其子包下的组件，并将它们注册为 Spring beans。
 
-**验证器设计**：我们设计了一个 `UserValidator` 接口，以及两个实现该接口的类：`SimpleUserValidator` 和 `ComplexUserValidator`。这两个验证器具有不同的验证逻辑，以满足不同的验证需求。
+3. **验证器设计**
+   + 我们设计了一个 `UserValidator` 接口，以及两个实现该接口的类：`SimpleUserValidator` 和 `ComplexUserValidator`。这两个验证器具有不同的验证逻辑，以满足不同的验证需求。
 
-**动态选择验证器**：`UserService` 类是此应用的核心，它根据某些配置动态地从 `BeanFactory` 中选择一个验证器。这是通过实现 `BeanFactoryAware` 和 `InitializingBean` 接口来完成的：`BeanFactoryAware` 允许 `UserService` 访问 Spring 容器的 `BeanFactory`。InitializingBean` 确保在所有属性（例如依赖注入）设置完毕后，选择合适的验证器。
+4. **动态选择验证器**
+   + `UserService` 类是此应用的核心，它根据某些配置动态地从 `BeanFactory` 中选择一个验证器。这是通过实现 `BeanFactoryAware` 和 `InitializingBean` 接口来完成的：`BeanFactoryAware` 允许 `UserService` 访问 Spring 容器的 `BeanFactory`。InitializingBean` 确保在所有属性（例如依赖注入）设置完毕后，选择合适的验证器。
 
-**运行与输出**：当调用 `validateUser` 方法验证用户名和密码时，根据所选择的验证器（在此示例中是 `SimpleUserValidator`），将输出相应的验证信息。此外，验证器本身也输出了它正在使用的验证方法。
+5. **运行与输出**
+   + 当调用 `validateUser` 方法验证用户名和密码时，根据所选择的验证器（在此示例中是 `SimpleUserValidator`），将输出相应的验证信息。此外，验证器本身也输出了它正在使用的验证方法。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动与上下文初始化**: 当启动类 `BeanNameAwareApplication` 被执行，一个新的 `AnnotationConfigApplicationContext` 被创建并初始化，其中传入了配置类 `MyConfiguration`。
+1. **应用启动与上下文初始化**
+   + 当启动类 `BeanNameAwareApplication` 被执行，一个新的 `AnnotationConfigApplicationContext` 被创建并初始化，其中传入了配置类 `MyConfiguration`。
 
-**配置类与组件扫描**: `MyConfiguration` 是一个 Java 配置类，它告诉 Spring 容器去扫描特定的包以查找组件。
+2. **配置类与组件扫描**
+   + `MyConfiguration` 是一个 Java 配置类，它告诉 Spring 容器去扫描特定的包以查找组件。
 
-**单例bean的预实例化**: 在上下文的 `refresh()` 方法中，Spring 会预先实例化所有非懒加载的单例bean。这意味着在容器启动时，这些bean会被初始化。
+3. **单例bean的预实例化**
+   + 在上下文的 `refresh()` 方法中，Spring 会预先实例化所有非懒加载的单例bean。这意味着在容器启动时，这些bean会被初始化。
 
-**Bean的实例化和初始化**: 在上下文刷新的过程中，Spring 容器会逐个创建并初始化所有的单例bean。`doCreateBean` 方法负责实例化bean、注入依赖、并调用任何初始化方法。
+4. **Bean的实例化和初始化**
+   + 在上下文刷新的过程中，Spring 容器会逐个创建并初始化所有的单例bean。`doCreateBean` 方法负责实例化bean、注入依赖、并调用任何初始化方法。
 
-**处理 Aware 接口**: 对于实现了 `Aware` 接口的bean，如 `BeanFactoryAware`，在初始化过程中，Spring 容器会调用相应的 `Aware` 方法（例如，`setBeanFactory`）。这使得bean可以获得关于其运行环境的信息或其他 Spring 功能。
+5. **处理 Aware 接口**
+   + 对于实现了 `Aware` 接口的bean，如 `BeanFactoryAware`，在初始化过程中，Spring 容器会调用相应的 `Aware` 方法（例如，`setBeanFactory`）。这使得bean可以获得关于其运行环境的信息或其他 Spring 功能。
 
-**自定义逻辑执行**: 一旦bean被初始化，并且所有的 `Aware` 方法都被调用，就可以执行自定义逻辑。在这个例子中，这是通过 `UserService` 的 `validateUser` 方法来完成的。
+6. **自定义逻辑执行**
+   + 一旦bean被初始化，并且所有的 `Aware` 方法都被调用，就可以执行自定义逻辑。在这个例子中，这是通过 `UserService` 的 `validateUser` 方法来完成的。
 
-**BeanFactoryAware 的特性**: 通过实现 `BeanFactoryAware`，`UserService` 能够获得对 `BeanFactory` 的访问权限。这使得它可以在运行时动态地从 `BeanFactory` 中获取bean，如在示例中的 `UserValidator`。
+7. **BeanFactoryAware 的特性**
+   + 通过实现 `BeanFactoryAware`，`UserService` 能够获得对 `BeanFactory` 的访问权限。这使得它可以在运行时动态地从 `BeanFactory` 中获取bean，如在示例中的 `UserValidator`。
