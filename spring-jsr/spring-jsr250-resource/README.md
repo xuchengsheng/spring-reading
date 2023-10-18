@@ -107,13 +107,13 @@ public @interface Resource {
 2. **类型指定**
    + 通过 `type` 属性，它允许指定所需资源的具体Java类型，确保注入的资源与预期类型匹配，从而提供类型安全。
 3. **身份验证策略**
-   + `authenticationType` 属性允许开发者选择资源的身份验证方式，决定是由容器还是应用程序来进行身份验证。
+   + `authenticationType` 属性允许我们选择资源的身份验证方式，决定是由容器还是应用程序来进行身份验证。
 4. **共享策略**
    + 通过 `shareable` 属性，它指定资源是否可以在多个客户端或组件之间共享。
 5. **供应商特定名称**
    + `mappedName` 属性可以提供与资源关联的供应商或平台特定的名称，增加部署的灵活性。
 6. **描述信息**
-   + 通过 `description` 属性，为资源提供了简要描述，有助于开发者和系统管理员理解其用途。
+   + 通过 `description` 属性，为资源提供了简要描述，有助于我们和系统管理员理解其用途。
 
 ### 五、最佳实践
 
@@ -589,7 +589,7 @@ protected Object autowireResource(BeanFactory factory, LookupElement element, @N
 3. **类型 vs 名称**
    + `@Resource` 默认是基于名称进行自动装配的。如果没有找到名称匹配的bean，它会回退到类型匹配。这与 `@Autowired` 不同，后者默认基于类型进行自动装配。
 4. **指定名称**
-   + 您可以通过 `name` 属性明确指定要注入的 bean 的名称：`@Resource(name = "myService")`。
+   + 我们可以通过 `name` 属性明确指定要注入的 bean 的名称：`@Resource(name = "myService")`。
 5. **处理冲突**
    + 在一个上下文中，如果有多个相同类型的 bean，为避免冲突，最好使用 `name` 属性明确指定想要注入的 bean。
 6. **与其他注解的结合**
@@ -599,7 +599,7 @@ protected Object autowireResource(BeanFactory factory, LookupElement element, @N
 8. **必需性**
    + 默认情况下，`@Resource` 注解的依赖是必需的，即如果没有找到相应的 bean，会抛出异常。如果某些情况下允许依赖项为 null 或不存在，必须结合其他配置来实现，例如使用 `@Autowired(required = false)`。
 9. **懒加载**
-   + 在Spring中，如果您希望延迟资源的初始化并在首次请求时加载它，可以结合 `@Lazy` 注解使用。
+   + 在Spring中，如果我们希望延迟资源的初始化并在首次请求时加载它，可以结合 `@Lazy` 注解使用。
 
 ### 九、总结
 
