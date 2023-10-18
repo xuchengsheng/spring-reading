@@ -96,15 +96,13 @@ public interface ApplicationContextAware extends Aware {
 
 ### 五、最佳实践
 
-首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyApplicationContextAware`类型的bean，最后调用`publish`方法用于发布一个事件。
+首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。
 
 ```java
 public class ApplicationContextAwareApplication {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        MyApplicationContextAware contextAware = context.getBean(MyApplicationContextAware.class);
-        contextAware.publish("hello world");
     }
 }
 ```
