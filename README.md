@@ -50,38 +50,39 @@
 - [**调整Bean实例化策略SmartInstantiationAwareBeanPostProcessor**](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md) - 深入了解其智能实例化的策略。
 - [**属性设置后的初始化操作InitializingBean**](spring-interface/spring-interface-initializingBean/README.md) - 揭露如何在 bean 初始化后进行操作。
 - [**资源清理与销毁DisposableBean**](spring-interface/spring-interface-disposableBean/README.md) - 探查它如何确保 bean 的正确销毁。
-- [**所有单例Beans完全初始化后SmartInitializingSingleton**](spring-interface/spring-interface-smartInitializingSingleton/README.md) - 理解它如何在所有单例 bean 初始化后进行操作。
+- [**All Beans完全初始化后SmartInitializingSingleton**](spring-interface/spring-interface-smartInitializingSingleton/README.md) - 理解它如何在所有单例 bean 初始化后进行操作。
 
 ### 🛠 Aware接口
 
 *探索 Spring 的自我感知能力，如何赋予 beans 更多的上下文感知特性。*
 
-- [**深究BeanNameAware**](spring-aware/spring-aware-beanNameAware/README.md) - 当一个 bean 需要知道其在容器中的名字时。
-- [**BeanClassLoaderAware的探查**](spring-aware/spring-aware-beanClassLoaderAware/README.md) - 揭示如何为 bean 提供类加载器的引用。
-- [**深度了解BeanFactoryAware**](spring-aware/spring-aware-beanFactoryAware/README.md) - 探索 bean 如何与其工厂互动。
-- [**环境感知EnvironmentAware**](spring-aware/spring-aware-environmentAware/README.md) - 了解 bean 如何感知并与其运行的环境互动。
-- [**嵌入式值解析EmbeddedValueResolverAware**](spring-aware/spring-aware-embeddedValueResolverAware/README.md) - 探查如何提供字符串值解析策略给 bean。
-- [**资源加载策略ResourceLoaderAware**](spring-aware/spring-aware-resourceLoaderAware/README.md) - 理解如何为 bean 提供一个资源加载器。
-- [**事件发布感知ApplicationEventPublisherAware**](spring-aware/spring-aware-applicationEventPublisherAware/README.md) - 揭露 bean 如何发布事件到应用上下文。
-- [**消息源感知MessageSourceAware**](spring-aware/spring-aware-messageSourceAware/README.md) - 深入了解 bean 如何访问消息源。
-- [**应用启动感知ApplicationStartupAware**](spring-aware/spring-aware-applicationStartupAware/README.md) - 理解 bean 如何感知应用的启动过程。
-- [**上下文感知ApplicationContextAware**](spring-aware/spring-aware-applicationContextAware/README.md) - 探索 bean 如何访问其运行的应用上下文。
-- [**导入感知ImportAware**](spring-aware/spring-aware-importAware/README.md) - 揭露 bean 如何知道与其关联的导入元数据。
+- [**获取Bean名称BeanNameAware**](spring-aware/spring-aware-beanNameAware/README.md) - 如何通过`BeanNameAware`让Bean知道其在Spring容器中的名称。
+- [**获取类加载器BeanClassLoaderAware**](spring-aware/spring-aware-beanClassLoaderAware/README.md) - 揭示如何利用`BeanClassLoaderAware`为Bean提供类加载器的引用。
+- [**与Bean工厂交互BeanFactoryAware**](spring-aware/spring-aware-beanFactoryAware/README.md) - 探索如何通过`BeanFactoryAware`使Bean与其工厂进行交互。
+- [**感知运行环境EnvironmentAware**](spring-aware/spring-aware-environmentAware/README.md) - 了解`EnvironmentAware`如何使Bean感知并与其运行的环境互动。
+- [**嵌入值解析EmbeddedValueResolverAware**](spring-aware/spring-aware-embeddedValueResolverAware/README.md) - 揭露如何使用`EmbeddedValueResolverAware`为Bean提供字符串值的解析策略。
+- [**资源加载策略ResourceLoaderAware**](spring-aware/spring-aware-resourceLoaderAware/README.md) - 深入探索如何通过`ResourceLoaderAware`为Bean提供资源加载器。
+- [**发布应用事件ApplicationEventPublisherAware**](spring-aware/spring-aware-applicationEventPublisherAware/README.md) - 了解`ApplicationEventPublisherAware`如何使Bean发布事件到应用上下文。
+- [**访问消息源MessageSourceAware**](spring-aware/spring-aware-messageSourceAware/README.md) - 揭示`MessageSourceAware`如何让Bean访问消息源。
+- [**感知应用启动过程ApplicationStartupAware**](spring-aware/spring-aware-applicationStartupAware/README.md) - 探查`ApplicationStartupAware`如何让Bean感知应用的启动过程。
+- [**访问应用上下文ApplicationContextAware**](spring-aware/spring-aware-applicationContextAware/README.md) - 探索`ApplicationContextAware`如何使Bean访问并互动其运行的应用上下文。
+- [**了解关联导入信息ImportAware**](spring-aware/spring-aware-importAware/README.md) - 了解`ImportAware`如何使Bean了解与其关联的导入元数据。
 
 ### 🎖 核心注解
 
 *了解 Spring 如何通过注解驱动开发，简化和加强代码。*
 
-- [**解析@Configuration的力量**](spring-annotation/spring-annotation-configuration/README.md) - 揭露如何使用 Java 配置定义 beans。
-- [**组件扫描的魅力@ComponentScan**](spring-annotation/spring-annotation-componentScan/README.md) - 探索如何自动检测和注册 beans。
-- [**深入@Bean的秘密**](spring-annotation/spring-annotation-bean/README.md) - 理解如何通过 Java 方法定义 beans。
-- [**@Import的高级策略**](spring-annotation/spring-annotation-import/README.md) - 揭示如何导入其他配置类或组件。
-- [**属性源探查@PropertySource**](spring-annotation/spring-annotation-propertySource/README.md) - 深入了解如何为应用上下文添加属性源。
-- [**掌控顺序@DependsOn**](spring-annotation/spring-annotation-dependsOn/README.md) - 精确控制 Spring Beans 的加载顺序。
-- [**条件注册解密@Conditional**](spring-annotation/spring-annotation-conditional/README.md) - 从基础使用到源码分析，全方位理解Spring的条件注册策略。
-- [**深入探究@Lazy注解**](spring-annotation/spring-annotation-lazy/README.md) - 如何优雅地实现 Spring Beans 的延迟加载。
-- [**属性绑定@Value**](spring-annotation/spring-annotation-value/README.md) - 如何在Spring中优雅地注入配置属性。
-- [**依赖注入@Autowired**](spring-annotation/spring-annotation-autowired/README.md) - 了解如何通过@Autowired实现依赖管理和连接组件。
+- [**Java配置定义@Configuration**](spring-annotation/spring-annotation-configuration/README.md) - 揭示如何使用`@Configuration`注解定义基于Java的配置类，替代传统的XML配置。
+- [**组件扫描@ComponentScan**](spring-annotation/spring-annotation-componentScan/README.md) - 探究`@ComponentScan`如何指导Spring在指定的包内自动扫描并注册Beans。
+- [**Java方法定义@Bean**](spring-annotation/spring-annotation-bean/README.md) - 了解如何利用`@Bean`注解在配置类中通过Java方法定义并注册Bean。
+- [**导入配置类或组件@Import**](spring-annotation/spring-annotation-import/README.md) - 揭露`@Import`如何帮助你将其他的配置类或组件导入到当前的Spring上下文中。
+- [**属性源绑定@PropertySource**](spring-annotation/spring-annotation-propertySource/README.md) - 探索如何使用`@PropertySource`将外部属性文件绑定到Spring的环境中。
+- [**控制Bean初始化顺序@DependsOn**](spring-annotation/spring-annotation-dependsOn/README.md) - 揭露如何通过`@DependsOn`精确地控制Spring Beans的初始化顺序。
+- [**条件注册Beans@Conditional**](spring-annotation/spring-annotation-conditional/README.md) - 深入理解`@Conditional`注解，从基础使用到源码分析，全方位掌握Spring的条件注册策略。
+- [**延迟加载Beans@Lazy**](spring-annotation/spring-annotation-lazy/README.md) - 了解`@Lazy`的机制，探究如何优雅地实现Spring Beans的延迟初始化。
+- [**属性值绑定@Value**](spring-annotation/spring-annotation-value/README.md) - 揭示如何在Spring中使用`@Value`注解优雅地注入配置属性。
+- [**依赖注入机制@Autowired**](spring-annotation/spring-annotation-autowired/README.md) - 深入`@Autowired`，探索其在Spring中如何实现依赖管理和连接组件。
+
 
 ### 📜 JSR 规范
 
@@ -102,6 +103,6 @@
 
 为了给大家提供最新、最有价值的内容，我会坚持每天更新这个仓库。每一天，你都可以期待看到一些新的内容或者对已有内容的改进。如果你有任何建议或反馈，欢迎随时联系我。我非常珍视每一个反馈，因为这是我持续改进的动力。
 
-## 💻我的 GitHub 统计
+## 💻我的GitHub统计
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
