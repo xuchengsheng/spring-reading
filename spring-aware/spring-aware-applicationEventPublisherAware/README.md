@@ -1,24 +1,30 @@
 ## ApplicationEventPublisherAware
 
 - [ApplicationEventPublisherAware](#applicationeventpublisheraware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133914254) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [ApplicationEventPublisherAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-applicationEventPublisherAware)
+
+### 二、接口描述
 
 `ApplicationEventPublisherAware` 接口，用于给需要发布应用事件的bean提供一个便捷的方式。实现此接口的bean可以接收到一个 `ApplicationEventPublisher` 的引用，这样它们就可以发布事件到 Spring 应用上下文中。
 
-### 二、接口源码
+### 三、接口源码
 
-`ApplicationEventPublisherAware` 是 Spring 框架自 1.1.1 开始引入的一个核心接口。需要发布一些事件到Spring上下文，我们可以实现此接口，然后使用注入的 `ApplicationEventPublisher` 来发布事件（通常是 `ApplicationContext`）。
+`ApplicationEventPublisherAware` 是 Spring 框架自 1.1.1 开始引入的一个核心接口。实现`ApplicationEventPublisherAware`接口的对象会在Spring容器中被自动注入一个`ApplicationEventPublisher`（通常是 `ApplicationContext`）实例。
 
 ```java
 /**
@@ -44,15 +50,18 @@ public interface ApplicationEventPublisherAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**事件发布能力**：它允许 Spring beans 获得事件发布的能力，使它们能够发布事件到 Spring 应用上下文中。
+1. **事件发布能力**
+   + 它允许 Spring beans 获得事件发布的能力，使它们能够发布事件到 Spring 应用上下文中。
 
-**回调机制**：当一个 bean 实现了 `ApplicationEventPublisherAware` 接口时，Spring 容器会自动注入 `ApplicationEventPublisher` 实例到该 bean 中。
+2. **回调机制**
+   + 当一个 bean 实现了 `ApplicationEventPublisherAware` 接口时，Spring 容器会自动注入 `ApplicationEventPublisher` 实例到该 bean 中。
 
-**与 ApplicationContext 的关联**：通常，所注入的 `ApplicationEventPublisher` 实例实际上就是 `ApplicationContext` 本身，这意味着 beans 可以使用它来发布事件。
+3. **与 ApplicationContext 的关联**
+   + 通常，所注入的 `ApplicationEventPublisher` 实例实际上就是 `ApplicationContext` 本身，这意味着 beans 可以使用它来发布事件。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyApplicationEventPublisherAware`类型的bean，最后调用`publish`方法用于发布一个事件。
 
@@ -139,7 +148,7 @@ public class MyEventListener implements ApplicationListener<MyEvent> {
 Received my event - hello world
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -174,7 +183,7 @@ ApplicationContextAwareProcessor->>MyApplicationEventPublisherAware:setApplicati
     AnnotationConfigApplicationContext-->>ApplicationEventPublisherAwareApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyApplicationEventPublisherAware`类型的bean，最后调用`publish`方法用于发布一个事件。
 
@@ -461,46 +470,64 @@ public class MyApplicationEventPublisherAware implements ApplicationEventPublish
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**确保容器支持**：不是所有的Spring容器都支持 `Aware` 接口。例如，基本的 `BeanFactory` 不支持，而 `ApplicationContext` 支持。确保您的bean是由支持 `ApplicationEventPublisherAware` 的容器管理的。
+1. **确保容器支持**
+   + 不是所有的Spring容器都支持 `Aware` 接口。例如，基本的 `BeanFactory` 不支持，而 `ApplicationContext` 支持。确保我们的bean是由支持 `ApplicationEventPublisherAware` 的容器管理的。
 
-**避免复杂的业务逻辑**：在实现的 `setApplicationEventPublisher` 方法中，尽量避免放入复杂的业务逻辑，该方法主要是用于注入 `ApplicationEventPublisher` 的。
+2. **避免复杂的业务逻辑**
+   + 在实现的 `setApplicationEventPublisher` 方法中，尽量避免放入复杂的业务逻辑，该方法主要是用于注入 `ApplicationEventPublisher` 的。
 
-**注意事件的目标**：当使用 `ApplicationEventPublisher` 发布事件时，这些事件会被所有相应的监听器捕获。确保你了解这些监听器的存在和它们的行为，以避免出现一些奇奇怪怪的问题。
+3. **注意事件的目标**
+   + 当使用 `ApplicationEventPublisher` 发布事件时，这些事件会被所有相应的监听器捕获。确保我们了解这些监听器的存在和它们的行为，以避免出现一些奇奇怪怪的问题。
 
-**不要手动调用**：`setApplicationEventPublisher` 方法是为了由Spring容器调用的，而不是为了应用程序代码调用的。你不应该在业务逻辑中手动调用这个方法。
+4. **不要手动调用**
+   + `setApplicationEventPublisher` 方法是为了由Spring容器调用的，而不是为了应用程序代码调用的。我们不应该在业务逻辑中手动调用这个方法。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动应用**：在 `ApplicationEventPublisherAwareApplication` 的主方法中，使用 `AnnotationConfigApplicationContext` 初始化了 Spring 上下文，并指定了配置类 `MyConfiguration`。
+1. **启动应用**
+   + 在 `ApplicationEventPublisherAwareApplication` 的主方法中，使用 `AnnotationConfigApplicationContext` 初始化了 Spring 上下文，并指定了配置类 `MyConfiguration`。
 
-**配置类**：`MyConfiguration` 使用了 `@Configuration` 注解，表示它是一个 Spring 配置类。此类中使用 `@Bean` 注解定义了两个 Bean：`MyApplicationEventPublisherAware` 和 `MyEventListener`，确保它们被 Spring 容器管理。
+2. **配置类**
+   + `MyConfiguration` 使用了 `@Configuration` 注解，表示它是一个 Spring 配置类。此类中使用 `@Bean` 注解定义了两个 Bean：`MyApplicationEventPublisherAware` 和 `MyEventListener`，确保它们被 Spring 容器管理。
 
-**事件发布者**：`MyApplicationEventPublisherAware` 类实现了 `ApplicationEventPublisherAware` 接口，从而可以获取 `ApplicationEventPublisher` 的引用。它还定义了一个 `publish` 方法，用于发布自定义的 `MyEvent` 事件。
+3. **事件发布者**
+   + `MyApplicationEventPublisherAware` 类实现了 `ApplicationEventPublisherAware` 接口，从而可以获取 `ApplicationEventPublisher` 的引用。它还定义了一个 `publish` 方法，用于发布自定义的 `MyEvent` 事件。
 
-**自定义事件**：`MyEvent` 是一个自定义事件类，继承自 `ApplicationEvent`。它携带一个字符串消息。
+4. **自定义事件**
+   + `MyEvent` 是一个自定义事件类，继承自 `ApplicationEvent`。它携带一个字符串消息。
 
-**事件监听器**：`MyEventListener` 是一个事件监听器，它实现了 `ApplicationListener` 并专门用于监听 `MyEvent` 事件。当相应事件被发布时，它的 `onApplicationEvent` 方法会被自动触发。
+5. **事件监听器**
+   + `MyEventListener` 是一个事件监听器，它实现了 `ApplicationListener` 并专门用于监听 `MyEvent` 事件。当相应事件被发布时，它的 `onApplicationEvent` 方法会被自动触发。
 
-**执行结果**：当运行 `ApplicationEventPublisherAwareApplication` 主方法时，应用发布了一个 `MyEvent` 事件，携带了 "hello world" 消息。`MyEventListener` 成功捕获此事件，并输出了相应的消息。
+6. **执行结果**
+   + 当运行 `ApplicationEventPublisherAwareApplication` 主方法时，应用发布了一个 `MyEvent` 事件，携带了 "hello world" 消息。`MyEventListener` 成功捕获此事件，并输出了相应的消息。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**启动应用**：通过 `ApplicationEventPublisherAwareApplication` 的主方法，使用 `AnnotationConfigApplicationContext` 初始化了 Spring 上下文，并指定了配置类 `MyConfiguration`。
+1. **启动应用**
+   + 通过 `ApplicationEventPublisherAwareApplication` 的主方法，使用 `AnnotationConfigApplicationContext` 初始化了 Spring 上下文，并指定了配置类 `MyConfiguration`。
 
-**注册和刷新**：在 `AnnotationConfigApplicationContext` 构造函数中，先注册组件类，然后调用 `refresh()` 来启动Spring容器的初始化过程。
+2. **注册和刷新**
+   + 在 `AnnotationConfigApplicationContext` 构造函数中，先注册组件类，然后调用 `refresh()` 来启动Spring容器的初始化过程。
 
-**初始化Bean工厂**：在 `AbstractApplicationContext#refresh` 方法中，调用 `finishBeanFactoryInitialization` 以实例化所有非懒加载的单例Bean。
+3. **初始化Bean工厂**
+   + 在 `AbstractApplicationContext#refresh` 方法中，调用 `finishBeanFactoryInitialization` 以实例化所有非懒加载的单例Bean。
 
-**预实例化单例**：在 `DefaultListableBeanFactory` 中，通过 `preInstantiateSingletons` 方法预先实例化所有非懒加载的单例Bean。
+4. **预实例化单例**
+   + 在 `DefaultListableBeanFactory` 中，通过 `preInstantiateSingletons` 方法预先实例化所有非懒加载的单例Bean。
 
-**Bean创建**：在 `AbstractBeanFactory#getBean` 中，调用 `doGetBean` 来真正执行Bean的创建过程。此方法中涉及到真正的Bean实例化、属性注入和初始化。
+5. **Bean创建**
+   + 在 `AbstractBeanFactory#getBean` 中，调用 `doGetBean` 来真正执行Bean的创建过程。此方法中涉及到真正的Bean实例化、属性注入和初始化。
 
-**初始化Bean**：在 `AbstractAutowireCapableBeanFactory` 类中，`initializeBean` 方法用于确保bean完全配置并准备就绪。这个过程中会应用所有的 `BeanPostProcessor`，它们能在bean初始化前后做额外的处理。
+6. **初始化Bean**
+   + 在 `AbstractAutowireCapableBeanFactory` 类中，`initializeBean` 方法用于确保bean完全配置并准备就绪。这个过程中会应用所有的 `BeanPostProcessor`，它们能在bean初始化前后做额外的处理。
 
-**处理Aware接口**：在 `ApplicationContextAwareProcessor` 中，`invokeAwareInterfaces` 方法负责处理实现了 `Aware` 接口的beans，为它们自动注入对应的依赖或运行环境信息。
+7. **处理Aware接口**
+   + 在 `ApplicationContextAwareProcessor` 中，`invokeAwareInterfaces` 方法负责处理实现了 `Aware` 接口的beans，为它们自动注入对应的依赖或运行环境信息。
 
-**发布事件**：在我们的自定义逻辑中，使用 `ApplicationEventPublisherAware` 接口来获取Spring的事件发布器。然后，使用这个事件发布器，我们可以发布自定义事件。
+8. **发布事件**
+   + 在我们的自定义逻辑中，使用 `ApplicationEventPublisherAware` 接口来获取Spring的事件发布器。然后，使用这个事件发布器，我们可以发布自定义事件。

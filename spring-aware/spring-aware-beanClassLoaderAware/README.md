@@ -1,22 +1,16 @@
 ## BeanClassLoaderAware
 
-- [BeanClassLoaderAware](#beanclassloaderaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN]() 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [BeanClassLoaderAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-beanClassLoaderAware)
+
+### 二、接口描述
 
 `BeanClassLoaderAware` 接口，允许 bean 得知其加载的类加载器。当一个 bean 实现了这个接口时，Spring 容器在 bean 初始化的时候会设置它的类加载器。
 
-### 二、接口源码
+### 三、接口源码
 
 `BeanClassLoaderAware` 是 Spring 框架自 2.0 版本开始引入的一个核心接口。当一个 bean 实现了这个接口，并在 Spring 容器中被初始化时，Spring 容器会自动调用 `setClassLoader` 方法，并将加载该 bean 的类加载器传入。
 
@@ -50,15 +44,18 @@ public interface BeanClassLoaderAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**提供类加载器信息**：Bean 可以得知其加载的类加载器，从而可以利用该类加载器进行动态的类加载或资源查找。
+1. **提供类加载器信息**
+   + Bean 可以得知其加载的类加载器，从而可以利用该类加载器进行动态的类加载或资源查找。
 
-**框架与应用类加载器隔离**：在某些复杂的环境中，框架类和应用程序类可能是由不同的类加载器加载的。例如，在某些应用服务器环境中，框架可能是由共享的类加载器加载的，而应用程序类是由专门的类加载器加载的。通过 `BeanClassLoaderAware`，框架类可以确保使用正确的类加载器来加载或访问应用程序类。
+2. **框架与应用类加载器隔离**
+   + 在某些复杂的环境中，框架类和应用程序类可能是由不同的类加载器加载的。例如，在某些应用服务器环境中，框架可能是由共享的类加载器加载的，而应用程序类是由专门的类加载器加载的。通过 `BeanClassLoaderAware`，框架类可以确保使用正确的类加载器来加载或访问应用程序类。
 
-**生命周期管理**：`setBeanClassLoader` 方法会在填充 bean 的普通属性之后但在调用任何初始化回调（如 `InitializingBean#afterPropertiesSet()`）之前被调用。这确保了在 bean 的生命周期的合适阶段提供类加载器信息。
+3. **生命周期管理**
+   + `setBeanClassLoader` 方法会在填充 bean 的普通属性之后但在调用任何初始化回调（如 `InitializingBean#afterPropertiesSet()`）之前被调用。这确保了在 bean 的生命周期的合适阶段提供类加载器信息。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyBeanClassLoaderAware`类型的bean，最后调用`loadAndExecute`方法。
 
@@ -86,7 +83,7 @@ public class MyConfiguration {
 }
 ```
 
-在`MyBeanClassLoaderAware` 类中，我们实现了 `BeanClassLoaderAware` 接口，允许这个 bean 在初始化时获取其 `ClassLoader`。接着，在 `loadAndExecute` 方法中，你使用这个 `ClassLoader` 来动态加载一个名为 `com.xcs.spring.service.UserServiceImpl` 的类并执行它的 `getUserInfo` 方法。
+在`MyBeanClassLoaderAware` 类中，我们实现了 `BeanClassLoaderAware` 接口，允许这个 bean 在初始化时获取其 `ClassLoader`。接着，在 `loadAndExecute` 方法中，我们使用这个 `ClassLoader` 来动态加载一个名为 `com.xcs.spring.service.UserServiceImpl` 的类并执行它的 `getUserInfo` 方法。
 
 ```java
 public class MyBeanClassLoaderAware implements BeanClassLoaderAware {
@@ -133,7 +130,7 @@ public class UserServiceImpl implements UserService {
 UserInfo = this is user info
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -166,7 +163,7 @@ sequenceDiagram
 
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyBeanClassLoaderAware`类型的bean，最后调用`loadAndExecute`方法。
 
@@ -425,50 +422,70 @@ public class MyBeanClassLoaderAware implements BeanClassLoaderAware {
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**避免过度使用**：只有当你真的需要访问类加载器时才使用 `BeanClassLoaderAware`。不要滥用它，因为这可能会导致代码与Spring框架过度耦合。
+1. **避免过度使用**
+   + 只有当我们真的需要访问类加载器时才使用 `BeanClassLoaderAware`。不要滥用它，因为这可能会导致代码与Spring框架过度耦合。
 
-**考虑类加载器层次结构**：在Java中，类加载器通常有一个父子关系。如果你不能使用当前的类加载器找到一个类，可能需要检查其父类加载器。
+2. **考虑类加载器层次结构**
+   + 在Java中，类加载器通常有一个父子关系。如果我们不能使用当前的类加载器找到一个类，可能需要检查其父类加载器。
 
-**不要在setter中执行复杂的逻辑**：`setBeanClassLoader` 是一个setter方法，应该避免在其中执行复杂的逻辑。它应该只用于设置类加载器。
+3. **不要在setter中执行复杂的逻辑**
+   + `setBeanClassLoader` 是一个setter方法，应该避免在其中执行复杂的逻辑。它应该只用于设置类加载器。
 
-**避免存储状态**：尽量不要在实现了`BeanClassLoaderAware`的bean中存储状态或依赖于其他bean的状态。这会使bean的生命周期和初始化更加复杂。
+4. **避免存储状态**
+   + 尽量不要在实现了`BeanClassLoaderAware`的bean中存储状态或依赖于其他bean的状态。这会使bean的生命周期和初始化更加复杂。
 
-**考虑使用其他技术**：在某些情况下，可能有其他技术或方法可以达到同样的目的，而无需使用 `BeanClassLoaderAware`。例如，使用Spring的`@Value`注解或`ResourceLoader`来加载资源，而不是直接使用类加载器。
+5. **考虑使用其他技术**
+   + 在某些情况下，可能有其他技术或方法可以达到同样的目的，而无需使用 `BeanClassLoaderAware`。例如，使用Spring的`@Value`注解或`ResourceLoader`来加载资源，而不是直接使用类加载器。
 
-**考虑类加载器层次结构**：在Java中，类加载器通常有一个父子关系。如果你不能使用当前的类加载器找到一个类，可能需要检查其父类加载器。
+6. **考虑类加载器层次结构**
+   + 在Java中，类加载器通常有一个父子关系。如果我们不能使用当前的类加载器找到一个类，可能需要检查其父类加载器。
 
-**资源管理**：类加载器不仅可以加载类，还可以用来加载其他资源（例如，属性文件）。但是，要小心确保资源路径正确，并记住类加载器的搜索行为可能与文件系统或其他加载机制不同。
+7. **资源管理**
+   + 类加载器不仅可以加载类，还可以用来加载其他资源（例如，属性文件）。但是，要小心确保资源路径正确，并记住类加载器的搜索行为可能与文件系统或其他加载机制不同。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动及上下文配置：**利用 `AnnotationConfigApplicationContext` 初始化Spring容器，使用 `MyConfiguration` 作为配置类来为Spring上下文提供设置。
+1. **启动及上下文配置**
+   + 利用 `AnnotationConfigApplicationContext` 初始化Spring容器，使用 `MyConfiguration` 作为配置类来为Spring上下文提供设置。
 
-**配置类定义：**标记配置类为 `@Configuration`，使用 `@Bean` 注解来确保 `MyBeanClassLoaderAware` 被Spring容器管理。
+2. **配置类定义**
+   + 标记配置类为 `@Configuration`，使用 `@Bean` 注解来确保 `MyBeanClassLoaderAware` 被Spring容器管理。
 
-**实现 `BeanClassLoaderAware`：**通过实现 `BeanClassLoaderAware` 接口，bean 可以在初始化时获得其加载的 `ClassLoader`，在 `loadAndExecute` 方法中，动态加载并执行特定的服务方法。
+3. **实现 `BeanClassLoaderAware`**
+   + 通过实现 `BeanClassLoaderAware` 接口，bean 可以在初始化时获得其加载的 `ClassLoader`，在 `loadAndExecute` 方法中，动态加载并执行特定的服务方法。
 
-**接口与实现：**定义清晰的 `UserService` 接口和相应的 `UserServiceImpl` 实现。
+4. **接口与实现**
+   + 定义清晰的 `UserService` 接口和相应的 `UserServiceImpl` 实现。
 
-**结果及结论：**运行程序后，我们能够看到预期输出，这表明成功地将 `MyBeanClassLoaderAware` 与特定实现解耦。
+5. **结果及结论**
+   + 运行程序后，我们能够看到预期输出，这表明成功地将 `MyBeanClassLoaderAware` 与特定实现解耦。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**应用启动入口**： 通过`AnnotationConfigApplicationContext`，以`MyConfiguration`为配置类，初始化Spring容器。随后获取`MyBeanClassLoaderAware` bean并调用其`loadAndExecute`方法。
+1. **应用启动入口**
+   + 通过`AnnotationConfigApplicationContext`，以`MyConfiguration`为配置类，初始化Spring容器。随后获取`MyBeanClassLoaderAware` bean并调用其`loadAndExecute`方法。
 
-**初始化Spring上下文**： 在`AnnotationConfigApplicationContext`构造函数中，`refresh()`方法被调用来刷新或初始化Spring容器。
+2. **初始化Spring上下文**
+   + 在`AnnotationConfigApplicationContext`构造函数中，`refresh()`方法被调用来刷新或初始化Spring容器。
 
-**Bean的预实例化**： 在Spring的上下文初始化的`refresh()`方法中，`finishBeanFactoryInitialization(beanFactory)`方法确保所有非延迟加载的单例bean被实例化。
+3. **Bean的预实例化**
+   + 在Spring的上下文初始化的`refresh()`方法中，`finishBeanFactoryInitialization(beanFactory)`方法确保所有非延迟加载的单例bean被实例化。
 
-**单例Bean的创建**： `DefaultListableBeanFactory`中的`preInstantiateSingletons`方法负责预先实例化所有非懒加载的单例bean。它会对容器中的每个单例bean调用`getBean`方法。
+4. **单例Bean的创建**
+   + `DefaultListableBeanFactory`中的`preInstantiateSingletons`方法负责预先实例化所有非懒加载的单例bean。它会对容器中的每个单例bean调用`getBean`方法。
 
-**Bean的实例化及初始化**： 在获取bean的过程中，如果bean还未创建，`doCreateBean`方法会被调用，完成bean的实例化、属性填充和初始化。
+5. **Bean的实例化及初始化**
+   + 在获取bean的过程中，如果bean还未创建，`doCreateBean`方法会被调用，完成bean的实例化、属性填充和初始化。
 
-**处理Aware接口族**： 在bean的初始化阶段，`invokeAwareMethods`方法确保任何实现了`Aware`接口族（如`BeanNameAware`、`BeanClassLoaderAware`等）的bean都会得到适当的回调。
+6. **处理Aware接口族**
+   + 在bean的初始化阶段，`invokeAwareMethods`方法确保任何实现了`Aware`接口族（如`BeanNameAware`、`BeanClassLoaderAware`等）的bean都会得到适当的回调。
 
-**BeanClassLoaderAware的实现**： 对于实现了`BeanClassLoaderAware`接口的bean，Spring容器在初始化阶段会通过`setBeanClassLoader`方法设置bean的`ClassLoader`。
+7. **BeanClassLoaderAware的实现**
+   + 对于实现了`BeanClassLoaderAware`接口的bean，Spring容器在初始化阶段会通过`setBeanClassLoader`方法设置bean的`ClassLoader`。
 
-**自定义逻辑的执行**： 在`MyBeanClassLoaderAware`中，已经保存了bean的类加载器，然后在`loadAndExecute`方法中，利用这个类加载器动态加载并执行特定的类和方法。
+8. **自定义逻辑的执行**
+   + 在`MyBeanClassLoaderAware`中，已经保存了bean的类加载器，然后在`loadAndExecute`方法中，利用这个类加载器动态加载并执行特定的类和方法。

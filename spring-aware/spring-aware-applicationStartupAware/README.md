@@ -1,22 +1,28 @@
 ## ApplicationStartupAware
 
 - [ApplicationStartupAware](#applicationstartupaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
 
-`ApplicationStartup`接口，是为了提供对这一过程的细粒度跟踪。通过`StartupStep`，我们可以定义应用启动过程中的各个步骤，并收集关于它们的性能和上下文信息。
+### 一、基本信息
 
-### 二、接口源码
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133914474) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [ApplicationStartupAware源码]()
+
+### 二、接口描述
+
+`ApplicationStartupAware`接口，是为了提供对这一过程的细粒度跟踪。通过`StartupStep`，我们可以定义应用启动过程中的各个步骤，并收集关于它们的性能和上下文信息。
+
+### 三、接口源码
 
 `ApplicationStartupAware` 是 Spring 框架自 5.3 开始引入的一个核心接口。实现`ApplicationStartupAware`接口的对象会在Spring容器中被自动注入一个`ApplicationStartup`实例。
 
@@ -42,15 +48,18 @@ public interface ApplicationStartupAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**启动性能跟踪**：通过提供对`ApplicationStartup`的访问，实现此接口的beans可以使用`StartupStep`API来跟踪它们在启动过程中的各个步骤。这对于检测和优化启动性能非常有用。
+1. **启动性能跟踪**
+   + 通过提供对`ApplicationStartup`的访问，实现此接口的beans可以使用`StartupStep`API来跟踪它们在启动过程中的各个步骤。这对于检测和优化启动性能非常有用。
 
-**为beans提供跟踪能力**：而不仅仅是Spring框架内部使用。这意味着开发者可以为他们的自定义beans或组件提供与Spring框架同样的启动跟踪能力。
+2. **为beans提供跟踪能力**
+   + 而不仅仅是Spring框架内部使用。这意味着我们可以为他们的自定义beans或组件提供与Spring框架同样的启动跟踪能力。
 
-**细粒度控制**：与`StartupStep`一起使用，`ApplicationStartupAware`允许beans对其启动过程中的特定部分进行跟踪，例如数据库初始化、外部服务连接或任何其他可能需要时间的操作。
+3. **细粒度控制**
+   + 与`StartupStep`一起使用，`ApplicationStartupAware`允许beans对其启动过程中的特定部分进行跟踪，例如数据库初始化、外部服务连接或任何其他可能需要时间的操作。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），首先设置了`BufferingApplicationStartup`，这是Spring Boot提供的一个`ApplicationStartup`实现，缓存了最后的100个启动步骤。这使得我们可以在应用启动后查看并分析这些步骤，以便了解哪些操作可能会影响启动性能，然后使用`register`方法，我们告诉Spring上下文加载`MyConfiguration`类，最后调用`refresh`方法会触发应用上下文的初始化，包括bean的创建和依赖注入。
 
@@ -107,7 +116,7 @@ public class MyApplicationStartupAware implements ApplicationStartupAware, Initi
 }
 ```
 
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -142,7 +151,7 @@ sequenceDiagram
     AnnotationConfigApplicationContext-->>ApplicationStartupAwareApplication:初始化完成
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），首先设置了`BufferingApplicationStartup`，这是Spring Boot提供的一个`ApplicationStartup`实现，缓存了最后的100个启动步骤。这使得我们可以在应用启动后查看并分析这些步骤，以便了解哪些操作可能会影响启动性能，然后使用`register`方法，我们告诉Spring上下文加载`MyConfiguration`类，最后调用`refresh`方法会触发应用上下文的初始化，包括bean的创建和依赖注入。
 
@@ -439,42 +448,58 @@ public class MyApplicationStartupAware implements ApplicationStartupAware, Initi
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**生命周期时机**：`setApplicationStartup`方法在其他bean属性设置之后、`InitializingBean`的`afterPropertiesSet`方法之前调用。确保你的bean在这一阶段不依赖于其他尚未初始化或注入的属性。
+1. **生命周期时机**
+   + `setApplicationStartup`方法在其他bean属性设置之后、`InitializingBean`的`afterPropertiesSet`方法之前调用。确保我们的bean在这一阶段不依赖于其他尚未初始化或注入的属性。
 
-**性能考虑**：虽然启动跟踪对于分析应用程序启动时间很有用，但添加太多的启动步骤跟踪可能会对性能产生微小的影响。在生产环境中，你可能需要权衡跟踪的详细程度和性能的关系。
+2. **性能考虑**
+   + 虽然启动跟踪对于分析应用程序启动时间很有用，但添加太多的启动步骤跟踪可能会对性能产生微小的影响。在生产环境中，我们可能需要权衡跟踪的详细程度和性能的关系。
 
-**清晰的步骤名称**：当定义`StartupStep`时，为其提供清晰、描述性的名称，这样其他开发者可以更容易地理解它代表的步骤。
+3. **清晰的步骤名称**
+   + 当定义`StartupStep`时，为其提供清晰、描述性的名称，这样其他我们可以更容易地理解它代表的步骤。
 
-**不要滥用**：尽量只为那些真正重要和可能影响启动性能的步骤使用启动跟踪。不需要为每个小操作都添加跟踪。
+4. **不要滥用**
+   + 尽量只为那些真正重要和可能影响启动性能的步骤使用启动跟踪。不需要为每个小操作都添加跟踪。
 
-**不要忘记结束步骤**：每当你开始一个`StartupStep`，记得在适当的时机调用`end`方法结束它。否则，该步骤可能会在报告中显示为仍在运行，这可能会导致混淆。
+5. **不要忘记结束步骤**
+   + 每当我们开始一个`StartupStep`，记得在适当的时机调用`end`方法结束它。否则，该步骤可能会在报告中显示为仍在运行，这可能会导致混淆。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**启动类概述**：使用`AnnotationConfigApplicationContext`，一个基于Java注解的Spring上下文初始化方法。设置`BufferingApplicationStartup`来缓存应用启动过程的最后100个步骤。这样可以分析哪些步骤可能影响启动性能。注册`MyConfiguration`类以加载相应的配置。刷新并初始化应用上下文，从而触发bean的创建和依赖注入。关闭上下文。
+1. **启动类概述**
+   + 使用`AnnotationConfigApplicationContext`，一个基于Java注解的Spring上下文初始化方法。设置`BufferingApplicationStartup`来缓存应用启动过程的最后100个步骤。这样可以分析哪些步骤可能影响启动性能。注册`MyConfiguration`类以加载相应的配置。刷新并初始化应用上下文，从而触发bean的创建和依赖注入。关闭上下文。
 
-**配置类概述**：使用`@Configuration`注解标记，告诉Spring这是一个配置类。通过`@Bean`注解定义了`MyApplicationStartupAware` bean。这样可以确保它被Spring容器处理，并在容器启动时执行其生命周期方法。
+2. **配置类概述**
+   + 使用`@Configuration`注解标记，告诉Spring这是一个配置类。通过`@Bean`注解定义了`MyApplicationStartupAware` bean。这样可以确保它被Spring容器处理，并在容器启动时执行其生命周期方法。
 
-**`MyApplicationStartupAware`类概述**：实现了`ApplicationStartupAware`接口，允许它在启动时获知`ApplicationStartup`实例。定义了两个启动步骤来模拟潜在的长时间运行任务，并使用`StartupStep`进行跟踪。在每个步骤的末尾，都有一个标记状态为"done"，然后结束该步骤。
+3. **`MyApplicationStartupAware`类概述**
+   + 实现了`ApplicationStartupAware`接口，允许它在启动时获知`ApplicationStartup`实例。定义了两个启动步骤来模拟潜在的长时间运行任务，并使用`StartupStep`进行跟踪。在每个步骤的末尾，都有一个标记状态为"done"，然后结束该步骤。
 
-#### 8.2、源码分析总结
+#### 源码分析总结
 
-**实例化Beans**：在`AbstractApplicationContext`的`refresh()`方法中，`finishBeanFactoryInitialization`方法被调用，确保所有单例Bean被预先实例化。
+1. **实例化Beans**
+   + 在`AbstractApplicationContext`的`refresh()`方法中，`finishBeanFactoryInitialization`方法被调用，确保所有单例Bean被预先实例化。
 
-**Bean预实例化**：`DefaultListableBeanFactory`的`preInstantiateSingletons`方法确保所有非懒加载的单例Beans被实例化。核心操作是调用`getBean(beanName)`。
+2. **Bean预实例化**
+   + `DefaultListableBeanFactory`的`preInstantiateSingletons`方法确保所有非懒加载的单例Beans被实例化。核心操作是调用`getBean(beanName)`。
 
-**获取Bean实例**：`AbstractBeanFactory`的`getBean`方法进一步调用`doGetBean`来真正实例化Bean，处理异常和依赖，并返回Bean实例。
+3. **获取Bean实例**
+   + `AbstractBeanFactory`的`getBean`方法进一步调用`doGetBean`来真正实例化Bean，处理异常和依赖，并返回Bean实例。
 
-**Bean单例获取**：`DefaultSingletonBeanRegistry`的`getSingleton`方法确保Bean以单例形式存在，从缓存获取或使用提供的`ObjectFactory`创建新实例。
+4. **Bean单例获取**
+   + `DefaultSingletonBeanRegistry`的`getSingleton`方法确保Bean以单例形式存在，从缓存获取或使用提供的`ObjectFactory`创建新实例。
 
-**创建Bean实例**：`AbstractAutowireCapableBeanFactory`的`createBean`方法调用`doCreateBean`进行Bean的实际实例化，并进行初始化，确保Bean完全配置并准备就绪。
+5. **创建Bean实例**
+   + `AbstractAutowireCapableBeanFactory`的`createBean`方法调用`doCreateBean`进行Bean的实际实例化，并进行初始化，确保Bean完全配置并准备就绪。
 
-**Bean初始化**：`AbstractAutowireCapableBeanFactory`的`initializeBean`方法确保Bean被正确初始化，其中调用`applyBeanPostProcessorsBeforeInitialization`方法是Spring生命周期中的关键点，允许BeanPostProcessors在Bean初始化之前进行操作。
+6. **Bean初始化**
+   + `AbstractAutowireCapableBeanFactory`的`initializeBean`方法确保Bean被正确初始化，其中调用`applyBeanPostProcessorsBeforeInitialization`方法是Spring生命周期中的关键点，允许BeanPostProcessors在Bean初始化之前进行操作。
 
-**处理Aware接口**：在Bean初始化过程中，`ApplicationContextAwareProcessor`确保实现了`Aware`接口的Beans被正确处理，这些Beans会自动"感知"并获得其运行环境或特定依赖的引用。
+7. **处理Aware接口**
+   + 在Bean初始化过程中，`ApplicationContextAwareProcessor`确保实现了`Aware`接口的Beans被正确处理，这些Beans会自动"感知"并获得其运行环境或特定依赖的引用。
 
-**自定义逻辑执行**:`MyApplicationStartupAware`类实现了`ApplicationStartupAware`接口，它将接收一个`ApplicationStartup`实例。
+8. **自定义逻辑执行**
+   + `MyApplicationStartupAware`类实现了`ApplicationStartupAware`接口，它将接收一个`ApplicationStartup`实例。
