@@ -1,24 +1,30 @@
 ## ApplicationContextAware
 
 - [ApplicationContextAware](#applicationcontextaware)
-  - [一、接口描述](#一接口描述)
-  - [二、接口源码](#二接口源码)
-  - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、时序图](#五时序图)
-  - [六、源码分析](#六源码分析)
-  - [七、注意事项](#七注意事项)
-  - [八、总结](#八总结)
-    - [8.1、最佳实践总结](#81最佳实践总结)
-    - [8.2、源码分析总结](#82源码分析总结)
+  - [一、基本信息](#一基本信息)
+  - [二、接口描述](#二接口描述)
+  - [三、接口源码](#三接口源码)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、时序图](#六时序图)
+  - [七、源码分析](#七源码分析)
+  - [八、注意事项](#八注意事项)
+  - [九、总结](#九总结)
+    - [最佳实践总结](#最佳实践总结)
+    - [源码分析总结](#源码分析总结)
 
-### 一、接口描述
+
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133914136) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [ApplicationContextAware源码](https://github.com/xuchengsheng/spring-reading/tree/master/spring-aware/spring-aware-applicationContextAware)
+
+### 二、接口描述
 
 `ApplicationContextAware` 接口，允许我们访问当前的应用上下文 (`ApplicationContext`)。这通常在某些Spring bean需要访问应用上下文本身或其内部其他bean时会有用。
 
-### 二、接口源码
+### 三、接口源码
 
-`ApplicationContextAware` 是 Spring 框架中的一个接口，主要用于那些需要感知或交互其所在的 ApplicationContext 的 Spring beans。例如，可能需要发布事件或查询 ApplicationContext 中的其他 beans。
+实现`ApplicationContextAware`接口的对象会在Spring容器中被自动注入一个`ApplicationContext`实例。
 
 ```java
 /**
@@ -71,19 +77,24 @@ public interface ApplicationContextAware extends Aware {
 }
 ```
 
-### 三、主要功能
+### 四、主要功能
 
-**动态查找其他Beans**：尽管我们通常使用依赖注入来获取其他beans的引用，但在某些动态或复杂情况下，bean可能需要在运行时查找其他beans。
+1. **动态查找其他Beans**
+   + 尽管我们通常使用依赖注入来获取其他beans的引用，但在某些动态或复杂情况下，bean可能需要在运行时查找其他beans。
 
-**发布事件**：通过 `ApplicationContext`，bean可以发布应用级事件，这些事件可以被其他beans捕获和处理，这是实现松耦合交互的一种方法。
+2. **发布事件**
+   + 通过 `ApplicationContext`，bean可以发布应用级事件，这些事件可以被其他beans捕获和处理，这是实现松耦合交互的一种方法。
 
-**资源加载**：`ApplicationContext` 扩展了 `ResourceLoader`，因此bean可以使用它来加载外部资源，如文件或URL。
+3. **资源加载**
+   + `ApplicationContext` 扩展了 `ResourceLoader`，因此bean可以使用它来加载外部资源，如文件或URL。
 
-**访问消息源**：对于支持国际化的应用程序，bean可以通过 `ApplicationContext` 访问消息源，从而解析特定的消息。
+4. **访问消息源**
+   + 对于支持国际化的应用程序，bean可以通过 `ApplicationContext` 访问消息源，从而解析特定的消息。
 
-**访问其他应用上下文服务**：除了上述功能，`ApplicationContext` 还提供了其他一些服务，例如与JNDI交互、访问应用的环境属性等。
+5. **访问其他应用上下文服务**
+   + 除了上述功能，`ApplicationContext` 还提供了其他一些服务，例如与JNDI交互、访问应用的环境属性等。
 
-### 四、最佳实践
+### 五、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyApplicationContextAware`类型的bean，最后调用`publish`方法用于发布一个事件。
 
@@ -98,7 +109,7 @@ public class ApplicationContextAwareApplication {
 }
 ```
 
-这里使用`@Bean`注解，定义了两个Bean，是为了确保`MyEventListener`， `MyApplicationContextAware` 被 Spring 容器执行
+这里使用`@Bean`注解，定义了一个Bean，是为了确保 `MyApplicationContextAware` 被 Spring 容器执行
 
 ```java
 @Configuration
@@ -108,69 +119,30 @@ public class MyConfiguration {
     public MyApplicationContextAware myApplicationContextAware(){
         return new MyApplicationContextAware();
     }
-
-    @Bean
-    public MyEventListener MyEventListener(){
-        return new MyEventListener();
-    }
 }
 ```
 
- `MyApplicationContextAware` 类使用 `ApplicationContextAware` 来获取 `ApplicationContext` 的引用，并使用这个引用来发布自定义事件。
+ `MyApplicationContextAware` 的实现，它实现了 `ApplicationContextAware` 接口。
 
 ```java
 public class MyApplicationContextAware implements ApplicationContextAware {
 
-    private ApplicationContext context;
-
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
-        this.context = context;
-    }
-
-    public void publish(String message) {
-        context.publishEvent(new MyEvent(this, message));
+        System.out.println("实现ApplicationContextAware接口,自动调用setApplicationContext方法");
+        System.out.println("ApplicationContext = " + context);
     }
 }
 ```
 
-`MyEvent` 是我们自定义的 Spring 应用事件，用于传递一个字符串消息。
+运行结果发现，Spring 容器确实自动调用了 `setApplicationContext` 方法并传递了 `ApplicationContext` 对象。
 
 ```java
-public class MyEvent extends ApplicationEvent {
-
-    private final String message;
-
-    public MyEvent(Object source, String message) {
-        super(source);
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-}
+实现ApplicationContextAware接口,自动调用setApplicationContext方法
+ApplicationContext = org.springframework.context.annotation.AnnotationConfigApplicationContext@64bf3bbf
 ```
 
-`MyEventListener` 是一个监听器。当 `MyEvent` 事件被发布时，此监听器会自动被触发，执行 `onApplicationEvent` 方法的逻辑。
-
-```java
-public class MyEventListener implements ApplicationListener<MyEvent> {
-
-    @Override
-    public void onApplicationEvent(MyEvent event) {
-        System.out.println("Received my event - " + event.getMessage());
-    }
-}
-```
-
-运行结果发现，这表示监听器成功地捕获了该事件并处理了它。
-
-```java
-Received my event - hello world
-```
-
-### 五、时序图
+### 六、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -206,7 +178,7 @@ sequenceDiagram
 
 ~~~
 
-### 六、源码分析
+### 七、源码分析
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类。然后从Spring上下文中获取一个`MyApplicationContextAware`类型的bean，最后调用`publish`方法用于发布一个事件。
 
@@ -475,64 +447,66 @@ private void invokeAwareInterfaces(Object bean) {
 }
 ```
 
-最后执行到我们自定义的逻辑中，使用 `ApplicationContextAware` 来获取 `ApplicationContext` 的引用，并使用这个引用来发布自定义事件。
+最后执行到我们自定义的逻辑中，使用 `ApplicationContextAware` 来获取 `ApplicationContext` 的引用。
 
 ```java
 public class MyApplicationContextAware implements ApplicationContextAware {
 
-    private ApplicationContext context;
-
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
-        this.context = context;
-    }
-
-    public void publish(String message) {
-        context.publishEvent(new MyEvent(this, message));
+        System.out.println("实现ApplicationContextAware接口,自动调用setApplicationContext方法");
+        System.out.println("ApplicationContext = " + context);
     }
 }
 ```
 
-### 七、注意事项
+### 八、注意事项
 
-**记住生命周期**：当我们实现 `ApplicationContextAware` 时，记住上下文是在 bean 的生命周期的一个特定点被注入的。这通常是在属性注入后、初始化方法前。
+1. **记住生命周期**
+   + 当我们实现 `ApplicationContextAware` 时，记住上下文是在 bean 的生命周期的一个特定点被注入的。这通常是在属性注入后、初始化方法前。
 
-**记住上下文层次结构**：在更复杂的应用中，可能会有多个 `ApplicationContext` 层次结构（例如，一个根上下文和一个或多个子上下文）。确保我们了解从哪个上下文检索 beans，以及这些 beans 的生命周期和可见性。
+2. **记住上下文层次结构**
+   + 在更复杂的应用中，可能会有多个 `ApplicationContext` 层次结构（例如，一个根上下文和一个或多个子上下文）。确保我们了解从哪个上下文检索 beans，以及这些 beans 的生命周期和可见性。
 
-**小心与懒加载 beans 的交互**：如果我们使用 `ApplicationContextAware` 来动态检索一个定义为懒加载的 bean，那么这将导致该 bean 被立即初始化。
+3. **小心与懒加载 beans 的交互**
+   + 如果我们使用 `ApplicationContextAware` 来动态检索一个定义为懒加载的 bean，那么这将导致该 bean 被立即初始化。
 
-**避免创建循环依赖**：如果使用 `ApplicationContext` 来动态查找 beans，要确保不会创建意外的循环依赖。
+4. **避免创建循环依赖**
+   + 如果使用 `ApplicationContext` 来动态查找 beans，要确保不会创建意外的循环依赖。
 
-**避免在构造函数中使用 ApplicationContext**：当 bean 实现 `ApplicationContextAware` 时，`setApplicationContext` 方法是在 bean 的属性注入之后、初始化方法（如 `afterPropertiesSet` 或自定义的 init 方法）之前调用的。因此，不应该试图在构造函数中访问 `ApplicationContext`，因为它在那时可能还没有被设置。
+5. **避免在构造函数中使用 ApplicationContext**
+   + 当 bean 实现 `ApplicationContextAware` 时，`setApplicationContext` 方法是在 bean 的属性注入之后、初始化方法（如 `afterPropertiesSet` 或自定义的 init 方法）之前调用的。因此，不应该试图在构造函数中访问 `ApplicationContext`，因为它在那时可能还没有被设置。
 
-### 八、总结
+### 九、总结
 
-#### 8.1、最佳实践总结
+#### 最佳实践总结
 
-**应用启动与上下文初始化**： 在 `ApplicationContextAwareApplication` 类中，我们启动了一个基于 Java 注解配置的 Spring 应用。使用 `AnnotationConfigApplicationContext` 与 `MyConfiguration` 作为参数，我们成功地启动了 Spring 容器。
+1. **启动与配置**:
+   - 在 `ApplicationContextAwareApplication` 的 `main` 方法中，我们使用 `AnnotationConfigApplicationContext` 来启动 Spring 容器，这是一个基于 Java 注解的配置方式。
+   - `MyConfiguration` 类被指定为配置类，这意味着 Spring 将会查找这个类中定义的 beans 和配置。
+2. **Bean 定义**:
+   - 在 `MyConfiguration` 配置类中，我们使用 `@Bean` 注解定义了一个 `MyApplicationContextAware` 类型的 bean。这确保 `MyApplicationContextAware` 将被 Spring 容器管理。
+3. **实现 Aware 接口**:
+   - `MyApplicationContextAware` 类实现了 `ApplicationContextAware` 接口。这是一个特殊的接口，当一个 bean 实现它，Spring 容器会在 bean 初始化时自动调用 `setApplicationContext` 方法并传入当前的 `ApplicationContext` 对象。
+4. **运行结果**:
+   - 当应用启动时，Spring 容器确实检测到 `MyApplicationContextAware` 实现了 `ApplicationContextAware` 接口，并自动调用了 `setApplicationContext` 方法。
+   - 控制台上的输出明确显示了这个过程，并显示了传递给该方法的 `ApplicationContext` 实例。
+5. **结论**:
+   - 通过 `ApplicationContextAware` 接口，我们可以轻松地在 Spring 容器中管理的 bean 中获取 `ApplicationContext`。这为我们提供了一个强大的机制，使得 bean 可以感知其所在的环境，并据此执行相应的操作。
 
-**配置类的定义**： `MyConfiguration` 是一个配置类，标注了 `@Configuration` 注解。这里，我们定义了两个 beans，分别是 `MyApplicationContextAware` 和 `MyEventListener`。由于它们都被定义为 `@Bean`，Spring 容器在启动时会实例化并管理它们。
+#### 源码分析总结
 
-**获取并使用 ApplicationContextAware bean**： 从启动的 Spring 容器中，我们获取了 `MyApplicationContextAware` bean 的实例，并调用其 `publish` 方法来发布一个自定义事件（携带消息 "hello world"）。
+1. **启动与上下文初始化**
+   + 使用 `AnnotationConfigApplicationContext` 启动 Spring 应用，并传递 `MyConfiguration` 作为参数进行上下文初始化。
 
-**ApplicationContextAware 的实现**： `MyApplicationContextAware` 实现了 `ApplicationContextAware` 接口，这允许它获取和存储其运行环境的 `ApplicationContext` 引用。它提供了一个 `publish` 方法，用于使用保存的 ApplicationContext 来发布事件。
+2. **Spring 上下文刷新**
+   + 在 `refresh()` 方法中，主要关注点是调用 `finishBeanFactoryInitialization(beanFactory)`，负责实例化所有非延迟加载的单例 bean。
 
-**自定义事件的定义**： `MyEvent` 是一个自定义事件，继承自 `ApplicationEvent`。它携带了一个字符串消息，这个消息在事件发布后可以由监听器获取和处理。
+3. **Bean 实例化**
+   + `preInstantiateSingletons()` 方法在 Spring 上下文初始化完成后被调用，确保所有非延迟加载的单例 beans 都被实例化，对于每个 bean，都会调用 `getBean(beanName)`，这会触发 bean 的实例化、初始化以及依赖注入。
 
-**事件监听器的定义**： `MyEventListener` 实现了 `ApplicationListener<MyEvent>`，这使得它成为了一个专门用于监听和处理 `MyEvent` 事件的监听器。当 `MyEvent` 事件被发布时，监听器的 `onApplicationEvent` 方法被自动触发，并打印出消息内容。
+4. **Bean 创建与初始化**
+   + 在 `doCreateBean` 方法中，核心操作是调用 `initializeBean` 进行 bean 初始化，确保 bean 完全配置并准备好，`initializeBean` 中会调用 `applyBeanPostProcessorsBeforeInitialization`，在 bean 初始化之前遍历所有已注册的 `BeanPostProcessor`。
 
-**运行结果**： 当应用运行时，`MyEventListener` 成功地捕获了由 `MyApplicationContextAware` 发布的事件，并输出了 "Received my event - hello world"，证明整个事件发布和处理的机制都工作正常。
-
-#### 8.2、源码分析总结
-
-**启动与上下文初始化**：使用 `AnnotationConfigApplicationContext` 启动 Spring 应用，并传递 `MyConfiguration` 作为参数进行上下文初始化，从上下文中获取 `MyApplicationContextAware` bean，并发布自定义事件。
-
-**Spring 上下文刷新**：在 `refresh()` 方法中，主要关注点是调用 `finishBeanFactoryInitialization(beanFactory)`，负责实例化所有非延迟加载的单例 bean。
-
-**Bean 实例化**：`preInstantiateSingletons()` 方法在 Spring 上下文初始化完成后被调用，确保所有非延迟加载的单例 beans 都被实例化，对于每个 bean，都会调用 `getBean(beanName)`，这会触发 bean 的实例化、初始化以及依赖注入。
-
-**Bean 创建与初始化**：在 `doCreateBean` 方法中，核心操作是调用 `initializeBean` 进行 bean 初始化，确保 bean 完全配置并准备好，`initializeBean` 中会调用 `applyBeanPostProcessorsBeforeInitialization`，在 bean 初始化之前遍历所有已注册的 `BeanPostProcessor`。
-
-**处理 Aware 接口**：`ApplicationContextAwareProcessor` 的作用是对实现了 "Aware" 接口的 beans 进行特殊处理。在 `invokeAwareInterfaces` 方法中，针对不同的 "Aware" 接口进行了处理，使得 beans 可以自动感知其运行环境或特定依赖。
-
-**自定义事件发布**：通过实现 `ApplicationContextAware`，`MyApplicationContextAware` 能够获得 `ApplicationContext` 的引用，随后使用此引用发布自定义事件。
+5. **处理 Aware 接口**
+   + `ApplicationContextAwareProcessor` 的作用是对实现了 "Aware" 接口的 beans 进行特殊处理。在 `invokeAwareInterfaces` 方法中，针对不同的 "Aware" 接口进行了处理，使得 beans 可以自动感知其运行环境或特定依赖。

@@ -12,7 +12,5 @@ public class ApplicationContextAwareApplication {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        MyApplicationContextAware contextAware = context.getBean(MyApplicationContextAware.class);
-        contextAware.publish("hello world");
     }
 }

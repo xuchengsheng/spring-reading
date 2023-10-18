@@ -1,6 +1,5 @@
 package com.xcs.spring.config;
 
-import com.xcs.spring.event.MyEventListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,10 +13,5 @@ public class MyConfiguration {
     @Bean
     public MyApplicationContextAware myApplicationContextAware(){
         return new MyApplicationContextAware();
-    }
-
-    @Bean
-    public MyEventListener MyEventListener(){
-        return new MyEventListener();
     }
 }
