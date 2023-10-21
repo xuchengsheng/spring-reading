@@ -323,7 +323,7 @@ public QualifierAnnotationAutowireCandidateResolver() {
 在Spring中，`AutowiredAnnotationBeanPostProcessor` 负责处理多种依赖注入注解，包括 JSR-330 的 `@Inject` 注解。为了深入了解 `@Inject` 注解及其与 `@Qualifier` 注解的结合方式，研究这个后处理器是至关重要的。简而言之，为了完全掌握 `@Inject` 和 `@Qualifier` 的协同工作原理，深入阅读 `@Inject` 博客是非常必要的。这些博客为我们提供了对如何在 bean 生命周期中的关键阶段处理这些注解的深入理解。
 
 1. **@Inject注解源码分析**:
-   - 在这篇博客中，您会深入了解 `@Inject` 注解的背后原理。从 JSR-330 规范的引入，到如何在 Spring 中正确使用，以及与其他注解如 `@Autowired` 的差异，这篇博客为您提供了全面的视角。
+   - 在这篇博客中，我们会深入了解 `@Inject` 注解的背后原理。从 JSR-330 规范的引入，到如何在 Spring 中正确使用，以及与其他注解如 `@Autowired` 的差异，这篇博客为我们提供了全面的视角。
    - 🔗 [@Inject注解传送门](https://github.com/xuchengsheng/spring-reading/blob/master/spring-jsr/spring-jsr330-inject)
 
 ##### 解析入口
@@ -539,17 +539,17 @@ protected boolean isQualifier(Class<? extends Annotation> annotationType) {
 ### 八、注意事项
 
 1. **确保正确的依赖注入**
-   + 使用 `@Qualifier` 主要是为了解决Spring容器中有多个同类型Bean的问题。没有 `@Qualifier`，Spring将无法决定注入哪一个Bean。但使用 `@Qualifier` 时，你需要确保给定的资格符名称确实存在，否则Spring会抛出异常。
+   + 使用 `@Qualifier` 主要是为了解决Spring容器中有多个同类型Bean的问题。没有 `@Qualifier`，Spring将无法决定注入哪一个Bean。但使用 `@Qualifier` 时，我们需要确保给定的资格符名称确实存在，否则Spring会抛出异常。
 2. **与其他注解组合**
    +  `@Qualifier` 通常与 `@Autowired` 或 `@Inject` 一起使用。确保在正确的地方使用它（字段、setter方法或构造函数）。
 3. **自定义资格符注解**
-   + 你可以创建自己的注解，并使用 `@Qualifier` 作为元注解。这样，你可以创建具有特定命名或其他语义的资格符注解，使代码更具可读性。
+   + 我们可以创建自己的注解，并使用 `@Qualifier` 作为元注解。这样，我们可以创建具有特定命名或其他语义的资格符注解，使代码更具可读性。
 4. **使用字符串名称**
-   +  `@Qualifier` 默认使用字符串值来指定Bean的名称。这意味着，如果你重命名了Bean或更改了其名称，你也需要更改所有使用这个Bean名称的 `@Qualifier` 注解。
+   +  `@Qualifier` 默认使用字符串值来指定Bean的名称。这意味着，如果我们重命名了Bean或更改了其名称，我们也需要更改所有使用这个Bean名称的 `@Qualifier` 注解。
 5. **与Java配置一起使用**
    + 当使用Java配置创建Beans时，可以使用 `@Bean` 的方法名称作为资格符名称。这使得使用Java配置和 `@Qualifier` 更为一致。
 6. **与 `@Primary` 的关系**
-   + 如果你同时使用了 `@Primary` 和 `@Qualifier`，则 `@Qualifier` 的优先级更高。也就是说，如果一个Bean被标记为 `@Primary`，但在注入点使用了 `@Qualifier`，则会使用 `@Qualifier` 指定的Bean。
+   + 如果我们同时使用了 `@Primary` 和 `@Qualifier`，则 `@Qualifier` 的优先级更高。也就是说，如果一个Bean被标记为 `@Primary`，但在注入点使用了 `@Qualifier`，则会使用 `@Qualifier` 指定的Bean。
 7. **名称和类型的匹配**
    + 尽管 `@Qualifier` 主要用于通过名称进行匹配，但Spring仍然会验证匹配的Bean类型。所以，如果Bean名称匹配但类型不匹配，仍然会出现异常。
 8. **与JSR-330的兼容性**
