@@ -123,10 +123,9 @@ public class MyService {
 
 运行结果发现，`myServiceProvider1` 和 `myServiceProvider2` 两次获取到的 `MyService` 实例具有相同的对象引用（`@235ecd9f`）。这说明 `MyService` bean 是单例作用域的。
 
-<div style="border: 1px solid #e5e5e5; padding: 20px; background-color: #f8f8f8; border-radius: 5px; box-shadow: 2px 2px 12px #aaa;">
-   <span style="font-size: 20px; color: #333;">💡 提示:</span>
-   <p style="font-size: 16px; color: #555;">在 Spring 中，默认的作用域是单例（singleton），这意味着在整个 Spring 容器中，一个特定的 bean 定义只有一个实例。因此，无论我们调用多少次 `myServiceProvider.get()`，它都会返回相同的 `MyService` 实例。如果我们想每次都获得一个新的 `MyService` 实例，我们需要将 `MyService` 定义为原型作用域（prototype）。</p>
-</div>
+| :warning: 注意！                                             |
+| :----------------------------------------------------------- |
+| 在 Spring 中，默认的作用域是单例（singleton），这意味着在整个 Spring 容器中，一个特定的 bean 定义只有一个实例。因此，无论我们调用多少次 `myServiceProvider.get()`，它都会返回相同的 `MyService` 实例。如果我们想每次都获得一个新的 `MyService` 实例，我们需要将 `MyService` 定义为原型作用域（prototype）。 |
 
 ```java
 myServiceProvider1 = com.xcs.spring.service.MyService@235ecd9f
