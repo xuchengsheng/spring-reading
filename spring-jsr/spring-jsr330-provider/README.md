@@ -63,13 +63,13 @@ public interface Provider<T> {
 ### 四、主要功能
 
 1. **按需创建和提供实例**
-   + 当你请求一个对象的实例时，`Provider<T>` 可以为你提供一个实例，而不需要直接实例化或查找对象。这为按需创建对象提供了一种机制。
+   + 当我们请求一个对象的实例时，`Provider<T>` 可以为我们提供一个实例，而不需要直接实例化或查找对象。这为按需创建对象提供了一种机制。
 2. **处理原型作用域的 beans**
-   + 在Spring中，如果你有一个原型作用域的bean，使用 `Provider<T>` 可以确保每次调用 `get()` 方法时都获得一个新的bean实例。
+   + 在Spring中，如果我们有一个原型作用域的bean，使用 `Provider<T>` 可以确保每次调用 `get()` 方法时都获得一个新的bean实例。
 3. **解决循环依赖**
    + 在某些情况下，特别是当涉及到原型作用域的bean时，使用 `Provider<T>` 可以帮助解决因直接注入而产生的循环依赖问题。
 4. **提供更多的灵活性**
-   + 与直接注入bean相比，使用 `Provider<T>` 可以让你决定何时以及如何获取bean实例。这可以为那些需要在运行时基于特定条件决定是否创建或获取bean的应用程序提供更大的灵活性。
+   + 与直接注入bean相比，使用 `Provider<T>` 可以让我们决定何时以及如何获取bean实例。这可以为那些需要在运行时基于特定条件决定是否创建或获取bean的应用程序提供更大的灵活性。
 
 ### 五、最佳实践
 
@@ -125,7 +125,7 @@ public class MyService {
 
 | :warning: 注意！                                             |
 | :----------------------------------------------------------- |
-| 在 Spring 中，默认的作用域是单例（singleton），这意味着在整个 Spring 容器中，一个特定的 bean 定义只有一个实例。因此，无论你调用多少次 `myServiceProvider.get()`，它都会返回相同的 `MyService` 实例。如果你想每次都获得一个新的 `MyService` 实例，你需要将 `MyService` 定义为原型作用域（prototype）。 |
+| 在 Spring 中，默认的作用域是单例（singleton），这意味着在整个 Spring 容器中，一个特定的 bean 定义只有一个实例。因此，无论我们调用多少次 `myServiceProvider.get()`，它都会返回相同的 `MyService` 实例。如果我们想每次都获得一个新的 `MyService` 实例，我们需要将 `MyService` 定义为原型作用域（prototype）。 |
 
 ```java
 myServiceProvider1 = com.xcs.spring.service.MyService@235ecd9f
@@ -462,19 +462,19 @@ protected Object getValue() throws BeansException {
 ### 八、注意事项
 
 1. **依赖检查**
-   + 与直接注入Bean不同，使用 `Provider` 注入的Bean在启动时不会进行立即检查。如果你希望容器启动时进行依赖检查，你应该避免使用 `Provider`。
+   + 与直接注入Bean不同，使用 `Provider` 注入的Bean在启动时不会进行立即检查。如果我们希望容器启动时进行依赖检查，我们应该避免使用 `Provider`。
 2. **性能**
    + 每次调用 `Provider.get()` 时，都可能会触发一个新的Bean的创建（如果该Bean的scope是prototype的话）。所以，频繁地调用 `Provider.get()` 可能会有性能问题。
 3. **原型作用域**
-   + 如果你使用 `Provider` 来注入原型作用域的Bean，那么每次调用 `Provider.get()` 都会返回一个新的实例。需要确保这是你所期望的行为。
+   + 如果我们使用 `Provider` 来注入原型作用域的Bean，那么每次调用 `Provider.get()` 都会返回一个新的实例。需要确保这是我们所期望的行为。
 4. **泛型类型**
    + 当使用 `Provider` 时，必须为其提供泛型类型以指示所期望注入的Bean的类型。
 5. **与其他注解的组合**
    + 虽然 `Provider` 可以与其他Spring注解（如 `@Qualifier`）组合使用，但必须确保这些组合在语义上是有意义的。
 6. **错误处理**
-   + `Provider.get()` 方法可能会抛出 `BeansException`。在使用它时，你应该准备处理这些异常。
+   + `Provider.get()` 方法可能会抛出 `BeansException`。在使用它时，我们应该准备处理这些异常。
 7. **与JSR-330的兼容性**
-   + 尽管 Spring 提供了对 `Provider` 的支持，但如果你正在使用其他支持JSR-330的容器，确保 `Provider` 的行为在这些容器中是一致的。
+   + 尽管 Spring 提供了对 `Provider` 的支持，但如果我们正在使用其他支持JSR-330的容器，确保 `Provider` 的行为在这些容器中是一致的。
 8. **循环依赖**
    + 与直接Bean注入相比，使用 `Provider` 可能会更容易解决某些循环依赖的问题，但仍然要注意避免引入不必要的复杂性。
 
@@ -497,18 +497,18 @@ protected Object getValue() throws BeansException {
 
 #### 源码分析总结
 
-1. **初始化与上下文配置**：
+1. **初始化与上下文配置**
    - 启动时，我们使用`AnnotationConfigApplicationContext`为Spring创建了基于Java注解的配置环境，并使用`MyConfiguration`组件类作为构造参数。
    - 在其构造函数中，通过`this()`初始化了两个核心组件：一个用于读取注解定义的bean (`AnnotatedBeanDefinitionReader`) 和一个用于扫描类路径并自动检测bean组件 (`ClassPathBeanDefinitionScanner`)。
-2. **JSR-330 `Provider`的加载**：
+2. **JSR-330 `Provider`的加载**
    - 在`DefaultListableBeanFactory`的静态代码块中，尝试加载了JSR-330规范的`Provider`接口。
    - 如果`Provider`接口可用，它就会被赋给一个特定的类变量。
-3. **处理`@Autowired`注解**：
+3. **处理`@Autowired`注解**
    - 通过`AutowiredAnnotationBeanPostProcessor`处理bean属性，尤其是通过`@Autowired`进行的属性注入。
    - 在处理过程中，会解析字段的值并进行注入，其中涉及到`Provider`的使用和处理。
-4. **解析`Provider`的依赖**：
+4. **解析`Provider`的依赖**
    - 当遇到一个字段或属性的类型为`Provider<T>`时，Spring会在`DefaultListableBeanFactory`中特殊处理它。
    - 对于JSR-330的`Provider`类型的依赖，Spring会创建一个特定的`Provider`实例来满足这个依赖，这是通过`Jsr330Factory`和其内部类`Jsr330Provider`实现的。
-5. **获取`Provider`的值**：
+5. **获取`Provider`的值**
    - 在`Jsr330Provider`中的`get`方法被调用时，会进一步调用`getValue`方法。
    - `getValue`方法负责实际的依赖解析，返回所需的bean实例。
