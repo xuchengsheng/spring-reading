@@ -512,6 +512,3 @@ protected Object getValue() throws BeansException {
 5. **获取`Provider`的值**
    - 在`Jsr330Provider`中的`get`方法被调用时，会进一步调用`getValue`方法。
    - `getValue`方法负责实际的依赖解析，返回所需的bean实例。
-
-
-

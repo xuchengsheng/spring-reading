@@ -31,13 +31,13 @@
 
 ## 🌱Spring 源码阅读系列
 
-### 🔅 IOC容器
+> ### 🔅 IOC容器
 
 *探索 Spring 的核心部分，并理解其对象管理的高级策略。*
 
 - [**深入理解IOC容器**](spring-core-ioc/README.md) - 探寻 Spring 如何实现控制反转，提供强大的依赖管理。
 
-### 💡 后置处理器与初始化
+> ### 💡 后置处理器与初始化
 
 *深入 Spring 的后置处理技巧，揭示它如何优雅地初始化和管理 beans。*
 
@@ -52,7 +52,7 @@
 - [**资源清理与销毁DisposableBean**](spring-interface/spring-interface-disposableBean/README.md) - 探查它如何确保 bean 的正确销毁。
 - [**All Beans完全初始化后SmartInitializingSingleton**](spring-interface/spring-interface-smartInitializingSingleton/README.md) - 理解它如何在所有单例 bean 初始化后进行操作。
 
-### 🛠 Aware接口
+> ### 🛠 Aware接口
 
 *探索 Spring 的自我感知能力，如何赋予 beans 更多的上下文感知特性。*
 
@@ -68,7 +68,7 @@
 - [**访问应用上下文ApplicationContextAware**](spring-aware/spring-aware-applicationContextAware/README.md) - 探索 bean 如何访问其运行的应用上下文。
 - [**了解关联导入信息ImportAware**](spring-aware/spring-aware-importAware/README.md) - 揭露 bean 如何知道与其关联的导入元数据。
 
-### 🎖 核心注解
+> ### 🎖 核心注解
 
 *了解 Spring 如何通过注解驱动开发，简化和加强代码。*
 
@@ -83,7 +83,7 @@
 - [**属性注入@Value**](spring-annotation/spring-annotation-value/README.md) - 如何在Spring中优雅地注入配置属性。
 - [**依赖注入@Autowired**](spring-annotation/spring-annotation-autowired/README.md) - 了解如何通过@Autowired实现依赖管理和连接组件。
 
-### 📜 JSR 规范
+> ### 📜 JSR 规范
 
 *理解 Spring 是如何实现和优化 JSR 规范中的注解，深入揭露其与 Java 标准化的紧密结合。*
 
