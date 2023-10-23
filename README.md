@@ -1,7 +1,7 @@
 <div align="center">
   <img src='banner.png' style="padding-top: 10px;padding-bottom: 10px">
   <br/>
-  <strong><i>深入探索Spring源码分析 🌼</i></strong>
+  <strong style="padding-bottom: 10px"><i>深入探索Spring源码分析 🌼</i></strong>
   <br/>
   <p style="padding-top: 10px;padding-bottom: 10px">
     <a href="https://github.com/xuchengsheng/spring-reading/stargazers"><img src="https://img.shields.io/github/stars/xuchengsheng/spring-reading?style=social" alt="Stars Badge"/></a>
