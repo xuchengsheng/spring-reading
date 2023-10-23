@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="banner.png">
+	<img alt="logo" src="banner.png" style="height: 100px">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">深入Spring，从源码开始！</h1>
 <h4 align="center">探索Java最受欢迎的框架，理解它的内部机制，带大家从入门到精通。</h4>
