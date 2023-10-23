@@ -1,19 +1,15 @@
 <div align="center">
-  <img src='banner.png'>
+  <img src='banner.png' style="padding-top: 10px;padding-bottom: 10px">
   <br/>
   <strong><i>深入探索Spring源码分析 🌼</i></strong>
   <br/>
-  <br/>
-  <p>
+  <p style="padding-bottom: 10px">
     <a href="https://github.com/xuchengsheng/spring-reading/stargazers"><img src="https://img.shields.io/github/stars/xuchengsheng/spring-reading?style=social" alt="Stars Badge"/></a>
-    <a href="https://github.com/xuchengsheng"><img src="https://img.shields.io/github/followers/xuchengsheng?label=follow&style=social" alt="Follow @xuchengsheng"></a>
-    <a href="https://github.com/xuchengsheng/spring-reading/fork"><img src="https://img.shields.io/github/forks/xuchengsheng/spring-reading?label=fork&style=social" alt="Fork @xuchengsheng"></a>
-    <a href="https://github.com/xuchengsheng/spring-reading/watchers"><img src="https://img.shields.io/github/watchers/xuchengsheng/spring-reading?style=social&logo=github" alt="Watchers @xuchengsheng"></a>
-    <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&style=social&label=CSDN&cacheSeconds=3600&link=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399" alt="CSDN @xuchengsheng"></a>
-    <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng" alt="visitor badge"/>
-    <img src="https://img.shields.io/static/v1?label=wechat&message=xcs19930428&color=7BB32E&logo=wechat&" alt="wechat"/>
-</p>
-  <p>
+    <a href="https://github.com/xuchengsheng"><img src="https://img.shields.io/github/followers/xuchengsheng?label=follow&style=social" alt="Follow Badge"></a>
+    <a href="https://github.com/xuchengsheng/spring-reading/fork"><img src="https://img.shields.io/github/forks/xuchengsheng/spring-reading?label=fork&style=social" alt="Fork Badge"></a>
+    <a href="https://github.com/xuchengsheng/spring-reading/watchers"><img src="https://img.shields.io/github/watchers/xuchengsheng/spring-reading?style=social&logo=github" alt="Watchers Badge"></a>
+  </p>
+  <p style="padding-bottom: 10px">
     👋 <a href="#简介">简介</a>
     |
     🙏 <a href="#顺手点个星">点个星?</a>
@@ -30,6 +26,11 @@
     |
     🔄 <a href="#我的-github-统计">统计</a>
   </p>
+  <p style="padding-bottom: 20px">
+    <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng&left_text=Visitors" alt="Visitor Badge"/>
+    <img src="https://img.shields.io/badge/WeChat-xcs19930428-%2307C160?logo=wechat" alt="Wechat Badge"/>
+    <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&logo=C&logoColor=red&label=CSDN&color=red&cacheSeconds=3600" alt="CSDN Badge"></a>
+  </p>
 </div>
 
 ---
@@ -45,12 +46,12 @@
 ## ⚡技术
 
 <div align="left">
-    <img src="https://img.shields.io/badge/Java-1.8+-blue?logo=OpenJDK"/>
-    <img src="https://img.shields.io/badge/Spring-5.3.10-blue?logo=Spring"/>
-    <img src="https://img.shields.io/badge/SpringBoot-2.5.5-blue?logo=Spring Boot"/>
-    <img src="https://img.shields.io/badge/Maven-3.6.3-blue?logo=Apache Maven"/>
-    <img src="https://img.shields.io/badge/JSR-330-coral?logo=OpenJDK"/>
-    <img src="https://img.shields.io/badge/JSR-250-green?logo=OpenJDK"/>
+    <img src="https://img.shields.io/badge/Java-1.8%2B-%23437291?logo=openjdk&logoColor=%23437291"/>
+    <img src="https://img.shields.io/badge/Spring-5.3.10-%23437291?logo=Spring&logoColor=%236DB33F&color=%236DB33F"/>
+    <img src="https://img.shields.io/badge/SpringBoot-5.3.10-%23437291?logo=SpringBoot&logoColor=%236DB33F&color=%236DB33F"/>
+    <img src="https://img.shields.io/badge/Maven-5.3.10-%23437291?logo=Apache%20Maven&logoColor=%23C71A36&color=%23C71A36"/>
+    <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
+    <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
 </div>
 
 ## 💬与我联系
