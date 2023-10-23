@@ -9,6 +9,13 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>spring-core-ioc</artifactId>
+    <artifactId>spring-core</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>spring-core-resolveDependency</module>
+        <module>spring-core-getBean</module>
+        <module>spring-core-destroyBean</module>
+    </modules>
 
 </project>

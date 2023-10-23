@@ -59,7 +59,9 @@
 
 *探索 Spring 的核心部分，并理解其对象管理的高级策略。*
 
-- [**深入理解IOC容器**](spring-core-ioc/README.md) - 探寻 Spring 如何实现控制反转，提供强大的依赖管理。
+- [**getBean方法**](spring-core/spring-core-getBean/README.md) - 创建一个新的 bean 实例。
+- [**resolveDependency方法**](spring-core/spring-core-resolveDependency/README.md) - 用于解析特定依赖的 bean。这通常在自动注入时使用。
+- [**destroyBean方法**](spring-core/spring-core-destroyBean/README.md) - 销毁所有单例 bean。这通常在容器关闭时调用。
 
 > ### 💡 后置处理器与初始化
 

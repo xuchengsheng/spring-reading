@@ -18,11 +18,13 @@
     </properties>
 
     <modules>
-        <module>spring-core-ioc</module>
         <module>spring-annotation</module>
         <module>spring-aware</module>
         <module>spring-interface</module>
         <module>spring-jsr</module>
+        <module>spring-core</module>
+        <module>spring-aop</module>
+        <module>spring-mvc</module>
     </modules>
 
     <dependencies>
