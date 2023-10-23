@@ -59,9 +59,9 @@
 
 *探索 Spring 的核心部分，并理解其对象管理的高级策略。*
 
-- [**getBean方法**](spring-core/spring-core-getBean/README.md) - 创建一个新的 bean 实例。
-- [**resolveDependency方法**](spring-core/spring-core-resolveDependency/README.md) - 用于解析特定依赖的 bean。这通常在自动注入时使用。
-- [**destroyBean方法**](spring-core/spring-core-destroyBean/README.md) - 销毁所有单例 bean。这通常在容器关闭时调用。
+- [**获取Bean实例getBean()**](spring-core/spring-core-getBean/README.md) - 从Bean的定义到其实例化，全面揭示Spring如何管理Bean的生命周期。
+- [**解析依赖关系resolveDependency()**](spring-core/spring-core-resolveDependency/README.md) - 探索Spring如何优雅地解决Bean之间的依赖关系，确保应用稳定运行。
+- [**销毁Bean实例destroyBean()**](spring-core/spring-core-destroyBean/README.md) - 深入Spring的销毁策略，理解如何优雅地释放资源，确保应用的健壮性。
 
 > ### 💡 后置处理器与初始化
 
