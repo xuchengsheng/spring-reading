@@ -15,11 +15,11 @@
     <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&logo=C&logoColor=red&label=CSDN&color=red&cacheSeconds=3600" alt="CSDN Badge"></a>
 </p>
 <p align="center">
+    ⚡ <a href="#技术">技术</a>
+    |
     👋 <a href="#简介">简介</a>
     |
     🙏 <a href="#顺手点个星">点个星?</a>
-    |
-    ⚡ <a href="#技术">技术</a>
     |
     🌱 <a href="#spring-源码阅读系列">Spring源码</a>
     |
@@ -34,14 +34,6 @@
 
 ---
 
-## 👋简介
-
-大家好呀，我是Lex。我是一名拥有8年经验的Java 后端开发人员，也是一个对 Spring 框架充满热情的程序员。为了帮助那些希望深入了解 Spring 框架的程序员们，我创建了这个 “Spring 源码阅读系列”。通过这个系列，我希望能够与你们共同探索 Spring 的内部工作机制。如果您有同样的兴趣或问题，请联系我！
-
-## 🙏顺手点个星？
-
-亲爱的朋友们，我真的花了很多心思去研究和整理这个“Spring 源码阅读系列”。如果你觉得这东西还不错，或者给你带来了一点点帮助，麻烦点一下星星吧🌟。这真的对我意义重大，每一颗星都能让我觉得所有的努力都是值得的。我知道这是小事一桩，但你的那一下点击，对我来说就是最好的鼓励。无论如何，都要感谢你抽时间阅读我的内容，真的很感激！
-
 ## ⚡技术
 
 <div align="left">
@@ -52,6 +44,14 @@
     <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
     <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
 </div>
+
+## 👋简介
+
+大家好呀，我是Lex。我是一名拥有8年经验的Java 后端开发人员，也是一个对 Spring 框架充满热情的程序员。为了帮助那些希望深入了解 Spring 框架的程序员们，我创建了这个 “Spring 源码阅读系列”。通过这个系列，我希望能够与你们共同探索 Spring 的内部工作机制。如果您有同样的兴趣或问题，请联系我！
+
+## 🙏顺手点个星？
+
+亲爱的朋友们，我真的花了很多心思去研究和整理这个“Spring 源码阅读系列”。如果你觉得这东西还不错，或者给你带来了一点点帮助，麻烦点一下星星吧🌟。这真的对我意义重大，每一颗星都能让我觉得所有的努力都是值得的。我知道这是小事一桩，但你的那一下点击，对我来说就是最好的鼓励。无论如何，都要感谢你抽时间阅读我的内容，真的很感激！
 
 ## 🌱Spring 源码阅读系列
 
