@@ -48,7 +48,7 @@
     <img src="https://img.shields.io/badge/Java-1.8%2B-%23437291?logo=openjdk&logoColor=%23437291"/>
     <img src="https://img.shields.io/badge/Spring-5.3.10-%23437291?logo=Spring&logoColor=%236DB33F&color=%236DB33F"/>
     <img src="https://img.shields.io/badge/SpringBoot-5.3.10-%23437291?logo=SpringBoot&logoColor=%236DB33F&color=%236DB33F"/>
-    <img src="https://img.shields.io/badge/Maven-5.3.10-%23437291?logo=Apache%20Maven&logoColor=%23C71A36&color=%23C71A36"/>
+    <img src="https://img.shields.io/badge/Maven-3.6.3-%23437291?logo=Apache%20Maven&logoColor=%23C71A36&color=%23C71A36"/>
     <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
     <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
 </div>
