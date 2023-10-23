@@ -1,7 +1,40 @@
-## 👋 简介
-<img align='right' src='https://octodex.github.com/images/hula_loop_octodex03.gif' width='200'>
+<div align="center">
+  <img src='banner.png'>
+  <br/>
+  <strong><i>深入探索Spring源码分析 🌼</i></strong>
+  <br/>
+  <br/>
+  <p>
+    <a href="https://github.com/xuchengsheng/spring-reading/stargazers"><img src="https://img.shields.io/github/stars/xuchengsheng/spring-reading?style=social" alt="Stars Badge"/></a>
+    <a href="https://github.com/xuchengsheng"><img src="https://img.shields.io/github/followers/xuchengsheng?label=follow&style=social" alt="Follow @xuchengsheng"></a>
+    <a href="https://github.com/xuchengsheng/spring-reading/fork"><img src="https://img.shields.io/github/forks/xuchengsheng/spring-reading?label=fork&style=social" alt="Fork @xuchengsheng"></a>
+    <a href="https://github.com/xuchengsheng/spring-reading/issues"><img src="https://img.shields.io/github/issues/xuchengsheng/spring-reading?style=social&logo=github&label=Issues
+" alt="Issues @xuchengsheng"></a>
+    <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&style=social&label=CSDN&cacheSeconds=3600&link=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399" alt="CSDN @xuchengsheng"></a>
+    <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng" alt="visitor badge"/>
+    <img src="https://img.shields.io/static/v1?label=wechat&message=xcs19930428&color=7BB32E&logo=wechat&" alt="wechat"/>
+</p>
+  <p>
+    👋 <a href="#简介">简介</a>
+    |
+    🙏 <a href="#顺手点个星">点个星?</a>
+    |
+    ⚡ <a href="#技术">技术</a>
+    |
+    💬 <a href="#与我联系">联系我</a>
+    |
+    ⛵ <a href="#欢迎贡献">贡献</a>
+    |
+    🌱 <a href="#spring-源码阅读系列">Spring源码</a>
+    |
+    🔄 <a href="#持续更新中">更新</a>
+    |
+    🔄 <a href="#我的-github-统计">统计</a>
+  </p>
+</div>
 
-![status](https://img.shields.io/badge/status-up-brightgreen) ![Gender](https://img.shields.io/badge/gender-%F0%9F%A4%B5-lightgrey) ![](https://img.shields.io/static/v1?label=wechat&message=xcs19930428&color=7BB32E&logo=wechat) ![](https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng)
+
+## 👋简介
 
 大家好呀，我是Lex。我是一名拥有8年经验的Java 后端开发人员，也是一个对 Spring 框架充满热情的程序员。为了帮助那些希望深入了解 Spring 框架的程序员们，我创建了这个 “Spring 源码阅读系列”。通过这个系列，我希望能够与你们共同探索 Spring 的内部工作机制。如果您有同样的兴趣或问题，请联系我！
 
@@ -11,17 +44,16 @@
 
 ## ⚡技术
 
-![Docker](https://img.shields.io/badge/-Docker-000?&logo=Docker)
-![Kubernetes](https://img.shields.io/badge/-Kubernetes-000?&logo=Kubernetes)
-![Linux](https://img.shields.io/badge/-Linux-000?&logo=Linux)
-![Node.js](https://img.shields.io/badge/-Node.js-000?&logo=node.js)
-![React](https://img.shields.io/badge/-React-000?&logo=React)
-![Redis](https://img.shields.io/badge/-Redis-000?&logo=Redis)
-![Spring](https://img.shields.io/badge/-Spring-000?&logo=Spring)
-![MySQL](https://img.shields.io/badge/-MySQL-000?&logo=MySQL)
-![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github)
+<div align="left">
+    <img src="https://img.shields.io/badge/Java-1.8+-blue?logo=OpenJDK"/>
+    <img src="https://img.shields.io/badge/Spring-5.3.10-blue?logo=Spring"/>
+    <img src="https://img.shields.io/badge/SpringBoot-2.5.5-blue?logo=Spring Boot"/>
+    <img src="https://img.shields.io/badge/Maven-3.6.3-blue?logo=Apache Maven"/>
+    <img src="https://img.shields.io/badge/JSR-330-coral?logo=OpenJDK"/>
+    <img src="https://img.shields.io/badge/JSR-250-green?logo=OpenJDK"/>
+</div>
 
-## 📫与我联系
+## 💬与我联系
 
 ✉️ [Email](xuchengshengsuper@163.com) | 💬 [Issue](https://github.com/xuchengsheng/spring-reading/issues) | 🌐 [CSDN](https://blog.csdn.net/duzhuang2399?type=blog)  Me about everything!
 
@@ -96,7 +128,6 @@
 - [**限定符@Qualifier**](spring-jsr/spring-jsr330-qualifier/README.md) - 了解`@Qualifier`的重要性及其在解决注入冲突中的作用。
 - [**作用域定义@Scope**](spring-jsr/spring-jsr330-scope/README.md) - 揭露如何使用`@Scope`定义Bean的生命周期和作用域。
 - [**单例模式@Singleton**](spring-jsr/spring-jsr330-singleton/README.md) - 深入理解`@Singleton`注解，确保Spring Bean的单一实例化。
-
 
 ## 🔄持续更新中
 
