@@ -21,11 +21,11 @@
     |
     ⚡ <a href="#技术">技术</a>
     |
+    🌱 <a href="#spring-源码阅读系列">Spring源码</a>
+    |
     💬 <a href="#与我联系">联系我</a>
     |
     ⛵ <a href="#欢迎贡献">贡献</a>
-    |
-    🌱 <a href="#spring-源码阅读系列">Spring源码</a>
     |
     🔄 <a href="#持续更新中">更新</a>
     |
@@ -52,14 +52,6 @@
     <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
     <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
 </div>
-
-## 💬与我联系
-
-✉️ [Email](xuchengshengsuper@163.com) | 💬 [Issue](https://github.com/xuchengsheng/spring-reading/issues) | 🌐 [CSDN](https://blog.csdn.net/duzhuang2399?type=blog)  Me about everything!
-
-## ⛵欢迎贡献！
-
-如果你发现任何错误或者有改进建议，欢迎提交 issue 或者 pull request。你的反馈对于我非常宝贵！
 
 ## 🌱Spring 源码阅读系列
 
@@ -128,6 +120,14 @@
 - [**限定符@Qualifier**](spring-jsr/spring-jsr330-qualifier/README.md) - 了解`@Qualifier`的重要性及其在解决注入冲突中的作用。
 - [**作用域定义@Scope**](spring-jsr/spring-jsr330-scope/README.md) - 揭露如何使用`@Scope`定义Bean的生命周期和作用域。
 - [**单例模式@Singleton**](spring-jsr/spring-jsr330-singleton/README.md) - 深入理解`@Singleton`注解，确保Spring Bean的单一实例化。
+
+## 💬与我联系
+
+✉️ [Email](xuchengshengsuper@163.com) | 💬 [Issue](https://github.com/xuchengsheng/spring-reading/issues) | 🌐 [CSDN](https://blog.csdn.net/duzhuang2399?type=blog)  Me about everything!
+
+## ⛵欢迎贡献！
+
+如果你发现任何错误或者有改进建议，欢迎提交 issue 或者 pull request。你的反馈对于我非常宝贵！
 
 ## 🔄持续更新中
 
