@@ -1,15 +1,15 @@
-<div align="center">
-  <img src='banner.png'>
-  <br/>
-  <p><strong><i>深入探索Spring源码分析 🌼</i></strong></p>
-  <br/>
-  <p>
+<p align="center">
+	<img alt="logo" src="banner.png">
+</p>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">深入Spring，从源码开始！</h1>
+<h4 align="center">探索Java最受欢迎的框架，理解它的内部机制，带大家从入门到精通。</h4>
+<p align="center">
     <a href="https://github.com/xuchengsheng/spring-reading/stargazers"><img src="https://img.shields.io/github/stars/xuchengsheng/spring-reading?style=social" alt="Stars Badge"/></a>
     <a href="https://github.com/xuchengsheng"><img src="https://img.shields.io/github/followers/xuchengsheng?label=follow&style=social" alt="Follow Badge"></a>
     <a href="https://github.com/xuchengsheng/spring-reading/fork"><img src="https://img.shields.io/github/forks/xuchengsheng/spring-reading?label=fork&style=social" alt="Fork Badge"></a>
     <a href="https://github.com/xuchengsheng/spring-reading/watchers"><img src="https://img.shields.io/github/watchers/xuchengsheng/spring-reading?style=social&logo=github" alt="Watchers Badge"></a>
-  </p>
-  <p>
+</p>
+<p align="center">
     👋 <a href="#简介">简介</a>
     |
     🙏 <a href="#顺手点个星">点个星?</a>
@@ -26,13 +26,11 @@
     |
     🔄 <a href="#我的-github-统计">统计</a>
   </p>
-  <p>
+<p align="center">
     <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng&left_text=Visitors" alt="Visitor Badge"/>
     <img src="https://img.shields.io/badge/WeChat-xcs19930428-%2307C160?logo=wechat" alt="Wechat Badge"/>
     <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&logo=C&logoColor=red&label=CSDN&color=red&cacheSeconds=3600" alt="CSDN Badge"></a>
-  </p>
-</div>
-
+</p>
 ---
 
 ## 👋简介
