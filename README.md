@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="banner.png" style="height: 80px">
+	<img alt="logo" src="image/banner.png" style="height: 80px">
 </p>
 <h2 align="center" style="margin: 10px 0 10px; font-weight: bold;">深入Spring，从源码开始！</h2>
 <h4 align="center">探索Java最受欢迎的框架，理解它的内部机制，带大家从入门到精通。</h4>
@@ -145,3 +145,11 @@
 ## 💻我的 GitHub 统计
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
+
+## 🍱请我吃盒饭？
+
+作者为晚上还要写博客,平时还需要工作,如果帮到了你可以请作者吃个盒饭
+<div>
+<img alt="logo" src="image/WeChatPay.png" style="width: 400px;width: 400px">
+<img alt="logo" src="image/Alipay.png" style="width: 343px;width: 343px">
+</div>
