@@ -24,7 +24,7 @@
     |
     🔄 <a href="#持续更新中">更新</a>
     |
-    🔄 <a href="#我的-github-统计">统计</a>
+    💻 <a href="#我的-github-统计">统计</a>
   </p>
 <p align="center">
     <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng&left_text=Visitors" alt="Visitor Badge"/>
