@@ -8,8 +8,7 @@
     <a href="https://github.com/xuchengsheng/spring-reading/stargazers"><img src="https://img.shields.io/github/stars/xuchengsheng/spring-reading?style=social" alt="Stars Badge"/></a>
     <a href="https://github.com/xuchengsheng"><img src="https://img.shields.io/github/followers/xuchengsheng?label=follow&style=social" alt="Follow @xuchengsheng"></a>
     <a href="https://github.com/xuchengsheng/spring-reading/fork"><img src="https://img.shields.io/github/forks/xuchengsheng/spring-reading?label=fork&style=social" alt="Fork @xuchengsheng"></a>
-    <a href="https://github.com/xuchengsheng/spring-reading/issues"><img src="https://img.shields.io/github/issues/xuchengsheng/spring-reading?style=social&logo=github&label=Issues
-" alt="Issues @xuchengsheng"></a>
+    <a href="https://github.com/xuchengsheng/spring-reading/watchers"><img src="https://img.shields.io/github/watchers/xuchengsheng/spring-reading?style=social&logo=github" alt="Watchers @xuchengsheng"></a>
     <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&style=social&label=CSDN&cacheSeconds=3600&link=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399" alt="CSDN @xuchengsheng"></a>
     <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng" alt="visitor badge"/>
     <img src="https://img.shields.io/static/v1?label=wechat&message=xcs19930428&color=7BB32E&logo=wechat&" alt="wechat"/>
