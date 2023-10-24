@@ -2,13 +2,13 @@
 
 - [getBean](#getbean)
   - [一、基本信息](#一基本信息)
-  - [三、方法源码](#三方法源码)
-  - [四、主要功能](#四主要功能)
-  - [五、最佳实践](#五最佳实践)
-  - [六、时序图](#六时序图)
-  - [七、源码分析](#七源码分析)
-  - [八、注意事项](#八注意事项)
-  - [九、总结](#九总结)
+  - [二、方法源码](#二方法源码)
+  - [三、主要功能](#三主要功能)
+  - [四、最佳实践](#四最佳实践)
+  - [五、时序图](#五时序图)
+  - [六、源码分析](#六源码分析)
+  - [七、注意事项](#七注意事项)
+  - [八、总结](#八总结)
     - [最佳实践总结](#最佳实践总结)
     - [源码分析总结](#源码分析总结)
 
@@ -19,7 +19,7 @@
 
 在 Spring 框架中，`getBean` 方法是 `ApplicationContext` 接口中的一个核心方法，用于从 Spring 容器中检索 bean。Spring 的核心是控制反转（Inversion of Control, IoC）和依赖注入（Dependency Injection, DI），`getBean` 方法正是实现这两个核心概念的重要方法。
 
-### 三、方法源码
+### 二、方法源码
 
 这个方法的定义和说明表明了 Spring IoC 容器的一些核心概念和工作机制。当你请求一个 bean 时，Spring 会查找该 bean、处理任何别名、检查其作用域（例如，单例或原型），并最终返回适当的 bean 实例给调用者。
 
@@ -38,7 +38,7 @@
 Object getBean(String name) throws BeansException;
 ```
 
-### 四、主要功能
+### 三、主要功能
 
 1. **检索 Bean**
    + 从 Spring 容器中检索并返回指定名称或类型的 bean 的实例。
@@ -57,7 +57,7 @@ Object getBean(String name) throws BeansException;
 8. **初始化 Bean**
    + 如果 bean 尚未初始化（例如，对于单例 bean 在首次请求时），`getBean` 方法会触发其初始化。
 
-### 五、最佳实践
+### 四、最佳实践
 
 首先来看看启动类入口，上下文环境使用`AnnotationConfigApplicationContext`（此类是使用Java注解来配置Spring容器的方式），构造参数我们给定了一个`MyConfiguration`组件类，然后从Spring上下文中获取两个Bean对象`myServiceA`，`myServiceB`类型的bean。
 
@@ -105,7 +105,7 @@ myServiceA = com.xcs.spring.service.MyServiceA@23c30a20
 myServiceB = com.xcs.spring.service.MyServiceB@1e1a0406
 ```
 
-### 六、时序图
+### 五、时序图
 
 ~~~mermaid
 sequenceDiagram
@@ -266,7 +266,7 @@ AbstractBeanFactory->>DefaultListableBeanFactory:返回真正的Bean对象
 note over DefaultListableBeanFactory: 返回到原始的请求源
 ~~~
 
-### 七、源码分析
+### 六、源码分析
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#getBean(name)`方法中，提供了一个简单的方式，让调用者能够基于bean的名称从Spring IoC容器中检索bean，而不需要提供任何其他的上下文信息或参数。
 
@@ -1317,7 +1317,7 @@ protected Object getObjectForBeanInstance(
 }
 ```
 
-### 八、注意事项
+### 七、注意事项
 
 1. **Bean的存在性**
    + 确保bean确实已经在Spring上下文中定义了。如果没有，`NoSuchBeanDefinitionException`将被抛出。
@@ -1340,7 +1340,7 @@ protected Object getObjectForBeanInstance(
 10. **生命周期回调**
     + 请记住，当你通过`getBean`方法创建一个新的bean实例时（例如，范围为prototype的bean），Spring将不会管理该bean的完整生命周期。特别是，Spring不会调用prototype bean的销毁方法。
 
-### 九、总结
+### 八、总结
 
 #### 最佳实践总结
 
