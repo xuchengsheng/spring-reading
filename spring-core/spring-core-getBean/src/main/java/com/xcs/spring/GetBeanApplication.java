@@ -1,6 +1,7 @@
 package com.xcs.spring;
 
 import com.xcs.spring.config.MyConfiguration;
+import com.xcs.spring.service.MyServiceA;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -11,9 +12,7 @@ public class GetBeanApplication {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfiguration.class);
-        for (String beanDefinitionName : context.getBeanDefinitionNames()) {
-            System.out.println("Bean = " + context.getBean(beanDefinitionName));
-        }
-        context.close();
+        System.out.println("myServiceA = " + context.getBean("myServiceA"));
+        System.out.println("myServiceB = " + context.getBean("myServiceB"));
     }
 }
