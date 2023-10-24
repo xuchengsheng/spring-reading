@@ -16,7 +16,7 @@
 
 ### 一、基本信息
 
-✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133915709) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [MessageSourceAware源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-aware/spring-aware-messageSourceAware)
+✒️ **作者** - Lex 📝 **博客** - [我的CSDN](https://blog.csdn.net/duzhuang2399/article/details/133916775) 📚 **文章目录** - [所有文章](https://github.com/xuchengsheng/spring-reading) 🔗 **源码地址** - [MessageSourceAware源码](https://github.com/xuchengsheng/spring-reading/blob/master/spring-aware/spring-aware-messageSourceAware)
 
 ### 二、接口描述
 
