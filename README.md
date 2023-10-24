@@ -43,7 +43,7 @@
 <div align="left">
     <img src="https://img.shields.io/badge/Java-1.8%2B-%23437291?logo=openjdk&logoColor=%23437291"/>
     <img src="https://img.shields.io/badge/Spring-5.3.10-%23437291?logo=Spring&logoColor=%236DB33F&color=%236DB33F"/>
-    <img src="https://img.shields.io/badge/SpringBoot-5.3.10-%23437291?logo=SpringBoot&logoColor=%236DB33F&color=%236DB33F"/>
+    <img src="https://img.shields.io/badge/SpringBoot-2.5.5-%23437291?logo=SpringBoot&logoColor=%236DB33F&color=%236DB33F"/>
     <img src="https://img.shields.io/badge/Maven-3.6.3-%23437291?logo=Apache%20Maven&logoColor=%23C71A36&color=%23C71A36"/>
     <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
     <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
@@ -134,11 +134,11 @@
 
 ## ⛵欢迎贡献！
 
-如果你发现任何错误或者有改进建议，欢迎提交 issue 或者 pull request。你的反馈对于我非常宝贵！
+如果你发现任何错误🔍或者有改进建议🛠️，欢迎提交 issue 或者 pull request。你的反馈📢对于我非常宝贵💎！
 
 ## 🔄持续更新中
 
-为了给大家提供最新、最有价值的内容，我会坚持每天更新这个仓库。每一天，你都可以期待看到一些新的内容或者对已有内容的改进。如果你有任何建议或反馈，欢迎随时联系我。我非常珍视每一个反馈，因为这是我持续改进的动力。
+为了给大家提供最新🌱、最有价值的内容💼，我会坚持每天更新这个仓库⏳。每一天，你都可以期待看到一些新的内容或者对已有内容的改进✨。如果你有任何建议或反馈📣，欢迎随时联系我📞。我非常珍视每一个反馈💌，因为这是我持续改进的动力🚀。
 
 ## 💻我的 GitHub 统计
 
@@ -146,7 +146,7 @@
 
 ## 🍱请我吃盒饭？
 
-作者为晚上还要写博客,平时还需要工作,如果帮到了你可以请作者吃个盒饭
+作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
 <div>
 <img alt="logo" src="image/WeChatPay.png" style="width: 400px;width: 400px">
 <img alt="logo" src="image/Alipay.png" style="width: 340px;width: 340px">
