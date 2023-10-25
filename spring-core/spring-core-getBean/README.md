@@ -21,7 +21,7 @@
 
 ### 二、方法源码
 
-这个方法的定义和说明表明了 Spring IoC 容器的一些核心概念和工作机制。当你请求一个 bean 时，Spring 会查找该 bean、处理任何别名、检查其作用域（例如，单例或原型），并最终返回适当的 bean 实例给调用者。
+这个方法的定义和说明表明了 Spring IoC 容器的一些核心概念和工作机制。当我们请求一个 bean 时，Spring 会查找该 bean、处理任何别名、检查其作用域（例如，单例或原型），并最终返回适当的 bean 实例给调用者。
 
 ```java
 /**
@@ -655,7 +655,7 @@ protected RootBeanDefinition getMergedBeanDefinition(
 
 > 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤7.1。
 
-在Spring的bean初始化过程中，`@DependsOn`注解扮演了一个关键的角色，用于确保某个bean在其他指定的beans之前初始化。下面的代码片段详细展示了如何处理这个注解。为了深入了解这些细节，特别是`@DependsOn`注解背后的工作原理，我建议您参考这篇文章: [**初始化顺序@DependsOn**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-dependsOn) - 精确控制 Spring Beans 的加载顺序。这篇文章详细解析了注解的源码，并深入探讨了其在Spring框架中的作用。
+在Spring的bean初始化过程中，`@DependsOn`注解扮演了一个关键的角色，用于确保某个bean在其他指定的beans之前初始化。下面的代码片段详细展示了如何处理这个注解。为了深入了解这些细节，特别是`@DependsOn`注解背后的工作原理，我建议参考这篇文章: [**初始化顺序@DependsOn**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-dependsOn) - 精确控制 Spring Beans 的加载顺序。这篇文章详细解析了注解的源码，并深入探讨了其在Spring框架中的作用。
 
 ```java
 String[] dependsOn = mbd.getDependsOn();
@@ -778,7 +778,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable O
 
 > 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`方法中的步骤1。
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`方法中，在Spring框架中，`InstantiationAwareBeanPostProcessor`允许在标准实例化前拦截bean的创建。这一功能主要通过`resolveBeforeInstantiation`方法体现。为深入理解其工作机制，推荐你阅读：[**Bean实例拦截InstantiationAwareBeanPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-instantiationAwareBeanPostProcessor)。这篇文章详细探讨了该接口在Spring中的核心作用。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`方法中，在Spring框架中，`InstantiationAwareBeanPostProcessor`允许在标准实例化前拦截bean的创建。这一功能主要通过`resolveBeforeInstantiation`方法体现。为深入理解其工作机制，推荐我们阅读：[**Bean实例拦截InstantiationAwareBeanPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-instantiationAwareBeanPostProcessor)。这篇文章详细探讨了该接口在Spring中的核心作用。
 
 ```java
 @Nullable
@@ -970,7 +970,7 @@ protected BeanWrapper instantiateBean(String beanName, RootBeanDefinition mbd) {
 
 > 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤2。
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`方法中，在Spring框架中，`MergedBeanDefinitionPostProcessor`是一个关键接口，负责在bean实例化前对其定义进行调整和合并。为了深入了解这一机制和其在Spring中的重要性，建议您查看：[**Bean定义的动态处理MergedBeanDefinitionPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-mergedBeanDefinitionPostProcessor)。这篇文章详细地探讨了该接口的源码和核心功能。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`方法中，在Spring框架中，`MergedBeanDefinitionPostProcessor`是一个关键接口，负责在bean实例化前对其定义进行调整和合并。为了深入了解这一机制和其在Spring中的重要性，建议查看：[**Bean定义的动态处理MergedBeanDefinitionPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-mergedBeanDefinitionPostProcessor)。这篇文章详细地探讨了该接口的源码和核心功能。
 
 ```java
 protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
@@ -1112,7 +1112,7 @@ protected Object initializeBean(String beanName, Object bean, @Nullable RootBean
 }
 ```
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#invokeAwareMethods`方法中，在Spring框架中，`Aware`接口赋予beans与容器交互的能力，如获取其名字、类加载器或与bean工厂的交互。为更深入地探究这些接口，我推荐你查看以下文章，它们详细分析了这些`Aware`接口在Spring中的实现：
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#invokeAwareMethods`方法中，在Spring框架中，`Aware`接口赋予beans与容器交互的能力，如获取其名字、类加载器或与bean工厂的交互。为更深入地探究这些接口，我推荐我们查看以下文章，它们详细分析了这些`Aware`接口在Spring中的实现：
 
 - [**获取Bean名称BeanNameAware**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-aware/spring-aware-beanNameAware) - 这个接口使bean能够获取其在Spring容器中的名字。
 - [**获取类加载器BeanClassLoaderAware**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-aware/spring-aware-beanClassLoaderAware) - 通过这个接口，bean可以获得与其相关的类加载器的引用。
@@ -1141,7 +1141,7 @@ private void invokeAwareMethods(String beanName, Object bean) {
 }
 ```
 
-在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`方法中，在Spring中，`BeanPostProcessor`接口提供了在bean初始化过程中进行拦截的能力。要深入了解其工作原理，建议您阅读：[**调整Bean属性BeanPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-beanPostProcessor)。这篇文章详细解析了其在Spring中的关键作用。
+在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`方法中，在Spring中，`BeanPostProcessor`接口提供了在bean初始化过程中进行拦截的能力。要深入了解其工作原理，建议阅读：[**调整Bean属性BeanPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-beanPostProcessor)。这篇文章详细解析了其在Spring中的关键作用。
 
 ```java
 @Override
@@ -1322,7 +1322,7 @@ protected Object getObjectForBeanInstance(
 1. **Bean的存在性**
    + 确保bean确实已经在Spring上下文中定义了。如果没有，`NoSuchBeanDefinitionException`将被抛出。
 2. **正确的Bean名称**
-   + 确保你使用的名称是bean的正确ID或名称。Spring的bean名称默认是非限定类名的首字母小写，但如果在bean定义中指定了不同的名称，你应该使用那个。
+   + 确保我们使用的名称是bean的正确ID或名称。Spring的bean名称默认是非限定类名的首字母小写，但如果在bean定义中指定了不同的名称，我们应该使用那个。
 3. **Bean的生命周期**
    + `getBean()`方法每次都可能返回不同的实例或相同的实例，具体取决于bean的范围（singleton、prototype等）。
 4. **类型安全**
@@ -1334,11 +1334,11 @@ protected Object getObjectForBeanInstance(
 7. **可能的副作用**
    + 因为`getBean()`可以触发bean的创建和初始化，所以可能会有副作用，例如数据库连接、文件IO或其他资源的初始化。
 8. **不要过度使用**
-   + 在一个Spring管理的bean中频繁调用`getBean()`并不是一个好的实践。这违背了控制反转的原则，可能导致代码难以测试和维护。你应该尽可能地依赖注入，而不是显式地从容器中获取bean。
+   + 在一个Spring管理的bean中频繁调用`getBean()`并不是一个好的实践。这违背了控制反转的原则，可能导致代码难以测试和维护。我们应该尽可能地依赖注入，而不是显式地从容器中获取bean。
 9. **线程安全性**
-   + 虽然`getBean()`方法是线程安全的，但返回的bean可能不是，除非你确保它是线程安全的。
+   + 虽然`getBean()`方法是线程安全的，但返回的bean可能不是，除非我们确保它是线程安全的。
 10. **生命周期回调**
-    + 请记住，当你通过`getBean`方法创建一个新的bean实例时（例如，范围为prototype的bean），Spring将不会管理该bean的完整生命周期。特别是，Spring不会调用prototype bean的销毁方法。
+    + 请记住，当我们通过`getBean`方法创建一个新的bean实例时（例如，范围为prototype的bean），Spring将不会管理该bean的完整生命周期。特别是，Spring不会调用prototype bean的销毁方法。
 
 ### 八、总结
 
