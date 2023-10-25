@@ -3,7 +3,7 @@ package com.xcs.spring.bean;
 import com.xcs.spring.annotation.MyValue;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月20日 10时52分
  **/
 public class MyBean {

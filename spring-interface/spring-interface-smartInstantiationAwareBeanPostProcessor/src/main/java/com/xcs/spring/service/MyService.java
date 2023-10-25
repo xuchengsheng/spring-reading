@@ -4,7 +4,7 @@ import com.xcs.spring.annotation.MyAutowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年09月21日 10时31分
  **/
 @Component

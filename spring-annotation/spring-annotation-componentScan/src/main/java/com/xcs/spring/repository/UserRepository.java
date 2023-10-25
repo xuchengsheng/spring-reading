@@ -3,7 +3,7 @@ package com.xcs.spring.repository;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年10月07日 11时51分
  **/
 @Repository

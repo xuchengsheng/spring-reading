@@ -1,7 +1,7 @@
 package com.xcs.spring.service;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年10月20日 14时56分
  **/
 public interface MessageService {

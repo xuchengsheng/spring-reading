@@ -4,7 +4,7 @@ import com.xcs.spring.config.MyConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年10月18日 14时17分
  **/
 public class PreDestroyApplication {

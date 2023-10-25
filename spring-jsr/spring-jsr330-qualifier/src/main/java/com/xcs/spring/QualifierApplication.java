@@ -5,7 +5,7 @@ import com.xcs.spring.controller.MessageController;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年10月20日 14时56分
  **/
 public class QualifierApplication {

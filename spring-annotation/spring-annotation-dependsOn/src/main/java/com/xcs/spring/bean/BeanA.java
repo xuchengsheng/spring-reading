@@ -3,7 +3,7 @@ package com.xcs.spring.bean;
 import org.springframework.beans.factory.DisposableBean;
 
 /**
- * @author 林雷
+ * @author xcs
  * @date 2023年10月09日 16时45分
  **/
 public class BeanA implements DisposableBean {
