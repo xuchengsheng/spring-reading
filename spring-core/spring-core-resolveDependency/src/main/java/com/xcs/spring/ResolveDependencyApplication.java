@@ -3,6 +3,7 @@ package com.xcs.spring;
 import com.xcs.spring.config.MyConfiguration;
 import com.xcs.spring.service.MyServiceA;
 import com.xcs.spring.service.MyServiceB;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
