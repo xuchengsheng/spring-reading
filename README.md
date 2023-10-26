@@ -66,7 +66,6 @@
 
 - [**获取Bean实例getBean()**](spring-core/spring-core-getBean/README.md) - 从Bean的定义到其实例化，全面揭示Spring如何管理Bean的生命周期。
 - [**解析依赖关系resolveDependency()**](spring-core/spring-core-resolveDependency/README.md) - 探索Spring如何优雅地解决Bean之间的依赖关系，确保应用稳定运行。
-- [**销毁Bean实例destroyBean()**](spring-core/spring-core-destroyBean/README.md) - 深入Spring的销毁策略，理解如何优雅地释放资源，确保应用的健壮性。
 
 > ### 💡 后置处理器与初始化
 

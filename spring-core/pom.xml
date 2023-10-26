@@ -13,9 +13,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-core-resolveDependency</module>
         <module>spring-core-getBean</module>
-        <module>spring-core-destroyBean</module>
+        <module>spring-core-resolveDependency</module>
     </modules>
 
 </project>
