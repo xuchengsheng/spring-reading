@@ -148,6 +148,6 @@
 
 作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
 <div>
-<img alt="logo" src="image/WeChatPay.png" style="width: 400px;width: 400px">
-<img alt="logo" src="image/Alipay.png" style="width: 340px;width: 340px">
+<img alt="logo" src="image/WeChatPay.png" style="width: 370px;height: 400px">
+<img alt="logo" src="image/Alipay.png" style="width: 370px;height: 400px">
 </div>

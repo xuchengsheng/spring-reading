@@ -379,7 +379,7 @@ protected <T> T doGetBean(
 }
 ```
 
-> 首先来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤1。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤1。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#transformedBeanName`方法中，主要作用是对给定的bean名称进行转换，确保返回的名称是规范的、没有任何前缀，并处理可能的别名。
 
@@ -418,7 +418,7 @@ public String canonicalName(String name) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤2。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤2。
 
 在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName)`方法中，目的是简化单例bean的获取过程。它默认允许在bean正在创建过程中返回早期的bean引用，这在解决循环依赖的场景中是有用的。
 
@@ -475,7 +475,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤3。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤3。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#isPrototypeCurrentlyInCreation`方法中，检查一个特定的bean名称是否正在创建中的原型beans列表中。这是为了处理可能出现的原型bean的循环引用。
 
@@ -492,7 +492,7 @@ protected boolean isPrototypeCurrentlyInCreation(String beanName) {
 }
 ```
 
-> 然后来到org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤5。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤5。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#markBeanAsCreated`方法中，主要目的是标记指定的bean已经被创建或正在被创建。它在Spring的bean生命周期中起到关键作用，特别是当需要确保bean只被创建一次或者对其进行某些状态检查时。
 
@@ -518,7 +518,7 @@ protected void markBeanAsCreated(String beanName) {
 }
 ```
 
-> 然后来到在`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤6。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤6。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#getMergedLocalBeanDefinition`方法中，主要是用于获取给定bean名称的合并bean定义。合并的bean定义是从父bean和子bean（如果有的话）定义中合并的结果。
 
@@ -653,7 +653,7 @@ protected RootBeanDefinition getMergedBeanDefinition(
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤7.1。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤7.1。
 
 在Spring的bean初始化过程中，`@DependsOn`注解扮演了一个关键的角色，用于确保某个bean在其他指定的beans之前初始化。下面的代码片段详细展示了如何处理这个注解。为了深入了解这些细节，特别是`@DependsOn`注解背后的工作原理，我建议参考这篇文章: [**初始化顺序@DependsOn**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-annotation/spring-annotation-dependsOn) - 精确控制 Spring Beans 的加载顺序。这篇文章详细解析了注解的源码，并深入探讨了其在Spring框架中的作用。
 
@@ -678,7 +678,7 @@ if (dependsOn != null) {
 }
 ```
 
-> 然后来到在`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤8.1。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤8.1。
 
 在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中，首先尝试从缓存中检索该bean。如果没有找到，它会使用提供的`singletonFactory`来创建这个bean，并在创建过程中进行前置和后置处理，以确保处理诸如循环引用等问题。创建的bean会被添加到缓存中。此外，该方法还处理了在创建过程中可能出现的各种异常，并确保在多线程环境中的线程安全。最后，返回所需的单例bean。
 
@@ -721,7 +721,7 @@ public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中的步骤1。
+> `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中的步骤1。
 
 在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#beforeSingletonCreation`方法中，Spring框架尝试创建单例bean之前调用的，用于确保当前bean没有同时被多次创建，这样可以避免因循环引用导致的问题。如果bean已经在创建过程中，此方法会抛出一个异常。
 
@@ -735,7 +735,7 @@ protected void beforeSingletonCreation(String beanName) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤8.2。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤8.2。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`方法中，主要责根据指定的bean定义创建bean实例。此方法考虑了各种细节，例如是否有工厂方法、构造函数注入等，以及如何处理前置和后置处理器。
 
@@ -776,7 +776,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable O
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`方法中的步骤1。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`方法中的步骤1。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`方法中，在Spring框架中，`InstantiationAwareBeanPostProcessor`允许在标准实例化前拦截bean的创建。这一功能主要通过`resolveBeforeInstantiation`方法体现。为深入理解其工作机制，推荐我们阅读：[**Bean实例拦截InstantiationAwareBeanPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-instantiationAwareBeanPostProcessor)。这篇文章详细探讨了该接口在Spring中的核心作用。
 
@@ -817,7 +817,7 @@ protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition 
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`方法中的步骤2。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`方法中的步骤2。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中，主要处理了bean生命周期中的多个关键阶段，从bean的实例化、属性注入、初始化，到bean的清理注册。
 
@@ -879,7 +879,7 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤1。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤1。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance`方法中，首先尝试从后处理器获取构造函数，然后检查是否有首选构造函数，最后如果没有其他选项，它会使用无参数构造函数。
 
@@ -906,7 +906,7 @@ protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance`方法中的步骤1。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance`方法中的步骤1。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#determineConstructorsFromBeanPostProcessors`方法中，`SmartInstantiationAwareBeanPostProcessor`提供了智能的bean实例化策略，尤其是通过`determineConstructorsFromBeanPostProcessors`方法调整构造函数选择。为了深入理解其作用，建议阅读：[**调整Bean实例化策略SmartInstantiationAwareBeanPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor)。这篇文章深入分析了其在Spring的核心作用。
 
@@ -936,7 +936,7 @@ protected Constructor<?>[] determineConstructorsFromBeanPostProcessors(@Nullable
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance`方法中的步骤3。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance`方法中的步骤3。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#instantiateBean`方法中，主要用于根据提供的bean定义来实例化一个新的bean，并返回一个包装了该bean实例的`BeanWrapper`。这允许对bean实例进行进一步的操作，例如属性注入。
 
@@ -968,7 +968,7 @@ protected BeanWrapper instantiateBean(String beanName, RootBeanDefinition mbd) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤2。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤2。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`方法中，在Spring框架中，`MergedBeanDefinitionPostProcessor`是一个关键接口，负责在bean实例化前对其定义进行调整和合并。为了深入了解这一机制和其在Spring中的重要性，建议查看：[**Bean定义的动态处理MergedBeanDefinitionPostProcessor**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-interface/spring-interface-mergedBeanDefinitionPostProcessor)。这篇文章详细地探讨了该接口的源码和核心功能。
 
@@ -982,7 +982,7 @@ protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, C
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤3.1。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤3.1。
 
 在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory`方法中，主要目的是为一个bean名称注册一个`ObjectFactory`，这可以用于在bean真正被创建之前解决循环引用问题。当其他bean尝试早期引用这个bean时，它可以使用这个`ObjectFactory`来获取一个bean的早期引用。
 
@@ -1004,7 +1004,7 @@ protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFa
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤4.1。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤4.1。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean`方法中，主要用于填充bean的属性。它会遍历所有的`InstantiationAwareBeanPostProcessors`，并调用它们的`postProcessAfterInstantiation`和`postProcessProperties`方法来后处理bean的属性。如果`InstantiationAwareBeanPostProcessor`返回`false`或`null`属性值，则提前结束bean属性的设置。
 
@@ -1071,7 +1071,7 @@ protected void populateBean(String beanName, RootBeanDefinition mbd, @Nullable B
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤4.2。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤4.2。
 
 在`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#initializeBean(beanName, bean,mbd)`方法中，主要负责bean的初始化过程，包括调用Aware接口方法、执行`BeanPostProcessors`的初始化前后方法以及bean的自定义初始化方法。
 
@@ -1168,7 +1168,7 @@ public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, S
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤5。
+> `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`方法中的步骤5。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#registerDisposableBeanIfNecessary`方法中，主要目的是为在Spring容器中管理的bean注册一个销毁回调。当容器关闭并且bean需要清理资源或执行其他销毁逻辑时，这个销毁回调会被调用。
 
@@ -1191,7 +1191,7 @@ public void registerDisposableBean(String beanName, DisposableBean bean) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中的步骤3。
+> `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中的步骤3。
 
 在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#afterSingletonCreation`方法中，此方法确保bean的创建过程是线程安全的，并保护系统免受不正确的并发访问，特别是当多个线程试图同时访问或修改同一个bean的状态时。
 
@@ -1208,7 +1208,7 @@ protected void afterSingletonCreation(String beanName) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中的步骤4。
+> `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton(beanName,singletonFactory)`方法中的步骤4。
 
 在`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingleton`方法中，处理了与单例bean生命周期相关的各种缓存和集合。
 
@@ -1231,7 +1231,7 @@ protected void addSingleton(String beanName, Object singletonObject) {
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤8.3。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤8.3。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#getObjectForBeanInstance`方法中，根据提供的bean实例和名称，要么返回bean实例本身，要么从`FactoryBean`中获取对象。同时，它还处理了与工厂bean缓存相关的各种细节。
 
@@ -1286,7 +1286,7 @@ protected Object getObjectForBeanInstance(
 }
 ```
 
-> 然后来到`org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤9。
+> `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`方法中的步骤9。
 
 在`org.springframework.beans.factory.support.AbstractBeanFactory#adaptBeanInstance`方法中，目的是确保给定的bean实例与指定的目标类型匹配。如果它们不匹配，此方法将尝试使用类型转换器将bean实例转换为所需的类型。如果转换失败，它将抛出一个异常。
 
