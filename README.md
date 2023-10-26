@@ -65,7 +65,7 @@
 *Spring 框架背后的动力，这些核心方法确保了依赖注入、Bean 生命周期管理、配置解析和许多其他关键功能。*
 
 - [**获取Bean实例getBean()**](spring-core/spring-core-getBean/README.md) - 从Bean的定义到其实例化，全面揭示Spring如何管理Bean的生命周期。
-- [**解析依赖关系resolveDependency()**](spring-core/spring-core-resolveDependency/README.md) - 探索Spring如何优雅地解决Bean之间的依赖关系，确保应用稳定运行。
+- [**解析依赖resolveDependency()**](spring-core/spring-core-resolveDependency/README.md) - 探索Spring如何优雅地解决Bean之间的依赖关系，确保应用稳定运行。
 
 > ### 💡 后置处理器与初始化
 
