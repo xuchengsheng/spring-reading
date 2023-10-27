@@ -287,42 +287,14 @@ public void registerBean(Class<?> beanClass) {
 }
 ```
 
-在`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#doRegisterBean`方法中，主要目的是为给定的 `beanClass` 创建一个 bean 定义，并根据提供的参数和注解对其进行配置。
+在`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#doRegisterBean`方法中，主要是处理 bean 定义上的`@DependsOn` 注解。
 
 ```java
 private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,
 			@Nullable BeanDefinitionCustomizer[] customizers) {
-    
     // ... [代码部分省略以简化]
-    
-    // 获取合并后的本地bean定义（可能包括父bean定义中的属性，如果是子bean定义）
-    RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
-    // 检查合并后的bean定义，确保它是有效的并且满足当前的创建需求
-    checkMergedBeanDefinition(mbd, beanName, args);
-    
-    // 保证初始化当前bean所依赖的其他beans
-    String[] dependsOn = mbd.getDependsOn();
-    if (dependsOn != null) {
-        for (String dep : dependsOn) {
-            // 检查是否存在循环依赖，即当前bean也依赖于它自己
-            if (isDependent(beanName, dep)) {
-                throw new BeanCreationException(mbd.getResourceDescription(), beanName,
-                                                "Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
-            }
-            // 在bean之间注册依赖关系
-            registerDependentBean(dep, beanName);
-            try {
-                // 尝试获取并初始化依赖的bean
-                getBean(dep);
-            }
-            // 如果尝试获取依赖的bean失败，则抛出异常
-            catch (NoSuchBeanDefinitionException ex) {
-                throw new BeanCreationException(mbd.getResourceDescription(), beanName,
-                                                "'" + beanName + "' depends on missing bean '" + dep + "'", ex);
-            }
-        }
-    }
+    AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
     // ... [代码部分省略以简化]
 }
 ```
