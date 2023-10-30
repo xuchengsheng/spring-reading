@@ -1,19 +1,25 @@
 ## org.springframework.core.io.Resource
 
 - [org.springframework.core.io.Resource](#orgspringframeworkcoreioresource)
-  - [一、简介](#一简介)
-  - [二、主要功能](#二主要功能)
-  - [三、主要方法](#三主要方法)
-  - [四、主要实现](#四主要实现)
-  - [五、最佳实践](#五最佳实践)
+  - [一、知识储备](#一知识储备)
+  - [二、简介](#二简介)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [六、最佳实践](#六最佳实践)
     - [`ClassPathResource`](#classpathresource)
     - [`FileSystemResource`](#filesystemresource)
     - [`UrlResource`](#urlresource)
     - [`ByteArrayResource`](#bytearrayresource)
     - [`InputStreamResource`](#inputstreamresource)
-  - [六、与其他组件的关系](#六与其他组件的关系)
-  - [七、常见问题和解决方法](#七常见问题和解决方法)
-  - [八、参考资料](#八参考资料)
+  - [七、与其他组件的关系](#七与其他组件的关系)
+    - [BeanFactory\&ApplicationContext](#beanfactoryapplicationcontext)
+    - [ResourceLoader](#resourceloader)
+    - [PropertyPlaceholderConfigurer](#propertyplaceholderconfigurer)
+    - [MVC框架](#mvc框架)
+    - [自定义资源加载和处理](#自定义资源加载和处理)
+  - [八、常见问题](#八常见问题)
+
 
 ### 一、知识储备
 
