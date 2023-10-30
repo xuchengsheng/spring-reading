@@ -7,18 +7,9 @@
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
   - [六、最佳实践](#六最佳实践)
-    - [`ClassPathResource`](#classpathresource)
-    - [`FileSystemResource`](#filesystemresource)
-    - [`UrlResource`](#urlresource)
-    - [`ByteArrayResource`](#bytearrayresource)
-    - [`InputStreamResource`](#inputstreamresource)
   - [七、与其他组件的关系](#七与其他组件的关系)
-    - [BeanFactory\&ApplicationContext](#beanfactoryapplicationcontext)
-    - [ResourceLoader](#resourceloader)
-    - [PropertyPlaceholderConfigurer](#propertyplaceholderconfigurer)
-    - [MVC框架](#mvc框架)
-    - [自定义资源加载和处理](#自定义资源加载和处理)
   - [八、常见问题](#八常见问题)
+
 
 ### 一、知识储备
 
@@ -191,46 +182,48 @@ classDiagram
         + getDescription(): String
         + 其他方法()
     }
-    Resource ..|> InputStreamSource
-
+    
     class AbstractResource {
     	<<Abstract>>
     }
-    AbstractResource --|> Resource
+  
+    class ByteArrayResource {
+    }
+    
+    class InputStreamResource {
+    }
+
+    class ClassPathResource {
+    }
+
+    class UrlResource {
+    }
+
+    class ServletContextResource {
+    }
     
     class AbstractFileResolvingResource {
     	<<Abstract>>
     }
-    AbstractFileResolvingResource ..|> AbstractResource
-
-    class ClassPathResource {
-    }
-    ClassPathResource ..|> AbstractFileResolvingResource
     
     class FileSystemResource {
     }
-    FileSystemResource ..|> AbstractResource
     
-    class UrlResource {
-    }
-    UrlResource ..|> AbstractFileResolvingResource
-    
-    class ByteArrayResource {
-    }
+    Resource ..|> InputStreamSource
+    AbstractResource --|> Resource
     ByteArrayResource ..|> AbstractResource
-    
-    class InputStreamResource {
-    }
     InputStreamResource ..|> AbstractResource
-    
-    class ServletContextResource {
-    }
+    AbstractFileResolvingResource ..|> AbstractResource
+    FileSystemResource ..|> AbstractResource
+    UrlResource ..|> AbstractFileResolvingResource
+    ClassPathResource ..|> AbstractFileResolvingResource
     ServletContextResource ..|> AbstractFileResolvingResource
+
 ~~~
 
 ### 六、最佳实践
 
-#### `ClassPathResource`
+**`ClassPathResource`**
 
 使用`ClassPathResource` 是 Spring 框架中的一个组件，用于访问类路径上的资源。在此示例中，`path` 变量存储了类路径资源的路径。这里，文件位于 `src/main/resources/application.properties` 路径目录。
 
@@ -247,7 +240,7 @@ public class ClassPathResourceDemo {
 }
 ```
 
-#### `FileSystemResource`
+**`FileSystemResource`**
 
 使用 `FileSystemResource` 是 Spring 框架中的一个组件，用于访问文件系统上的文件。在此示例中，`path` 变量存储了文件的完整路径。这个路径需要被替换为我们自己的有效文件路径。
 
@@ -265,7 +258,7 @@ public class FileSystemResourceDemo {
 }
 ```
 
-#### `UrlResource`
+**`UrlResource`**
 
 使用`UrlResource` 类是 Spring 框架中的一个组件，用于访问网络上的资源。在这个示例中，它被用来读取一个在线的文本文件。
 
@@ -281,7 +274,7 @@ public class UrlResourceDemo {
 }
 ```
 
-#### `ByteArrayResource`
+**`ByteArrayResource`**
 
 使用`ByteArrayResource` 是 Spring 框架中的一个组件，用于访问字节数组作为资源。在这个示例中，它被用来读取一个简单的字符串 `"hello world"`。
 
@@ -298,7 +291,7 @@ public class ByteArrayResourceDemo {
 }
 ```
 
-#### `InputStreamResource`
+**`InputStreamResource`**
 
 使用`InputStreamResource` 是 Spring 框架中的一个组件，用于将任何 `InputStream` 包装为 Spring 的 `Resource`。在这个示例中，使用字符串 "hello world" 的字节来创建一个 `ByteArrayInputStream`。这样我们就有了一个可以读取 "hello world" 的输入流。
 
@@ -317,25 +310,20 @@ public class InputStreamResourceDemo {
 
 ### 七、与其他组件的关系
 
-#### BeanFactory&ApplicationContext
+1. **`BeanFactory&ApplicationContext`**
+   + `BeanFactory`和应用上下文`ApplicationContext`在实例化和配置Bean时通常需要访问资源。`Resource` 接口提供了一种统一的方式来加载资源文件，这对于配置和初始化Bean非常有用。Bean定义中可以包含资源引用，使Bean能够使用这些资源。
 
-`BeanFactory`和应用上下文`ApplicationContext`在实例化和配置Bean时通常需要访问资源。`Resource` 接口提供了一种统一的方式来加载资源文件，这对于配置和初始化Bean非常有用。Bean定义中可以包含资源引用，使Bean能够使用这些资源。
+2. **`ResourceLoader`**
+   + Spring提供了`ResourceLoader`接口，该接口在应用上下文中广泛使用，以便加载资源。`ResourceLoader`的默认实现是`DefaultResourceLoader`，它基于`Resource`接口实现了资源加载功能。通过`ResourceLoader`，应用可以轻松获取和管理资源，无论资源是来自文件系统、类路径、URL还是其他来源。
 
-#### ResourceLoader
+3. **`PropertyPlaceholderConfigurer`**
+   + `PropertyPlaceholderConfigurer`是Spring框架中用于替换属性占位符的类。它可以将属性值从资源文件中读取，然后替换配置文件中的占位符。这是通过 `locations` 属性指定的资源文件实现的。
 
-Spring提供了`ResourceLoader`接口，该接口在应用上下文中广泛使用，以便加载资源。`ResourceLoader`的默认实现是`DefaultResourceLoader`，它基于`Resource`接口实现了资源加载功能。通过`ResourceLoader`，应用可以轻松获取和管理资源，无论资源是来自文件系统、类路径、URL还是其他来源。
+4. **`MVC框架`**
+   + Spring的MVC框架（如Spring MVC）通常需要处理文件上传和静态资源。`Resource` 接口及其实现可以用于管理和提供这些资源。`Resource`接口与`ResourceLoader`一起被用于加载静态资源，例如图像、样式表和JavaScript文件。
 
-#### PropertyPlaceholderConfigurer
-
-`PropertyPlaceholderConfigurer`是Spring框架中用于替换属性占位符的类。它可以将属性值从资源文件中读取，然后替换配置文件中的占位符。这是通过 `locations` 属性指定的资源文件实现的。
-
-#### MVC框架
-
-Spring的MVC框架（如Spring MVC）通常需要处理文件上传和静态资源。`Resource` 接口及其实现可以用于管理和提供这些资源。`Resource`接口与`ResourceLoader`一起被用于加载静态资源，例如图像、样式表和JavaScript文件。
-
-#### 自定义资源加载和处理
-
-我们自己也可以使用 `Resource` 接口自定义资源加载和处理逻辑。例如，我们可以创建一个自定义的 `Resource` 实现，用于加载资源文件，执行特定的处理逻辑，然后将处理后的资源提供给应用程序。
+5. **`自定义资源加载和处理`**
+   + 我们自己也可以使用 `Resource` 接口自定义资源加载和处理逻辑。例如，我们可以创建一个自定义的 `Resource` 实现，用于加载资源文件，执行特定的处理逻辑，然后将处理后的资源提供给应用程序。
 
 ### 八、常见问题
 
