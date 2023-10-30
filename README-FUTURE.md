@@ -65,21 +65,22 @@
    + 资源加载与访问
      - Resource
      - ResourceLoader
-     - ResourcePatternResolver
-   + Bean元数据
-     + MethodMetadata
-     + AnnotationMetadata
-     + MetadataReader
+     - MetadataReader
+
+   + Bean的过滤
+
      + TypeFilter
-   + Bean注册机制
+
      + ConditionEvaluator
      + Condition
      + ConditionContext
      + ConfigurationCondition
+
    + 属性编辑与类型转换
      - PropertyEditor
      - ConversionService
      - Converter
+
    + 表达式语言(SpEL)
      - Expression
      - ExpressionParser
@@ -87,15 +88,18 @@
      - PropertyAccessor
      - MethodResolver
      - TypeLocator
+
    + Bean容器与配置
      - BeanFactory
      - ListableBeanFactory
      - HierarchicalBeanFactory
      - ConfigurableBeanFactory
+
    + Bean的定义与注册
      + BeanDefinition
      + BeanDefinitionHolder
      + BeanDefinitionRegistry
+
    + BeanDefinition的来源
      - XmlBeanDefinitionReader
      - PropertiesBeanDefinitionReader
@@ -103,6 +107,7 @@
      - ClassPathBeanDefinitionScanner
      - ImportBeanDefinitionRegistrar
      - BeanDefinitionImportSelector
+
    + Bean生命周期
      - Bean的定义解析
      - Bean的初始化过程
