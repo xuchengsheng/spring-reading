@@ -167,10 +167,12 @@ classDiagram
     direction BT
     
     class InputStreamSource{
+    	<<interface>>
     	+ getInputStream(): InputStream
     }
     
     class Resource {
+    	<<interface>>
         + exists(): boolean
         + getDescription(): String
         + 其他方法()
@@ -178,21 +180,32 @@ classDiagram
     Resource ..|> InputStreamSource
 
     class AbstractResource {
+    	<<Abstract>>
     }
     AbstractResource --|> Resource
-
-    class ByteArrayResource {
-    }
-    ByteArrayResource ..|> AbstractResource
-
-    class FileSystemResource {
-    }
-    FileSystemResource ..|> AbstractResource
 
     class ClassPathResource {
     }
     ClassPathResource ..|> AbstractResource
+    
+    class FileSystemResource {
+    }
+    FileSystemResource ..|> AbstractResource
+    
+    class UrlResourceDemo {
+    }
+    UrlResourceDemo ..|> AbstractResource
+    
+    class ByteArrayResource {
+    }
+    ByteArrayResource ..|> AbstractResource
+    
+    class InputStreamResourceDemo {
+    }
+    InputStreamResourceDemo ..|> AbstractResource
 ~~~
+
+
 
 ### 五、最佳实践
 
