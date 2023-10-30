@@ -208,6 +208,10 @@ classDiagram
     class InputStreamResource {
     }
     InputStreamResource ..|> AbstractResource
+    
+    class ServletContextResource {
+    }
+    ServletContextResource ..|> AbstractFileResolvingResource
 ~~~
 
 ### 五、最佳实践
