@@ -25,6 +25,7 @@
         <module>spring-core</module>
         <module>spring-aop</module>
         <module>spring-mvc</module>
+        <module>spring-resources</module>
     </modules>
 
     <dependencies>

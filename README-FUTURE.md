@@ -62,25 +62,39 @@
 
 1. **IOC 容器**
 
-   + 容器上下文
-     + ClassPathXmlApplicationContext
-     + FileSystemXmlApplicationContext
-     + AnnotationConfigApplicationContext
-     + GenericApplicationContext
-   + 基础接口
-     + Resource
-     + ResourceLoader
-     + BeanNameGenerator
-     + ScopeMetadataResolver
-     + Environment
+   + 资源加载与访问
+     - Resource
+     - ResourceLoader
+     - ResourcePatternResolver
+   + Bean元数据
+     + MethodMetadata
+     + AnnotationMetadata
+     + MetadataReader
      + TypeFilter
-     + BeanWrapper
+   + Bean注册机制
+     + ConditionEvaluator
+     + Condition
+     + ConditionContext
+     + ConfigurationCondition
+   + 属性编辑与类型转换
+     - PropertyEditor
+     - ConversionService
+     - Converter
+   + 表达式语言(SpEL)
+     - Expression
+     - ExpressionParser
+     - EvaluationContext
+     - PropertyAccessor
+     - MethodResolver
+     - TypeLocator
+   + Bean容器与配置
+     - BeanFactory
+     - ListableBeanFactory
+     - HierarchicalBeanFactory
+     - ConfigurableBeanFactory
    + Bean的定义与注册
      + BeanDefinition
-     + RootBeanDefinition
-     + ChildBeanDefinition
      + BeanDefinitionHolder
-     + GenericBeanDefinition
      + BeanDefinitionRegistry
    + BeanDefinition的来源
      - XmlBeanDefinitionReader
@@ -92,9 +106,12 @@
    + Bean生命周期
      - Bean的定义解析
      - Bean的初始化过程
+     - Bean的依赖解析过程
      - Bean的销毁过程
 
-   - 容器扩展点
+   - Bean初始化与扩展点
+     + InitializingBean
+     + DisposableBean
      + BeanDefinitionRegistryPostProcessor
      + BeanFactoryPostProcessor
      + BeanPostProcessor
@@ -145,6 +162,11 @@
      + ApplicationContextAware
      + ImportAware
      + BeanDefinitionRegistryAware
+   - 容器上下文
+     + ClassPathXmlApplicationContext
+     + FileSystemXmlApplicationContext
+     + AnnotationConfigApplicationContext
+     + GenericApplicationContext
 
 2. **AOP (面向切面编程)**
 
