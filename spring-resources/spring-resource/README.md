@@ -183,10 +183,15 @@ classDiagram
     	<<Abstract>>
     }
     AbstractResource --|> Resource
+    
+    class AbstractFileResolvingResource {
+    	<<Abstract>>
+    }
+    AbstractFileResolvingResource ..|> AbstractResource
 
     class ClassPathResource {
     }
-    ClassPathResource ..|> AbstractResource
+    ClassPathResource ..|> AbstractFileResolvingResource
     
     class FileSystemResource {
     }
@@ -194,7 +199,7 @@ classDiagram
     
     class UrlResource {
     }
-    UrlResource ..|> AbstractResource
+    UrlResource ..|> AbstractFileResolvingResource
     
     class ByteArrayResource {
     }
