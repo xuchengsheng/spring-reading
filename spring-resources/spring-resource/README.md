@@ -37,21 +37,21 @@
 ### 三、主要功能
 
 1. **统一的资源抽象**
-  - 无论资源来自于文件系统、classpath、URL 还是其他来源，`Resource` 接口都为其提供了一个统一的抽象。
+   + 无论资源来自于文件系统、classpath、URL 还是其他来源，`Resource` 接口都为其提供了一个统一的抽象。
 2. **资源描述**
-  - 通过 `getDescription()` 方法，每个 `Resource` 实现都可以为其所代表的底层资源提供描述性信息，这对于错误处理和日志记录特别有用。
+   + 通过 `getDescription()` 方法，每个 `Resource` 实现都可以为其所代表的底层资源提供描述性信息，这对于错误处理和日志记录特别有用。
 3. **读取能力**
-  - `Resource` 提供了 `getInputStream()` 方法，允许直接读取资源内容，而无需关心资源的实际来源。
+   + `Resource` 提供了 `getInputStream()` 方法，允许直接读取资源内容，而无需关心资源的实际来源。
 4. **存在性与可读性**
-  - `Resource` 提供了 `exists()` 和 `isReadable()` 方法来确定资源是否存在及其是否可读。
+   + `Resource` 提供了 `exists()` 和 `isReadable()` 方法来确定资源是否存在及其是否可读。
 5. **开放性检查**
-  - `isOpen()` 方法用于检查资源是否表示一个已经打开的流，这有助于避免重复读取流资源。
+   + `isOpen()` 方法用于检查资源是否表示一个已经打开的流，这有助于避免重复读取流资源。
 6. **URI 和 URL 访问**
-  - `Resource` 允许通过 `getURI()` 和 `getURL()` 方法获取其底层资源的 URI 和 URL，这为进一步的资源处理提供了可能。
+   + `Resource` 允许通过 `getURI()` 和 `getURL()` 方法获取其底层资源的 URI 和 URL，这为进一步的资源处理提供了可能。
 7. **文件访问**
-  - 当资源代表一个文件系统中的文件时，可以通过 `getFile()` 直接访问该文件。
+   + 当资源代表一个文件系统中的文件时，可以通过 `getFile()` 直接访问该文件。
 8. **多种实现**
-  - Spring 提供了多种 `Resource` 的实现，以支持不同来源的资源，如 `ClassPathResource`、`FileSystemResource` 和 `UrlResource` 等。
+   + Spring 提供了多种 `Resource` 的实现，以支持不同来源的资源，如 `ClassPathResource`、`FileSystemResource` 和 `UrlResource` 等。
 
 ### 四、接口源码
 
