@@ -192,20 +192,18 @@ classDiagram
     }
     FileSystemResource ..|> AbstractResource
     
-    class UrlResourceDemo {
+    class UrlResource {
     }
-    UrlResourceDemo ..|> AbstractResource
+    UrlResource ..|> AbstractResource
     
     class ByteArrayResource {
     }
     ByteArrayResource ..|> AbstractResource
     
-    class InputStreamResourceDemo {
+    class InputStreamResource {
     }
-    InputStreamResourceDemo ..|> AbstractResource
+    InputStreamResource ..|> AbstractResource
 ~~~
-
-
 
 ### 五、最佳实践
 
