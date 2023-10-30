@@ -11,8 +11,10 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>spring-resources</artifactId>
     <packaging>pom</packaging>
+
     <modules>
         <module>spring-resource</module>
+        <module>spring-resource-resourceLoader</module>
     </modules>
 
 </project>
