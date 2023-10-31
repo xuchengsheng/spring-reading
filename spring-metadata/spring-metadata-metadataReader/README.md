@@ -91,9 +91,6 @@ classDiagram
     }
 
     class SimpleMetadataReader {
-        -ClassLoader classLoader
-        -Set<ProtocolResolver> protocolResolvers
-        -Map<Class<?>, Map<Resource, ?>> resourceCaches
     }
 
     SimpleMetadataReader ..|> MetadataReader
