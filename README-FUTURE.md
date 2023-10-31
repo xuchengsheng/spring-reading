@@ -66,61 +66,54 @@
      - Resource
      - ResourceLoader
      - MetadataReader
-
++ Bean的定义与注册
+     + BeanDefinition
+  + BeanDefinitionHolder
+     + BeanDefinitionRegistry
++ BeanDefinition的来源
+     - XmlBeanDefinitionReader
+     - PropertiesBeanDefinitionReader
+     - AnnotatedBeanDefinitionReader
+     - ClassPathBeanDefinitionScanner
+  - ImportBeanDefinitionRegistrar
+     - BeanDefinitionImportSelector
    + Bean的过滤
-
+   
      + TypeFilter
 
      + ConditionEvaluator
      + Condition
      + ConditionContext
      + ConfigurationCondition
-
    + 属性编辑与类型转换
      - PropertyEditor
      - ConversionService
-     - Converter
-
+  - Converter
    + 表达式语言(SpEL)
      - Expression
      - ExpressionParser
      - EvaluationContext
      - PropertyAccessor
-     - MethodResolver
+  - MethodResolver
      - TypeLocator
-
    + Bean容器与配置
      - BeanFactory
      - ListableBeanFactory
-     - HierarchicalBeanFactory
+  - HierarchicalBeanFactory
      - ConfigurableBeanFactory
-
-   + Bean的定义与注册
-     + BeanDefinition
-     + BeanDefinitionHolder
-     + BeanDefinitionRegistry
-
-   + BeanDefinition的来源
-     - XmlBeanDefinitionReader
-     - PropertiesBeanDefinitionReader
-     - AnnotatedBeanDefinitionReader
-     - ClassPathBeanDefinitionScanner
-     - ImportBeanDefinitionRegistrar
-     - BeanDefinitionImportSelector
-
    + Bean生命周期
      - Bean的定义解析
      - Bean的初始化过程
      - Bean的依赖解析过程
      - Bean的销毁过程
-
-   - Bean初始化与扩展点
+   
+- Bean初始化与扩展点
      + InitializingBean
      + DisposableBean
      + BeanDefinitionRegistryPostProcessor
      + BeanFactoryPostProcessor
      + BeanPostProcessor
-     + InstantiationAwareBeanPostProcessor
+  + InstantiationAwareBeanPostProcessor
      + DestructionAwareBeanPostProcessor
      + MergedBeanDefinitionPostProcessor
      + SmartInstantiationAwareBeanPostProcessor
@@ -172,7 +165,7 @@
      + FileSystemXmlApplicationContext
      + AnnotationConfigApplicationContext
      + GenericApplicationContext
-
+   
 2. **AOP (面向切面编程)**
 
    - AOP 术语：Aspect、Join point、Advice、Pointcut 等

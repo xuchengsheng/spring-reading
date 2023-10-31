@@ -26,6 +26,7 @@
         <module>spring-aop</module>
         <module>spring-mvc</module>
         <module>spring-resources</module>
+        <module>spring-metadata</module>
     </modules>
 
     <dependencies>
