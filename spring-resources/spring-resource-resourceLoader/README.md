@@ -1,6 +1,6 @@
-## org.springframework.core.io.ResourceLoader
+## ResourceLoader
 
-- [org.springframework.core.io.ResourceLoader](#orgspringframeworkcoreioresourceloader)
+- [ResourceLoader](#resourceloader)
   - [一、知识储备](#一知识储备)
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)

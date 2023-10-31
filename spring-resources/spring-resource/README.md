@@ -1,6 +1,6 @@
-## org.springframework.core.io.Resource
+## Resource
 
-- [org.springframework.core.io.Resource](#orgspringframeworkcoreioresource)
+- [Resource](#resource)
   - [一、知识储备](#一知识储备)
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
