@@ -9,6 +9,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>spring-resource-metadataReader</artifactId>
+    <artifactId>spring-metadata-metadataReader</artifactId>
 
 </project>
