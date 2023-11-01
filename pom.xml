@@ -27,6 +27,7 @@
         <module>spring-mvc</module>
         <module>spring-resources</module>
         <module>spring-metadata</module>
+        <module>spring-beans</module>
     </modules>
 
     <dependencies>

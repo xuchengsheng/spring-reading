@@ -71,7 +71,7 @@
      - BeanDefinition
      - BeanDefinitionHolder
      - BeanDefinitionRegistry
-   - BeanDefinition的来源
+     
      - XmlBeanDefinitionReader
      - PropertiesBeanDefinitionReader
      - AnnotatedBeanDefinitionReader
