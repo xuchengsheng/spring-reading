@@ -61,10 +61,9 @@
 ## 🌱Spring 源码阅读系列
 
 1. **IOC 容器**
-
    + 资源加载与访问
-     - Resource
-     - ResourceLoader
+     + Resource
+     + ResourceLoader
    + 元数据
      + MetadataReader
      + AnnotationMetadata
@@ -90,85 +89,80 @@
      + ConversionService
      + Converter
    + 表达式语言(SpEL)
-     - Expression
-     - ExpressionParser
-
-   - EvaluationContext
-     - PropertyAccessor
-     - MethodResolver
-     - TypeLocator
-
-    + Bean工厂
-      + BeanFactory
-      + ListableBeanFactory
-      + HierarchicalBeanFactory
-      + ConfigurableBeanFactory
-
-    + Bean生命周期
-      - Bean的定义解析
-      - Bean的初始化过程
-      - Bean的依赖解析过程
-      - Bean的销毁过程
-
-    - Bean初始化与扩展点
-      + InitializingBean
-      + DisposableBean
-      + BeanDefinitionRegistryPostProcessor
-      + BeanFactoryPostProcessor
-      + BeanPostProcessor
-      + InstantiationAwareBeanPostProcessor
-      + DestructionAwareBeanPostProcessor
-      + MergedBeanDefinitionPostProcessor
-      + SmartInstantiationAwareBeanPostProcessor
-      + SmartInitializingSingleton
-
-    - 基于Java的配置
-      - ConfigurationClassPostProcessor
-      - ConfigurationClassParser
-    - 核心注解
-      - @Configuration
-      - @ComponentScan
-      - @Bean
-      - @Import
-      - @PropertySource
-      - @DependsOn
-      - @Conditional
-      - @Lazy
-      - @Primary
-      - @Description
-      - @Role
-      - @Value
-      - @Autowired
-      - @Indexed
-      - @Order
-    - JSR规范
-      - @Inject
-      - @Named
-      - @Resource
-      - @Qualifier
-      - @Scope
-      - @Singleton
-      - @PostConstruct
-      - @PreDestroy
-      - Provider
-    - Aware接口系列
-      + BeanNameAware
-      + BeanClassLoaderAware
-      + BeanFactoryAware
-      + EnvironmentAware
-      + EmbeddedValueResolverAware
-      + ResourceLoaderAware
-      + ApplicationEventPublisherAware
-      + MessageSourceAware
-      + ApplicationStartupAware
-      + ApplicationContextAware
-      + ImportAware
-      + BeanDefinitionRegistryAware
-    - 容器上下文
-      + ClassPathXmlApplicationContext
-      + FileSystemXmlApplicationContext
-      + AnnotationConfigApplicationContext
-      + GenericApplicationContext
+     + Expression
+     + ExpressionParser
+   	 + EvaluationContext
+     + PropertyAccessor
+     + MethodResolver
+     + TypeLocator
+   + Bean工厂
+     + BeanFactory
+     + ListableBeanFactory
+     + HierarchicalBeanFactory
+     + ConfigurableBeanFactory
+   + Bean生命周期
+     + Bean的定义解析
+     + Bean的初始化过程
+     + Bean的依赖解析过程
+     + Bean的销毁过程
+   + Bean初始化与扩展点
+     + InitializingBean
+     + DisposableBean
+     + BeanDefinitionRegistryPostProcessor
+     + BeanFactoryPostProcessor
+     + BeanPostProcessor
+     + InstantiationAwareBeanPostProcessor
+     + DestructionAwareBeanPostProcessor
+     + MergedBeanDefinitionPostProcessor
+     + SmartInstantiationAwareBeanPostProcessor
+     + SmartInitializingSingleton
+   + 基于Java的配置
+     + ConfigurationClassPostProcessor
+     + ConfigurationClassParser
+   + 核心注解
+     + @Configuration
+     + @ComponentScan
+     + @Bean
+     + @Import
+     + @PropertySource
+     + @DependsOn
+     + @Conditional
+     + @Lazy
+     + @Primary
+     + @Description
+     + @Role
+     + @Value
+     + @Autowired
+     + @Indexed
+     + @Order
+   + JSR规范
+     + @Inject
+     + @Named
+     + @Resource
+     + @Qualifier
+     + @Scope
+     + @Singleton
+     + @PostConstruct
+     + @PreDestroy
+     + Provider
+   + Aware接口系列
+     + BeanNameAware
+     + BeanClassLoaderAware
+     + BeanFactoryAware
+     + EnvironmentAware
+     + EmbeddedValueResolverAware
+     + ResourceLoaderAware
+     + ApplicationEventPublisherAware
+     + MessageSourceAware
+     + ApplicationStartupAware
+     + ApplicationContextAware
+     + ImportAware
+     + BeanDefinitionRegistryAware
+   + 容器上下文
+     + ClassPathXmlApplicationContext
+     + FileSystemXmlApplicationContext
+     + AnnotationConfigApplicationContext
+     + GenericApplicationContext
 
 2. **AOP (面向切面编程)**
 
