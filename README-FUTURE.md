@@ -60,24 +60,26 @@
 
 ## 🌱Spring 源码阅读系列
 
-1. **IOC 容器**
+1. **IOC容器**
    - 资源加载与访问
      - Resource
      - ResourceLoader
    - 元数据
      - MetadataReader
      - AnnotationMetadata
-   - Bean的定义与注册
+   - Bean定义与注册
      - BeanDefinition
      - BeanDefinitionHolder
      - BeanDefinitionRegistry
-     
+   - Bean定义加载与扫描
      - XmlBeanDefinitionReader
      - PropertiesBeanDefinitionReader
      - AnnotatedBeanDefinitionReader
      - ClassPathBeanDefinitionScanner
+   - Bean定义导入与组合
      - ImportBeanDefinitionRegistrar
-     - BeanDefinitionImportSelector
+     - ImportSelector
+     - DeferredImportSelector
    - Bean的过滤
      - TypeFilter
      - ConditionEvaluator
