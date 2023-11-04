@@ -72,7 +72,7 @@
      - BeanDefinition
      - BeanDefinitionHolder
      - BeanDefinitionRegistry
-   - Bean定义加载与扫描
+   - Bean定义读取与扫描
      - XmlBeanDefinitionReader
      - PropertiesBeanDefinitionReader
      - AnnotatedBeanDefinitionReader
