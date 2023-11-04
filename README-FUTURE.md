@@ -64,6 +64,7 @@
    - 资源加载与访问
      - Resource
      - ResourceLoader
+     - DocumentLoader
    - 元数据
      - MetadataReader
      - AnnotationMetadata
