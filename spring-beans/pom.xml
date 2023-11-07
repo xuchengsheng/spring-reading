@@ -17,6 +17,7 @@
         <module>spring-bean-beanDefinitionHolder</module>
         <module>spring-bean-beanDefinitionRegistry</module>
         <module>spring-bean-xmlBeanDefinitionReader</module>
+        <module>spring-bean-propertiesBeanDefinitionReader</module>
     </modules>
 
 </project>
