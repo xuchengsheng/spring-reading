@@ -82,7 +82,7 @@
      - ImportBeanDefinitionRegistrar
      - ImportSelector
      - DeferredImportSelector
-   - Bean的过滤
+   - Bean定义过滤
      - TypeFilter
      - ConditionEvaluator
      - Condition

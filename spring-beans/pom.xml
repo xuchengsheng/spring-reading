@@ -19,6 +19,7 @@
         <module>spring-bean-xmlBeanDefinitionReader</module>
         <module>spring-bean-propertiesBeanDefinitionReader</module>
         <module>spring-bean-groovyBeanDefinitionReader</module>
+        <module>spring-bean-annotatedBeanDefinitionReader</module>
     </modules>
 
 </project>
