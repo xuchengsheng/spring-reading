@@ -75,6 +75,7 @@
    - Bean定义读取与扫描
      - XmlBeanDefinitionReader
      - PropertiesBeanDefinitionReader
+     - GroovyBeanDefinitionReader
      - AnnotatedBeanDefinitionReader
      - ClassPathBeanDefinitionScanner
    - Bean定义导入与组合

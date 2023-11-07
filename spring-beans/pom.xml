@@ -18,6 +18,7 @@
         <module>spring-bean-beanDefinitionRegistry</module>
         <module>spring-bean-xmlBeanDefinitionReader</module>
         <module>spring-bean-propertiesBeanDefinitionReader</module>
+        <module>spring-bean-groovyBeanDefinitionReader</module>
     </modules>
 
 </project>
