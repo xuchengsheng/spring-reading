@@ -20,6 +20,7 @@
         <module>spring-bean-propertiesBeanDefinitionReader</module>
         <module>spring-bean-groovyBeanDefinitionReader</module>
         <module>spring-bean-annotatedBeanDefinitionReader</module>
+        <module>spring-bean-classPathBeanDefinitionScanner</module>
     </modules>
 
 </project>
