@@ -16,9 +16,11 @@
 ### 一、知识储备
 
 1. **`AnnotationMetadata`**
-   +  `AnnotationMetadata` 是 Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。[点击查看AnnotationMetadata接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata)
+   +  `AnnotationMetadata` 是 Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。
+   +  [点击查看AnnotationMetadata接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata)
 2. **`BeanDefinition`**
-   +  `BeanDefinition` 是 Spring 中描述和管理 Bean 配置的核心概念，它包括了有关 Bean 的信息，如类名、作用域、依赖关系、初始化方法等，而 `AnnotatedBeanDefinitionReader` 的主要任务之一是将使用注解配置的类转化为 `BeanDefinition` 并注册到 Spring 容器中。[点击查看BeanDefinition接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-beans/spring-bean-beanDefinition)
+   +  `BeanDefinition` 是 Spring 中描述和管理 Bean 配置的核心概念，它包括了有关 Bean 的信息，如类名、作用域、依赖关系、初始化方法等，而 `AnnotatedBeanDefinitionReader` 的主要任务之一是将使用注解配置的类转化为 `BeanDefinition` 并注册到 Spring 容器中。
+   +  [点击查看BeanDefinition接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-beans/spring-bean-beanDefinition)
 
 ### 二、基本描述
 
