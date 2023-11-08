@@ -11,10 +11,10 @@
 
 ### 一、知识储备
 
-1. **Bean定义**
-   - 了解Bean的概念以及如何定义和配置Bean是非常重要的。这包括Bean的ID、类名、属性注入、依赖关系等。
-2. **注解处理器**
-   + 注解处理器是用于处理注解的工具或框架，它们可以在编译时或运行时读取和处理注解。Spring的`AnnotatedBeanDefinitionReader`就是一个注解处理器，用于解析带有Spring注解的类并将其注册为Bean定义。
+1. **`AnnotationMetadata`**
+   +  `AnnotationMetadata` 是 Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。[点击查看AnnotationMetadata接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata)
+2. **`BeanDefinition`**
+   +  `BeanDefinition` 是 Spring 中描述和管理 Bean 配置的核心概念，它包括了有关 Bean 的信息，如类名、作用域、依赖关系、初始化方法等，而 `AnnotatedBeanDefinitionReader` 的主要任务之一是将使用注解配置的类转化为 `BeanDefinition` 并注册到 Spring 容器中。[点击查看BeanDefinition接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-beans/spring-bean-beanDefinition)
 
 ### 二、基本描述
 
@@ -63,7 +63,157 @@ public class MyBean {
 MyBean = com.xcs.spring.bean.MyBean@6166e06f
 ```
 
-### 五、源码分析
+### 五、时序图
+
+~~~mermaid
+sequenceDiagram
+Title: AnnotatedBeanDefinitionReader时序图
+
+par 注册注解后置处理器阶段
+AnnotatedBeanDefinitionReaderDemo->>AnnotatedBeanDefinitionReader:new AnnotatedBeanDefinitionReader(registry)
+Note over AnnotatedBeanDefinitionReaderDemo, AnnotatedBeanDefinitionReader: 创建 AnnotatedBeanDefinitionReader 对象
+AnnotatedBeanDefinitionReader->>AnnotatedBeanDefinitionReader:AnnotatedBeanDefinitionReader(registry, environment)
+Note over AnnotatedBeanDefinitionReader: 使用容器注册和环境信息
+AnnotatedBeanDefinitionReader->>AnnotationConfigUtils:registerAnnotationConfigProcessors(registry)
+Note over AnnotatedBeanDefinitionReader, AnnotationConfigUtils: 调用工具类方法注册注解后置处理器
+AnnotationConfigUtils->>AnnotationConfigUtils:registerAnnotationConfigProcessors(registry, source)
+Note over AnnotationConfigUtils: 注册注解后置处理器到容器
+AnnotatedBeanDefinitionReader->>AnnotatedBeanDefinitionReaderDemo:返回reader
+Note over AnnotatedBeanDefinitionReaderDemo,AnnotatedBeanDefinitionReader: 返回 AnnotatedBeanDefinitionReader 实例
+end
+
+par 注册Bean定义阶段
+AnnotatedBeanDefinitionReaderDemo->>AnnotatedBeanDefinitionReader:registerBean(beanClass)
+Note over AnnotatedBeanDefinitionReaderDemo, AnnotatedBeanDefinitionReader: 注册 BeanClass
+AnnotatedBeanDefinitionReader->>AnnotatedBeanDefinitionReader:doRegisterBean(beanClass, name, qualifiers, supplier, customizers)
+Note over AnnotatedBeanDefinitionReader: 执行 Bean 注册
+AnnotatedBeanDefinitionReader->>AnnotatedBeanDefinitionReader:new AnnotatedGenericBeanDefinition(beanClass)
+Note over AnnotatedBeanDefinitionReader: 创建 AnnotatedGenericBeanDefinition 对象
+AnnotatedBeanDefinitionReader->>AnnotationConfigUtils:processCommonDefinitionAnnotations(abd)
+Note over AnnotatedBeanDefinitionReader, AnnotationConfigUtils: 处理常见的Bean定义注解
+AnnotationConfigUtils->>AnnotationConfigUtils:processCommonDefinitionAnnotations(abd,metadata)
+Note over AnnotationConfigUtils: 处理 Bean 的元数据信息
+AnnotatedBeanDefinitionReader->>AnnotatedBeanDefinitionReader:new BeanDefinitionHolder(abd, beanName)
+Note over AnnotatedBeanDefinitionReader: 创建 BeanDefinitionHolder
+AnnotatedBeanDefinitionReader->>BeanDefinitionReaderUtils:registerBeanDefinition(definitionHolder, registry)
+Note over AnnotatedBeanDefinitionReader, BeanDefinitionReaderUtils: 注册 Bean 定义
+end
+~~~
+
+### 六、源码分析
+
+#### 注册注解后置处理器阶段
+
+在`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#AnnotatedBeanDefinitionReader(registry)`方法中，实际上是通过委派给另一个构造函数来创建，并且获取了上下文的环境变量进行传递。
+
+```java
+public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
+    this(registry, getOrCreateEnvironment(registry));
+}
+```
+
+在`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#AnnotatedBeanDefinitionReader(registry,environment)`方法中，主要目的是为了初始化 `AnnotatedBeanDefinitionReader`，并确保相关的条件评估器和注解处理器已经注册到 Spring 容器中，以便进行基于注解的组件扫描和 Bean 注册。
+
+```java
+public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry, Environment environment) {
+    Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
+    Assert.notNull(environment, "Environment must not be null");
+
+    // 初始化 BeanDefinitionRegistry 和 Environment
+    this.registry = registry;
+    this.conditionEvaluator = new ConditionEvaluator(registry, environment, null);
+
+    // 注册注解相关的后置处理器，以支持基于注解的组件扫描和 Bean 注册
+    AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
+}
+```
+
+在`org.springframework.context.annotation.AnnotationConfigUtils#registerAnnotationConfigProcessors(registry)`方法中，注解配置处理器注册到 Spring 容器中，从而启用注解驱动的配置。
+
+```java
+public static void registerAnnotationConfigProcessors(BeanDefinitionRegistry registry) {
+    registerAnnotationConfigProcessors(registry, null);
+}
+```
+
+在`org.springframework.context.annotation.AnnotationConfigUtils#registerAnnotationConfigProcessors(registry, source)`方法中，主要目的是注册一些关键的注解配置处理器，以便支持注解驱动的配置和处理不同类型的注解。
+
+```java
+public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
+        BeanDefinitionRegistry registry, @Nullable Object source) {
+
+    // 1. 如果 BeanDefinitionRegistry 是 DefaultListableBeanFactory 的实例，执行以下操作
+    DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
+    if (beanFactory != null) {
+        // 1.1 检查当前的依赖比较器是否是 AnnotationAwareOrderComparator 的实例，如果不是，设置依赖比较器为 AnnotationAwareOrderComparator.INSTANCE，用于处理注解驱动排序。
+        if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
+            beanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
+        }
+        // 1.2 检查当前的自动装配候选解析器是否是 ContextAnnotationAutowireCandidateResolver 的实例，如果不是，设置自动装配候选解析器为 ContextAnnotationAutowireCandidateResolver，用于处理注解驱动的自动装配。
+        if (!(beanFactory.getAutowireCandidateResolver() instanceof ContextAnnotationAutowireCandidateResolver)) {
+            beanFactory.setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
+        }
+    }
+
+    // 2. 创建一个空的 LinkedHashSet 用于存储将要注册的 Bean 定义。
+    Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
+
+    // 3. 检查是否已经注册了名为 CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME 的 Bean 定义。如果没有，创建一个 ConfigurationClassPostProcessor 类型的 Bean 定义，并将其添加到 BeanDefinitionRegistry 中。
+    if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+        RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
+        def.setSource(source);
+        beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
+    }
+
+    // 4. 检查是否已经注册了名为 AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME 的 Bean 定义。如果没有，创建一个 AutowiredAnnotationBeanPostProcessor 类型的 Bean 定义，并将其添加到 BeanDefinitionRegistry 中。
+    if (!registry.containsBeanDefinition(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+        RootBeanDefinition def = new RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.class);
+        def.setSource(source);
+        beanDefs.add(registerPostProcessor(registry, def, AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME));
+    }
+
+    // 5. 检查是否已经注册了名为 COMMON_ANNOTATION_PROCESSOR_BEAN_NAME 的 Bean 定义，这是用于支持 JSR-250 注解的处理器。如果没有，并且检测到 JSR-250 的支持，创建一个 CommonAnnotationBeanPostProcessor 类型的 Bean 定义，并将其添加到 BeanDefinitionRegistry 中。
+    if (jsr250Present && !registry.containsBeanDefinition(COMMON_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+        RootBeanDefinition def = new RootBeanDefinition(CommonAnnotationBeanPostProcessor.class);
+        def.setSource(source);
+        beanDefs.add(registerPostProcessor(registry, def, COMMON_ANNOTATION_PROCESSOR_BEAN_NAME));
+    }
+
+    // 6. 检查是否已经注册了名为 PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME 的 Bean 定义，这是用于支持 JPA 注解的处理器。如果没有，并且检测到 JPA 的支持，创建一个 PersistenceAnnotationBeanPostProcessor 类型的 Bean 定义，并将其添加到 BeanDefinitionRegistry 中。
+    if (jpaPresent && !registry.containsBeanDefinition(PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+        RootBeanDefinition def = new RootBeanDefinition();
+        try {
+            def.setBeanClass(ClassUtils.forName(PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME,
+                                                AnnotationConfigUtils.class.getClassLoader()));
+        }
+        catch (ClassNotFoundException ex) {
+            throw new IllegalStateException(
+						"Cannot load optional framework class: " + PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME, ex);
+        }
+        def.setSource(source);
+        beanDefs.add(registerPostProcessor(registry, def, PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME));
+    }
+
+    // 7. 检查是否已经注册了名为 EVENT_LISTENER_PROCESSOR_BEAN_NAME 的 Bean 定义。如果没有，创建一个 EventListenerMethodProcessor 类型的 Bean 定义，并将其添加到 BeanDefinitionRegistry 中。
+    if (!registry.containsBeanDefinition(EVENT_LISTENER_PROCESSOR_BEAN_NAME)) {
+        RootBeanDefinition def = new RootBeanDefinition(EventListenerMethodProcessor.class);
+        def.setSource(source);
+        beanDefs.add(registerPostProcessor(registry, def, EVENT_LISTENER_PROCESSOR_BEAN_NAME));
+    }
+
+    // 8. 检查是否已经注册了名为 EVENT_LISTENER_FACTORY_BEAN_NAME 的 Bean 定义。如果没有，创建一个 DefaultEventListenerFactory 类型的 Bean 定义，并将其添加到 BeanDefinitionRegistry 中。
+    if (!registry.containsBeanDefinition(EVENT_LISTENER_FACTORY_BEAN_NAME)) {
+        RootBeanDefinition def = new RootBeanDefinition(DefaultEventListenerFactory.class);
+        def.setSource(source);
+        beanDefs.add(registerPostProcessor(registry, def, EVENT_LISTENER_FACTORY_BEAN_NAME));
+    }
+
+    // 9. 返回包含注册的 Bean 定义的 LinkedHashSet。
+    return beanDefs;
+}
+```
+
+#### 注册Bean定义阶段
 
 在`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#registerBean(beanClass)`方法中，实际上又调用了`doRegisterBean`方法。
 
@@ -79,7 +229,7 @@ public void registerBean(Class<?> beanClass) {
 private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
         @Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,
         @Nullable BeanDefinitionCustomizer[] customizers) {
-    // 创建一个 AnnotatedGenericBeanDefinition，用于表示要注册的 Bean 的定义
+    // 步骤1: 创建一个 AnnotatedGenericBeanDefinition，用于表示要注册的 Bean 的定义
     AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(beanClass);
     // 如果存在条件判断，根据条件结果决定是否注册 Bean
     if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
@@ -92,7 +242,8 @@ private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
     abd.setScope(scopeMetadata.getScopeName());
     // 生成或使用指定的 Bean 名称，如果没有指定名称，生成默认的 Bean 名称
     String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
-    // 处理常见的 Bean 定义注解，如 @Lazy、@Primary 等
+    
+    // 步骤2: 处理常见的 Bean 定义注解，如 @Lazy、@Primary 等
     AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
     // 处理 Bean 的限定符（qualifiers），如 @Qualifier 注解
     if (qualifiers != null) {
@@ -112,12 +263,64 @@ private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
             customizer.customize(abd);
         }
     }
-    // 将 Bean 注册到 Spring 容器中，使其成为容器管理的 Bean
+    // 步骤3: 将 Bean 注册到 Spring 容器中，使其成为容器管理的 Bean
     BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
     definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
     BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 }
 ```
+
+> [`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#doRegisterBean`步骤2]
+
+在`org.springframework.context.annotation.AnnotationConfigUtils#processCommonDefinitionAnnotations(abd)`方法中，处理 Bean 定义上的常见注解，以确保 Bean 在容器中的行为和属性符合这些注解的规定。
+
+```java
+public static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd) {
+    processCommonDefinitionAnnotations(abd, abd.getMetadata());
+}
+```
+
+在`org.springframework.context.annotation.AnnotationConfigUtils#processCommonDefinitionAnnotations(abd,metadata)`方法中，处理常见的 Bean 定义注解，如 `@Lazy`、`@Primary`、`@DependsOn`、`@Role` 和 `@Description`。
+
+```java
+static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
+    // 处理 @Lazy 注解
+    AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
+    if (lazy != null) {
+        abd.setLazyInit(lazy.getBoolean("value"));
+    } else if (abd.getMetadata() != metadata) {
+        lazy = attributesFor(abd.getMetadata(), Lazy.class);
+        if (lazy != null) {
+            abd.setLazyInit(lazy.getBoolean("value"));
+        }
+    }
+
+    // 处理 @Primary 注解
+    if (metadata.isAnnotated(Primary.class.getName())) {
+        abd.setPrimary(true);
+    }
+
+    // 处理 @DependsOn 注解
+    AnnotationAttributes dependsOn = attributesFor(metadata, DependsOn.class);
+    if (dependsOn != null) {
+        abd.setDependsOn(dependsOn.getStringArray("value"));
+    }
+
+    // 处理 @Role 注解
+    AnnotationAttributes role = attributesFor(metadata, Role.class);
+    if (role != null) {
+        abd.setRole(role.getNumber("value").intValue());
+    }
+
+    // 处理 @Description 注解
+    AnnotationAttributes description = attributesFor(metadata, Description.class);
+    if (description != null) {
+        abd.setDescription(description.getString("value"));
+    }
+}
+```
+
+> [`org.springframework.context.annotation.AnnotatedBeanDefinitionReader#doRegisterBean`步骤3]
 
 在`org.springframework.beans.factory.support.BeanDefinitionReaderUtils#registerBeanDefinition`方法中，将Bean定义注册到Spring容器的Bean定义注册表中，并处理别名的注册。
 
@@ -140,18 +343,18 @@ public static void registerBeanDefinition(
 }
 ```
 
-### 六、与其他组件的关系
+### 七、与其他组件的关系
 
-1. **`AnnotationConfigApplicationContext`**
-   + `AnnotationConfigApplicationContext` 是一个常见的 Spring 应用程序上下文类，用于基于注解的配置。它内部使用 `AnnotatedBeanDefinitionReader` 来解析和注册带有注解的类。
-2. **`AnnotationConfigWebApplicationContext`**
-   + `AnnotationConfigWebApplicationContext` 用于基于注解的配置，但专门用于基于 Spring MVC 的 Web 应用程序。它也使用 `AnnotatedBeanDefinitionReader` 来解析和注册带有注解的类。
-3. **Spring Boot 自动配置**
-   + Spring Boot 使用 `AnnotatedBeanDefinitionReader` 以及其他类来自动注册和配置应用程序的组件。Spring Boot 的自动配置通常是基于注解的，因此它们与 `AnnotatedBeanDefinitionReader` 集成。
-4. **自定义组件扫描器**
-   + 我们可以自定义组件扫描器，以扩展或修改 `AnnotatedBeanDefinitionReader` 的行为。这些自定义扫描器通常也会使用 `AnnotatedBeanDefinitionReader` 的功能。
+1. **`BeanDefinitionLoader`**
+   + 通常与 Spring Boot 应用程序的加载和初始化过程相关。在 Spring Boot 中，`BeanDefinitionLoader` 用于加载应用程序的配置，并可能涉及到 `AnnotationConfigApplicationContext` 或 `AnnotationConfigWebApplicationContext`，这些上下文类会使用 `AnnotatedBeanDefinitionReader` 来注册基于注解的 Bean。
+2. **`AnnotationConfigServletWebApplicationContext`**
+   + 这是 Spring Boot Web 应用程序的上下文类，用于基于注解的配置。它内部使用 `AnnotatedBeanDefinitionReader` 来处理组件扫描和 Bean 的注册，以支持 Spring Boot Web 应用程序的初始化。
+3. **`AnnotationConfigApplicationContext`**
+   + 这是 Spring 的标准应用程序上下文，用于基于注解的配置。它内部使用 `AnnotatedBeanDefinitionReader` 来注册基于注解的 Bean 定义，并支持组件扫描以及自动配置。
+4. **`AnnotationConfigWebApplicationContext`**
+   + 这是 Spring Web 应用程序的上下文类，用于基于注解的配置。它类似于 `AnnotationConfigApplicationContext`，但专门用于 Web 应用程序。它也使用 `AnnotatedBeanDefinitionReader` 来处理组件扫描和 Bean 的注册，以支持 Spring Web 应用程序的初始化。
 
-### 七、常见问题
+### 八、常见问题
 
 1. **基于注解的 Spring 配置**
    + `AnnotatedBeanDefinitionReader` 可以用于创建基于注解的 Spring 配置，从而避免使用传统的 XML 配置。这在现代的 Spring 应用程序开发中非常常见，可以提高配置的可读性和维护性。
