@@ -15,16 +15,21 @@
 
 ### 一、知识储备
 
-1. **Bean定义**
-   - 了解Bean的概念以及如何定义和配置Bean是非常重要的。这包括Bean的ID、类名、属性注入、依赖关系等。
-2. **Spring注解**
-   + 我们需要熟悉 Spring 的注解，如 `@Component`、`@Configuration`、`@ComponentScan` 等，因为 `ClassPathBeanDefinitionScanner` 类就是用来解析此类注解的。
-3. **类路径和包结构**
-   + 了解类路径是什么，如何设置类路径，以及包的结构和命名规范，因为 `ClassPathBeanDefinitionScanner` 会在类路径上扫描包和类。
-4. **`ResourceLoader`**
-   - `ResourceLoader` 可以用于获取资源，这些资源可以是文件、类路径上的资源、URL、甚至是远程资源。它提供了一种统一的方式来加载资源，无论这些资源位于何处。[点击查看ResourceLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-resourceLoader)
 5. **`Resource`**
-   - `Resource` 代表一个资源，可以是文件、类路径上的文件、URL 等。它提供了对资源的抽象和访问方法。[点击查看Resource接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource)
+   - `Resource` 代表一个资源，可以是文件、类路径上的文件、URL 等。它提供了对资源的抽象和访问方法。
+   - [点击查看Resource接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource)
+2. **`ResourceLoader`**
+   - `ResourceLoader` 可以用于获取资源，这些资源可以是文件、类路径上的资源、URL、甚至是远程资源。它提供了一种统一的方式来加载资源，无论这些资源位于何处。
+   - [点击查看ResourceLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-resourceLoader)
+3. **`MetadataReader`**
+   + `MetadataReader` 是 Spring 框架中用于读取类文件和类元数据的接口，它提供了有关类的信息，包括类名、注解、父类信息等。在 `ClassPathBeanDefinitionScanner` 中，`MetadataReader` 被用于扫描类路径，识别候选的 Bean 类，并读取类的元数据以创建相应的 `BeanDefinition`。
+   + [点击查看MetadataReader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-metadataReader)
+4. **`AnnotationMetadata`**
+   - `AnnotationMetadata` 是 Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。
+   - [点击查看AnnotationMetadata接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata)
+5. **`BeanDefinition`**
+   - `BeanDefinition` 是 Spring 中描述和管理 Bean 配置的核心概念，它包括了有关 Bean 的信息，如类名、作用域、依赖关系、初始化方法等，而 `AnnotatedBeanDefinitionReader` 的主要任务之一是将使用注解配置的类转化为 `BeanDefinition` 并注册到 Spring 容器中。
+   - [点击查看BeanDefinition接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-beans/spring-bean-beanDefinition)
 
 ### 二、基本描述
 
@@ -100,6 +105,7 @@ MyRepository = com.xcs.spring.repository.MyRepository@778d1062
 ~~~mermaid
 sequenceDiagram
 Title: ClassPathBeanDefinitionScanner时序图
+
 par 注册默认过滤器阶段
 ClassPathBeanDefinitionScannerDemo->>ClassPathBeanDefinitionScanner:new ClassPathBeanDefinitionScanner(registry)
 note right of ClassPathBeanDefinitionScannerDemo: 创建 ClassPathBeanDefinitionScanner 实例，并关联到注册表
@@ -112,21 +118,22 @@ note over ClassPathBeanDefinitionScanner: 创建 ClassPathBeanDefinitionScanner 
 ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScanner:registerDefaultFilters()
 note over ClassPathBeanDefinitionScanner: 注册默认的组件过滤器
 ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScannerDemo:返回scanner
+note over ClassPathBeanDefinitionScanner,ClassPathBeanDefinitionScannerDemo: 返回 ClassPathBeanDefinitionScanner 实例
 end
+
 par 扫描Bean定义阶段
-note left of ClassPathBeanDefinitionScanner: 返回 ClassPathBeanDefinitionScanner 实例
 ClassPathBeanDefinitionScannerDemo->>ClassPathBeanDefinitionScanner:scan(basePackages)
-note right of ClassPathBeanDefinitionScannerDemo: 执行组件扫描操作
+note over ClassPathBeanDefinitionScannerDemo,ClassPathBeanDefinitionScanner: 执行组件扫描操作
 ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScanner:doScan(basePackages)
 note over ClassPathBeanDefinitionScanner: 执行组件扫描操作
 ClassPathBeanDefinitionScanner->>ClassPathScanningCandidateComponentProvider:findCandidateComponents(basePackage)
-note left of ClassPathScanningCandidateComponentProvider: 查找符合条件的候选组件
+note over ClassPathScanningCandidateComponentProvider,ClassPathBeanDefinitionScanner: 查找符合条件的候选组件
 ClassPathScanningCandidateComponentProvider->>ClassPathScanningCandidateComponentProvider:scanCandidateComponents(basePackage)
 note over ClassPathScanningCandidateComponentProvider: 扫描候选组件
 ClassPathScanningCandidateComponentProvider->>ClassPathScanningCandidateComponentProvider:isCandidateComponent(metadataReader)
 note over ClassPathScanningCandidateComponentProvider: 判断是否是候选组件
 ClassPathScanningCandidateComponentProvider->>AbstractTypeHierarchyTraversingFilter:match(metadataReader,metadataReaderFactory)
-note left of AbstractTypeHierarchyTraversingFilter: 使用过滤器匹配
+note over AbstractTypeHierarchyTraversingFilter,ClassPathScanningCandidateComponentProvider: 使用过滤器匹配
 AbstractTypeHierarchyTraversingFilter->>AnnotationTypeFilter:matchSelf(metadataReader)
 note left of AnnotationTypeFilter: 调用 matchSelf(metadataReader)
 AnnotationTypeFilter->>AbstractTypeHierarchyTraversingFilter:返回是否匹配
@@ -134,18 +141,22 @@ AbstractTypeHierarchyTraversingFilter->>ClassPathScanningCandidateComponentProvi
 ClassPathScanningCandidateComponentProvider->>ClassPathScanningCandidateComponentProvider:candidates.add(sbd)
 note over ClassPathScanningCandidateComponentProvider: 如果匹配，则将候选组件加入列表
 ClassPathScanningCandidateComponentProvider->>ClassPathBeanDefinitionScanner:返回扫描到的Bean定义
+ClassPathBeanDefinitionScanner->>AnnotationConfigUtils:processCommonDefinitionAnnotations(abd)
+Note over ClassPathBeanDefinitionScanner, AnnotationConfigUtils: 处理常见的Bean定义注解
+AnnotationConfigUtils->>AnnotationConfigUtils:processCommonDefinitionAnnotations(abd,metadata)
+Note over AnnotationConfigUtils: 处理 Bean 的元数据信息
 ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScanner:checkCandidate(beanName, candidate)
 note over ClassPathBeanDefinitionScanner: 检查候选组件
 ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScanner:registerBeanDefinition(definitionHolder,registry)
 note over ClassPathBeanDefinitionScanner: 注册 Bean 定义
 ClassPathBeanDefinitionScanner->>AnnotationConfigUtils:registerBeanDefinition(definitionHolder,registry)
-note over ClassPathBeanDefinitionScanner: 注册 Bean 定义
+note over ClassPathBeanDefinitionScanner,AnnotationConfigUtils: 注册 Bean 定义
 ClassPathBeanDefinitionScanner->>AnnotationConfigUtils:registerAnnotationConfigProcessors(registry)
-note right of ClassPathBeanDefinitionScanner: 启用注解驱动的配置
+note over ClassPathBeanDefinitionScanner,AnnotationConfigUtils: 启用注解驱动的配置
 AnnotationConfigUtils->>AnnotationConfigUtils:registerAnnotationConfigProcessors(registry,source)
 note over AnnotationConfigUtils: 启用注解驱动的配置
-
 end
+
 ~~~
 
 
@@ -254,7 +265,7 @@ public int scan(String... basePackages) {
 }
 ```
 
-> `org.springframework.context.annotation.ClassPathBeanDefinitionScanner#scan`步骤1
+> [`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#scan`步骤1]
 
 在`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan`方法中，主要负责找到符合条件的类，处理它们，并注册为 Spring Bean。
 
@@ -263,29 +274,35 @@ protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
     Assert.notEmpty(basePackages, "At least one base package must be specified");
     Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
     for (String basePackage : basePackages) {
-        // 查找符合条件的 BeanDefinition 候选类
+        // 步骤1: 查找符合条件的 BeanDefinition 候选类
         Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
         for (BeanDefinition candidate : candidates) {
-            // 解析 Bean 的作用域信息
+            
+            // 步骤2: 解析 Bean 的作用域信息
             ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
             candidate.setScope(scopeMetadata.getScopeName());
-            // 生成 Bean 的名称
+            
+            // 步骤3: 生成 Bean 的名称
             String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
+            
+            // 步骤4: 对 BeanDefinition 进行进一步处理
             if (candidate instanceof AbstractBeanDefinition) {
-                // 对 BeanDefinition 进行进一步处理
                 postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
             }
+            
+            // 步骤5: 处理通用的注解
             if (candidate instanceof AnnotatedBeanDefinition) {
-                // 处理通用的注解
                 AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
             }
+            
+            // 步骤6: 注册BeanDefinition 
             if (checkCandidate(beanName, candidate)) {
                 // 创建 BeanDefinitionHolder 并注册为 BeanDefinition
                 BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
                 // 处理 Bean 的作用域代理模式
                 definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
                 beanDefinitions.add(definitionHolder);
-                // 将 BeanDefinition 注册到 BeanDefinitionRegistry 中
+                // 步骤6.1 将 BeanDefinition 注册到 BeanDefinitionRegistry 中
                 registerBeanDefinition(definitionHolder, this.registry);
             }
         }
@@ -293,6 +310,8 @@ protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
     return beanDefinitions;
 }
 ```
+
+> [`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan`步骤1]
 
 在`org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider#findCandidateComponents`方法中，先是走组件索引中获取候选 `BeanDefinition` ，还是执行标准的包扫描操作。
 
@@ -431,7 +450,114 @@ protected boolean matchSelf(MetadataReader metadataReader) {
 }
 ```
 
-> `org.springframework.context.annotation.ClassPathBeanDefinitionScanner#scan`步骤2
+> [`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan`步骤2]
+
+在`org.springframework.context.annotation.AnnotationConfigUtils#processCommonDefinitionAnnotations(abd)`方法中，处理 Bean 定义上的常见注解，以确保 Bean 在容器中的行为和属性符合这些注解的规定。
+
+```java
+public static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd) {
+    processCommonDefinitionAnnotations(abd, abd.getMetadata());
+}
+```
+
+在`org.springframework.context.annotation.AnnotationConfigUtils#processCommonDefinitionAnnotations(abd,metadata)`方法中，处理常见的 Bean 定义注解，如 `@Lazy`、`@Primary`、`@DependsOn`、`@Role` 和 `@Description`。
+
+```java
+static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
+    // 处理 @Lazy 注解
+    AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
+    if (lazy != null) {
+        abd.setLazyInit(lazy.getBoolean("value"));
+    } else if (abd.getMetadata() != metadata) {
+        lazy = attributesFor(abd.getMetadata(), Lazy.class);
+        if (lazy != null) {
+            abd.setLazyInit(lazy.getBoolean("value"));
+        }
+    }
+
+    // 处理 @Primary 注解
+    if (metadata.isAnnotated(Primary.class.getName())) {
+        abd.setPrimary(true);
+    }
+
+    // 处理 @DependsOn 注解
+    AnnotationAttributes dependsOn = attributesFor(metadata, DependsOn.class);
+    if (dependsOn != null) {
+        abd.setDependsOn(dependsOn.getStringArray("value"));
+    }
+
+    // 处理 @Role 注解
+    AnnotationAttributes role = attributesFor(metadata, Role.class);
+    if (role != null) {
+        abd.setRole(role.getNumber("value").intValue());
+    }
+
+    // 处理 @Description 注解
+    AnnotationAttributes description = attributesFor(metadata, Description.class);
+    if (description != null) {
+        abd.setDescription(description.getString("value"));
+    }
+}
+```
+
+> [`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan`步骤6]
+
+在`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#checkCandidate`方法中，确保在注册 Bean 定义时，不会出现相同名称的 Bean 定义，或者如果名称相同，那么它们必须是兼容的。如果出现不兼容的情况，将抛出异常以防止冲突的 Bean 定义被注册。
+
+```java
+protected boolean checkCandidate(String beanName, BeanDefinition beanDefinition) throws IllegalStateException {
+    if (!this.registry.containsBeanDefinition(beanName)) {
+        // 如果注册表中不包含具有相同名称的Bean定义，返回true，表示候选的Bean可以被注册。
+        return true;
+    }
+    BeanDefinition existingDef = this.registry.getBeanDefinition(beanName);
+    BeanDefinition originatingDef = existingDef.getOriginatingBeanDefinition();
+    if (originatingDef != null) {
+        existingDef = originatingDef;
+    }
+    if (isCompatible(beanDefinition, existingDef)) {
+        // 如果候选的Bean定义与已存在的Bean定义兼容，返回false，表示不需要覆盖已存在的Bean定义。
+        return false;
+    }
+    throw new ConflictingBeanDefinitionException("Annotation-specified bean name '" + beanName +
+                                                 "' for bean class [" + beanDefinition.getBeanClassName() + "] conflicts with existing, " +
+                                                 "non-compatible bean definition of same name and class [" + existingDef.getBeanClassName() + "]");
+    // 如果候选的Bean定义与已存在的Bean定义不兼容，抛出异常以防止冲突的Bean定义被注册。
+}
+```
+
+> [`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan`步骤6.1]
+
+在`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#registerBeanDefinition`方法中，又调用了另外一个方法。
+
+```java
+protected void registerBeanDefinition(BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry) {
+    BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, registry);
+}
+```
+
+在`org.springframework.beans.factory.support.BeanDefinitionReaderUtils#registerBeanDefinition`方法中，将Bean定义注册到Spring容器的Bean定义注册表中，并处理别名的注册。
+
+```java
+public static void registerBeanDefinition(
+			BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
+			throws BeanDefinitionStoreException {
+
+    // Register bean definition under primary name.
+    String beanName = definitionHolder.getBeanName();
+    registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
+
+    // Register aliases for bean name, if any.
+    String[] aliases = definitionHolder.getAliases();
+    if (aliases != null) {
+        for (String alias : aliases) {
+            registry.registerAlias(beanName, alias);
+        }
+    }
+}
+```
+
+> [`org.springframework.context.annotation.ClassPathBeanDefinitionScanner#scan`步骤2]
 
 在`org.springframework.context.annotation.AnnotationConfigUtils#registerAnnotationConfigProcessors(registry)`方法中，注解配置处理器注册到 Spring 容器中，从而启用注解驱动的配置。
 
