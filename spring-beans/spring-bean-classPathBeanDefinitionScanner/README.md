@@ -137,9 +137,10 @@ ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScanner:checkCandidate(b
 note over ClassPathBeanDefinitionScanner: 检查候选组件
 ClassPathBeanDefinitionScanner->>ClassPathBeanDefinitionScanner:registerBeanDefinition(definitionHolder,registry)
 note over ClassPathBeanDefinitionScanner: 注册 Bean 定义
+ClassPathBeanDefinitionScanner->>AnnotationConfigUtils:registerBeanDefinition(definitionHolder,registry)
+note over ClassPathBeanDefinitionScanner: 注册 Bean 定义
 ClassPathBeanDefinitionScanner->>AnnotationConfigUtils:registerAnnotationConfigProcessors(registry)
 note right of ClassPathBeanDefinitionScanner: 启用注解驱动的配置
-
 AnnotationConfigUtils->>AnnotationConfigUtils:registerAnnotationConfigProcessors(registry,source)
 note over AnnotationConfigUtils: 启用注解驱动的配置
 
