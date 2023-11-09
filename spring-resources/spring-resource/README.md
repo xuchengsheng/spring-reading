@@ -1,17 +1,22 @@
 ## Resource
 
 - [Resource](#resource)
-  - [一、知识储备](#一知识储备)
-  - [二、基本描述](#二基本描述)
-  - [三、主要功能](#三主要功能)
-  - [四、接口源码](#四接口源码)
-  - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、与其他组件的关系](#七与其他组件的关系)
-  - [八、常见问题](#八常见问题)
+  - [一、基本信息](#一基本信息)
+  - [二、知识储备](#二知识储备)
+  - [三、基本描述](#三基本描述)
+  - [四、主要功能](#四主要功能)
+  - [五、接口源码](#五接口源码)
+  - [六、主要实现](#六主要实现)
+  - [七、最佳实践](#七最佳实践)
+  - [八、与其他组件的关系](#八与其他组件的关系)
+  - [九、常见问题](#九常见问题)
 
 
-### 一、知识储备
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [GitHub](https://github.com/xuchengsheng/spring-reading)
+
+### 二、知识储备
 
 1. **I/O知识**
    + 了解文件、路径、输入/输出流等基础概念。
@@ -20,11 +25,11 @@
 3. **URL和URI概念**
    + 这对于理解如何从网络或其他协议中加载资源是必要的。
 
-### 二、基本描述
+### 三、基本描述
 
 `Resource` 是 Spring 框架中用于简化和统一对底层资源（如文件、classpath 资源、URL 等）的访问的一个核心接口。它为不同来源的资源提供了一个共同的抽象，并隐藏了具体资源访问的细节。在 Java 开发中，资源的访问是常见的需求，如读取配置文件、图片、音频等。但 Java 的标准库为不同类型的资源提供了不同的访问机制：例如，对于文件系统中的资源，我们可能使用 `java.io.File`；对于 classpath 中的资源，我们可能使用 `ClassLoader` 的 `getResource` 或 `getResourceAsStream` 方法；对于网络资源，我们可能使用 `java.net.URL`。这些不同的机制意味着我们需要了解和使用多种方式来访问资源，这导致的问题是代码复杂性增加、重复代码以及可能的错误。为了提供一个统一、简化和更高级的资源访问机制，Spring 框架引入了 `Resource` 接口，这个接口为所有的资源提供了一个统一的抽象。
 
-### 三、主要功能
+### 四、主要功能
 
 1. **统一的资源抽象**
    + 无论资源来自于文件系统、classpath、URL 还是其他来源，`Resource` 接口都为其提供了一个统一的抽象。
@@ -43,7 +48,7 @@
 8. **多种实现**
    + Spring 提供了多种 `Resource` 的实现，以支持不同来源的资源，如 `ClassPathResource`、`FileSystemResource` 和 `UrlResource` 等。
 
-### 四、接口源码
+### 五、接口源码
 
 `InputStreamSource` 是一个简单的接口，用于提供一个输入流。它被设计为可以多次返回一个新的、未读取的输入流，这对于那些需要多次读取输入流的API。
 
@@ -154,17 +159,17 @@ public interface Resource extends InputStreamSource {
 }
 ```
 
-### 五、主要实现
+### 六、主要实现
 
-1. `ClassPathResource`
+1. **`ClassPathResource`**
    + 用于加载 classpath 下的资源。
-2. `FileSystemResource`
+2. **`FileSystemResource`**
    + 用于访问文件系统中的资源。
-3. `UrlResource`
+3. **`UrlResource`**
    + 用于基于 URL 的资源。
-4. `ServletContextResource`
+4. **`ServletContextResource`**
    + 用于 Web 应用中的资源。
-5. `ByteArrayResource` & `InputStreamResource`
+5. **`ByteArrayResource`** & **`InputStreamResource`**
    + 基于内存和流的资源表示。
 
 ~~~mermaid
@@ -221,7 +226,7 @@ classDiagram
 
 ~~~
 
-### 六、最佳实践
+### 七、最佳实践
 
 **`ClassPathResource`**
 
@@ -308,7 +313,7 @@ public class InputStreamResourceDemo {
 }
 ```
 
-### 七、与其他组件的关系
+### 八、与其他组件的关系
 
 1. **`BeanFactory&ApplicationContext`**
    + `BeanFactory`和应用上下文`ApplicationContext`在实例化和配置Bean时通常需要访问资源。`Resource` 接口提供了一种统一的方式来加载资源文件，这对于配置和初始化Bean非常有用。Bean定义中可以包含资源引用，使Bean能够使用这些资源。
@@ -319,13 +324,13 @@ public class InputStreamResourceDemo {
 3. **`PropertyPlaceholderConfigurer`**
    + `PropertyPlaceholderConfigurer`是Spring框架中用于替换属性占位符的类。它可以将属性值从资源文件中读取，然后替换配置文件中的占位符。这是通过 `locations` 属性指定的资源文件实现的。
 
-4. **`MVC框架`**
+4. **MVC框架**
    + Spring的MVC框架（如Spring MVC）通常需要处理文件上传和静态资源。`Resource` 接口及其实现可以用于管理和提供这些资源。`Resource`接口与`ResourceLoader`一起被用于加载静态资源，例如图像、样式表和JavaScript文件。
 
-5. **`自定义资源加载和处理`**
+5. **自定义资源加载和处理**
    + 我们自己也可以使用 `Resource` 接口自定义资源加载和处理逻辑。例如，我们可以创建一个自定义的 `Resource` 实现，用于加载资源文件，执行特定的处理逻辑，然后将处理后的资源提供给应用程序。
 
-### 八、常见问题
+### 九、常见问题
 
 1. **如何选择合适的 `Resource` 实现？**
    - `ClassPathResource`: 用于访问类路径下的资源。

@@ -22,19 +22,9 @@ public class GroovyBeanDefinitionReaderDemo {
         // 加载 Groovy 文件并注册 Bean 定义
         reader.loadBeanDefinitions(new ClassPathResource("my-beans.groovy"));
 
-        while (true){
-            // 获取MyService
-            MyService myService = factory.getBean(MyService.class);
-            // 打印消息
-            myService.showMessage();
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            reader.loadBeanDefinitions(new ClassPathResource("my-beans.groovy"));
-        }
+        // 获取MyService
+        MyService myService = factory.getBean(MyService.class);
+        // 打印消息
+        myService.showMessage();
     }
 }

@@ -1,30 +1,35 @@
 ## ResourceLoader
 
 - [ResourceLoader](#resourceloader)
-  - [一、知识储备](#一知识储备)
-  - [二、基本描述](#二基本描述)
-  - [三、主要功能](#三主要功能)
-  - [四、接口源码](#四接口源码)
-  - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、与其他组件的关系](#七与其他组件的关系)
-  - [八、常见问题](#八常见问题)
+  - [一、基本信息](#一基本信息)
+  - [二、知识储备](#二知识储备)
+  - [三、基本描述](#三基本描述)
+  - [四、主要功能](#四主要功能)
+  - [五、接口源码](#五接口源码)
+  - [六、主要实现](#六主要实现)
+  - [七、最佳实践](#七最佳实践)
+  - [八、与其他组件的关系](#八与其他组件的关系)
+  - [九、常见问题](#九常见问题)
 
 
-### 一、知识储备
+### 一、基本信息
+
+✒️ **作者** - Lex 📝 **博客** [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
+
+### 二、知识储备
 
 1. **Spring 资源抽象**
-   - `org.springframework.core.io.Resource` 接口及其各种实现 [点击查看Resource接口](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource)。
+   - [`Resource`](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 接口及其各种实现。
 2. **路径和模式解析**
    - Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/example/**/*.xml`。
 3. **理解不同的资源类型**
    - 文件资源、类路径资源、URL 资源、JAR 中的资源等。
 
-### 二、基本描述
+### 三、基本描述
 
 `org.springframework.core.io.ResourceLoader` 是 Spring 框架中的一个关键接口，它定义了如何获取资源（例如类路径资源、文件系统资源或网页资源）的策略。这个接口是 Spring 资源加载抽象的核心，使得应用程序可以从不同的资源位置以统一的方式加载资源。
 
-### 三、主要功能
+### 四、主要功能
 
 1. **统一资源加载**
    - `ResourceLoader` 提供了一个标准化的方法来加载资源，不论资源是存放在类路径、文件系统、网络URL还是其他位置。
@@ -39,7 +44,7 @@
 6. **内置实现与整合**
    - Spring 提供了默认的 `ResourceLoader` 实现，如 `DefaultResourceLoader`。但更重要的是，`org.springframework.context.ApplicationContext` 也实现了 `ResourceLoader`，这意味着 Spring 上下文本身就是一个资源加载器。
 
-### 四、接口源码
+### 五、接口源码
 
 `ResourceLoader` 接口为 Spring 框架定义了资源加载策略。它提供了获取资源的方法，并公开了其使用的 `ClassLoader`。通过这种策略，资源可以从各种来源（如类路径、文件系统等）以统一方式加载。这提供了资源加载的灵活性和一致性，并支持各种资源描述符，如 URL、类路径等。此外，它还允许对资源句柄进行多次重新使用和读取。
 
@@ -127,11 +132,11 @@ public interface ResourcePatternResolver extends ResourceLoader {
 }
 ```
 
-### 五、主要实现
+### 六、主要实现
 
-1. `DefaultResourceLoader`
+1. **`DefaultResourceLoader`**
    + 这是基本的资源加载器实现。它可以处理 "classpath:" 前缀的资源，如果没有提供这样的前缀，它会尝试使用类加载器或文件系统来加载资源。
-2. `PathMatchingResourcePatternResolver`
+2. **`PathMatchingResourcePatternResolver`**
    + 这个类不仅实现了 `ResourceLoader` 接口，还实现了 `ResourcePatternResolver` 接口。它扩展了 `DefaultResourceLoader` 的功能，支持 "classpath*:" 这样的模式来加载匹配的所有资源。
 
 ~~~mermaid
@@ -162,7 +167,7 @@ classDiagram
 
 ~~~
 
-### 六、最佳实践
+### 七、最佳实践
 
 **`DefaultResourceLoader`**
 
@@ -241,7 +246,7 @@ File = myfile2.txt
 File = myfile3.txt
 ```
 
-### 七、与其他组件的关系
+### 八、与其他组件的关系
 
 1. **`ApplicationContext`**
    + 所有的 Spring `ApplicationContext` 都实现了 `ResourceLoader`。这意味着我们可以使用 Spring 上下文本身来加载资源。
@@ -264,7 +269,7 @@ File = myfile3.txt
 7. **`PathMatchingResourcePatternResolver`**
    + 它是 `ResourcePatternResolver` 的一个实现，它扩展了 `ResourceLoader` 来处理以 "classpath*:" 开头的资源模式，这允许加载所有匹配的资源，而不仅仅是第一个找到的资源。
 
-### 八、常见问题
+### 九、常见问题
 
 1. **如何加载类路径资源？**
    - 使用前缀 "classpath:"，例如：`loader.getResource("classpath:myconfig.xml")`。
