@@ -4,19 +4,23 @@
   - [一、知识储备](#一知识储备)
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
-  - [四、主要实现](#四主要实现)
-  - [五、最佳实践](#五最佳实践)
+  - [四、最佳实践](#四最佳实践)
+  - [五、时序图](#五时序图)
   - [六、源码分析](#六源码分析)
   - [七、与其他组件的关系](#七与其他组件的关系)
   - [八、常见问题](#八常见问题)
 
-
 ### 一、知识储备
 
-1. **Bean定义**
-   + 了解Bean的概念以及如何定义和配置Bean是非常重要的。这包括Bean的ID、类名、属性注入、依赖关系等。
-2. **`DocumentLoader`**
-   + `XmlBeanDefinitionReader`依赖于`DocumentLoader`来加载和解析XML配置文件，以便可以将XML文件中的Bean定义信息转化为Spring容器内部的Bean定义对象。 [点击查看DocumentLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-documentLoader)
+1. **`Resource`**
+   - `Resource` 代表一个资源，可以是文件、类路径上的文件、URL 等。它提供了对资源的抽象和访问方法。
+   - [点击查看Resource接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource)
+2. **`ResourceLoader`**
+   - `ResourceLoader` 可以用于获取资源，这些资源可以是文件、类路径上的资源、URL、甚至是远程资源。它提供了一种统一的方式来加载资源，无论这些资源位于何处。
+   - [点击查看ResourceLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-resourceLoader)
+3. **`DocumentLoader`**
+   + `XmlBeanDefinitionReader`依赖于`DocumentLoader`来加载和解析XML配置文件，以便可以将XML文件中的Bean定义信息转化为Spring容器内部的Bean定义对象。
+   +  [点击查看DocumentLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-documentLoader)
 
 ### 二、基本描述
 
@@ -31,11 +35,7 @@
 3. **注册Bean定义**
    + 一旦`XmlBeanDefinitionReader`成功解析XML文件中的Bean定义信息，它会将这些信息注册到Spring容器的Bean工厂，以便容器能够创建和管理这些Bean实例。
 
-### 四、主要实现
-
-`BeanDefinitionHolder` 不是一个接口，也不需要其他实现类。它是一个具体的类，用于加载和解析XML格式的Bean定义配置文件，将配置文件中定义的Bean元数据信息提取为Spring容器内部的Bean定义对象，进而实现IOC容器的构建和管理。
-
-### 五、最佳实践
+### 四、最佳实践
 
 首先创建了一个Spring容器（`DefaultListableBeanFactory`），然后使用`XmlBeanDefinitionReader`来加载和解析名为"`beans.xml`"的XML配置文件，将其中定义的Bean元数据信息注册到容器中。随后，通过容器获取名为"`myBean`"的Bean实例，最后将该Bean实例打印出来。这样的操作实现了Spring容器的初始化、XML配置文件的解析，以及Bean的获取和使用。
 
@@ -96,6 +96,73 @@ public class MyBean {
 }
 ```
 
+### 五、时序图
+
+~~~mermaid
+sequenceDiagram
+autonumber
+Title: XmlBeanDefinitionReader时序图
+
+XmlBeanDefinitionReaderDemo->>XmlBeanDefinitionReader:loadBeanDefinitions(resource)
+XmlBeanDefinitionReader->>XmlBeanDefinitionReader:loadBeanDefinitions(encodedResource)
+note over XmlBeanDefinitionReader: 解码资源并加载Bean定义
+
+XmlBeanDefinitionReader->>XmlBeanDefinitionReader:doLoadBeanDefinitions(inputSource,resource)
+note over XmlBeanDefinitionReader: 使用InputSource加载Bean定义
+
+XmlBeanDefinitionReader->>XmlBeanDefinitionReader:doLoadDocument(inputSource,resource)
+note over XmlBeanDefinitionReader: 调用doLoadDocument方法解析XML
+
+XmlBeanDefinitionReader->>DefaultDocumentLoader:loadDocument(...)
+
+DefaultDocumentLoader->>XmlBeanDefinitionReader:返回Document
+
+XmlBeanDefinitionReader->>XmlBeanDefinitionReader:registerBeanDefinitions(doc,resource)
+note over XmlBeanDefinitionReader: 调用registerBeanDefinitions方法注册Bean定义
+
+
+XmlBeanDefinitionReader->>DefaultBeanDefinitionDocumentReader:createBeanDefinitionDocumentReader()
+note over XmlBeanDefinitionReader,DefaultBeanDefinitionDocumentReader: 创建BeanDefinitionDocumentReader
+DefaultBeanDefinitionDocumentReader->>XmlBeanDefinitionReader:返回documentReader
+
+XmlBeanDefinitionReader->>XmlReaderContext:new XmlReaderContext()
+note over XmlBeanDefinitionReader,XmlReaderContext: 创建XmlReaderContext
+XmlReaderContext->>XmlBeanDefinitionReader:返回readerContext
+
+XmlBeanDefinitionReader->>DefaultBeanDefinitionDocumentReader:registerBeanDefinitions(doc,readerContext)
+note over XmlBeanDefinitionReader,DefaultBeanDefinitionDocumentReader: 调用registerBeanDefinitions注册Bean定义
+
+loop Every minute
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:doRegisterBeanDefinitions(root)
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:parseBeanDefinitions(root,delegate)
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:parseDefaultElement(ele,delegate)
+
+    alt 如果是import标签
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:importBeanDefinitionResource(ele)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理import标签
+
+    else 如果是alias标签
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:processAliasRegistration(ele)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理alias标签
+
+    else 如果是bean标签
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:processBeanDefinition(ele, delegate)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理bean标签
+    DefaultBeanDefinitionDocumentReader->>XmlBeanDefinitionReader:getRegistry()
+    note over DefaultBeanDefinitionDocumentReader,XmlBeanDefinitionReader: 获取BeanDefinitionRegistry
+    XmlBeanDefinitionReader->>DefaultBeanDefinitionDocumentReader:返回BeanDefinitionRegistry
+    DefaultBeanDefinitionDocumentReader->>BeanDefinitionReaderUtils:registerBeanDefinition(definitionHolder,registry)
+    note over DefaultBeanDefinitionDocumentReader,BeanDefinitionReaderUtils: 注册Bean定义
+    BeanDefinitionReaderUtils->>BeanDefinitionReaderUtils:registerBeanDefinition(beanName,beanDefinition)
+    note over BeanDefinitionReaderUtils: 注册Bean定义到容器
+
+    else 如果是beans标签
+    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:doRegisterBeanDefinitions(ele)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理beans标签(重新递归)
+    end
+end
+~~~
+
 ### 六、源码分析
 
 在`org.springframework.beans.factory.xml.XmlBeanDefinitionReader#loadBeanDefinitions(resource)`方法中，又调用了 `loadBeanDefinitions(encodedResource)` 方法，同时将 `resource` 包装成一个 `EncodedResource` 对象。
@@ -154,7 +221,9 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 }
 ```
 
-在`org.springframework.beans.factory.xml.XmlBeanDefinitionReader#doLoadDocument`方法中，主要由`DocumentLoader`执行实际的XML加载和解析操作，并将解析后的`Document`对象返回。[点击查看DocumentLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-documentLoader)
+在`org.springframework.beans.factory.xml.XmlBeanDefinitionReader#doLoadDocument`方法中，主要由`DocumentLoader`执行实际的XML加载和解析操作，并将解析后的`Document`对象返回。
+
++ [点击查看DocumentLoader接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-documentLoader)
 
 ```java
 protected Document doLoadDocument(InputSource inputSource, Resource resource) throws Exception {
