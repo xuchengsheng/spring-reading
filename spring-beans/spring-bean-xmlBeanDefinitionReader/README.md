@@ -114,6 +114,7 @@ XmlBeanDefinitionReader->>XmlBeanDefinitionReader:doLoadDocument(inputSource,res
 note over XmlBeanDefinitionReader: 调用doLoadDocument方法解析XML
 
 XmlBeanDefinitionReader->>DefaultDocumentLoader:loadDocument(...)
+note over XmlBeanDefinitionReader,DefaultDocumentLoader: 加载XML
 
 DefaultDocumentLoader->>XmlBeanDefinitionReader:返回Document
 
@@ -134,8 +135,13 @@ note over XmlBeanDefinitionReader,DefaultBeanDefinitionDocumentReader: 调用reg
 
 loop Every minute
     DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:doRegisterBeanDefinitions(root)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理beans标签
+    
     DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:parseBeanDefinitions(root,delegate)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理“import”、“alias”、“bean”标签
+    
     DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:parseDefaultElement(ele,delegate)
+    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 解析默认元素
 
     alt 如果是import标签
     DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:importBeanDefinitionResource(ele)
@@ -146,16 +152,17 @@ loop Every minute
     note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理alias标签
 
     else 如果是bean标签
-    DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:processBeanDefinition(ele, delegate)
-    note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理bean标签
-    DefaultBeanDefinitionDocumentReader->>XmlBeanDefinitionReader:getRegistry()
-    note over DefaultBeanDefinitionDocumentReader,XmlBeanDefinitionReader: 获取BeanDefinitionRegistry
-    XmlBeanDefinitionReader->>DefaultBeanDefinitionDocumentReader:返回BeanDefinitionRegistry
-    DefaultBeanDefinitionDocumentReader->>BeanDefinitionReaderUtils:registerBeanDefinition(definitionHolder,registry)
-    note over DefaultBeanDefinitionDocumentReader,BeanDefinitionReaderUtils: 注册Bean定义
-    BeanDefinitionReaderUtils->>BeanDefinitionReaderUtils:registerBeanDefinition(beanName,beanDefinition)
-    note over BeanDefinitionReaderUtils: 注册Bean定义到容器
-
+        rect rgb(207,207,207)
+            DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:processBeanDefinition(ele, delegate)
+            note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理bean标签
+            DefaultBeanDefinitionDocumentReader->>XmlBeanDefinitionReader:getRegistry()
+            note over DefaultBeanDefinitionDocumentReader,XmlBeanDefinitionReader: 获取BeanDefinitionRegistry
+            XmlBeanDefinitionReader->>DefaultBeanDefinitionDocumentReader:返回BeanDefinitionRegistry
+            DefaultBeanDefinitionDocumentReader->>BeanDefinitionReaderUtils:registerBeanDefinition(definitionHolder,registry)
+            note over DefaultBeanDefinitionDocumentReader,BeanDefinitionReaderUtils: 注册Bean定义
+            BeanDefinitionReaderUtils->>BeanDefinitionReaderUtils:registerBeanDefinition(beanName,beanDefinition)
+            note over BeanDefinitionReaderUtils: 注册Bean定义到容器
+		end
     else 如果是beans标签
     DefaultBeanDefinitionDocumentReader->>DefaultBeanDefinitionDocumentReader:doRegisterBeanDefinitions(ele)
     note over DefaultBeanDefinitionDocumentReader,DefaultBeanDefinitionDocumentReader: 处理beans标签(重新递归)
