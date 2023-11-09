@@ -20,7 +20,7 @@
 1. **XML 解析技术**
    + 了解 XML 解析技术，如 DOM（文档对象模型）和 SAX（简单 API for XML）。`DocumentLoader` 通常使用 DOM 来加载和解析 XML 文档，因此理解 DOM 操作是重要的。
 2. **资源加载**
-   + 了解如何使用 Java 资源加载机制，例如 [`ResourceLoader`](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-resourceLoader) 和 [`Resource`](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource)，来获取 XML 配置文件。Spring 使用这些机制来加载配置文件。
+   + 了解如何使用 Java 资源加载机制，例如 [ResourceLoader](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource-resourceLoader) 和 [Resource](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource)，来获取 XML 配置文件。Spring 使用这些机制来加载配置文件。
 
 ### 三、基本描述
 

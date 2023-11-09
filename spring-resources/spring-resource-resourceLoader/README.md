@@ -19,7 +19,7 @@
 ### 二、知识储备
 
 1. **Spring 资源抽象**
-   - [`Resource`](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 接口及其各种实现。
+   - [Resource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 接口及其各种实现。
 2. **路径和模式解析**
    - Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/example/**/*.xml`。
 3. **理解不同的资源类型**
