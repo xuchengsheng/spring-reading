@@ -314,23 +314,139 @@ protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate d
 private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {
     // 根据元素的名称进行不同的处理
     if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
-        // 如果是 <import> 元素，导入其他Bean定义资源
+        // 步骤1: 如果是 <import> 元素，导入其他Bean定义资源
         importBeanDefinitionResource(ele);
     }
     else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
-        // 如果是 <alias> 元素，处理Bean的别名注册
+        // 步骤2: 如果是 <alias> 元素，处理Bean的别名注册
         processAliasRegistration(ele);
     }
     else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
-        // 如果是 <bean> 元素，处理普通Bean定义
+        // 步骤3: 如果是 <bean> 元素，处理普通Bean定义
         processBeanDefinition(ele, delegate);
     }
     else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
-        // 如果是 <beans> 元素，递归注册内部Bean定义
+        // 步骤4: 如果是 <beans> 元素，递归注册内部Bean定义
         doRegisterBeanDefinitions(ele);
     }
 }
 ```
+
+> `org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#parseDefaultElement`步骤1]
+
+在`org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#importBeanDefinitionResource`方法中，主要是对XML文档中import元素指定的其他资源进行解析和加载，从而实现多个XML配置文件的合并与包含功能。
+
+```java
+protected void importBeanDefinitionResource(Element ele) {
+    // 获取import元素的resource属性值
+    String location = ele.getAttribute(RESOURCE_ATTRIBUTE);
+    
+    // 检查resource属性值是否为空字符串
+    if (!StringUtils.hasText(location)) {
+        // 抛出错误信息
+        getReaderContext().error("Resource location must not be empty", ele);
+        // 返回空结果
+        return;
+    }
+    
+    // 解析resource属性值中的占位符变量
+    location = getReaderContext().getEnvironment().resolveRequiredPlaceholders(location);
+    
+    // 创建一个新的LinkedHashSet，用于存储所有解析后的实际资源
+    Set<Resource> actualResources = new LinkedHashSet<>(4);
+    
+    // 判断resource属性值是否为绝对路径
+    boolean absoluteLocation = false;
+    try {
+        // 如果resource属性值符合URL格式，或者可以被转换为一个绝对URI，那么认为它是一个绝对路径
+        absoluteLocation = ResourcePatternUtils.isUrl(location) || ResourceUtils.toURI(location).isAbsolute();
+    } catch (URISyntaxException ex) {
+        // ... [代码部分省略以简化]
+    }
+    
+    // 如果resource属性值是一个绝对路径
+    if (absoluteLocation) {
+        try {
+            // 使用父类的loadBeanDefinitions方法加载资源，并将结果添加到actualResources集合中
+            int importCount = getReaderContext().getReader().loadBeanDefinitions(location, actualResources);
+            
+            // ... [代码部分省略以简化]
+        } catch (BeanDefinitionStoreException ex) {
+            // ... [代码部分省略以简化]
+        }
+    } else {
+        // 如果resource属性值不是一个绝对路径
+        try {
+            int importCount;
+            // 尝试在当前文件所在的目录下找到resource属性值所指向的资源
+            Resource relativeResource = getReaderContext().getResource().createRelative(location);
+            if (relativeResource.exists()) {
+                // 加载找到的资源，并将结果添加到actualResources集合中
+                importCount = getReaderContext().getReader().loadBeanDefinitions(relativeResource);
+                actualResources.add(relativeResource);
+            } else {
+                // 如果在当前文件所在的目录下找不到resource属性值所指向的资源，那么认为resource属性值是一个相对于当前文件所在位置的相对路径
+                String baseLocation = getReaderContext().getResource().getURL().toString();
+                // 调整resource属性值，使其成为一个绝对路径
+                String adjustedLocation = StringUtils.applyRelativePath(baseLocation, location);
+                
+                // 加载调整后的资源，并将结果添加到actualResources集合中
+                importCount = getReaderContext().getReader().loadBeanDefinitions(adjustedLocation, actualResources);
+            }
+            
+            // ... [代码部分省略以简化]
+        } catch (IOException | BeanDefinitionStoreException ex) {
+            // ... [代码部分省略以简化]
+        }
+    }
+    
+    // 将actualResources集合中的所有资源转换为数组，并调用fireImportProcessed方法通知监听器已经完成了一次import操作
+    Resource[] actResArray = actualResources.toArray(new Resource[0]);
+    getReaderContext().fireImportProcessed(location, actResArray, extractSource(ele));
+}
+```
+
+> `org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#parseDefaultElement`步骤2]
+
+在`org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#processAliasRegistration`方法中，主要处理XML配置文件中的alias元素的方法。alias元素用于创建别名，即为已有的Bean ID分配一个新名称。这样，我们就可以在Bean引用时使用新的别名而不是原始的Bean ID。
+
+```java
+protected void processAliasRegistration(Element ele) {
+    // 获取alias元素的name属性值和alias属性值
+    String name = ele.getAttribute(NAME_ATTRIBUTE);
+    String alias = ele.getAttribute(ALIAS_ATTRIBUTE);
+    
+    // 判断两个属性值是否都有效
+    boolean valid = true;
+    if (!StringUtils.hasText(name)) {
+        // 抛出错误信息
+        getReaderContext().error("Name must not be empty", ele);
+        // 设置标志位，表明该别名注册无效
+        valid = false;
+    }
+    if (!StringUtils.hasText(alias)) {
+        // 抛出错误信息
+        getReaderContext().error("Alias must not be empty", ele);
+        // 设置标志位，表明该别名注册无效
+        valid = false;
+    }
+    
+    // 如果两个属性值都有效
+    if (valid) {
+        try {
+            // 调用Registry接口的registerAlias方法为原始Bean ID注册一个别名
+            getReaderContext().getRegistry().registerAlias(name, alias);
+        } catch (Exception ex) {
+            // ... [代码部分省略以简化]
+        }
+        
+        // 调用fireAliasRegistered方法通知监听器已经完成了一次别名注册操作
+        getReaderContext().fireAliasRegistered(name, alias, extractSource(ele));
+    }
+}
+```
+
+> [`org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#parseDefaultElement`步骤3]
 
 在`org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader#processBeanDefinition`方法中，主要是解析 `<bean>` 元素，注册Bean定义到Spring容器。
 
