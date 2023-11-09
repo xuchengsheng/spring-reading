@@ -16,6 +16,7 @@
         <module>spring-resource</module>
         <module>spring-resource-resourceLoader</module>
         <module>spring-resource-documentLoader</module>
+        <module>spring-resource-propertiesPersister</module>
     </modules>
 
 </project>

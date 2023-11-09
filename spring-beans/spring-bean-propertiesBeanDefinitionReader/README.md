@@ -5,17 +5,20 @@
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
   - [四、最佳实践](#四最佳实践)
-  - [五、源码分析](#五源码分析)
-  - [六、与其他组件的关系](#六与其他组件的关系)
-  - [七、常见问题](#七常见问题)
+  - [五、时序图](#五时序图)
+  - [六、源码分析](#六源码分析)
+  - [七、与其他组件的关系](#七与其他组件的关系)
+  - [八、常见问题](#八常见问题)
 
 
 ### 一、知识储备
 
-1. **Bean定义**
-   - 了解Bean的概念以及如何定义和配置Bean是非常重要的。这包括Bean的ID、类名、属性注入、依赖关系等。
-2. **属性文件(.properties)**
-   + 了解属性文件的基本格式和规则，将帮助我们正确编写属性文件，以便 `PropertiesBeanDefinitionReader` 能够正确地解析其中的配置信息并加载到 Spring 容器中。
+1. `Resource`
+   - `Resource` 代表一个资源，可以是文件、类路径上的文件、URL 等。它提供了对资源的抽象和访问方法。
+   - [点击查看Resource接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-resources/spring-resource)
+2. `BeanDefinition`
+   - `BeanDefinition` 是 Spring 中描述和管理 Bean 配置的核心概念，它包括了有关 Bean 的信息，如类名、作用域、依赖关系、初始化方法等，而 `AnnotatedBeanDefinitionReader` 的主要任务之一是将使用注解配置的类转化为 `BeanDefinition` 并注册到 Spring 容器中。
+   - [点击查看BeanDefinition接口](https://github.com/xuchengsheng/spring-reading/tree/master/spring-beans/spring-bean-beanDefinition)
 
 ### 二、基本描述
 
@@ -94,7 +97,25 @@ myBean = MyBean{message='hello world', hashCode='0x6646153'}
 myBean = MyBean{message='hello world', hashCode='0x45DD4EDA'}
 ```
 
-### 五、源码分析
+### 五、时序图
+
+~~~mermaid
+sequenceDiagram
+autonumber
+Title: PropertiesBeanDefinitionReader时序图
+
+PropertiesBeanDefinitionReaderDemo->>PropertiesBeanDefinitionReader:loadBeanDefinitions(resource)
+Note right of PropertiesBeanDefinitionReaderDemo: 从指定的属性文件加载bean定义
+PropertiesBeanDefinitionReader->>PropertiesBeanDefinitionReader:loadBeanDefinitions(encodedResource,prefix)
+Note over PropertiesBeanDefinitionReader: 从指定的属性文件加载bean定义
+PropertiesBeanDefinitionReader->>PropertiesBeanDefinitionReader:registerBeanDefinitions(map,prefix,resourceDescription)
+Note over PropertiesBeanDefinitionReader: 注册Map中包含的bean定义
+PropertiesBeanDefinitionReader->>DefaultListableBeanFactory:registerBeanDefinition(beanName,beanDefinition)
+Note over PropertiesBeanDefinitionReader,DefaultListableBeanFactory: 注册Bean定义到容器
+
+~~~
+
+### 六、源码分析
 
 在`org.springframework.beans.factory.support.PropertiesBeanDefinitionReader#loadBeanDefinitions(resource)`方法中，又调用 `loadBeanDefinitions(encodedResource,prefix)` 方法来实际加载 Bean 定义。
 
@@ -230,14 +251,14 @@ protected void registerBeanDefinition(String beanName, Map<?, ?> map, String pre
 }
 ```
 
-### 六、与其他组件的关系
+### 七、与其他组件的关系
 
 1. **独立应用程序**
    + 在一些独立的 Spring 应用程序中，我们可以使用 `PropertiesBeanDefinitionReader` 来动态加载 Bean 定义，从而使应用程序的配置更加灵活。这样，应用程序可以根据需要动态配置和管理 Bean。
 2. **基于属性文件的配置**
    + 一些应用程序采用基于属性文件的配置方式，将各种 Bean 的配置信息存储在属性文件中。`PropertiesBeanDefinitionReader` 可以用来加载这些配置文件，并将配置信息转化为 Spring 的 Bean 定义。
 
-### 七、常见问题
+### 八、常见问题
 
 1. **如何使用 `PropertiesBeanDefinitionReader`？**
    + 使用 `PropertiesBeanDefinitionReader` 需要创建一个实例并与 Spring 的 Bean 工厂（如 `DefaultListableBeanFactory`）结合使用。然后，使用 `loadBeanDefinitions` 方法加载属性文件中的配置，并将 Bean 定义注册到容器中。
