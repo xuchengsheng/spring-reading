@@ -60,6 +60,24 @@
 
 ## 🌱Spring 源码阅读系列
 
+> ### 👑 基础知识
+
+*Spring 框架中的资源加载与访问、元数据操作、Bean定义与注册，以及Bean定义的读取与扫描。*
+
+- [**资源加载Resource**](spring-resources/spring-resource/README.md) - 处理 Spring 框架中与资源加载相关的功能。
+- [**资源加载器ResourceLoader**](spring-resources/spring-resource-resourceLoader/README.md) - 实现资源加载器接口，用于获取应用程序的资源。
+- [**文档加载器DocumentLoader**](spring-resources/spring-resource-documentLoader/README.md) - 负责加载文档资源，支持不同文档格式的加载。
+- [**元数据读取MetadataReader**](spring-metadata/spring-metadata-metadataReader/README.md) - 提供对类元数据的访问和读取功能。
+- [**注解元数据AnnotationMetadata**](spring-metadata/spring-metadata-annotationMetadata/README.md) - 处理与注解相关的元数据，支持对注解属性的访问。
+- [**Bean定义BeanDefinition**](spring-beans/spring-bean-beanDefinition/README.md) - 定义 Spring 容器中的 Bean，包括属性、构造函数等信息。
+- [**Bean定义持有者BeanDefinitionHolder**](spring-beans/spring-bean-beanDefinitionHolder/README.md) - 持有 BeanDefinition 对象以及与之关联的名称和别名。
+- [**Bean定义注册器BeanDefinitionRegistry**](spring-beans/spring-bean-beanDefinitionRegistry/README.md) - 用于注册和管理 Bean 定义的接口。
+- [**XML Bean定义读取器XmlBeanDefinitionReader**](spring-beans/spring-bean-xmlBeanDefinitionReader/README.md) - 从 XML 文件中读取并注册 Bean 定义。
+- [**属性文件Bean定义读取器PropertiesBeanDefinitionReader**](spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md) - 从属性文件中读取并注册 Bean 定义。
+- [**Groovy脚本Bean定义读取器GroovyBeanDefinitionReader**](spring-beans/spring-bean-groovyBeanDefinitionReader/README.md) - 从 Groovy 脚本中读取并注册 Bean 定义。
+- [**注解Bean定义读取器AnnotatedBeanDefinitionReader**](spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md) - 从注解中读取并注册 Bean 定义。
+- [**类路径Bean定义扫描器ClassPathBeanDefinitionScanner**](spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md) - 扫描类路径以注册 Bean 定义。
+
 > ### 🔅 核心方法
 
 *Spring 框架背后的动力，这些核心方法确保了依赖注入、Bean 生命周期管理、配置解析和许多其他关键功能。*
