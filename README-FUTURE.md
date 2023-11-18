@@ -65,9 +65,14 @@
      - [Resource](spring-resources/spring-resource/README.md)
      - [ResourceLoader](spring-resources/spring-resource-resourceLoader/README.md)
      - [DocumentLoader](spring-resources/spring-resource-documentLoader/README.md)
-   - 元数据
+   - 元数据与过滤
      - [MetadataReader](spring-metadata/spring-metadata-metadataReader/README.md)
      - [AnnotationMetadata](spring-metadata/spring-metadata-annotationMetadata/README.md)
+     - TypeFilter
+   - 条件注册
+     - Condition
+     - ConditionContext
+     - ConfigurationCondition
    - Bean定义与注册
      - [BeanDefinition](spring-beans/spring-bean-beanDefinition/README.md)
      - [BeanDefinitionHolder](spring-beans/spring-bean-beanDefinitionHolder/README.md)
@@ -82,12 +87,6 @@
      - ImportBeanDefinitionRegistrar
      - ImportSelector
      - DeferredImportSelector
-   - Bean定义过滤
-     - TypeFilter
-     - ConditionEvaluator
-     - Condition
-     - ConditionContext
-     - ConfigurationCondition
    - 属性编辑与类型转换
      - PropertyEditor
      - ConversionService
@@ -95,7 +94,7 @@
    - 表达式语言(SpEL)
      - Expression
      - ExpressionParser
-   	 - EvaluationContext
+      - EvaluationContext
      - PropertyAccessor
      - MethodResolver
      - TypeLocator
