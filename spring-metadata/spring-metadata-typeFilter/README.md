@@ -18,13 +18,13 @@
 ### 二、知识储备
 
 1. **Resource接口**
-   - [Resource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 是用于访问资源的抽象接口。资源可以是文件、类路径中的文件、URL 等等。我们需要了解如何使用 `Resource` 接口来获取资源的输入流、文件路径等信息。
+   + [Resource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 是用于访问资源的抽象接口。资源可以是文件、类路径中的文件、URL 等等。我们需要了解如何使用 `Resource` 接口来获取资源的输入流、文件路径等信息。
 2. **AnnotationMetadata接口**
-   - [AnnotationMetadata](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata) 是Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。
+   + [AnnotationMetadata](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata) 是Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。
 3. **MetadataReader接口**
-   - [MetadataReader](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-metadataReader)是Spring 提供的一个接口，用于读取类的元数据信息。它可以用于扫描类文件，获取类的基本信息，如类名、类的注解等。在注解驱动的开发中，`MetadataReader` 通常用于扫描包中的类，并从这些类中提取注解信息，以便配置 Spring Bean。
+   + [MetadataReader](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-metadataReader)是Spring 提供的一个接口，用于读取类的元数据信息。它可以用于扫描类文件，获取类的基本信息，如类名、类的注解等。在注解驱动的开发中，`MetadataReader` 通常用于扫描包中的类，并从这些类中提取注解信息，以便配置 Spring Bean。
 4. **路径和模式解析**
-   - Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/xcs/spring/**/*.xml`。
+   + Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/xcs/spring/**/*.xml`。
 
 ### 三、基本描述
 
@@ -74,13 +74,13 @@ public interface TypeFilter {
 ### 六、主要实现
 
 1. **AnnotationTypeFilter（基于注解的过滤器）**
-   - 匹配带有指定注解的类。在组件扫描期间，通过比对类的注解信息，确定是否将该类包含在扫描结果中。
+   + 匹配带有指定注解的类。在组件扫描期间，通过比对类的注解信息，确定是否将该类包含在扫描结果中。
 2. **AssignableTypeFilter（基于类型的过滤器）：**
-   - 匹配指定类型的子类或实现类。通过与目标类的继承关系比对，确定是否将该类纳入组件扫描的结果中。
+   + 匹配指定类型的子类或实现类。通过与目标类的继承关系比对，确定是否将该类纳入组件扫描的结果中。
 3. **AspectJTypeFilter（基于AspectJ表达式的过滤器）：**
-   - 使用AspectJ表达式进行匹配。它允许通过编写AspectJ风格的表达式，灵活地选择需要被扫描的类。
+   + 使用AspectJ表达式进行匹配。它允许通过编写AspectJ风格的表达式，灵活地选择需要被扫描的类。
 4. **RegexPatternTypeFilter（基于正则表达式的过滤器）：**
-   - 使用正则表达式来匹配类的名称。通过提供一个正则表达式，决定是否将符合条件的类包含在组件扫描的结果中。
+   + 使用正则表达式来匹配类的名称。通过提供一个正则表达式，决定是否将符合条件的类包含在组件扫描的结果中。
 
 ~~~mermaid
 classDiagram
@@ -229,14 +229,14 @@ public class MyService {
 ### 九、常见问题
 
 1. **无法正确匹配类**
-   - 需要确保过滤器的匹配条件（如注解、类型、正则表达式等）与目标类的实际情况一致。检查过滤器的实例化和使用是否正确。
+   + 需要确保过滤器的匹配条件（如注解、类型、正则表达式等）与目标类的实际情况一致。检查过滤器的实例化和使用是否正确。
 2. **自定义的 TypeFilter 不生效**
-   - 确保自定义的 `TypeFilter` 实现正确并且被正确地配置。检查实现中的匹配逻辑是否符合预期。
+   + 确保自定义的 `TypeFilter` 实现正确并且被正确地配置。检查实现中的匹配逻辑是否符合预期。
 3. **包扫描结果为空**
-   - 检查包路径是否正确，确保过滤器条件与目标类匹配。也可以检查类加载器是否正确，以确保可以加载目标类。
+   + 检查包路径是否正确，确保过滤器条件与目标类匹配。也可以检查类加载器是否正确，以确保可以加载目标类。
 4. **多个 TypeFilter 失效**
-   - 确保多个 `TypeFilter` 的使用场景和条件不重叠，否则可能会出现只有一个过滤器生效的情况。
+   + 确保多个 `TypeFilter` 的使用场景和条件不重叠，否则可能会出现只有一个过滤器生效的情况。
 5. **AspectJ 表达式匹配失败：**
    + 确保 AspectJ 表达式正确，并且类加载器可访问相关的类。并检查 `AspectJTypeFilter` 的构造函数中的类加载器是否正确。
 6. **性能问题：**
-   - 在大型项目中，使用 `TypeFilter` 导致性能问题。考虑优化过滤器的实现，或者在适当的情况下缓存扫描结果。可以使用缓存或其他优化技术来减轻性能问题。
+   + 在大型项目中，使用 `TypeFilter` 导致性能问题。考虑优化过滤器的实现，或者在适当的情况下缓存扫描结果。可以使用缓存或其他优化技术来减轻性能问题。
