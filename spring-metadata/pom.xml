@@ -16,6 +16,7 @@
         <module>spring-metadata-metadataReader</module>
         <module>spring-metadata-annotationMetadata</module>
         <module>spring-metadata-typeFilter</module>
+        <module>spring-metadata-condition</module>
     </modules>
 
 </project>

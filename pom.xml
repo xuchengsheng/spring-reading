@@ -28,7 +28,6 @@
         <module>spring-resources</module>
         <module>spring-metadata</module>
         <module>spring-beans</module>
-        <module>spring-condition</module>
     </modules>
 
     <dependencies>
