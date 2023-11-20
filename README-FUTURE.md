@@ -62,7 +62,7 @@
 
 ### IOC容器
 
-<table align="center">
+<table align="left">
     <tr align="center">
         <th>标题</th>
         <th>地址</th>
