@@ -20,12 +20,17 @@
 
 1. **Resource接口**
    - [Resource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 是用于访问资源的抽象接口。资源可以是文件、类路径中的文件、URL 等等。我们需要了解如何使用 `Resource` 接口来获取资源的输入流、文件路径等信息。
+
 2. **AnnotationMetadata接口**
-   - [AnnotationMetadata](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata) 是Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。
+   - [AnnotationMetadata](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata) 是Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 
+
 3. **MetadataReader接口**
    - [MetadataReader](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-metadataReader)是Spring 提供的一个接口，用于读取类的元数据信息。它可以用于扫描类文件，获取类的基本信息，如类名、类的注解等。在注解驱动的开发中，`MetadataReader` 通常用于扫描包中的类，并从这些类中提取注解信息，以便配置 Spring Bean。
+
+
 4. **路径和模式解析**
    - Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/xcs/spring/bean/**/*.xml`。
+
 
 ### 三、基本描述
 
@@ -35,15 +40,19 @@
 
 1. **动态决定Bean的创建**
    + `Condition` 接口的实现类通过实现 `matches` 方法，可以根据运行时的条件判断逻辑，决定是否满足条件，从而决定是否创建特定的Bean。
-  
+
+
 2. **条件化配置类的应用** 
    + 通过 `@Conditional` 注解，`Condition` 接口的实现类可以用于配置类或者配置类中的方法上，从而条件化地应用或排除某个配置。
+
 
 3. **与环境变量和系统属性结合使用** 
    + 可以结合 `ConditionContext` 中的环境变量和系统属性，编写更加复杂的条件判断逻辑，使得Bean的创建或配置的应用更加灵活。
 
+
 4. **支持自定义条件逻辑**
    + 可以根据应用的具体需求自定义实现 `Condition` 接口，实现灵活的条件逻辑，例如基于操作系统、特定的类是否存在于类路径等条件。
+
 
 5. **提高应用的灵活性**
    + 通过条件化机制，可以在不同的环境中配置不同的Bean或应用不同的配置，从而提高应用的灵活性和可配置性。
@@ -84,12 +93,16 @@ public interface Condition {
 
 1. **ProfileCondition**
    + 通过判断运行时的profile信息，决定是否注册组件。例如，可以根据激活的profile选择性地注册特定的Bean。
+
 2. **OnBeanCondition**
    + 根据容器中是否存在某个特定类型的Bean来进行条件判断，决定是否注册组件。这个条件允许根据容器中的Bean的存在与否来决定是否创建某个Bean。
+
 3. **OnClassCondition**
    + 判断类路径中是否存在某个特定的类，决定是否注册组件。通过检查类路径，可以根据类的存在与否来动态控制组件的注册。
+
 4. **OnPropertyCondition** 
    + 根据配置文件中的属性值来进行条件判断，决定是否注册组件。可以根据配置文件中的属性来灵活地配置组件的注册。
+
 5. **ResourceCondition**
    + 判断类路径中是否存在指定资源文件，决定是否注册组件。类似于`OnClassCondition`，但是可以判断任意资源文件的存在与否。
 
@@ -239,15 +252,21 @@ MyBeanB.class不满足条件
 
 1. **条件的匹配时机**
    + 我们可能会想知道条件的匹配是在什么时候发生的。条件是在 bean 的定义注册之前立即进行检查的，因此可以在 Spring 应用上下文初始化之前进行条件匹配。
+
 2. **多个条件的组合**
    + 当需要组合多个条件时，我们可能会疑惑如何更灵活地应用多个条件。Spring 提供了一些组合条件的方式，例如 `@ConditionalOnProperty` 和 `@ConditionalOnExpression`。
+
 3. **条件与配置的关系**
    + 我们可能会困惑条件和配置的关系。条件是用于决定是否注册组件的机制，而配置则是用于配置组件的属性和行为。
+
 4. **自定义条件的实现** 
    + 我们可能想要自定义条件以满足特定的业务需求。这需要实现 `Condition` 接口，并确保在 `matches` 方法中提供适当的条件逻辑。
+
 5. **条件的错误处理** 
    + 当条件判断出现错误时，例如 `matches` 方法中抛出异常，可能会导致注册组件的失败。我们需要注意条件逻辑中的异常处理，以确保不会影响到整个应用的启动。
+
 6. **条件的性能考虑**
    + 如果应用中有大量的条件，可能会影响启动性能。我们需要谨慎设计条件逻辑，以确保在条件数量较多的情况下，应用的启动性能仍然可接受。
+
 7. **条件的动态性**
    + 我们可能关心条件是否支持动态变化。条件是在应用启动时进行一次性的检查，通常不会在运行时动态变化。如果需要更动态的条件判断，可以考虑使用其他机制，如 `Environment` 中的属性。
