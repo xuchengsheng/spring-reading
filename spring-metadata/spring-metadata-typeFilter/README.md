@@ -19,10 +19,13 @@
 
 1. **Resource接口**
    + [Resource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 是用于访问资源的抽象接口。资源可以是文件、类路径中的文件、URL 等等。我们需要了解如何使用 `Resource` 接口来获取资源的输入流、文件路径等信息。
+
 2. **AnnotationMetadata接口**
    + [AnnotationMetadata](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-annotationMetadata) 是Spring 框架中用于处理类上的注解信息的接口，它提供了对类上注解信息的访问和操作方法。 `AnnotatedBeanDefinitionReader` 利用 `AnnotationMetadata` 解析类上的注解信息，并将其转化为 Spring 的 BeanDefinition。
+
 3. **MetadataReader接口**
    + [MetadataReader](https://github.com/xuchengsheng/spring-reading/tree/master/spring-metadata/spring-metadata-metadataReader)是Spring 提供的一个接口，用于读取类的元数据信息。它可以用于扫描类文件，获取类的基本信息，如类名、类的注解等。在注解驱动的开发中，`MetadataReader` 通常用于扫描包中的类，并从这些类中提取注解信息，以便配置 Spring Bean。
+
 4. **路径和模式解析**
    + Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/xcs/spring/**/*.xml`。
 
@@ -34,10 +37,13 @@
 
 1. **自定义过滤逻辑**
    + 我们可以实现 `TypeFilter` 接口，通过覆盖 `match` 方法定义自己的过滤逻辑。这使得可以根据特定的条件，如类的注解、实现的接口或继承关系等，来决定类是否应该被包含在组件扫描的结果中。
+
 2. **组件扫描定制**
    + 在使用 `@ComponentScan` 注解配置类时，可以通过设置 `includeFilters` 和 `excludeFilters` 属性，传入自定义的 `TypeFilter` 实例，从而定制组件扫描的规则。这样可以更精确地控制哪些类应该被纳入 Spring 容器的管理，哪些类应该被排除。
+
 3. **适应复杂应用结构**
    + 对于复杂的应用结构，可能存在不同模块或层次的类，而开发者可能只想要将特定模块或层次的类纳入 Spring 容器。通过自定义 `TypeFilter`，可以根据项目的实际结构，有选择地将类包含或排除。
+
 4. **灵活性和可扩展性**
    + `TypeFilter` 提供了一种灵活的机制，使得开发者可以根据特定需求扩展和定制组件扫描的行为。这种灵活性对于需要动态适应不同场景的应用程序是非常有用的。
 
@@ -75,10 +81,13 @@ public interface TypeFilter {
 
 1. **AnnotationTypeFilter（基于注解的过滤器）**
    + 匹配带有指定注解的类。在组件扫描期间，通过比对类的注解信息，确定是否将该类包含在扫描结果中。
+
 2. **AssignableTypeFilter（基于类型的过滤器）：**
    + 匹配指定类型的子类或实现类。通过与目标类的继承关系比对，确定是否将该类纳入组件扫描的结果中。
+
 3. **AspectJTypeFilter（基于AspectJ表达式的过滤器）：**
    + 使用AspectJ表达式进行匹配。它允许通过编写AspectJ风格的表达式，灵活地选择需要被扫描的类。
+
 4. **RegexPatternTypeFilter（基于正则表达式的过滤器）：**
    + 使用正则表达式来匹配类的名称。通过提供一个正则表达式，决定是否将符合条件的类包含在组件扫描的结果中。
 
