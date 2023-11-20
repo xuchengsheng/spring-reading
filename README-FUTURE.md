@@ -60,155 +60,510 @@
 
 ## 🌱Spring 源码阅读系列
 
-1. **IOC容器**
-   - 资源加载与访问
-     - [Resource](spring-resources/spring-resource/README.md)
-     - [ResourceLoader](spring-resources/spring-resource-resourceLoader/README.md)
-     - [DocumentLoader](spring-resources/spring-resource-documentLoader/README.md)
-   - 元数据与过滤
-     - [MetadataReader](spring-metadata/spring-metadata-metadataReader/README.md)
-     - [AnnotationMetadata](spring-metadata/spring-metadata-annotationMetadata/README.md)
-     - [TypeFilter](spring-metadata/spring-metadata-typeFilter/README.md)
-     - [Condition](spring-metadata/spring-metadata-condition/README.md)
-   - Bean定义与注册
-     - [BeanDefinition](spring-beans/spring-bean-beanDefinition/README.md)
-     - [BeanDefinitionHolder](spring-beans/spring-bean-beanDefinitionHolder/README.md)
-     - [BeanDefinitionRegistry](spring-beans/spring-bean-beanDefinitionRegistry/README.md)
-   - Bean定义读取与扫描
-     - [XmlBeanDefinitionReader](spring-beans/spring-bean-xmlBeanDefinitionReader/README.md)
-     - [PropertiesBeanDefinitionReader](spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md)
-     - [GroovyBeanDefinitionReader](spring-beans/spring-bean-groovyBeanDefinitionReader/README.md)
-     - [AnnotatedBeanDefinitionReader](spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md)
-     - [ClassPathBeanDefinitionScanner](spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md)
-   - Bean定义导入与组合
-     - ImportBeanDefinitionRegistrar
-     - ImportSelector
-     - DeferredImportSelector
-   - 属性编辑与类型转换
-     - PropertyEditor
-     - ConversionService
-     - Converter
-   - 表达式语言(SpEL)
-     - Expression
-     - ExpressionParser
-      - EvaluationContext
-     - PropertyAccessor
-     - MethodResolver
-     - TypeLocator
-   - Bean工厂
-     - BeanFactory
-     - ListableBeanFactory
-     - HierarchicalBeanFactory
-     - ConfigurableBeanFactory
-   - Bean生命周期
-     - Bean的定义解析
-     - [Bean的初始化过程](spring-core/spring-core-getBean/README.md)
-     - [Bean的依赖解析过程](spring-core/spring-core-resolveDependency/README.md)
-     - Bean的销毁过程
-   - Bean初始化与扩展点
-     - [InitializingBean](spring-interface/spring-interface-initializingBean/README.md)
-     - [DisposableBean](spring-interface/spring-interface-disposableBean/README.md)
-     - [BeanDefinitionRegistryPostProcessor](spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md)
-     - [BeanFactoryPostProcessor](spring-interface/spring-interface-beanFactoryPostProcessor/README.md)
-     - [BeanPostProcessor](spring-interface/spring-interface-beanPostProcessor/README.md)
-     - [InstantiationAwareBeanPostProcessor](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)
-     - [DestructionAwareBeanPostProcessor](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)
-     - [MergedBeanDefinitionPostProcessor](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)
-     - [SmartInstantiationAwareBeanPostProcessor](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
-     - [SmartInitializingSingleton](spring-interface/spring-interface-smartInitializingSingleton/README.md)
-   - 基于Java的配置
-     - ConfigurationClassPostProcessor
-     - ConfigurationClassParser
-   - 核心注解
-     - [@Configuration](spring-annotation/spring-annotation-configuration/README.md)
-     - [@ComponentScan](spring-annotation/spring-annotation-componentScan/README.md)
-     - [@Bean](spring-annotation/spring-annotation-bean/README.md)
-     - [@Import](spring-annotation/spring-annotation-import/README.md)
-     - [@PropertySource](spring-annotation/spring-annotation-propertySource/README.md)
-     - [@DependsOn](spring-annotation/spring-annotation-dependsOn/README.md)
-     - [@Conditional](spring-annotation/spring-annotation-conditional/README.md)
-     - [@Lazy](spring-annotation/spring-annotation-lazy/README.md)
-     - [@Value](spring-annotation/spring-annotation-value/README.md)
-     - [@Autowired](spring-annotation/spring-annotation-autowired/README.md)
-     - @Primary
-     - @Description
-     - @Role
-     - @Indexed
-     - @Order
-   - JSR规范
-     - [@Inject](spring-jsr/spring-jsr330-inject/README.md)
-     - [@Named](spring-jsr/spring-jsr330-named/README.md)
-     - [@Resource](spring-jsr/spring-jsr250-resource/README.md)
-     - [@Qualifier](spring-jsr/spring-jsr330-qualifier/README.md)
-     - [@Scope](spring-jsr/spring-jsr330-scope/README.md)
-     - [@Singleton](spring-jsr/spring-jsr330-singleton/README.md)
-     - [@PostConstruct](spring-jsr/spring-jsr250-postConstruct/README.md)
-     - [@PreDestroy](spring-jsr/spring-jsr250-preDestroy/README.md)
-     - [Provider](spring-jsr/spring-jsr330-provider/README.md)
-   - Aware接口系列
-     - [BeanNameAware](spring-aware/spring-aware-beanNameAware/README.md)
-     - [BeanClassLoaderAware](spring-aware/spring-aware-beanClassLoaderAware/README.md)
-     - [BeanFactoryAware](spring-aware/spring-aware-beanFactoryAware/README.md)
-     - [EnvironmentAware](spring-aware/spring-aware-environmentAware/README.md)
-     - [EmbeddedValueResolverAware](spring-aware/spring-aware-embeddedValueResolverAware/README.md)
-     - [ResourceLoaderAware](spring-aware/spring-aware-beanClassLoaderAware/README.md)
-     - [ApplicationEventPublisherAware](spring-aware/spring-aware-applicationEventPublisherAware/README.md)
-     - [MessageSourceAware](spring-aware/spring-aware-messageSourceAware/README.md)
-     - [ApplicationStartupAware](spring-aware/spring-aware-applicationStartupAware/README.md)
-     - [ApplicationContextAware](spring-aware/spring-aware-applicationContextAware/README.md)
-     - [ImportAware](spring-aware/spring-aware-importAware/README.md)
-   - 容器上下文
-     - ClassPathXmlApplicationContext
-     - FileSystemXmlApplicationContext
-     - AnnotationConfigApplicationContext
-     - GenericApplicationContext
-2. **AOP (面向切面编程)**
+### IOC容器
+
+<table align="center">
+    <tr align="center">
+        <th>标题</th>
+        <th>地址</th>
+        <th>难度级别</th>
+        <th>视频讲解</th>
+    </tr>
+    <tr align="center">
+        <td><strong>【资源加载与访问】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>资源加载</td>
+        <td><a href="spring-resources/spring-resource/README.md">Resource</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>资源加载器</td>
+        <td><a href="spring-resources/spring-resource-resourceLoader/README.md">ResourceLoader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>XML资源加载器</td>
+        <td><a href="spring-resources/spring-resource-documentLoader/README.md">DocumentLoader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【元数据与过滤】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>类元数据读取</td>
+        <td><a href="spring-metadata/spring-metadata-metadataReader/README.md">MetadataReader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>注解元数据</td>
+        <td><a href="spring-metadata/spring-metadata-annotationMetadata/README.md">AnnotationMetadata</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>类过滤器</td>
+        <td><a href="spring-metadata/spring-metadata-typeFilter/README.md">TypeFilter</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>条件过滤器</td>
+        <td><a href="spring-metadata/spring-metadata-condition/README.md">Condition</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【Bean定义与注册】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>Bean定义</td>
+        <td><a href="spring-beans/spring-bean-beanDefinition/README.md">BeanDefinition</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean定义持有者</td>
+        <td><a href="spring-beans/spring-bean-beanDefinitionHolder/README.md">BeanDefinitionHolder</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean定义注册器</td>
+        <td><a href="spring-beans/spring-bean-beanDefinitionRegistry/README.md">BeanDefinitionRegistry</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【Bean定义读取与扫描】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>XML Bean定义读取器</td>
+        <td><a href="spring-beans/spring-bean-xmlBeanDefinitionReader/README.md">XmlBeanDefinitionReader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>属性文件Bean定义读取器</td>
+        <td><a href="spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md">PropertiesBeanDefinitionReader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Groovy脚本Bean定义读取器</td>
+        <td><a href="spring-beans/spring-bean-groovyBeanDefinitionReader/README.md">GroovyBeanDefinitionReader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-Green"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>注解Bean定义读取器</td>
+        <td><a href="spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md">AnnotatedBeanDefinitionReader</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>类路径Bean定义扫描器</td>
+        <td><a href="spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md">ClassPathBeanDefinitionScanner</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【Bean生命周期过程】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>Bean的定义解析</td>
+        <td><a href="#">Bean的定义解析</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean的初始化过程</td>
+        <td><a href="spring-core/spring-core-getBean/README.md">Bean的初始化过程</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean的依赖解析过程</td>
+        <td><a href="spring-core/spring-core-resolveDependency/README.md">Bean的依赖解析过程</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean的销毁过程</td>
+        <td><a href="#">Bean的销毁过程</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【后置处理器与初始化】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>属性设置后的初始化操作</td>
+        <td><a href="spring-interface/spring-interface-initializingBean/README.md">InitializingBean</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>资源清理与销毁</td>
+        <td><a href="spring-interface/spring-interface-disposableBean/README.md">DisposableBean</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>动态修改Bean定义</td>
+        <td><a href="spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md">BeanDefinitionRegistryPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>动态调整Bean配置</td>
+        <td><a href="spring-interface/spring-interface-beanFactoryPostProcessor/README.md">BeanFactoryPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>调整Bean属性</td>
+        <td><a href="spring-interface/spring-interface-beanPostProcessor/README.md">BeanPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean实例拦截</td>
+        <td><a href="spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md">InstantiationAwareBeanPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean销毁生命周期</td>
+        <td><a href="spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md">DestructionAwareBeanPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean定义的动态处理</td>
+        <td><a href="spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md">MergedBeanDefinitionPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>调整Bean实例化策略</td>
+        <td><a href="spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md">SmartInstantiationAwareBeanPostProcessor</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>All Beans完全初始化后</td>
+        <td><a href="spring-interface/spring-interface-smartInitializingSingleton/README.md">SmartInitializingSingleton</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【Aware接口】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>获取Bean名称</td>
+        <td><a href="spring-aware/spring-aware-beanNameAware/README.md">BeanNameAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>获取类加载器</td>
+        <td><a href="spring-aware/spring-aware-beanClassLoaderAware/README.md">BeanClassLoaderAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>与Bean工厂互动</td>
+        <td><a href="spring-aware/spring-aware-beanFactoryAware/README.md">BeanFactoryAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>感知运行环境</td>
+        <td><a href="spring-aware/spring-aware-environmentAware/README.md">EnvironmentAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>嵌入值解析</td>
+        <td><a href="spring-aware/spring-aware-embeddedValueResolverAware/README.md">EmbeddedValueResolverAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>资源加载策略</td>
+        <td><a href="spring-aware/spring-aware-resourceLoaderAware/README.md">ResourceLoaderAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>发布应用事件</td>
+        <td><a href="spring-aware/spring-aware-applicationEventPublisherAware/README.md">ApplicationEventPublisherAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>访问消息源</td>
+        <td><a href="spring-aware/spring-aware-messageSourceAware/README.md">MessageSourceAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>感知应用启动过程</td>
+        <td><a href="spring-aware/spring-aware-applicationStartupAware/README.md">ApplicationStartupAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>访问应用上下文</td>
+        <td><a href="spring-aware/spring-aware-applicationContextAware/README.md">ApplicationContextAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>了解关联导入信息</td>
+        <td><a href="spring-aware/spring-aware-importAware/README.md">ImportAware</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-blue"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td><strong>【核心注解】</strong></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr align="center">
+        <td>Java配置</td>
+        <td><a href="spring-annotation/spring-annotation-configuration/README.md">@Configuration</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>组件扫描</td>
+        <td><a href="spring-annotation/spring-annotation-componentScan/README.md">@ComponentScan</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>Bean定义</td>
+        <td><a href="spring-annotation/spring-annotation-bean/README.md">@Bean</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>导入配置</td>
+        <td><a href="spring-annotation/spring-annotation-import/README.md">@Import</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>属性绑定</td>
+        <td><a href="spring-annotation/spring-annotation-propertySource/README.md">@PropertySource</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>初始化顺序</td>
+        <td><a href="spring-annotation/spring-annotation-dependsOn/README.md">@DependsOn</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>条件注册</td>
+        <td><a href="spring-annotation/spring-annotation-conditional/README.md">@Conditional</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>延迟加载</td>
+        <td><a href="spring-annotation/spring-annotation-lazy/README.md">@Lazy</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>属性注入</td>
+        <td><a href="spring-annotation/spring-annotation-value/README.md">@Value</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>依赖注入</td>
+        <td><a href="spring-annotation/spring-annotation-autowired/README.md">@Autowired</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>注入依赖</td>
+        <td><a href="spring-jsr/spring-jsr330-inject/README.md">@Inject</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>具名组件</td>
+        <td><a href="spring-jsr/spring-jsr330-named/README.md">@Named</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>初始化后操作</td>
+        <td><a href="spring-jsr/spring-jsr250-postConstruct/README.md">@PostConstruct</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>销毁前操作</td>
+        <td><a href="spring-jsr/spring-jsr250-preDestroy/README.md">@PreDestroy</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>资源绑定</td>
+        <td><a href="spring-jsr/spring-jsr250-resource/README.md">@Resource</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>提供者机制</td>
+        <td><a href="spring-jsr/spring-jsr330-provider/README.md">Provider</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>限定符</td>
+        <td><a href="spring-jsr/spring-jsr330-qualifier/README.md">@Qualifier</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>作用域定义</td>
+        <td><a href="spring-jsr/spring-jsr330-scope/README.md">@Scope</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>单例模式</td>
+        <td><a href="spring-jsr/spring-jsr330-singleton/README.md">@Singleton</a></td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>定义主要候选项</td>
+        <td>@Primary</td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>添加描述信息</td>
+        <td>@Description</td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>指定注解角色</td>
+        <td>@Role</td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>标记为可索引</td>
+        <td>@Indexed</td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+    <tr align="center">
+        <td>指定顺序</td>
+        <td>@Order</td>
+        <td><img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-orange"/></td>
+        <td>❌</td>
+    </tr>
+</table>
+
+- Bean定义导入与组合
+  - ImportBeanDefinitionRegistrar
+  - ImportSelector
+  - DeferredImportSelector
+- 属性编辑与类型转换
+  - PropertyEditor
+  - ConversionService
+  - Converter
+- 表达式语言(SpEL)
+  - Expression
+  - ExpressionParser
+   - EvaluationContext
+  - PropertyAccessor
+  - MethodResolver
+  - TypeLocator
+- Bean工厂
+  - BeanFactory
+  - ListableBeanFactory
+  - HierarchicalBeanFactory
+  - ConfigurableBeanFactory
+- 基于Java的配置
+  - ConfigurationClassPostProcessor
+  - ConfigurationClassParser
+- 容器上下文
+  - ClassPathXmlApplicationContext
+  - FileSystemXmlApplicationContext
+  - AnnotationConfigApplicationContext
+  - GenericApplicationContext
+
+1. **AOP (面向切面编程)**
    - AOP 术语：Aspect、Join point、Advice、Pointcut 等
    - Spring AOP 实现原理
    - 动态代理：JDK 与 CGLIB
    - @AspectJ 支持与使用
    - 切点表达式解析
-3. **事务管理**
+2. **事务管理**
    - Spring 事务管理介绍
    - 编程式与声明式事务
    - @Transactional 注解解析
    - 事务传播行为
    - 事务隔离级别
    - 事务管理器实现原理
-4. **Spring MVC**
+3. **Spring MVC**
    - Spring MVC 流程
    - DispatcherServlet 的角色与工作原理
    - 控制器（Controller）的工作机制
    - 视图解析与渲染
    - 异常处理
    - RESTful 支持
-5. **Spring 数据访问**
+4. **Spring 数据访问**
    - JdbcTemplate 的使用与实现原理
    - Spring Data JPA 简介
    - ORM 框架集成：Hibernate、MyBatis 等
-6. **Spring 安全（Spring Security）**
+5. **Spring 安全（Spring Security）**
    - 认证与授权的基本概念
    - Spring Security 的核心组件
    - 过滤器链
    - 用户详情服务
    - 密码加密
    - 记住我功能
-7. **Spring Boot**
+6. **Spring Boot**
    - Spring Boot 与 Spring 的区别
    - 自动配置原理
    - Spring Boot starter 介绍
    - Spring Boot Actuator
-8. **Spring 事件机制**
+7. **Spring 事件机制**
    - 事件的发布与监听
    - 自定义事件
-9. **高级主题**
+8. **高级主题**
    - Spring 缓存抽象
    - Spring WebFlux (响应式编程)
    - Spring Session
    - Spring Websocket
-10. **Spring 源码的编程风格与设计模式**
-    - 设计模式在 Spring 源码中的应用
-    - Spring 源码阅读技巧
+9. **Spring 源码的编程风格与设计模式**
+   - 设计模式在 Spring 源码中的应用
+   - Spring 源码阅读技巧
+
 ## 💬与我联系
 
 ✉️ [Email](xuchengshengsuper@163.com) | 💬 [Issue](https://github.com/xuchengsheng/spring-reading/issues) | 🌐 [CSDN](https://blog.csdn.net/duzhuang2399?type=blog)  Me about everything!
