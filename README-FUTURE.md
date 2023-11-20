@@ -69,9 +69,7 @@
      - [MetadataReader](spring-metadata/spring-metadata-metadataReader/README.md)
      - [AnnotationMetadata](spring-metadata/spring-metadata-annotationMetadata/README.md)
      - [TypeFilter](spring-metadata/spring-metadata-typeFilter/README.md)
-   - 条件注册
-     - Condition
-     - ConfigurationCondition
+     - [Condition](spring-metadata/spring-metadata-condition/README.md)
    - Bean定义与注册
      - [BeanDefinition](spring-beans/spring-bean-beanDefinition/README.md)
      - [BeanDefinitionHolder](spring-beans/spring-bean-beanDefinitionHolder/README.md)
