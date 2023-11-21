@@ -194,21 +194,37 @@
 #### Spring Cloud
 
 - `@EnableDiscoveryClient`：启用服务发现客户端，用于将服务注册到服务注册中心（例如 Eureka）。
+
 - `@EnableEurekaServer`：启用 Eureka 服务端，用于搭建服务注册中心。
+
 - `@LoadBalanced`：启用负载均衡，通常用于 RestTemplate 和 WebClient，使其具备负载均衡的能力。
+
 - `@FeignClient`：声明一个声明式的 HTTP 客户端，简化了服务调用的过程。
+
 - `@EnableCircuitBreaker`：启用断路器，用于防止分布式系统中的雪崩效应。
+
 - `@HystrixCommand`：定义一个熔断器命令。
+
 - `@EnableZuulProxy`：启用 Zuul API 网关代理。
+
 - `@ZuulRoute`：用于配置 Zuul 路由。
+
 - `@EnableConfigServer`：启用配置中心服务端。
+
 - `@RefreshScope`：用于刷新配置，通常与 Spring Cloud Config 配合使用。
+
 - `@EnableZipkinServer`：启用 Zipkin 服务器，用于分布式链路追踪。
+
 - `@EnableBinding`：绑定消息通道，与 Spring Cloud Stream 配合使用。
+
 - `@GlobalTransactional`：全局事务注解，与 Seata 等分布式事务框架配合使用。
+
 - `@SentinelResource`：Sentinel 限流和熔断注解。
+
 - `@DubboTransported`：用于 Dubbo 服务的注解。
+
 - `@NacosInjected`：用于注入 Nacos 相关的实例。
+
 
 #### Spring 编程风格与设计模式
 
