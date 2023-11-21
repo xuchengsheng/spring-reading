@@ -156,39 +156,57 @@
 #### Spring AOP
 
 + AOP 术语：Aspect、Join point、Advice、Pointcut 等
+
 + Spring AOP 实现原理
+
 + 动态代理：JDK 与 CGLIB
+
 + @AspectJ 支持与使用
+
 + 切点表达式解析
 
 #### Spring 事件机制
 
 + 事件的发布与监听
+
 + 自定义事件
 
 #### Spring 事务管理
 
 + Spring 事务管理介绍
+
 + 编程式与声明式事务
+
 + @Transactional 注解解析
+
 + 事务传播行为
+
 + 事务隔离级别
+
 + 事务管理器实现原理
 
 #### Spring MVC
 
 + Spring MVC 流程
+
 + DispatcherServlet 的角色与工作原理
+
 + 控制器（Controller）的工作机制
+
 + 视图解析与渲染
+
 + 异常处理
+
 + RESTful 支持
 
 #### Spring Boot
 
 + Spring Boot 与 Spring 的区别
+
 + 自动配置原理
+
 + Spring Boot starter 介绍
+
 + Spring Boot Actuator
 
 #### Spring Cloud
@@ -229,6 +247,7 @@
 #### Spring 编程风格与设计模式
 
 + 设计模式在 Spring 源码中的应用
+
 + Spring 源码阅读技巧
 
 ## 💬与我联系
