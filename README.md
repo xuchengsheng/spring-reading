@@ -143,14 +143,23 @@
   - `@Indexed`： 标记Bean用于索引。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - `@Order`：指定Bean的加载顺序。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 - JSR规范
+
   - [`@Inject`](spring-jsr/spring-jsr330-inject/README.md)：JSR-330标准的依赖注入注解。
+
   - [`@Named`](spring-jsr/spring-jsr330-named/README.md)：JSR-330标准的命名注解。
+
   - [`@Resource`](spring-jsr/spring-jsr250-resource/README.md)：Java EE标准的资源注入注解。
+
   - [`@Qualifier`](spring-jsr/spring-jsr330-qualifier/README.md)：用于限定注入的Bean。
+
   - [`@Scope`](spring-jsr/spring-jsr330-scope/README.md)：指定Bean的作用域。
+
   - [`@Singleton`](spring-jsr/spring-jsr330-singleton/README.md)：指定Bean为单例。
+
   - [`@PostConstruct`](spring-jsr/spring-jsr250-postConstruct/README.md)：指定初始化方法。
+
   - [`@PreDestroy`](spring-jsr/spring-jsr250-preDestroy/README.md)：指定销毁方法。
+
   - [`Provider`](spring-jsr/spring-jsr330-provider/README.md)：ava标准库提供的通用Bean工厂接口。
 
 #### Spring AOP
