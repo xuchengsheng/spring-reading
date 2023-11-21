@@ -91,13 +91,13 @@
   - `HierarchicalBeanFactory`：支持父子容器关系，实现Bean定义的层次结构。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - `ConfigurableBeanFactory`：提供对BeanFactory配置的扩展，如属性编辑器、作用域等。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 - 基于Java的配置
-  - `ConfigurationClassPostProcessor`：处理带 @Configuration 注解配置类，关键容器启动后置处理器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `ConfigurationClassParser`：解析 @Configuration 注解，提取 Java Config 配置信息，支持 @Bean 和条件化配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ConfigurationClassPostProcessor`：处理@Configuration注解，关键容器启动后置处理器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ConfigurationClassParser`：解析@Configuration，提取Config信息，支持@Bean和条件化配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 - 容器上下文
-  - `ClassPathXmlApplicationContext`：用于从类路径（classpath）加载 XML 配置文件的，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `FileSystemXmlApplicationContext`：用于从文件系统加载 XML 配置文件的，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `AnnotationConfigApplicationContext`：用于从注解配置类中加载配置信息的，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `GenericApplicationContext`：用于支持多种配置方式，包括XML、注解、手动注册，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ClassPathXmlApplicationContext`：用于从类路径（classpath）加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `FileSystemXmlApplicationContext`：用于从文件系统加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `AnnotationConfigApplicationContext`：用于从注解配置类中加载配置信息的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `GenericApplicationContext`：用于支持多种配置方式，包括XML、注解、手动注册的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 - Bean生命周期
   - `Bean的定义解析`：加载配置，解析配置文件，注册解析得到的Bean定义，包括类名、作用域、属性等。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - [`Bean的初始化过程`](spring-core/spring-core-getBean/README.md)：实例化、属性注入、Aware回调、后置处理器、初始化方法调用、Bean就绪。
