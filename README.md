@@ -156,13 +156,13 @@
 
   - [`BeanPostProcessor`](spring-interface/spring-interface-beanPostProcessor/README.md)：在Bean初始化前后，进行自定义处理，可影响所有Bean。
 
-  - [`InstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)：扩展BeanPostProcessor，提供更深层次的实例化和属性注入控制。
+  - [`InstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)：提供更深层次的实例化和属性注入控制。
 
-  - [`DestructionAwareBeanPostProcessor`](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)： 扩展BeanPostProcessor，允许在Bean销毁前进行额外的清理操作。
+  - [`DestructionAwareBeanPostProcessor`](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)： 允许在Bean销毁前进行额外的清理操作。
 
   - [`MergedBeanDefinitionPostProcessor`](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)：在合并Bean定义时，对BeanDefinition进行进一步处理。
 
-  - [`SmartInstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)：扩展InstantiationAwareBeanPostProcessor，提供更智能的实例化控制。
+  - [`SmartInstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)：提供更智能的实例化控制。
 
   - [`SmartInitializingSingleton`](spring-interface/spring-interface-smartInitializingSingleton/README.md)：在所有单例Bean初始化完成后，执行自定义逻辑。
 - Aware接口系列
