@@ -84,22 +84,14 @@
         - ImportBeanDefinitionRegistrar
         - ImportSelector
         - DeferredImportSelector
-    - 属性编辑与类型转换
-        - PropertyEditor
-        - ConversionService
-        - Converter
-    - 表达式语言(SpEL)
-        - Expression
-        - ExpressionParser
-        - EvaluationContext
-        - PropertyAccessor
-        - MethodResolver
-        - TypeLocator
-    - Bean工厂
-        - BeanFactory
-        - ListableBeanFactory
-        - HierarchicalBeanFactory
-        - ConfigurableBeanFactory
+    - 基于Java的配置
+        - ConfigurationClassPostProcessor
+        - ConfigurationClassParser
+    - 容器上下文
+        - ClassPathXmlApplicationContext
+        - FileSystemXmlApplicationContext
+        - AnnotationConfigApplicationContext
+        - GenericApplicationContext
     - Bean生命周期
         - Bean的定义解析
         - [Bean的初始化过程](spring-core/spring-core-getBean/README.md)
@@ -116,9 +108,6 @@
         - [MergedBeanDefinitionPostProcessor](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)
         - [SmartInstantiationAwareBeanPostProcessor](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)
         - [SmartInitializingSingleton](spring-interface/spring-interface-smartInitializingSingleton/README.md)
-    - 基于Java的配置
-        - ConfigurationClassPostProcessor
-        - ConfigurationClassParser
     - 核心注解
         - [@Configuration](spring-annotation/spring-annotation-configuration/README.md)
         - [@ComponentScan](spring-annotation/spring-annotation-componentScan/README.md)
@@ -157,11 +146,22 @@
         - [ApplicationStartupAware](spring-aware/spring-aware-applicationStartupAware/README.md)
         - [ApplicationContextAware](spring-aware/spring-aware-applicationContextAware/README.md)
         - [ImportAware](spring-aware/spring-aware-importAware/README.md)
-    - 容器上下文
-        - ClassPathXmlApplicationContext
-        - FileSystemXmlApplicationContext
-        - AnnotationConfigApplicationContext
-        - GenericApplicationContext
+    - 属性编辑与类型转换
+        - PropertyEditor
+        - ConversionService
+        - Converter
+    - 表达式语言(SpEL)
+        - Expression
+        - ExpressionParser
+        - EvaluationContext
+        - PropertyAccessor
+        - MethodResolver
+        - TypeLocator
+    - Bean工厂
+        - BeanFactory
+        - ListableBeanFactory
+        - HierarchicalBeanFactory
+        - ConfigurableBeanFactory
 2. **AOP (面向切面编程)**
     - AOP 术语：Aspect、Join point、Advice、Pointcut 等
     - Spring AOP 实现原理

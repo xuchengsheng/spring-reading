@@ -60,90 +60,169 @@
 
 ## 🌱Spring 源码阅读系列
 
-> ### 👑 基础知识
+#### Spring IOC
 
-*Spring 框架中的资源加载与访问、元数据操作、Bean定义与注册，以及Bean定义的读取与扫描。*
+- 资源加载与访问
+  - [`Resource`](spring-resources/spring-resource/README.md)：抽象接口，表示文件、类路径等，用于访问不同来源的资源。
+  - [`ResourceLoader`](spring-resources/spring-resource-resourceLoader/README.md)：资源获取核心接口，实现统一加载不同位置资源的策略。
+  - [`DocumentLoader`](spring-resources/spring-resource-documentLoader/README.md)：XML文档加载解析核心接口，支持后台自动配置Spring应用。
+- 元数据与过滤
+  - [`MetadataReader`](spring-metadata/spring-metadata-metadataReader/README.md)：类元数据获取核心，支持组件扫描、条件化注解、AOP等高级功能。
+  - [`AnnotationMetadata`](spring-metadata/spring-metadata-annotationMetadata/README.md)：动态获取和操作运行时类注解信息
+  - [`TypeFilter`](spring-metadata/spring-metadata-typeFilter/README.md)：组件扫描时自定义类筛选，支持复杂条件和精确过滤。
+  - [`Condition`](spring-metadata/spring-metadata-condition/README.md)：条件判断，决定Bean创建和配置的灵活机制。
+- Bean定义与注册
+  - [`BeanDefinition`](spring-beans/spring-bean-beanDefinition/README.md)：详细描述Bean，支持依赖注入、AOP、作用域控制等核心功能。
+  - [`BeanDefinitionHolder`](spring-beans/spring-bean-beanDefinitionHolder/README.md)：管理和操作BeanDefinition的关键类。
+  - [`BeanDefinitionRegistry`](spring-beans/spring-bean-beanDefinitionRegistry/README.md)：Bean定义注册管理关键接口，处理Bean元数据。
+- Bean定义读取与扫描
+  - [`XmlBeanDefinitionReader`](spring-beans/spring-bean-xmlBeanDefinitionReader/README.md)：加载解析XML配置，构建IOC容器，注册Bean定义。
+  - [`PropertiesBeanDefinitionReader`](spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md)：属性文件加载，解析为Bean定义，提升配置灵活性和可扩展性。
+  - [`GroovyBeanDefinitionReader`](spring-beans/spring-bean-groovyBeanDefinitionReader/README.md)：Groovy脚本解析为Bean定义，支持应用程序上下文配置。
+  - [`AnnotatedBeanDefinitionReader`](spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md)：注解配置，自动扫描注册Spring组件，简化Bean定义配置。
+  - [`ClassPathBeanDefinitionScanner`](spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md)：类路径扫描注册Spring Bean，支持自动装配，提高可维护性和扩展性。
+- Bean定义导入与组合
+  - `ImportBeanDefinitionRegistrar`：运行时动态注册 Bean，实现灵活配置，扩展配置类功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ImportSelector`：运行时动态导入配置类，实现条件选择和灵活配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `DeferredImportSelector`：运行时动态导入配置，支持条件选择和按组别延迟加载。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+- Bean工厂
+  - `BeanFactory`：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ListableBeanFactory`：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `HierarchicalBeanFactory`：支持父子容器关系，实现Bean定义的层次结构。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ConfigurableBeanFactory`：提供对BeanFactory配置的扩展，如属性编辑器、作用域等。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+- 基于Java的配置
+  - `ConfigurationClassPostProcessor`：处理带 @Configuration 注解配置类，关键容器启动后置处理器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `ConfigurationClassParser`：解析 @Configuration 注解，提取 Java Config 配置信息，支持 @Bean 和条件化配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+- 容器上下文
+  - `ClassPathXmlApplicationContext`：用于从类路径（classpath）加载 XML 配置文件的，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `FileSystemXmlApplicationContext`：用于从文件系统加载 XML 配置文件的，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `AnnotationConfigApplicationContext`：用于从注解配置类中加载配置信息的，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `GenericApplicationContext`：用于支持多种配置方式，包括XML、注解、手动注册，应用程序上下文实现类。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+- Bean生命周期
+  - `Bean的定义解析`：加载配置，解析配置文件，注册解析得到的Bean定义，包括类名、作用域、属性等。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - [`Bean的初始化过程`](spring-core/spring-core-getBean/README.md)：实例化、属性注入、Aware回调、后置处理器、初始化方法调用、Bean就绪。
+  - [`Bean的依赖解析过程`](spring-core/spring-core-resolveDependency/README.md)：声明依赖，查找依赖，注入依赖，处理循环依赖，延迟依赖解析。
+  - `Bean的销毁过程`：销毁方法调用，接口回调，后处理清理，通知触发，GC回收资源。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+- Bean初始化与扩展点
+  - [`InitializingBean`](spring-interface/spring-interface-initializingBean/README.md)：提供Bean初始化时执行自定义逻辑的接口。
+  - [`DisposableBean`](spring-interface/spring-interface-disposableBean/README.md)：定义Bean销毁前执行清理操作的接口。
+  - [`BeanDefinitionRegistryPostProcessor`](spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md)：在容器启动时，对BeanDefinition进行动态修改或添加。
+  - [`BeanFactoryPostProcessor`](spring-interface/spring-interface-beanFactoryPostProcessor/README.md)：在Bean实例化前，对BeanFactory进行全局修改或配置。
+  - [`BeanPostProcessor`](spring-interface/spring-interface-beanPostProcessor/README.md)：在Bean初始化前后，进行自定义处理，可影响所有Bean。
+  - [`InstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)：扩展BeanPostProcessor，提供更深层次的实例化和属性注入控制。
+  - [`DestructionAwareBeanPostProcessor`](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)： 扩展BeanPostProcessor，允许在Bean销毁前进行额外的清理操作。
+  - [`MergedBeanDefinitionPostProcessor`](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)：在合并Bean定义时，对BeanDefinition进行进一步处理。
+  - [`SmartInstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)：扩展InstantiationAwareBeanPostProcessor，提供更智能的实例化控制。
+  - [`SmartInitializingSingleton`](spring-interface/spring-interface-smartInitializingSingleton/README.md)：在所有单例Bean初始化完成后，执行自定义逻辑。
+- Aware接口系列
+  - [`BeanNameAware`](spring-aware/spring-aware-beanNameAware/README.md)：让Bean获取自身在容器中的名字，实现`setBeanName`方法。
+  - [`BeanClassLoaderAware`](spring-aware/spring-aware-beanClassLoaderAware/README.md)：允许Bean获取其类加载器，实现`setBeanClassLoader`方法。
+  - [`BeanFactoryAware`](spring-aware/spring-aware-beanFactoryAware/README.md)：提供Bean获取所属的BeanFactory，实现`setBeanFactory`方法。
+  - [`EnvironmentAware`](spring-aware/spring-aware-environmentAware/README.md)：允许Bean获取应用程序环境配置，实现`setEnvironment`方法。
+  - [`EmbeddedValueResolverAware`](spring-aware/spring-aware-embeddedValueResolverAware/README.md)：允许Bean解析嵌入式值占位符，实现`setEmbeddedValueResolver`方法。
+  - [`ResourceLoaderAware`](spring-aware/spring-aware-beanClassLoaderAware/README.md)：允许Bean获取资源加载器，实现`setResourceLoader`方法。
+  - [`ApplicationEventPublisherAware`](spring-aware/spring-aware-applicationEventPublisherAware/README.md)：允许Bean发布应用程序事件，实现`setApplicationEventPublisher`方法。
+  - [`MessageSourceAware`](spring-aware/spring-aware-messageSourceAware/README.md)：允许Bean获取消息源，实现`setMessageSource`方法。
+  - [`ApplicationStartupAware`](spring-aware/spring-aware-applicationStartupAware/README.md)：允许Bean获取应用程序启动信息，实现`setApplicationStartup`方法。
+  - [`ApplicationContextAware`](spring-aware/spring-aware-applicationContextAware/README.md)：允许Bean获取应用程序上下文，实现`setApplicationContext`方法。
+  - [`ImportAware`](spring-aware/spring-aware-importAware/README.md)：允许被导入的配置类获取导入它的类的信息，实现`setImportMetadata`方法。
+- 核心注解
+  - [`@Configuration`](spring-annotation/spring-annotation-configuration/README.md)：声明类为配置类，定义Bean和Bean之间的依赖关系。
+  - [`@ComponentScan`](spring-annotation/spring-annotation-componentScan/README.md)：启用组件扫描，自动发现并注册标记为组件的类。
+  - [`@Bean`](spring-annotation/spring-annotation-bean/README.md)：在配置类中声明方法，返回Bean实例。
+  - [`@Import`](spring-annotation/spring-annotation-import/README.md)：引入其他配置类，将其Bean定义合并到当前容器。
+  - [`@PropertySource`](spring-annotation/spring-annotation-propertySource/README.md)：指定属性文件，加载外部配置到环境中。
+  - [`@DependsOn`](spring-annotation/spring-annotation-dependsOn/README.md)：指定Bean的依赖顺序，确保特定Bean在其他Bean之前初始化。
+  - [`@Conditional`](spring-annotation/spring-annotation-conditional/README.md)：根据条件决定是否创建Bean。
+  - [`@Lazy`](spring-annotation/spring-annotation-lazy/README.md)：指定Bean的延迟初始化，只有在首次使用时才创建。
+  - [`@Value`](spring-annotation/spring-annotation-value/README.md)：注入简单值或表达式到Bean的字段或方法参数。
+  - [`@Autowired`](spring-annotation/spring-annotation-autowired/README.md)：自动装配Bean依赖。
+  - `@Primary`：指定在多个候选Bean中优先选择的首选Bean。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `@Description`：为Bean提供描述性信息。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `@Role`：为Bean提供角色提示，用于区分相似类型的Bean。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `@Indexed`： 标记Bean用于索引。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `@Order`：指定Bean的加载顺序。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+- JSR规范
+  - [`@Inject`](spring-jsr/spring-jsr330-inject/README.md)：JSR-330标准的依赖注入注解。
+  - [`@Named`](spring-jsr/spring-jsr330-named/README.md)：JSR-330标准的命名注解。
+  - [`@Resource`](spring-jsr/spring-jsr250-resource/README.md)：Java EE标准的资源注入注解。
+  - [`@Qualifier`](spring-jsr/spring-jsr330-qualifier/README.md)：用于限定注入的Bean。
+  - [`@Scope`](spring-jsr/spring-jsr330-scope/README.md)：指定Bean的作用域。
+  - [`@Singleton`](spring-jsr/spring-jsr330-singleton/README.md)：指定Bean为单例。
+  - [`@PostConstruct`](spring-jsr/spring-jsr250-postConstruct/README.md)：指定初始化方法。
+  - [`@PreDestroy`](spring-jsr/spring-jsr250-preDestroy/README.md)：指定销毁方法。
+  - [`Provider`](spring-jsr/spring-jsr330-provider/README.md)：ava标准库提供的通用Bean工厂接口。
 
-- [**资源加载Resource**](spring-resources/spring-resource/README.md) - 处理 Spring 框架中与资源加载相关的功能。
-- [**资源加载器ResourceLoader**](spring-resources/spring-resource-resourceLoader/README.md) - 实现资源加载器接口，用于获取应用程序的资源。
-- [**文档加载器DocumentLoader**](spring-resources/spring-resource-documentLoader/README.md) - 负责加载文档资源，支持不同文档格式的加载。
-- [**元数据读取MetadataReader**](spring-metadata/spring-metadata-metadataReader/README.md) - 提供对类元数据的访问和读取功能。
-- [**注解元数据AnnotationMetadata**](spring-metadata/spring-metadata-annotationMetadata/README.md) - 处理与注解相关的元数据，支持对注解属性的访问。
-- [**Bean定义BeanDefinition**](spring-beans/spring-bean-beanDefinition/README.md) - 定义 Spring 容器中的 Bean，包括属性、构造函数等信息。
-- [**Bean定义持有者BeanDefinitionHolder**](spring-beans/spring-bean-beanDefinitionHolder/README.md) - 持有 BeanDefinition 对象以及与之关联的名称和别名。
-- [**Bean定义注册器BeanDefinitionRegistry**](spring-beans/spring-bean-beanDefinitionRegistry/README.md) - 用于注册和管理 Bean 定义的接口。
-- [**XML Bean定义读取器XmlBeanDefinitionReader**](spring-beans/spring-bean-xmlBeanDefinitionReader/README.md) - 从 XML 文件中读取并注册 Bean 定义。
-- [**属性文件Bean定义读取器PropertiesBeanDefinitionReader**](spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md) - 从属性文件中读取并注册 Bean 定义。
-- [**Groovy脚本Bean定义读取器GroovyBeanDefinitionReader**](spring-beans/spring-bean-groovyBeanDefinitionReader/README.md) - 从 Groovy 脚本中读取并注册 Bean 定义。
-- [**注解Bean定义读取器AnnotatedBeanDefinitionReader**](spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md) - 从注解中读取并注册 Bean 定义。
-- [**类路径Bean定义扫描器ClassPathBeanDefinitionScanner**](spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md) - 扫描类路径以注册 Bean 定义。
+#### Spring AOP
 
-> ### 🔅 核心方法
++ AOP 术语：Aspect、Join point、Advice、Pointcut 等
++ Spring AOP 实现原理
++ 动态代理：JDK 与 CGLIB
++ @AspectJ 支持与使用
++ 切点表达式解析
 
-*Spring 框架背后的动力，这些核心方法确保了依赖注入、Bean 生命周期管理、配置解析和许多其他关键功能。*
+#### Spring 事件机制
 
-- [**获取Bean实例getBean()**](spring-core/spring-core-getBean/README.md) - 从Bean的定义到其实例化，全面揭示Spring如何管理Bean的生命周期。
-- [**解析依赖resolveDependency()**](spring-core/spring-core-resolveDependency/README.md) - 探索Spring如何优雅地解决Bean之间的依赖关系，确保应用稳定运行。
++ 事件的发布与监听
++ 自定义事件
 
-> ### 💡 后置处理器与初始化
+#### Spring 事务管理
 
-*深入 Spring 的后置处理技巧，揭示它如何优雅地初始化和管理 beans。*
++ Spring 事务管理介绍
++ 编程式与声明式事务
++ @Transactional 注解解析
++ 事务传播行为
++ 事务隔离级别
++ 事务管理器实现原理
 
-- [**动态修改Bean定义BeanDefinitionRegistryPostProcessor**](spring-interface/spring-interface-beanDefinitionRegistryPostProcessor/README.md) - 揭示如何修改应用的 bean 定义。
-- [**动态调整Bean配置BeanFactoryPostProcessor**](spring-interface/spring-interface-beanFactoryPostProcessor/README.md) - 理解 Spring 如何在 bean 初始化之前进行微调。
-- [**调整Bean属性BeanPostProcessor**](spring-interface/spring-interface-beanPostProcessor/README.md) - 探索如何在 bean 实例化后进行拦截。
-- [**Bean实例拦截InstantiationAwareBeanPostProcessor**](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md) - 理解它如何在实例化 bean 之前进行操作。
-- [**管理Bean销毁周期DestructionAwareBeanPostProcessor**](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md) - 揭露它如何管理 bean 的销毁生命周期。
-- [**Bean定义的动态处理MergedBeanDefinitionPostProcessor**](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md) - 理解如何合并 bean 的定义。
-- [**调整Bean实例化策略SmartInstantiationAwareBeanPostProcessor**](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md) - 深入了解其智能实例化的策略。
-- [**属性设置后的初始化操作InitializingBean**](spring-interface/spring-interface-initializingBean/README.md) - 揭露如何在 bean 初始化后进行操作。
-- [**资源清理与销毁DisposableBean**](spring-interface/spring-interface-disposableBean/README.md) - 探查它如何确保 bean 的正确销毁。
-- [**All Beans完全初始化后SmartInitializingSingleton**](spring-interface/spring-interface-smartInitializingSingleton/README.md) - 理解它如何在所有单例 bean 初始化后进行操作。
+#### Spring MVC
 
-> ### 🛠 Aware接口
++ Spring MVC 流程
++ DispatcherServlet 的角色与工作原理
++ 控制器（Controller）的工作机制
++ 视图解析与渲染
++ 异常处理
++ RESTful 支持
 
-*探索 Spring 的自我感知能力，如何赋予 beans 更多的上下文感知特性。*
+#### Spring Boot
 
-- [**获取Bean名称BeanNameAware**](spring-aware/spring-aware-beanNameAware/README.md) - 当一个 bean 需要知道其在容器中的名字时。
-- [**获取类加载器BeanClassLoaderAware**](spring-aware/spring-aware-beanClassLoaderAware/README.md) - 揭示如何为 bean 提供类加载器的引用。
-- [**与Bean工厂互动BeanFactoryAware**](spring-aware/spring-aware-beanFactoryAware/README.md) - 探索 bean 如何与其工厂互动。
-- [**感知运行环境EnvironmentAware**](spring-aware/spring-aware-environmentAware/README.md) - 了解 bean 如何感知并与其运行的环境互动。
-- [**嵌入值解析EmbeddedValueResolverAware**](spring-aware/spring-aware-embeddedValueResolverAware/README.md) - 探查如何提供字符串值解析策略给 bean。
-- [**资源加载策略ResourceLoaderAware**](spring-aware/spring-aware-resourceLoaderAware/README.md) - 理解如何为 bean 提供一个资源加载器。
-- [**发布应用事件ApplicationEventPublisherAware**](spring-aware/spring-aware-applicationEventPublisherAware/README.md) - 揭露 bean 如何发布事件到应用上下文。
-- [**访问消息源MessageSourceAware**](spring-aware/spring-aware-messageSourceAware/README.md) - 深入了解 bean 如何访问消息源。
-- [**感知应用启动过程ApplicationStartupAware**](spring-aware/spring-aware-applicationStartupAware/README.md) - 理解 bean 如何感知应用的启动过程。
-- [**访问应用上下文ApplicationContextAware**](spring-aware/spring-aware-applicationContextAware/README.md) - 探索 bean 如何访问其运行的应用上下文。
-- [**了解关联导入信息ImportAware**](spring-aware/spring-aware-importAware/README.md) - 揭露 bean 如何知道与其关联的导入元数据。
++ Spring Boot 与 Spring 的区别
++ 自动配置原理
++ Spring Boot starter 介绍
++ Spring Boot Actuator
 
-> ### 🎖 核心注解
+#### Spring Cloud
 
-*了解 Spring 如何通过注解驱动开发，简化和加强代码。*
+- `@EnableDiscoveryClient`：启用服务发现客户端，用于将服务注册到服务注册中心（例如 Eureka）。
+- `@EnableEurekaServer`：启用 Eureka 服务端，用于搭建服务注册中心。
 
-- [**Java配置@Configuration**](spring-annotation/spring-annotation-configuration/README.md) - 揭露如何使用 Java 配置定义 beans。
-- [**组件扫描@ComponentScan**](spring-annotation/spring-annotation-componentScan/README.md) - 探索如何自动检测和注册 beans。
-- [**Bean定义@Bean**](spring-annotation/spring-annotation-bean/README.md) - 理解如何通过 Java 方法定义 beans。
-- [**导入配置@Import**](spring-annotation/spring-annotation-import/README.md) - 揭示如何导入其他配置类或组件。
-- [**属性绑定@PropertySource**](spring-annotation/spring-annotation-propertySource/README.md) - 深入了解如何为应用上下文添加属性源。
-- [**初始化顺序@DependsOn**](spring-annotation/spring-annotation-dependsOn/README.md) - 精确控制 Spring Beans 的加载顺序。
-- [**条件注册@Conditional**](spring-annotation/spring-annotation-conditional/README.md) - 从基础使用到源码分析，全方位理解Spring的条件注册策略。
-- [**延迟加载@Lazy**](spring-annotation/spring-annotation-lazy/README.md) - 如何优雅地实现 Spring Beans 的延迟加载。
-- [**属性注入@Value**](spring-annotation/spring-annotation-value/README.md) - 如何在Spring中优雅地注入配置属性。
-- [**依赖注入@Autowired**](spring-annotation/spring-annotation-autowired/README.md) - 了解如何通过@Autowired实现依赖管理和连接组件。
+- `@LoadBalanced`：启用负载均衡，通常用于 RestTemplate 和 WebClient，使其具备负载均衡的能力。
+- `@FeignClient`：声明一个声明式的 HTTP 客户端，简化了服务调用的过程。
 
-> ### 📜 JSR 规范
+- `@EnableCircuitBreaker`：启用断路器，用于防止分布式系统中的雪崩效应。
+- `@HystrixCommand`：定义一个熔断器命令。
 
-*理解 Spring 是如何实现和优化 JSR 规范中的注解，深入揭露其与 Java 标准化的紧密结合。*
+- `@EnableZuulProxy`：启用 Zuul API 网关代理。
+- `@ZuulRoute`：用于配置 Zuul 路由。
 
-- [**注入依赖@Inject**](spring-jsr/spring-jsr330-inject/README.md) - Spring中如何通过`@Inject`实现依赖注入。
-- [**具名组件@Named**](spring-jsr/spring-jsr330-named/README.md) - 使用`@Named`为Spring Beans提供具体的标识。
-- [**初始化后操作@PostConstruct**](spring-jsr/spring-jsr250-postConstruct/README.md) - 如何利用`@PostConstruct`在Bean初始化后执行特定操作。
-- [**销毁前操作@PreDestroy**](spring-jsr/spring-jsr250-preDestroy/README.md) - 揭示`@PreDestroy`如何在Bean销毁前执行特定任务。
-- [**资源绑定@Resource**](spring-jsr/spring-jsr250-resource/README.md) - 如何优雅地使用`@Resource`在Spring中注入资源。
-- [**提供者机制Provider**](spring-jsr/spring-jsr330-provider/README.md) - 探索Spring中Provider的作用和如何使用它来提供Bean实例。
-- [**限定符@Qualifier**](spring-jsr/spring-jsr330-qualifier/README.md) - 了解`@Qualifier`的重要性及其在解决注入冲突中的作用。
-- [**作用域定义@Scope**](spring-jsr/spring-jsr330-scope/README.md) - 揭露如何使用`@Scope`定义Bean的生命周期和作用域。
-- [**单例模式@Singleton**](spring-jsr/spring-jsr330-singleton/README.md) - 深入理解`@Singleton`注解，确保Spring Bean的单一实例化。
+- `@EnableConfigServer`：启用配置中心服务端。
+- `@RefreshScope`：用于刷新配置，通常与 Spring Cloud Config 配合使用。
+
+- `@EnableZipkinServer`：启用 Zipkin 服务器，用于分布式链路追踪。
+
+- `@EnableBinding`：绑定消息通道，与 Spring Cloud Stream 配合使用。
+
+- `@GlobalTransactional`：全局事务注解，与 Seata 等分布式事务框架配合使用。
+
+- `@SentinelResource`：Sentinel 限流和熔断注解。
+- `@DubboTransported`：用于 Dubbo 服务的注解。
+
+- `@NacosInjected`：用于注入 Nacos 相关的实例。
+
+#### Spring 编程风格与设计模式
+
++ 设计模式在 Spring 源码中的应用
++ Spring 源码阅读技巧
 
 ## 💬与我联系
 
