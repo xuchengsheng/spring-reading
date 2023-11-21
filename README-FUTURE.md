@@ -353,10 +353,18 @@
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
 
-## 🍱加入与打赏
-+ 欢迎👥加入我们的群聊！一起探讨、分享和学习吧！ 🌐 
-+ 作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
+## 🍱请我吃盒饭？
+
+作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
 <div>
 <img alt="logo" src="image/WeChatPay.png" style="width: 370px;height: 400px">
-<img alt="logo" src="image/wechat-group.jpg" style="width: 350px;height: 400px">
+<img alt="logo" src="image/Alipay.png" style="width: 370px;height: 400px">
+</div>
+
+## 👥加入我们
+
+欢迎加入我们的群聊！一起探讨、分享和学习吧！ 🌐
+
+<div>
+<img alt="logo" src="image/wechat-group.jpg" style="width: 344px;height: 483px">
 </div>
