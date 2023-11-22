@@ -1,7 +1,6 @@
 package com.xcs.spring;
 
 import com.xcs.spring.config.MyConfiguration;
-import com.xcs.spring.service.MyServiceA;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
