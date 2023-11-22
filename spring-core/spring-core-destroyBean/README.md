@@ -23,12 +23,15 @@
 ### 二、知识储备
 
 1. [**Bean的定义注册过程**](https://github.com/xuchengsheng/spring-reading/tree/master/spring-core/spring-core-registerBeanDefinition)
+
    + Bean的注册包括加载和解析配置文件，从中提取Bean定义。解析后的Bean信息，如类名、作用域、属性等，被注册到Spring容器。通过解析配置文件，容器获得Bean的元数据，进而创建Bean定义，包括类名、作用域（如singleton或prototype）、属性值等。这些定义通过唯一标识符与容器关联，以便后续通过ApplicationContext获取和管理。
 
 2. [**Bean的初始化过程**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-core/spring-core-getBean/README.md)
+
    + 通过构造函数实例化Bean，随后进行属性注入满足依赖关系。若Bean实现了Aware接口，容器通过相应回调方法注入上下文信息。注册的后置处理器在初始化前后对Bean进行额外处理。Bean实现InitializingBean接口时，容器调用afterPropertiesSet执行初始化逻辑。通过配置中的init-method属性也可指定自定义初始化方法。最终，Bean标记为已初始化状态，可被应用程序使用。
 
 3. [**Bean的依赖解析过程**](https://github.com/xuchengsheng/spring-reading/blob/master/spring-core/spring-core-resolveDependency/README.md)
+
    + 通过声明依赖，Bean表达对其他Bean的需求。容器通过查找依赖，即在ApplicationContext中寻找所需的Bean定义。然后，容器进行依赖注入，将找到的Bean实例注入到相应的属性或构造函数参数中。在处理循环依赖时，Spring通过使用提前暴露的代理对象来解决循环引用问题。最后，容器支持延迟依赖解析，即在需要使用Bean时再进行实际的依赖解析和注入，以提高性能和减少启动时间。
 
 ### 三、基本描述
@@ -38,14 +41,23 @@
 ### 四、主要功能
 
 1. **执行自定义销毁逻辑**
+
    - 调用实现了`DisposableBean`接口的Bean的`destroy`方法，执行我们定义的自定义销毁逻辑，用于释放资源或执行必要的清理工作。
+
 2. **调用自定义销毁方法**
+
    - 如果Bean配置中通过`destroy-method`属性指定了自定义的销毁方法，容器会调用这个方法，允许我们在销毁时执行特定的清理操作。
+
 3. **后置处理器清理工作**
+
    - 对于实现了`DestructionAwareBeanPostProcessor`接口的后置处理器，容器在销毁前后分别调用其`postProcessBeforeDestruction`和`postProcessAfterDestruction`方法，允许进行额外的清理工作。
+
 4. **执行`@PreDestroy`注解方法**
+
    - 通过`@PreDestroy`注解，我们可以在Bean的方法上标记销毁前的清理操作，确保在销毁时执行特定的业务逻辑。
+
 5. **触发销毁通知**
+
    - Spring容器会触发销毁通知，通知相关的监听器或观察者，允许应用程序在Bean销毁时执行特定的处理。
 
 ### 五、最佳实践
@@ -617,25 +629,40 @@ public void destroy() {
 ### 八、注意事项
 
 1. **销毁方法避免抛出异常**
+
    + 在销毁方法中应尽量避免抛出异常，因为抛出的异常可能会影响到其他Bean的销毁过程。如果有异常，最好进行适当的记录。
+
 2. **注意Bean的依赖关系**
+
    + 确保销毁Bean的顺序符合依赖关系，首先销毁依赖关系较少的Bean，然后再销毁依赖关系较多的Bean。Spring容器会尽量按照依赖关系的顺序销毁Bean。
+
 3. **注意Bean的生命周期和作用域**
+
    + 对于单例（Singleton）Bean，其销毁过程会在容器关闭时触发。对于原型（Prototype）Bean，Spring容器不会负责销毁，需要手动管理。
+
 
 ### 九、总结
 
 #### 最佳实践总结
 
 1. **创建应用程序上下文**
+
    + 使用`AnnotationConfigApplicationContext`创建一个基于注解的应用程序上下文对象。
+
 2. **注册Bean**
+
    + 使用`context.register(MyBean.class)`注册了`MyBean`类，告诉Spring容器要管理这个配置类所定义的bean。
+
 3. **刷新应用程序上下文**
+
    + 使用`context.refresh()`刷新应用程序上下文，初始化并启动Spring容器。
+
 4. **容器关闭**
+
    + 使用`context.close()`关闭应用程序上下文。在关闭过程中，Spring容器会触发bean的销毁阶段。
+
 5. **Bean销毁**
+
    + 由于`MyBean`实现了`DisposableBean`接口，因此在容器关闭时，会调用`MyBean`的`destroy`方法。在`destroy`方法中，我们简单地打印一条消息，表示`MyBean`被销毁了。
    + 最后，控制台输出了`MyBean被销毁了`的消息，证明了bean的销毁过程已经执行。
 
