@@ -126,11 +126,9 @@
 
 - 容器上下文
 
-  - [`ClassPathXmlApplicationContext`](spring-context/spring-context-classPathXmlApplicationContext/README.md)：类路径（classpath）加载 XML 配置文件的上下文。
+  - [`ClassPathXmlApplicationContext`](spring-context/spring-context-classPathXmlApplicationContext/README.md)：类路径（classpath）加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
-  - `FileSystemXmlApplicationContext`：文件系统加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `AnnotationConfigApplicationContext`：注解配置类中加载配置信息的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - [`AnnotationConfigApplicationContext`](spring-context/spring-context-annotationConfigApplicationContext/README.md)：注解配置类中加载配置信息的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - `GenericApplicationContext`：支持多种配置方式，XML、注解、手动注册的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
