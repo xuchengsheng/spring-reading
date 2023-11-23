@@ -21,7 +21,6 @@
         <module>spring-bean-groovyBeanDefinitionReader</module>
         <module>spring-bean-annotatedBeanDefinitionReader</module>
         <module>spring-bean-classPathBeanDefinitionScanner</module>
-        <module>spring-bean-importBeanDefinitionRegistrar</module>
     </modules>
 
 </project>
