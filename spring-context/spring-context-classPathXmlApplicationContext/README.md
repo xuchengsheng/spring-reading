@@ -104,7 +104,7 @@ public class MyBean {
 
 ~~~mermaid
 sequenceDiagram
-Title: @ComponentScan Annotation Sequence Diagram
+Title: ClassPathXmlApplicationContext时序图
 ClassPathXmlApplicationContextDemo->>ClassPathXmlApplicationContext:ClassPathXmlApplicationContext(configLocation)
 Note over ClassPathXmlApplicationContextDemo,ClassPathXmlApplicationContext: 创建ClassPathXmlApplicationContext实例
 
