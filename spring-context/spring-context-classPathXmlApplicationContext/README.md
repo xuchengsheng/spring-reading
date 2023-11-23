@@ -17,6 +17,7 @@
 ### 二、知识储备
 
 1. **XmlBeanDefinitionReader**
+
    + [XmlBeanDefinitionReader](https://github.com/xuchengsheng/spring-reading/blob/master/spring-beans/spring-bean-xmlBeanDefinitionReader/README.md)是Spring Framework中的一个类，用于加载和解析XML格式的Bean定义配置文件，将配置文件中定义的Bean元数据信息提取为Spring容器内部的Bean定义对象，进而实现IOC容器的构建和管理。这类负责读取XML配置文件，解析Bean的定义信息（包括ID、类名、属性、依赖等），并将这些定义注册到Spring应用程序上下文，使我们能够方便地配置和管理应用程序中的各种Bean组件。
 
 ### 三、基本描述
@@ -26,19 +27,33 @@
 ### 四、主要功能
 
 1. **加载配置文件** 
+
    + 主要功能是加载指定的 XML 配置文件，该配置文件包含了应用程序中各个组件（bean）的定义、依赖关系、配置信息等。
+
 2. **容器初始化**
+
    + `ClassPathXmlApplicationContext` 在被实例化时，会读取并解析配置文件，然后初始化 Spring 容器。这个过程包括创建和管理 bean 实例、解决 bean 之间的依赖关系等。
+
 3. **获取 bean 实例**
+
    + 通过容器的 `getBean` 方法，可以从容器中获取在配置文件中定义的 bean 实例。
+
 4. **IoC（控制反转）** 
+
    + `ClassPathXmlApplicationContext` 是 IoC 容器的一种实现，它负责管理和控制组件的生命周期。在容器初始化时，会根据配置文件中的信息实例化和装配 bean，而不是由应用程序代码直接创建对象。
+
 5. **依赖注入** 
+
    + 容器通过读取配置文件中的信息，自动解决 bean 之间的依赖关系。这意味着在配置文件中声明的 bean 可以通过属性注入或构造函数注入的方式获取其依赖的其他 bean。
+
 6. **AOP（面向切面编程）**
+
    +  `ClassPathXmlApplicationContext` 支持通过配置文件定义切面和通知，实现横切关注点的分离，使得应用程序的关注点更加清晰和模块化。
+
 7. **事件传播**
+
    + Spring 容器支持事件机制，`ClassPathXmlApplicationContext` 可以发布应用程序中发生的事件，以便其他组件能够监听并作出相应的响应。
+
 
 ### 五、最佳实践
 
