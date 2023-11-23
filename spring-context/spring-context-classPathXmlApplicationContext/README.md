@@ -1,6 +1,6 @@
-## AbstractApplicationContext
+## ClassPathXmlApplicationContext
 
-- [AbstractApplicationContext](#abstractapplicationcontext)
+- [ClassPathXmlApplicationContext](#classpathxmlapplicationcontext)
   - [一、基本信息](#一基本信息)
   - [二、知识储备](#二知识储备)
   - [三、基本描述](#三基本描述)
