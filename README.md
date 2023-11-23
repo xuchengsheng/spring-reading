@@ -275,27 +275,37 @@
 
 #### Spring MVC
 
-+ Spring MVC 流程
-
-+ DispatcherServlet 的角色与工作原理
-
-+ 控制器（Controller）的工作机制
-
-+ 视图解析与渲染
-
-+ 异常处理
-
-+ RESTful 支持
+- `@Controller`：定义类为 Spring MVC 控制器，处理请求并返回视图。
+- `@RequestMapping`：映射请求 URL 到处理方法。
+- `@RequestMapping`：简化 HTTP 方法映射注解，处理 GET、POST、PUT 和 DELETE 请求。
+- `@RequestParam`：绑定请求参数到方法参数。
+- `@PathVariable`：提取 URI 中的模板变量。
+- `@RequestBody`：绑定请求体内容到方法参数，通常用于处理 POST 请求中的 JSON 数据。
+- `@ResponseBody`：将方法返回值直接写入 HTTP 响应体。
+- `@ModelAttribute`：将方法返回值或参数添加到模型，使其在视图中可访问。
+- `@SessionAttribute`：指定模型属性存储在会话中，以在多个请求之间共享。
+- `@InitBinder`：定制数据绑定过程，例如将字符串转换为日期。
+- `@Validated`：类级别注解，标记验证组。
+- `@ResponseBodyAdvice`：全局定制控制器方法返回值的处理。
+- `@RestController`：定义类为 RESTful 控制器，直接将每个方法的返回值写入响应体。
+- `@RequestMappingHandlerMapping`：配置自定义的请求映射处理器。
+- `@SessionAttributes`：控制器类上标记，指定哪些模型属性存储在会话中，用于在多个请求中共享。
+- `@ModelAttribute`：在方法级别和参数级别使用，将模型属性绑定到方法参数，实现数据传递。
+- `@SessionAttribute`：将模型属性存储在会话中，实现在多个请求中的数据共享。
+- `@InitBinder`：在类和方法级别使用，定制数据绑定过程，例如字符串转日期。
+- `@Validated`：类级别注解，标记验证组，与验证框架一起使用。
+- `@ResponseBodyAdvice`：全局处理控制器方法返回值，用于定制响应体逻辑。
+- `@RestController`：类似于 @Controller，专注于 RESTful 服务，直接将方法返回值写入响应体。
+- `@RequestMappingHandlerMappin`g：配置自定义请求映射处理器，用于个性化 URL 映射逻辑。
 
 #### Spring Boot
 
-+ Spring Boot 与 Spring 的区别
-
-+ 自动配置原理
-
-+ Spring Boot starter 介绍
-
-+ Spring Boot Actuator
++ `@SpringBootApplication`：启动类标识，包含了组合注解 。
++ `@EnableAutoConfiguration`：启用 Spring Boot 的自动配置。
++ `@ConfigurationProperties`：将配置文件中的属性值注入到配置类的属性中。
++ `@EnableCaching`：启用缓存支持。
++ `@Async`：异步方法注解。
++ `@EventListener`：监听事件。
 
 #### Spring Cloud
 
