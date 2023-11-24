@@ -29,6 +29,7 @@
         <module>spring-metadata</module>
         <module>spring-beans</module>
         <module>spring-context</module>
+        <module>spring-factory</module>
     </modules>
 
     <dependencies>
