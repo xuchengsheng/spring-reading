@@ -30,14 +30,23 @@
 ### 三、主要功能
 
 1. **Bean的创建和初始化** 
+
    + 通过`createBean`方法，可以创建一个新的Bean实例，并在创建过程中执行完整的初始化，包括所有适用的`BeanPostProcessor`的回调。
+
 2. **自动装配** 
+
    + 提供了不同的自动装配模式，包括按名称、按类型、按构造函数等，通过`autowire`和`autowireBeanProperties`方法实现对Bean属性的自动注入。
+
 3. **Bean配置和后处理器应用** 
+
    + 通过`configureBean`方法，可以配置已存在的Bean实例，应用属性值、工厂回调等，同时执行所有`BeanPostProcessor`的回调。
+
 4. **定制化初始化和销毁过程** 
+
    + 通过`initializeBean`方法，可以在Bean初始化过程中应用定制化的操作，例如执行初始化回调、应用后处理器等。还提供了`destroyBean`方法用于销毁Bean实例。
+
 5. **解析依赖** 
+
    + 通过`resolveDependency`方法，可以解析指定的依赖关系，支持字段、方法、构造函数等各种依赖注入方式。
 
 ### 四、接口源码
@@ -656,22 +665,35 @@ resolveDependency = com.xcs.spring.repository.MyRepository@37654521
 ### 常见问题
 
 1. **createBean() 和 configureBean()**
+
    - `createBean()` 用于创建Bean的实例，即进行Bean的实例化。它是Bean创建过程中的第一步。
    - `configureBean()` 则是在Bean实例创建之后，进行进一步的配置，如应用BeanPostProcessors等。这是在Bean实例化后、初始化之前的阶段。
+
 2. **autowireBean() 和 autowire()**
+
    - `autowireBean()` 用于对现有的Bean实例进行自动装配，将依赖注入到Bean中。
    - `autowire()` 是在创建Bean实例时使用指定的自动装配模式，用于生成新的Bean实例。
+
 3. **autowireBeanProperties() 和 applyBeanPropertyValues()**
+
    - `autowireBeanProperties()` 主要用于对Bean实例的属性进行自动装配。
    - `applyBeanPropertyValues()` 则是将属性值应用到Bean实例，包括在XML或注解中配置的属性值。
+
 4. **initializeBean()、applyBeanPostProcessorsBeforeInitialization() 和 applyBeanPostProcessorsAfterInitialization()**
+
    - `initializeBean()` 是Bean生命周期中的最后一步，包括初始化和应用BeanPostProcessors等。
    - `applyBeanPostProcessorsBeforeInitialization()` 用于在初始化之前应用BeanPostProcessors。
    - `applyBeanPostProcessorsAfterInitialization()` 用于在初始化之后应用BeanPostProcessors。
+
 5. **destroyBean()**
+
    - `destroyBean()` 用于销毁给定的Bean实例，释放资源等。通常在容器关闭时调用。
+
 6. **resolveNamedBean() 和 resolveBeanByName()**
+
    - `resolveNamedBean()` 主要用于解析指定名称的Bean并返回Bean实例。
    - `resolveBeanByName()` 则是解析指定名称的Bean定义，而不是直接返回Bean实例。
+
 7. **resolveDependency()**
+
    - `resolveDependency()` 主要用于解析Bean之间的依赖关系，特别是在自动装配时。在`AbstractAutowireCapableBeanFactory`的`doResolveDependency()`方法中调用。
