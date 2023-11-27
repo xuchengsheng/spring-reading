@@ -372,19 +372,19 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 ~~~mermaid
 classDiagram
     direction BT
-    class ResourceLoader {
+    class BeanFactory {
     	<<interface>>
     }
 
-    class ResourcePatternResolver {
+    class AutowireCapableBeanFactory {
     	<<interface>>
     }
 
-    class PathMatchingResourcePatternResolver {
+    class AbstractAutowireCapableBeanFactory {
     }
 
-    ResourcePatternResolver --|> ResourceLoader
-    PathMatchingResourcePatternResolver ..|> ResourcePatternResolver
+    AutowireCapableBeanFactory --|> BeanFactory
+    AbstractAutowireCapableBeanFactory --|> AutowireCapableBeanFactory
 
 ~~~
 
