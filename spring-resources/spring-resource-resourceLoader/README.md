@@ -195,32 +195,22 @@ File Exists = true
 ### 九、常见问题
 
 1. **加载类路径资源**
-- 使用前缀 "classpath:"，例如：`loader.getResource("classpath:myconfig.xml")`。
-   
+   + 使用前缀 "classpath:"，例如：`loader.getResource("classpath:myconfig.xml")`。
 2. **加载文件系统资源**
-- 使用前缀 "file:"，例如：`loader.getResource("file:/path/to/myconfig.xml")`。
-   
+   + 使用前缀 "file:"，例如：`loader.getResource("file:/path/to/myconfig.xml")`。
 3. **加载URL资源**
-- 直接使用 URL，例如：`loader.getResource("http://www.example.com/config.xml")`。
-   
+   + 直接使用 URL，例如：`loader.getResource("http://www.example.com/config.xml")`。
 4. **资源不存在**
-- 使用 `Resource.exists()` 方法检查资源是否存在。确保路径或位置正确，并且资源真的存在于预期的位置。
-   
+   + 使用 `Resource.exists()` 方法检查资源是否存在。确保路径或位置正确，并且资源真的存在于预期的位置。
 5. **如何读取资源内容**
-
-   - 从 `Resource` 对象中获取 `InputStream`，例如：`resource.getInputStream()`。
-
+   + 从 `Resource` 对象中获取 `InputStream`，例如：`resource.getInputStream()`。
 6. **从 `Resource` 获取到文件路径**
-- 使用 `Resource.getFile()`。但请注意，这并不总是有效的，例如当资源实际上是一个类路径资源或URL资源时。
-   
+   + 使用 `Resource.getFile()`。但请注意，这并不总是有效的，例如当资源实际上是一个类路径资源或URL资源时。
 7. **加载匹配特定模式的多个资源**
-- 使用 `ResourcePatternResolver` 或其实现 `PathMatchingResourcePatternResolver`。
-   
+   + 使用 `ResourcePatternResolver` 或其实现 `PathMatchingResourcePatternResolver`。
 8. **自动注入 `ResourceLoader`**
-- 实现 `ResourceLoaderAware` 接口，Spring 将自动为我们的 bean 提供 `ResourceLoader` 的引用。
-   
+   + 实现 `ResourceLoaderAware` 接口，Spring 将自动为我们的 bean 提供 `ResourceLoader` 的引用。
 9. **扩展或自定义资源加载机制**
-- 我们可以实现自己的 `ResourceLoader` 或继承现有的实现，如 `DefaultResourceLoader`。
-   
+   + 我们可以实现自己的 `ResourceLoader` 或继承现有的实现，如 `DefaultResourceLoader`。
 11. **加载资源时考虑环境或属性占位符**
-- 使用 `PropertyPlaceholderConfigurer` 或 `PropertySourcesPlaceholderConfigurer` 与 `@Value` 注解可以解析属性值中的资源路径。
+    + 使用 `PropertyPlaceholderConfigurer` 或 `PropertySourcesPlaceholderConfigurer` 与 `@Value` 注解可以解析属性值中的资源路径。

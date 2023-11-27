@@ -68,7 +68,7 @@
 
   - [`ResourceLoader`](spring-resources/spring-resource-resourceLoader/README.md)：资源获取核心接口，实现统一加载不同位置资源的策略。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   
-  - [`ResourcePatternResolver`](spring-resources/spring-resource-resourcePatternResolver/README.md)：资源模式解析接口，多位置通配符支持，用于加载应用中的资源。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  - [`ResourcePatternResolver`](spring-resources/spring-resource-resourcePatternResolver/README.md)：资源模式解析接口，用于灵活加载应用中的多种资源。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - [`DocumentLoader`](spring-resources/spring-resource-documentLoader/README.md)：XML文档加载解析核心接口，支持后台自动配置Spring应用。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 - 元数据与过滤
