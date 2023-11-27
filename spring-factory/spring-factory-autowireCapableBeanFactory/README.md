@@ -4,38 +4,24 @@
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
 
-### 三、基本描述
+### 二、基本描述
 
 `AutowireCapableBeanFactory`接口是Spring框架中位于`org.springframework.beans.factory.config`包下的关键接口，扩展自`BeanFactory`，主要提供了在运行时进行Bean自动装配和创建的高级功能。其核心方法`createBean`允许动态创建Bean实例，并进行自动装配，解决了Bean之间的依赖关系，而其他方法如`autowireBean`和`applyBeanPostProcessorsBeforeInitialization`则提供了更细粒度的控制和定制点，使我们能够在Bean生命周期的不同阶段进行干预，实现更灵活的Bean管理和配置。这一接口的存在增强了Spring IoC容器的功能，使其能够更好地适应复杂系统的需求。
 
-### 四、主要功能
+### 三、主要功能
 
-1. **Bean的创建和初始化：** 
+1. **Bean的创建和初始化** 
    + 通过`createBean`方法，可以创建一个新的Bean实例，并在创建过程中执行完整的初始化，包括所有适用的`BeanPostProcessor`的回调。
-2. **自动装配：** 
+2. **自动装配** 
    + 提供了不同的自动装配模式，包括按名称、按类型、按构造函数等，通过`autowire`和`autowireBeanProperties`方法实现对Bean属性的自动注入。
-3. **Bean配置和后处理器应用：** 
+3. **Bean配置和后处理器应用** 
    + 通过`configureBean`方法，可以配置已存在的Bean实例，应用属性值、工厂回调等，同时执行所有`BeanPostProcessor`的回调。
-4. **定制化初始化和销毁过程：** 
+4. **定制化初始化和销毁过程** 
    + 通过`initializeBean`方法，可以在Bean初始化过程中应用定制化的操作，例如执行初始化回调、应用后处理器等。还提供了`destroyBean`方法用于销毁Bean实例。
-5. **解析依赖：** 
+5. **解析依赖** 
    + 通过`resolveDependency`方法，可以解析指定的依赖关系，支持字段、方法、构造函数等各种依赖注入方式。
-6. **Bean实例的生命周期管理：** 
-   + 提供了应用`BeanPostProcessor`的回调，允许在Bean的初始化前后应用定制的处理逻辑，以及执行销毁前的操作。
-7. **解析Bean：** 
-   + 提供了解析指定类型和名称的Bean实例的方法，包括通过`resolveNamedBean`解析唯一匹配的Bean实例。
-8. **依赖检查：**
-   + 提供`dependencyCheck`方法，用于检查Bean的依赖关系是否满足要求。
-9. **Bean的销毁回调：**
-   + 通过`destroyBean`方法，允许在销毁Bean实例时执行自定义的清理和回收操作。
-10. **提供Bean的属性赋值：**
-    + 通过`applyPropertyValues`方法，支持对Bean属性进行手动赋值，实现在运行时动态修改Bean的属性。
-11. **提供Bean的类型转换：** 
-    + 通过`getTypeConverter`方法，支持在运行时进行类型转换，确保属性值正确地转换为目标类型。
-12. **Bean实例的后处理：**
-    + 通过`postProcessBeanInstance`方法，允许在创建Bean实例后进行自定义的处理，如更改Bean的内部状态或执行其他定制逻辑。
 
-### 五、接口源码
+### 四、接口源码
 
 从`AutowireCapableBeanFactory`接口源码中看出，它承担了创建、配置和生命周期管理Bean实例的任务。通过定义常量和方法，它提供了细粒度的控制，包括特定的自动装配策略、初始化过程、属性注入、后处理器应用以及销毁阶段。
 
@@ -350,10 +336,186 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 }
 ```
 
-### 六、主要实现
+### 五、最佳实践
 
-### 七、最佳实践
+使用`AnnotationConfigApplicationContext`创建了Spring应用程序上下文，手动注册了一个后置处理器（`MyBeanPostProcessor`）与一个单例Bean（`MyRepository`），最后获取了`AutowireCapableBeanFactory`。
 
-### 八、与其他组件的关系
+```java
+public static void main(String[] args) {
+    // 创建 ApplicationContext
+    AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfiguration.class);
 
-### 九、常见问题
+    // 配置一个后置处理器，用于验证Bean的初始化前后拦截信息打印
+    applicationContext.getBeanFactory().addBeanPostProcessor(new MyBeanPostProcessor());
+    // 注册一个MyRepository的Bean对象
+    applicationContext.getBeanFactory().registerSingleton("myRepository", new MyRepository());
+
+    // 获取 AutowireCapableBeanFactory
+    AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
+}
+```
+
+`MyService`是一个经典的Spring Bean类，通过`@Autowired`和`@Value`实现了对其他Bean和配置属性的注入。它实现了`BeanNameAware`、`InitializingBean`和`DisposableBean`接口，分别在Bean分配名称、属性设置完成后和Bean销毁时执行相应的生命周期方法，最后通过调用`toString()`方法提供了方便的信息展示。
+
+```java
+public class MyService implements BeanNameAware, InitializingBean, DisposableBean {
+
+    @Autowired
+    private MyRepository myRepository;
+
+    @Value("${java.home}")
+    private String javaHome;
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("MyService.setBeanName方法被调用了");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("MyService.afterPropertiesSet方法被调用了");
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("MyService.destroy方法被调用了");
+    }
+
+    @Override
+    public String toString() {
+        return "MyService{" +
+                "myRepository=" + myRepository +
+                ", javaHome='" + javaHome + '\'' +
+                '}';
+    }
+}
+```
+
+`MyBeanPostProcessor`是一个自定义的Bean后置处理器，实现了Spring的`BeanPostProcessor`接口。在Bean的初始化前后，它分别调用`postProcessBeforeInitialization`和`postProcessAfterInitialization`方法，在这个具体的实现中，我们简单地输出了一条日志，显示了被处理的Bean的名称。
+
+```java
+public class MyBeanPostProcessor implements BeanPostProcessor {
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = " + beanName);
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = " + beanName);
+        return bean;
+    }
+}
+```
+
+#### createBean
+
+通过`AutowireCapableBeanFactory`的`createBean`方法，手动创建了一个`MyService`类型的Bean实例。
+
+```java
+private static void createBean(AutowireCapableBeanFactory beanFactory) {
+    MyService myService = beanFactory.createBean(MyService.class);
+    System.out.println("调用createBean方法,创建Bean对象 = " + myService);
+}
+```
+
+运行结果发现，在`MyService`的生命周期中，`setBeanName`、`afterPropertiesSet`等回调方法都被成功触发，说明Bean的初始化过程正常执行。同时，`MyBeanPostProcessor`的后置处理器也在初始化前后成功拦截，并输出了Bean的名称。最重要的是，`MyService`中的`myRepository`和通过`@Value`注解注入的`javaHome`属性都成功被注入，表明依赖注入的过程也正常进行。
+
+```java
+MyService.setBeanName方法被调用了
+MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = com.xcs.spring.service.MyService
+MyService.afterPropertiesSet方法被调用了
+MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = com.xcs.spring.service.MyService
+调用createBean方法,创建Bean对象 = MyService{myRepository=com.xcs.spring.repository.MyRepository@5b03b9fe, javaHome='D:\install\jdk-11'}
+```
+
+#### configureBean
+
+通过`AutowireCapableBeanFactory`的`configureBean`方法手动配置Bean。首先，通过`registerBeanDefinition`方法注册了一个名为 "myService" 的`RootBeanDefinition`，表示要配置的Bean的定义。接着，创建了一个新的`MyService`实例，并通过`configureBean`方法对该实例进行配置，指定了使用之前注册的 "myService" Bean 定义。在方法执行前后，分别输出了`MyService`的实例信息，观察是否成功进行了配置。
+
+```java
+private static void configureBean(AutowireCapableBeanFactory beanFactory) {
+    // 配置一个RootBeanDefinition
+    ((DefaultListableBeanFactory) beanFactory).registerBeanDefinition("myService", new RootBeanDefinition(MyService.class));
+
+    MyService myService = new MyService();
+    System.out.println("调用configureBean前,MyService = " + myService);
+    beanFactory.configureBean(myService, "myService");
+    System.out.println("调用configureBean后,MyService = " + myService);
+}
+```
+
+运行结果发现，通过`configureBean`方法配置`MyService`实例的过程与使用`createBean`方法创建实例的结果相似。在调用`configureBean`之前，`MyService`的实例信息显示属性都为null。然后，`setBeanName`、`postProcessBeforeInitialization`、`afterPropertiesSet`等回调方法依次被触发，表明Bean的初始化过程正常执行。最终，调用`configureBean`之后，`MyService`的实例信息显示成功注入了`myRepository`和通过`@Value`注解注入的`javaHome`属性。
+
+```java
+调用configureBean前,MyService = MyService{myRepository=null, javaHome='null'}
+MyService.setBeanName方法被调用了
+MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = myService
+MyService.afterPropertiesSet方法被调用了
+MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = myService
+调用configureBean后,MyService = MyService{myRepository=com.xcs.spring.repository.MyRepository@5b03b9fe, javaHome='D:\install\jdk-11'}
+```
+
+#### autowireBean
+
+通过`AutowireCapableBeanFactory`的`autowireBean`方法手动进行Bean的自动装配。首先，创建了一个`MyService`实例，然后通过`autowireBean`方法对该实例进行自动装配。在方法执行前后，分别输出了`MyService`的实例信息，观察是否成功进行了自动装配。
+
+```java
+private static void autowireBean(AutowireCapableBeanFactory beanFactory) {
+    MyService myService = new MyService();
+    System.out.println("调用autowireBean前,MyService = " + myService);
+    beanFactory.autowireBean(myService);
+    System.out.println("调用autowireBean后,MyService = " + myService);
+}
+```
+
+运行结果发现，使用`AutowireCapableBeanFactory`的`autowireBean`方法对一个新创建的`MyService`实例进行手动的自动装配。在调用`autowireBean`之前，`MyService`的实例信息显示属性都为null。然后，调用`autowireBean`方法后，`MyService`的实例信息显示成功注入了`myRepository`属性，该属性引用了`com.xcs.spring.repository.MyRepository`的实例，以及通过`@Value`注解注入的`javaHome`属性，该属性的值为'D:\install\jdk-11'。
+
+然而，需要注意的是，使用`autowireBean`方法并没有触发`BeanNameAware`接口中的`setBeanName`方法、`InitializingBean`接口中的`afterPropertiesSet`方法，以及自定义的`MyBeanPostProcessor`后置处理器的相应回调方法。这是因为`autowireBean`方法主要关注依赖注入，而不涉及到完整的Bean生命周期管理。
+
+```java
+调用autowireBean前,MyService = MyService{myRepository=null, javaHome='null'}
+调用autowireBean后,MyService = MyService{myRepository=com.xcs.spring.repository.MyRepository@5b03b9fe, javaHome='D:\install\jdk-11'}
+```
+
+#### autowire
+
+使用`AutowireCapableBeanFactory`的`autowire`方法来创建并自动装配一个`MyService`类型的Bean。通过指定`AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE`参数，表示使用类型自动装配。在方法执行后，输出了通过`autowire`方法创建的`MyService`实例的信息。
+
+```java
+private static void autowire(AutowireCapableBeanFactory beanFactory) {
+    Object myService = beanFactory.autowire(MyService.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+    System.out.println("调用autowire方法,创建Bean对象 =" + myService);
+}
+```
+
+运行结果发现，通过`autowire`方法和`autowireBean`方法获得了相似的结果。
+
+不过，需要注意的是，虽然结果相似，但是这两个方法的使用场景略有不同。`autowireBean`是直接对一个已有实例进行自动装配，而`autowire`方法则是根据指定的类型动态创建并自动装配一个Bean。因此，具体使用哪一种方法取决于实际的需求和场景。
+
+```java
+调用autowire方法,创建Bean对象 =MyService{myRepository=com.xcs.spring.repository.MyRepository@4145bad8, javaHome='D:\install\jdk-11'}
+```
+
+#### autowireBeanProperties
+
+使用`AutowireCapableBeanFactory`的`autowireBeanProperties`方法，对一个新创建的`MyService`实例进行自动属性装配。首先，创建了一个`MyService`实例，并输出了其初始状态。然后，通过`autowireBeanProperties`方法对该实例进行自动属性装配，使用的是`AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE`规则。最后，输出了`autowireBeanProperties`后的`MyService`实例信息，观察是否成功进行了自动属性装配。
+
+```java
+private static void autowireBeanProperties(AutowireCapableBeanFactory beanFactory) {
+    MyService myService = new MyService();
+    System.out.println("调用autowireBeanProperties前,MyService = " + myService);
+    beanFactory.autowireBeanProperties(myService, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+    System.out.println("调用autowireBeanProperties后,MyService = " + myService);
+}
+```
+
+运行结果发现，通过`autowireBeanProperties`方法与之前的`autowireBean`和`autowire`方法相比，得到了相似的结果。在调用`autowireBeanProperties`方法之前，`MyService`的实例信息显示属性都为null。然后，调用`autowireBeanProperties`方法后，`MyService`的实例信息显示成功注入了`myRepository`属性，该属性引用了`com.xcs.spring.repository.MyRepository`的实例，以及通过`@Value`注解注入的`javaHome`属性，该属性的值为'D:\install\jdk-11'。
+
+```
+调用autowireBeanProperties前,MyService = MyService{myRepository=null, javaHome='null'}
+调用autowireBeanProperties后,MyService = MyService{myRepository=com.xcs.spring.repository.MyRepository@4145bad8, javaHome='D:\install\jdk-11'}
+```
+
