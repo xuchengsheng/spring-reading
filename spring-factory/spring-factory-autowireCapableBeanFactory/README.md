@@ -1,5 +1,24 @@
 ## AutowireCapableBeanFactory
 
+- [AutowireCapableBeanFactory](#autowirecapablebeanfactory)
+  - [一、基本信息](#一基本信息)
+  - [二、基本描述](#二基本描述)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [五、最佳实践](#五最佳实践)
+    - [createBean](#createbean)
+    - [configureBean](#configurebean)
+    - [autowireBean](#autowirebean)
+    - [autowire](#autowire)
+    - [autowireBeanProperties](#autowirebeanproperties)
+    - [applyBeanPropertyValues](#applybeanpropertyvalues)
+    - [initializeBean](#initializebean)
+    - [destroyBean](#destroybean)
+    - [resolveDependency](#resolvedependency)
+  - [常见问题](#常见问题)
+
+
 ### 一、基本信息
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
@@ -336,6 +355,30 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 }
 ```
 
+### 五、主要实现
+
++ `AbstractAutowireCapableBeanFactory`
+  + `AbstractAutowireCapableBeanFactory`是`AutowireCapableBeanFactory`接口的抽象实现，为Spring框架提供了核心的Bean创建、初始化和销毁功能。它实现了`createBean`方法，支持对Bean的依赖注入、属性值应用、后置处理器的应用，以及初始化和销毁阶段的生命周期管理。
+
+~~~mermaid
+classDiagram
+    direction BT
+    class ResourceLoader {
+    	<<interface>>
+    }
+
+    class ResourcePatternResolver {
+    	<<interface>>
+    }
+
+    class PathMatchingResourcePatternResolver {
+    }
+
+    ResourcePatternResolver --|> ResourceLoader
+    PathMatchingResourcePatternResolver ..|> ResourcePatternResolver
+
+~~~
+
 ### 五、最佳实践
 
 使用`AnnotationConfigApplicationContext`创建了Spring应用程序上下文，手动注册了一个后置处理器（`MyBeanPostProcessor`）与一个单例Bean（`MyRepository`），最后获取了`AutowireCapableBeanFactory`。
@@ -519,3 +562,116 @@ private static void autowireBeanProperties(AutowireCapableBeanFactory beanFactor
 调用autowireBeanProperties后,MyService = MyService{myRepository=com.xcs.spring.repository.MyRepository@4145bad8, javaHome='D:\install\jdk-11'}
 ```
 
+#### applyBeanPropertyValues
+
+使用`AutowireCapableBeanFactory`的`applyBeanPropertyValues`方法，手动为`MyService`类型的Bean配置自定义属性值。首先，创建了一个`PropertyValue`实例，表示要设置的属性名为"javaHome"，属性值为"这里是我自定义的javaHome路径配置"。接着，通过`MutablePropertyValues`构建了属性值的集合，并将之前创建的`PropertyValue`添加到集合中。然后，创建了一个`RootBeanDefinition`，并将属性值集合设置到该Bean定义中。最后，通过`registerBeanDefinition`方法注册了一个名为 "myService" 的Bean定义。在调用`applyBeanPropertyValues`方法之前，创建了一个新的`MyService`实例，并输出了其初始状态。然后，调用`applyBeanPropertyValues`方法后，输出了`applyBeanPropertyValues`后的`MyService`实例信息，观察是否成功应用了自定义的属性值。
+
+```java
+private static void applyBeanPropertyValues(AutowireCapableBeanFactory beanFactory) {
+    PropertyValue propertyValue = new PropertyValue("javaHome", "这里是我自定义的javaHome路径配置");
+    MutablePropertyValues propertyValues = new MutablePropertyValues();
+    propertyValues.addPropertyValue(propertyValue);
+
+    RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(MyService.class);
+    rootBeanDefinition.setPropertyValues(propertyValues);
+    // 配置一个RootBeanDefinition
+    ((DefaultListableBeanFactory) beanFactory).registerBeanDefinition("myService", rootBeanDefinition);
+
+    MyService myService = new MyService();
+    System.out.println("调用applyBeanPropertyValues前,MyService = " + myService);
+    beanFactory.applyBeanPropertyValues(myService, "myService");
+    System.out.println("调用applyBeanPropertyValues后,MyService = " + myService);
+}
+```
+
+运行结果发现，调用`applyBeanPropertyValues`方法后，并没有触发`BeanNameAware`接口中的`setBeanName`方法、`InitializingBean`接口中的`afterPropertiesSet`方法，以及自定义的`MyBeanPostProcessor`后置处理器的相应回调方法。这是因为`applyBeanPropertyValues`方法主要专注于属性值的应用，而不涉及完整的Bean初始化和生命周期管理。最终的运行结果显示`myRepository`属性为null，表明`applyBeanPropertyValues`方法并没有进行依赖注入。
+
+```java
+调用applyBeanPropertyValues前,MyService = MyService{myRepository=null, javaHome='null'}
+调用applyBeanPropertyValues后,MyService = MyService{myRepository=null, javaHome='这里是我自定义的javaHome路径配置'}
+```
+
+#### initializeBean
+
+使用`AutowireCapableBeanFactory`的`initializeBean`方法，手动初始化`MyService`类型的Bean。首先，创建了一个新的`MyService`实例，并输出了其初始状态。然后，通过`initializeBean`方法对该实例进行初始化，指定了Bean的名称为 "myService"。在调用方法之后，输出了`initializeBean`后的`MyService`实例信息，观察是否成功进行了初始化。
+
+```java
+private static void initializeBean(AutowireCapableBeanFactory beanFactory) {
+    MyService myService = new MyService();
+    System.out.println("调用initializeBean前,MyService = " + myService);
+    beanFactory.initializeBean(myService, "myService");
+    System.out.println("调用initializeBean前,MyService = " + myService);
+}
+```
+
+运行结果发现，`myRepository`和`javaHome`的值都显示为`null`，这是因为在调用`initializeBean`方法时，并没有提供属性值的注入。`initializeBean`方法主要用于手动触发Bean的初始化阶段，包括调用`afterPropertiesSet`方法和应用Bean后置处理器，但它并不负责属性的注入。
+
+```java
+调用initializeBean前,MyService = MyService{myRepository=null, javaHome='null'}
+MyService.setBeanName方法被调用了
+MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = myService
+MyService.afterPropertiesSet方法被调用了
+MyBeanPostProcessor#postProcessBeforeInitialization方法被调用了,Bean名称 = myService
+调用initializeBean前,MyService = MyService{myRepository=null, javaHome='null'}
+```
+
+#### destroyBean
+
+使用`AutowireCapableBeanFactory`的`destroyBean`方法，手动销毁（destroy）一个`MyService`类型的Bean实例。通过传递新创建的`MyService`实例作为参数，调用了`destroyBean`方法。
+
+```java
+private static void destroyBean(AutowireCapableBeanFactory beanFactory) {
+    beanFactory.destroyBean(new MyService());
+}
+```
+
+运行结果发现，在调用`destroyBean`方法后，`MyService`实例的销毁方法 `destroy` 被成功调用。这表明`destroyBean`方法有效地触发了Bean的销毁阶段，执行了实现了`DisposableBean`接口的`destroy`方法。
+
+```java
+MyService.destroy方法被调用了
+```
+
+#### resolveDependency
+
+使用`AutowireCapableBeanFactory`的`resolveDependency`方法，手动解析一个依赖关系。通过创建一个`DependencyDescriptor`对象，表示`MyService`类中的`myRepository`属性，然后调用`resolveDependency`方法，尝试解析这个依赖关系。最后，输出解析得到的依赖对象。
+
+```java
+private static void resolveDependency(AutowireCapableBeanFactory beanFactory) {
+    try {
+        DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(MyService.class.getDeclaredField("myRepository"), false);
+        Object resolveDependency = beanFactory.resolveDependency(dependencyDescriptor, "myRepository");
+        System.out.println("resolveDependency = " + resolveDependency);
+    } catch (NoSuchFieldException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+运行结果发现，通过调用`resolveDependency`方法成功解析了依赖关系，将`myRepository`属性的依赖解析为`MyRepository`的实例。
+
+```java
+resolveDependency = com.xcs.spring.repository.MyRepository@37654521
+```
+
+### 常见问题
+
+1. **createBean() 和 configureBean()**
+   - `createBean()` 用于创建Bean的实例，即进行Bean的实例化。它是Bean创建过程中的第一步。
+   - `configureBean()` 则是在Bean实例创建之后，进行进一步的配置，如应用BeanPostProcessors等。这是在Bean实例化后、初始化之前的阶段。
+2. **autowireBean() 和 autowire()**
+   - `autowireBean()` 用于对现有的Bean实例进行自动装配，将依赖注入到Bean中。
+   - `autowire()` 是在创建Bean实例时使用指定的自动装配模式，用于生成新的Bean实例。
+3. **autowireBeanProperties() 和 applyBeanPropertyValues()**
+   - `autowireBeanProperties()` 主要用于对Bean实例的属性进行自动装配。
+   - `applyBeanPropertyValues()` 则是将属性值应用到Bean实例，包括在XML或注解中配置的属性值。
+4. **initializeBean()、applyBeanPostProcessorsBeforeInitialization() 和 applyBeanPostProcessorsAfterInitialization()**
+   - `initializeBean()` 是Bean生命周期中的最后一步，包括初始化和应用BeanPostProcessors等。
+   - `applyBeanPostProcessorsBeforeInitialization()` 用于在初始化之前应用BeanPostProcessors。
+   - `applyBeanPostProcessorsAfterInitialization()` 用于在初始化之后应用BeanPostProcessors。
+5. **destroyBean()**
+   - `destroyBean()` 用于销毁给定的Bean实例，释放资源等。通常在容器关闭时调用。
+6. **resolveNamedBean() 和 resolveBeanByName()**
+   - `resolveNamedBean()` 主要用于解析指定名称的Bean并返回Bean实例。
+   - `resolveBeanByName()` 则是解析指定名称的Bean定义，而不是直接返回Bean实例。
+7. **resolveDependency()**
+   - `resolveDependency()` 主要用于解析Bean之间的依赖关系，特别是在自动装配时。在`AbstractAutowireCapableBeanFactory`的`doResolveDependency()`方法中调用。

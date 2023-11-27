@@ -46,16 +46,10 @@ public class AutowireCapableBeanFactoryDemo {
         // autowireBeanProperties(beanFactory);
 
         // 将属性值应用到给定的Bean实例
-        applyBeanPropertyValues(beanFactory);
+        // applyBeanPropertyValues(beanFactory);
 
         // 初始化给定的Bean实例
         // initializeBean(beanFactory);
-
-        // 在初始化之前应用 Bean 后处理器
-        // applyBeanPostProcessorsBeforeInitialization(beanFactory);
-
-        // 初始化后应用 Bean 后处理器
-        // applyBeanPostProcessorsAfterInitialization(beanFactory);
 
         // 销毁给定的Bean实例
         // destroyBean(beanFactory);
@@ -121,29 +115,12 @@ public class AutowireCapableBeanFactoryDemo {
         System.out.println("调用initializeBean前,MyService = " + myService);
     }
 
-    private static void applyBeanPostProcessorsBeforeInitialization(AutowireCapableBeanFactory beanFactory) {
-        MyService myService = new MyService();
-        System.out.println("调用applyBeanPostProcessorsBeforeInitialization前,MyService = " + myService);
-        beanFactory.applyBeanPostProcessorsBeforeInitialization(myService, "myService");
-        System.out.println("调用applyBeanPostProcessorsBeforeInitialization后,MyService = " + myService);
-    }
-
-    private static void applyBeanPostProcessorsAfterInitialization(AutowireCapableBeanFactory beanFactory) {
-        MyService myService = new MyService();
-        System.out.println("调用applyBeanPostProcessorsAfterInitialization前,MyService = " + myService);
-        beanFactory.applyBeanPostProcessorsAfterInitialization(myService, "myService");
-        System.out.println("调用applyBeanPostProcessorsAfterInitialization后,MyService = " + myService);
-    }
-
     private static void destroyBean(AutowireCapableBeanFactory beanFactory) {
         beanFactory.destroyBean(new MyService());
     }
 
     private static void resolveDependency(AutowireCapableBeanFactory beanFactory) {
         try {
-            // 配置一个MyRepository，用于被依赖对象注入使用
-            ((DefaultListableBeanFactory) beanFactory).registerSingleton("myRepository", new MyRepository());
-
             DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(MyService.class.getDeclaredField("myRepository"), false);
             Object resolveDependency = beanFactory.resolveDependency(dependencyDescriptor, "myRepository");
             System.out.println("resolveDependency = " + resolveDependency);
