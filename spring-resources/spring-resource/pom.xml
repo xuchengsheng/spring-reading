@@ -10,7 +10,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>spring-resource</artifactId>
-
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>

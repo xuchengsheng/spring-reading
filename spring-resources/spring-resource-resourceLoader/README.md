@@ -19,10 +19,15 @@
 ### 二、知识储备
 
 1. **Spring 资源抽象**
+
    - [Resource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-resources/spring-resource) 接口及其各种实现。
+
 2. **路径和模式解析**
+
    - Spring 中的路径解析，特别是使用 ant 风格的路径模式，例如 `classpath*:com/example/**/*.xml`。
+
 3. **理解不同的资源类型**
+
    - 文件资源、类路径资源、URL 资源、JAR 中的资源等。
 
 ### 三、基本描述
@@ -32,16 +37,27 @@
 ### 四、主要功能
 
 1. **统一资源加载**
+
    - `ResourceLoader` 提供了一个标准化的方法来加载资源，不论资源是存放在类路径、文件系统、网络URL还是其他位置。
+
 2. **资源位置解析**
+
    - 根据提供的资源字符串位置（如 "classpath:", "file:", "http:"），`ResourceLoader` 可以确定资源的类型，并为其创建相应的 `Resource` 实例。
+
 3. **返回 `Resource` 实例**
+
    - 通过 `Resource getResource(String location)` 方法，`ResourceLoader` 返回一个 `Resource` 对象，代表了指定位置的资源。这使得读取和操作资源变得简单且统一。
+
 4. **与 `ClassLoader` 的交互**
+
    - `ResourceLoader` 通过 `ClassLoader getClassLoader()` 方法返回与其关联的 `ClassLoader`。这使得资源加载策略可以与特定的类加载器关联。
+
 5. **扩展性**
+
    - `ResourceLoader` 是一个接口，这意味着我们可以实现自己的资源加载策略，或者扩展默认的策略以满足特定需求。
+
 6. **内置实现与整合**
+
    - Spring 提供了默认的 `ResourceLoader` 实现，如 `DefaultResourceLoader`。但更重要的是，`org.springframework.context.ApplicationContext` 也实现了 `ResourceLoader`，这意味着 Spring 上下文本身就是一个资源加载器。
 
 ### 五、接口源码
@@ -89,55 +105,10 @@ public interface ResourceLoader {
 }
 ```
 
-`ResourcePatternResolver` 接口提供了一种机制，允许使用特定的模式（如Ant风格的路径模式）从不同的来源解析多个 `Resource` 对象。这不仅限于解析单一资源，而是可以批量解析符合某个模式的所有资源，这在加载分散在多个位置或JAR文件中的配置文件时特别有用。与普通的 `ResourceLoader` 相比，它增加了位置模式解析的能力，使得资源加载更加灵活和强大。
-
-```java
-/**
- * 用于将位置模式（例如，Ant风格的路径模式）解析为 Resource 对象的策略接口。
- * 
- * 这是 ResourceLoader 接口的扩展。可以检查传入的 ResourceLoader（例如，通过
- * ResourceLoaderAware 在上下文中运行时传入的 ApplicationContext）是否也实现了这个扩展接口。
- * 
- * PathMatchingResourcePatternResolver 是一个独立的实现，可以在 ApplicationContext 外部使用，
- * 也被 ResourceArrayPropertyEditor 用于填充 Resource 数组bean属性。
- * 
- * 可以与任何形式的位置模式一起使用（例如 "/WEB-INF/*-context.xml"）：输入模式必须匹配策略实现。
- * 此接口仅指定转换方法而不是特定的模式格式。
- * 
- * 此接口还为类路径中的所有匹配资源建议了一个新的资源前缀 "classpath*:"。
- * 请注意，这种情况下的资源位置预计是一个没有占位符的路径（例如 "/beans.xml"）；
- * JAR 文件或类路径中的不同目录可能包含多个同名文件。
- *
- * @author Juergen Hoeller
- * @since 1.0.2
- */
-public interface ResourcePatternResolver extends ResourceLoader {
-
-	/**
-	 * 从类路径获取所有匹配资源的伪 URL 前缀："classpath*:"。
-	 * 这与 ResourceLoader 的类路径 URL 前缀不同，因为它检索给定名称的所有匹配资源（例如 "/beans.xml"），
-	 * 例如所有部署的 JAR 文件的根目录。
-	 */
-	String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
-
-	/**
-	 * 将给定的位置模式解析为 Resource 对象。
-	 * 尽可能避免重叠的资源条目指向同一物理资源。结果应该具有集合语义。
-	 * @param locationPattern 要解析的位置模式
-	 * @return 对应的 Resource 对象
-	 * @throws IOException 如果出现 I/O 错误
-	 */
-	Resource[] getResources(String locationPattern) throws IOException;
-
-}
-```
-
 ### 六、主要实现
 
 1. **`DefaultResourceLoader`**
    + 这是基本的资源加载器实现。它可以处理 "classpath:" 前缀的资源，如果没有提供这样的前缀，它会尝试使用类加载器或文件系统来加载资源。
-2. **`PathMatchingResourcePatternResolver`**
-   + 这个类不仅实现了 `ResourceLoader` 接口，还实现了 `ResourcePatternResolver` 接口。它扩展了 `DefaultResourceLoader` 的功能，支持 "classpath*:" 这样的模式来加载匹配的所有资源。
 
 ~~~mermaid
 classDiagram
@@ -148,22 +119,11 @@ classDiagram
         + getClassLoader() : ClassLoader
     }
 
-    class ResourcePatternResolver {
-    	<<interface>>
-        +getResources(locationPattern) : Resource[]
-    }
-
     class DefaultResourceLoader {
         -ClassLoader classLoader
     }
 
-    class PathMatchingResourcePatternResolver {
-        -ResourceLoader resourceLoader
-    }
-
-    ResourcePatternResolver --|> ResourceLoader
     DefaultResourceLoader ..|> ResourceLoader
-    PathMatchingResourcePatternResolver ..|> ResourcePatternResolver
 
 ~~~
 
@@ -209,43 +169,6 @@ Classpath Exists= true
 File Exists = true
 ```
 
-**`PathMatchingResourcePatternResolver`**
-
-使用 `PathMatchingResourcePatternResolver` 来加载匹配指定模式的资源。
-
-```java
-public class PathMatchingResourcePatternResolverDemo {
-    public static void main(String[] args) throws Exception {
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-        // 加载所有匹配的类路径资源
-        Resource[] resources = resolver.getResources("classpath*:*.properties");
-        for (Resource resource : resources) {
-            System.out.println("Classpath = " + resource.getFilename());
-        }
-
-        // 加载文件系统中的所有匹配资源
-        Resource[] fileResources = resolver.getResources("file:/idea-work-space-xcs/spring-reading/spring-resources/spring-resource-resourceLoader/*.txt");
-        for (Resource resource : fileResources) {
-            System.out.println("File = " + resource.getFilename());
-        }
-    }
-}
-```
-
-运行结果发现
-
-- 从类路径上，我们加载了两个文件：`application.properties` 和 `bootstrap.properties`。这意味着在我们的项目的类路径中，有这两个文件。
-- 从文件系统上，我们加载了三个文件：`myfile1.txt`, `myfile2.txt`, 和 `myfile3.txt`。这些文件位于我们之前在代码中硬编码的文件路径 `/idea-work-space-xcs/spring-reading/spring-resources/spring-resource-resourceLoader/` 下。
-
-```java
-Classpath = application.properties
-Classpath = bootstrap.properties
-File = myfile1.txt
-File = myfile2.txt
-File = myfile3.txt
-```
-
 ### 八、与其他组件的关系
 
 1. **`ApplicationContext`**
@@ -271,25 +194,33 @@ File = myfile3.txt
 
 ### 九、常见问题
 
-1. **如何加载类路径资源？**
-   - 使用前缀 "classpath:"，例如：`loader.getResource("classpath:myconfig.xml")`。
-2. **如何加载文件系统资源？**
-   - 使用前缀 "file:"，例如：`loader.getResource("file:/path/to/myconfig.xml")`。
-3. **如何加载URL资源？**
-   - 直接使用 URL，例如：`loader.getResource("http://www.example.com/config.xml")`。
-4. **为什么我加载的资源不存在？**
-   - 使用 `Resource.exists()` 方法检查资源是否存在。确保路径或位置正确，并且资源真的存在于预期的位置。
-5. **如何读取资源内容？**
+1. **加载类路径资源**
+- 使用前缀 "classpath:"，例如：`loader.getResource("classpath:myconfig.xml")`。
+   
+2. **加载文件系统资源**
+- 使用前缀 "file:"，例如：`loader.getResource("file:/path/to/myconfig.xml")`。
+   
+3. **加载URL资源**
+- 直接使用 URL，例如：`loader.getResource("http://www.example.com/config.xml")`。
+   
+4. **资源不存在**
+- 使用 `Resource.exists()` 方法检查资源是否存在。确保路径或位置正确，并且资源真的存在于预期的位置。
+   
+5. **如何读取资源内容**
+
    - 从 `Resource` 对象中获取 `InputStream`，例如：`resource.getInputStream()`。
-6. **我可以从 `Resource` 获取到文件路径吗？**
-   - 使用 `Resource.getFile()`。但请注意，这并不总是有效的，例如当资源实际上是一个类路径资源或URL资源时。
-7. **如何加载匹配特定模式的多个资源？**
-   - 使用 `ResourcePatternResolver` 或其实现 `PathMatchingResourcePatternResolver`。
-8. **如何自动注入 `ResourceLoader`？**
-   - 实现 `ResourceLoaderAware` 接口，Spring 将自动为我们的 bean 提供 `ResourceLoader` 的引用。
-9. **我如何扩展或自定义资源加载机制？**
-   - 我们可以实现自己的 `ResourceLoader` 或继承现有的实现，如 `DefaultResourceLoader`。
-10. **加载资源时出现了异常，如何处理？**
-    - 捕获 `IOException` 或具体的异常，例如 `FileNotFoundException`。
-11. **是否可以在加载资源时考虑环境或属性占位符？**
-    - 使用 `PropertyPlaceholderConfigurer` 或 `PropertySourcesPlaceholderConfigurer` 与 `@Value` 注解可以解析属性值中的资源路径。
+
+6. **从 `Resource` 获取到文件路径**
+- 使用 `Resource.getFile()`。但请注意，这并不总是有效的，例如当资源实际上是一个类路径资源或URL资源时。
+   
+7. **加载匹配特定模式的多个资源**
+- 使用 `ResourcePatternResolver` 或其实现 `PathMatchingResourcePatternResolver`。
+   
+8. **自动注入 `ResourceLoader`**
+- 实现 `ResourceLoaderAware` 接口，Spring 将自动为我们的 bean 提供 `ResourceLoader` 的引用。
+   
+9. **扩展或自定义资源加载机制**
+- 我们可以实现自己的 `ResourceLoader` 或继承现有的实现，如 `DefaultResourceLoader`。
+   
+11. **加载资源时考虑环境或属性占位符**
+- 使用 `PropertyPlaceholderConfigurer` 或 `PropertySourcesPlaceholderConfigurer` 与 `@Value` 注解可以解析属性值中的资源路径。

@@ -67,6 +67,8 @@
   - [`Resource`](spring-resources/spring-resource/README.md)：抽象接口，表示文件、类路径等，用于访问不同来源的资源。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - [`ResourceLoader`](spring-resources/spring-resource-resourceLoader/README.md)：资源获取核心接口，实现统一加载不同位置资源的策略。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  
+  - [`ResourcePatternResolver`](spring-resources/spring-resource-resourcePatternResolver/README.md)：资源模式解析接口，支持多种位置、通配符，用于加载应用程序中的资源。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - [`DocumentLoader`](spring-resources/spring-resource-documentLoader/README.md)：XML文档加载解析核心接口，支持后台自动配置Spring应用。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 - 元数据与过滤
