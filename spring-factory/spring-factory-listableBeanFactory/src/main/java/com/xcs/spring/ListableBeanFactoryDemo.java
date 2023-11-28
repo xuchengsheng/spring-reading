@@ -20,36 +20,36 @@ public class ListableBeanFactoryDemo {
         // 创建 ListableBeanFactory
         ListableBeanFactory beanFactory = new AnnotationConfigApplicationContext(MyConfiguration.class).getBeanFactory();
 
-        // 示例：判断是否包含指定名称的 bean 定义
+        // 判断是否包含指定名称的 bean 定义
         boolean containsBeanDefinition = beanFactory.containsBeanDefinition("myService");
-        System.out.println("1.包含Bean定义: " + containsBeanDefinition);
+        System.out.println("判断是否包含指定名称的Bean定义: " + containsBeanDefinition);
 
-        // 示例：获取工厂中所有 bean 定义的数量
+        // 获取工厂中所有 bean 定义的数量
         int beanDefinitionCount = beanFactory.getBeanDefinitionCount();
-        System.out.println("2.Bean定义数量: " + beanDefinitionCount);
+        System.out.println("获取工厂中所有Bean定义数量: " + beanDefinitionCount);
 
-        // 示例：获取工厂中所有 bean 定义的名称数组
+        // 获取工厂中所有 bean 定义的名称数组
         String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
-        System.out.println("3.Bean定义名称: " + String.join(", ", beanDefinitionNames));
+        System.out.println("获取工厂中所有Bean定义名称: " + String.join(", ", beanDefinitionNames));
 
-        // 示例：获取 ObjectProvider，并懒加载获取 bean 实例
+        // 获取 ObjectProvider，并懒加载获取 bean 实例
         ObjectProvider<MyService> objectProvider = beanFactory.getBeanProvider(MyService.class, true);
-        System.out.println("4.Bean的ObjectProvider: " + objectProvider.getObject());
+        System.out.println("获取Bean的ObjectProvider: " + objectProvider.getObject());
 
-        // 示例：根据类型获取所有 bean 的名称
+        // 根据类型获取所有 bean 的名称
         String[] beanNamesForType = beanFactory.getBeanNamesForType(ResolvableType.forClass(MyService.class));
-        System.out.println("5.根据类型获取Bean名称: " + String.join(", ", beanNamesForType));
+        System.out.println("根据类型获取Bean名称: " + String.join(", ", beanNamesForType));
 
-        // 示例：根据注解类型获取所有 bean 的名称
+        // 根据注解类型获取所有 bean 的名称
         String[] beanNamesForAnnotation = beanFactory.getBeanNamesForAnnotation(Service.class);
-        System.out.println("6.根据注解获取Bean名称: " + String.join(", ", beanNamesForAnnotation));
+        System.out.println("根据注解获取Bean名称: " + String.join(", ", beanNamesForAnnotation));
 
-        // 示例：根据注解类型获取所有 bean 实例
+        // 根据注解类型获取所有 bean 实例
         Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(Service.class);
-        System.out.println("7.根据注解类型获取所有Bean实例: " + beansWithAnnotation);
+        System.out.println("根据注解类型获取所有Bean实例: " + beansWithAnnotation);
 
-        // 示例：在指定 bean 上查找指定类型的注解
+        // 在指定 bean 上查找指定类型的注解
         Service annotation = beanFactory.findAnnotationOnBean("myService", Service.class);
-        System.out.println("8.Bean上的注解: " + annotation);
+        System.out.println("指定Bean上查找指定类型的注解: " + annotation);
     }
 }
