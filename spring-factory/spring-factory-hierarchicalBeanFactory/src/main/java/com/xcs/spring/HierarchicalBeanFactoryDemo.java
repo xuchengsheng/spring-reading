@@ -14,29 +14,28 @@ public class HierarchicalBeanFactoryDemo {
     public static void main(String[] args) {
         // 创建父级容器
         AnnotationConfigApplicationContext parentContext = new AnnotationConfigApplicationContext(MyBean.class);
-
         // 创建子级容器
         AnnotationConfigApplicationContext childContext = new AnnotationConfigApplicationContext();
         childContext.setParent(parentContext);
 
         // 在子级 BeanFactory 中获取 bean
         HierarchicalBeanFactory childHierarchicalBeanFactory = childContext.getBeanFactory();
-        System.out.println("1.在子级BeanFactory中获取Bean: " + childHierarchicalBeanFactory.getBean(MyBean.class));
+        System.out.println("在子级BeanFactory中获取Bean: " + childHierarchicalBeanFactory.getBean(MyBean.class));
 
         // 在父级 BeanFactory 中获取 bean
         HierarchicalBeanFactory parentHierarchicalBeanFactory = parentContext.getBeanFactory();
-        System.out.println("2.在父级BeanFactory中获取Bean: " + parentHierarchicalBeanFactory.getBean(MyBean.class));
+        System.out.println("在父级BeanFactory中获取Bean: " + parentHierarchicalBeanFactory.getBean(MyBean.class));
 
-        // 示例：获取父级 BeanFactory
+        // 获取父级 BeanFactory
         BeanFactory parentBeanFactory = childHierarchicalBeanFactory.getParentBeanFactory();
-        System.out.println("3.获取父级BeanFactory: " + parentBeanFactory);
+        System.out.println("获取父级BeanFactory: " + parentBeanFactory);
 
-        // 示例：判断本地 BeanFactory 是否包含指定名称的 bean
+        // 判断本地 BeanFactory 是否包含指定名称的 bean
         boolean containsLocalBean = childHierarchicalBeanFactory.containsLocalBean("myBean");
-        System.out.println("4.判断本地BeanFactory是否包含指定名称的Bean: " + containsLocalBean);
+        System.out.println("判断本地BeanFactory是否包含指定名称的Bean: " + containsLocalBean);
 
-        // 示例：判断整个 BeanFactory 是否包含指定名称的 bean
+        // 判断整个 BeanFactory 是否包含指定名称的 bean
         boolean containsBean = childHierarchicalBeanFactory.containsBean("myBean");
-        System.out.println("5.判断整个BeanFactory是否包含指定名称的Bean: " + containsBean);
+        System.out.println("判断整个BeanFactory是否包含指定名称的Bean: " + containsBean);
     }
 }

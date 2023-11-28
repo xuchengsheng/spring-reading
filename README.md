@@ -123,7 +123,7 @@
 
   - [`BeanFactory`](spring-factory/spring-factory-beanFactory/README.md)：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
 
-  - `ListableBeanFactory`：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - [`ListableBeanFactory`](spring-factory/spring-factory-hierarchicalBeanFactory/README.md)：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
 
   - `HierarchicalBeanFactory`：支持父子容器关系，实现Bean定义的层次结构。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 

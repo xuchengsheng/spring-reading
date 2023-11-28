@@ -3,12 +3,12 @@
 - [BeanFactory](#beanfactory)
   - [一、基本信息](#一基本信息)
   - [二、基本描述](#二基本描述)
-  - [四、主要功能](#四主要功能)
-  - [五、接口源码](#五接口源码)
-  - [六、主要实现](#六主要实现)
-  - [七、最佳实践](#七最佳实践)
-  - [八、与其他组件的关系](#八与其他组件的关系)
-  - [九、常见问题](#九常见问题)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [六、最佳实践](#六最佳实践)
+  - [七、与其他组件的关系](#七与其他组件的关系)
+  - [八、常见问题](#八常见问题)
 
 
 ### 一、基本信息
@@ -19,7 +19,7 @@
 
 `BeanFactory`接口是Spring框架中IoC容器的核心接口，定义了一套用于管理和获取Java对象实例的标准机制。通过`getBean`方法，可以按名称从容器中检索Bean实例，而`containsBean`方法用于检查容器中是否存在指定名称的Bean。提供的`getType`方法允许获取指定Bean名称的类型信息，而`isSingleton`方法则用于判断指定Bean是否为单例。该接口支持延迟加载，有助于提高性能。虽然`BeanFactory`是IoC容器的基础，但在实际应用中，通常使用`ApplicationContext`接口，它继承自`BeanFactory`并提供了更多高级特性，包括事件发布、AOP、国际化等，使得开发者更容易构建灵活且功能强大的应用。
 
-### 四、主要功能
+### 三、主要功能
 
 1. **获取Bean**
 
@@ -37,7 +37,7 @@
 
    + 通过 `isSingleton(String name)` 方法，我们可以判断指定名称的Bean是否为单例。这对于了解Bean的作用域，以及是否在容器中共享同一个实例，具有重要意义。
 
-### 五、接口源码
+### 四、接口源码
 
 `BeanFactory`接口是Spring框架中负责管理和获取Java对象（即Bean）的根接口，作为Bean容器的基本客户端视图。它集中了应用程序组件的配置，支持不同类型的Bean实例，提供丰富的Bean生命周期管理和依赖注入功能，同时支持工厂之间的层次结构。通过这一接口，Spring实现了控制反转（IoC）和依赖注入，为构建灵活、可维护的应用程序提供了基础。
 
@@ -351,12 +351,12 @@ public interface BeanFactory {
 }
 ```
 
-### 六、主要实现
+### 五、主要实现
 
 + `DefaultListableBeanFactory`
   + `DefaultListableBeanFactory`是Spring框架中实现`BeanFactory`接口的关键类之一，负责注册、管理和初始化应用程序中的所有Bean定义。它支持依赖注入、不同作用域的Bean管理、处理`FactoryBean`、层次性容器、以及各种生命周期回调等功能，是Spring IoC容器的核心实现，提供了灵活而强大的Bean管理和配置机制。
 
-### 七、最佳实践
+### 六、最佳实践
 
 使用`BeanFactory`接口的不同方法来操作和查询Spring容器中的Bean，涵盖了获取Bean、类型判断、别名查询等功能。
 
@@ -415,7 +415,7 @@ public class BeanFactoryDemo {
 获取Bean的所有别名: 
 ```
 
-### 八、与其他组件的关系
+### 七、与其他组件的关系
 
 1. **ApplicationContext**
 
@@ -445,7 +445,7 @@ public class BeanFactoryDemo {
 
    - `BeanFactoryPostProcessor` 是一个接口，用于在容器实例化任何 Bean 之前修改容器的配置。允许在容器启动时对 `BeanFactory` 进行修改，例如修改属性值、注册新的 Bean 等。
 
-### 九、常见问题
+### 八、常见问题
 
 1. **NoSuchBeanDefinitionException**
 
