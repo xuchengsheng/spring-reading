@@ -53,6 +53,7 @@
 `InputStreamSource` 是一个简单的接口，用于提供一个输入流。它被设计为可以多次返回一个新的、未读取的输入流，可多次读取。
 
 ```java
+package org.springframework.core.io;
 /**
  * 表示可以提供输入流的资源或对象的接口。
  */
