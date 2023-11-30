@@ -105,13 +105,10 @@
 - 属性解析和环境配置
 
   - [`PropertyResolver`](spring-env/spring-env-propertyResolver/README.md)：通用属性解析，获取配置值，处理属性缺失，简便灵活<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-
+- [`ConfigurablePropertyResolver`](spring-env/spring-env-configurablePropertyResolver/README.md)：属性解析配置，占位符设置，适应不同配置需求。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   - `Environment`：应用环境表示，提供属性访问，支持配置文件，实现动态配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `ConfigurableEnvironment`：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `ConfigurablePropertyResolver`：属性解析配置，占位符设置，适应不同配置需求。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
+- `ConfigurableEnvironment`：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  
 - Bean定义导入与组合
   - `ImportBeanDefinitionRegistrar`：运行时动态注册 Bean，实现灵活配置，扩展配置类功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
     
