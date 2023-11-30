@@ -491,3 +491,4 @@ public class MyService {
 5. **Bean名称顺序不符合期望**
 
    - Spring 容器中的 Bean 注册顺序和期望的不一致。对于有顺序要求的情况，可以考虑使用 `@Order` 注解或其他方式指定 Bean 注册顺序。
+

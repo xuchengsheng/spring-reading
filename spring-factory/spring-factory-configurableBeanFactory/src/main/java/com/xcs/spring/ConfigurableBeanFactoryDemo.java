@@ -21,115 +21,80 @@ public class ConfigurableBeanFactoryDemo {
         // 创建 ApplicationContext
         ConfigurableBeanFactory configurableBeanFactory = new AnnotationConfigApplicationContext(MyConfiguration.class).getBeanFactory();
 
-        // 示例：设置父级 BeanFactory
+        // 设置父级 BeanFactory
         configurableBeanFactory.setParentBeanFactory(new DefaultListableBeanFactory());
 
-        // 示例：设置 ClassLoader
-        configurableBeanFactory.setBeanClassLoader(ConfigurableBeanFactoryDemo.class.getClassLoader());
-
-        // 示例：设置临时 ClassLoader
-        configurableBeanFactory.setTempClassLoader(Thread.currentThread().getContextClassLoader());
-
-        // 示例：设置是否缓存 bean metadata
-        configurableBeanFactory.setCacheBeanMetadata(true);
-
-        // 示例：获取BeanPostProcessor数量
+        // 获取BeanPostProcessor数量
         int beanPostProcessorCount = configurableBeanFactory.getBeanPostProcessorCount();
-        System.out.println("1.BeanPostProcessor 数量: " + beanPostProcessorCount);
+        System.out.println("获取BeanPostProcessor数量: " + beanPostProcessorCount);
 
-        // 示例：获取所有已注册的 Scope 名称
+        // 获取所有已注册的 Scope 名称
         String[] scopeNames = configurableBeanFactory.getRegisteredScopeNames();
-        System.out.println("2.已注册的 Scope 名称: " + String.join(", ", scopeNames));
+        System.out.println("获取所有已注册的Scope名称: " + String.join(", ", scopeNames));
 
-        // 示例：获取注册的 Scope
-        String customScopeName = "customScope";
-        Scope customScope = configurableBeanFactory.getRegisteredScope(customScopeName);
-        System.out.println("3." + customScopeName + " 对应的 Scope: " + customScope);
+        // 获取注册的 Scope
+        Scope customScope = configurableBeanFactory.getRegisteredScope("customScope");
+        System.out.println("获取注册的Scope :" + customScope);
 
-        // 示例：获取 ApplicationStartup
+        // 获取ApplicationStartup
         ApplicationStartup applicationStartup = configurableBeanFactory.getApplicationStartup();
-        System.out.println("4.ApplicationStartup: " + applicationStartup);
+        System.out.println("获取ApplicationStartup: " + applicationStartup);
 
-        // 示例：获取 AccessControlContext
+        // 获取AccessControlContext
         AccessControlContext accessControlContext = configurableBeanFactory.getAccessControlContext();
-        System.out.println("5.AccessControlContext: " + accessControlContext);
+        System.out.println("获取AccessControlContext: " + accessControlContext);
 
-        // 示例：拷贝配置
+        // 拷贝配置
         ConfigurableListableBeanFactory otherFactory = new DefaultListableBeanFactory();
         configurableBeanFactory.copyConfigurationFrom(otherFactory);
+        System.out.println("拷贝配置copyConfigurationFrom: " + otherFactory);
 
-        // 示例：注册别名
+        // 注册别名
         String beanName = "myService";
         String alias = "helloService";
         configurableBeanFactory.registerAlias(beanName, alias);
+        System.out.println("注册别名registerAlias, BeanName: " + beanName + "alias: " + alias);
 
-        // 示例：解析别名
-        configurableBeanFactory.resolveAliases(value -> value + "_resolved");
+        // 获取合并后的 BeanDefinition
+        BeanDefinition mergedBeanDefinition = configurableBeanFactory.getMergedBeanDefinition("myService");
+        System.out.println("获取合并后的 BeanDefinition: " + mergedBeanDefinition);
 
-        // 示例：获取合并后的 BeanDefinition
-        String mergedBeanName = "myService";
-        BeanDefinition mergedBeanDefinition = configurableBeanFactory.getMergedBeanDefinition(mergedBeanName);
-        System.out.println("6.合并后的 BeanDefinition: " + mergedBeanDefinition);
-
-        // 示例：判断是否为 FactoryBean
+        // 判断是否为 FactoryBean
         String factoryBeanName = "myService";
         boolean isFactoryBean = configurableBeanFactory.isFactoryBean(factoryBeanName);
-        System.out.println("7." + factoryBeanName + " 是否为 FactoryBean: " + isFactoryBean);
+        System.out.println("判断是否为FactoryBean" + isFactoryBean);
 
-        // 示例：设置当前 Bean 是否正在创建
+        // 设置当前 Bean 是否正在创建
         String currentBeanName = "myService";
         boolean inCreation = true;
         configurableBeanFactory.setCurrentlyInCreation(currentBeanName, inCreation);
+        System.out.println("设置当前Bean是否正在创建: " + currentBeanName);
 
-        // 示例：判断指定的 Bean 是否正在创建
+        // 判断指定的 Bean 是否正在创建
         boolean isCurrentlyInCreation = configurableBeanFactory.isCurrentlyInCreation(currentBeanName);
-        System.out.println("8." + currentBeanName + " 是否正在创建: " + isCurrentlyInCreation);
+        System.out.println("判断指定的Bean是否正在创建" + isCurrentlyInCreation);
 
-        // 示例：注册依赖关系
+        // 注册依赖关系
         String dependentBeanName = "dependentBean";
         configurableBeanFactory.registerDependentBean(beanName, dependentBeanName);
+        System.out.println("注册依赖关系" + "beanName: " + beanName + "dependentBeanName: " + dependentBeanName);
 
-        // 示例：获取所有依赖于指定 Bean 的 Bean 名称
+        // 获取所有依赖于指定 Bean 的 Bean 名称
         String[] dependentBeans = configurableBeanFactory.getDependentBeans(beanName);
-        System.out.println("9." + beanName + " 的所有依赖 Bean 名称: " + String.join(", ", dependentBeans));
+        System.out.println("获取所有依赖于指定Bean的Bean名称: " + String.join(", ", dependentBeans));
 
-        // 示例：获取指定 Bean 依赖的所有 Bean 名称
+        // 获取指定 Bean 依赖的所有 Bean 名称
         String[] dependencies = configurableBeanFactory.getDependenciesForBean(beanName);
-        System.out.println("10." + beanName + " 依赖的所有 Bean 名称: " + String.join(", ", dependencies));
+        System.out.println("获取指定Bean依赖的所有Bean名称: " + String.join(", ", dependencies));
 
         // 销毁指定 Bean 实例
         Object beanInstance = configurableBeanFactory.getBean(beanName);
         configurableBeanFactory.destroyBean(beanName, beanInstance);
+        System.out.println("销毁指定 Bean 实例: " + beanName);
 
         // 销毁所有单例 Bean
         configurableBeanFactory.destroySingletons();
-
-        // 示例：添加 PropertyEditorRegistrar
-        // configurableBeanFactory.addPropertyEditorRegistrar(null);
-
-        // 示例：注册自定义 PropertyEditor
-        // configurableBeanFactory.registerCustomEditor(String.class, null);
-
-        // 示例：添加 StringValueResolver
-        // configurableBeanFactory.addEmbeddedValueResolver(null);
-
-        // 示例：添加 BeanPostProcessor
-        // configurableBeanFactory.addBeanPostProcessor(null);
-
-        // 示例：注册 Scope
-        // configurableBeanFactory.registerScope("customScope", null);
-
-        // 示例：设置 ApplicationStartup
-        // configurableBeanFactory.setApplicationStartup(null);
-
-        // 示例：设置 Bean 表达式解析器
-        // configurableBeanFactory.setBeanExpressionResolver(null);
-
-        // 示例：设置 ConversionService
-        // configurableBeanFactory.setConversionService(null);
-
-        // 示例：设置 TypeConverter
-        // configurableBeanFactory.setTypeConverter(null);
+        System.out.println("销毁所有单例Bean destroySingletons" );
     }
 
 }
