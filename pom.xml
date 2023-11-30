@@ -30,6 +30,7 @@
         <module>spring-beans</module>
         <module>spring-context</module>
         <module>spring-factory</module>
+        <module>spring-env</module>
     </modules>
 
     <dependencies>

@@ -104,7 +104,7 @@
 
 - 属性解析和环境配置
 
-  - `PropertyResolver`：通用属性解析，获取配置值，处理属性缺失，简便灵活<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - [`PropertyResolver`](spring-env/spring-env-propertyResolver/README.md)：通用属性解析，获取配置值，处理属性缺失，简便灵活<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - `Environment`：应用环境表示，提供属性访问，支持配置文件，实现动态配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
@@ -253,7 +253,7 @@
 
   - [`@PreDestroy`](spring-jsr/spring-jsr250-preDestroy/README.md)：指定销毁方法。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
 
-  - [`Provider`](spring-jsr/spring-jsr330-provider/README.md)：ava标准库提供的通用Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
+  - [`Provider`](spring-jsr/spring-jsr330-provider/README.md)：Java标准库提供的通用Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
 
 #### Spring AOP
 
