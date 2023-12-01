@@ -110,7 +110,7 @@
 
   - [`Environment`](spring-env/spring-env-environment/README.md)：应用环境表示，提供属性访问，支持配置文件，实现动态配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
-  - [`ConfigurableEnvironment`](spring-env/spring-env-configurableEnvironment/pom.xml)：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  - [`ConfigurableEnvironment`](spring-env/spring-env-configurableEnvironment/README.md)：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   
 - Bean定义导入与组合
 
