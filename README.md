@@ -108,7 +108,7 @@
 
   - [`PropertySources`](spring-env/spring-env-propertySources/README.md)：用于统一管理和访问多个 PropertySource 实例，简化配置数据的处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
-  - [`PropertyResolver`](spring-env/spring-env-propertyResolver/README.md)：通用属性解析，获取配置值，处理属性缺失，简便灵活<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  - [`PropertyResolver`](spring-env/spring-env-propertyResolver/README.md)：通用属性解析，获取配置值，处理属性缺失，简便灵活。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - [`ConfigurablePropertyResolver`](spring-env/spring-env-configurablePropertyResolver/README.md)：属性解析配置，占位符设置，适应不同配置需求。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
