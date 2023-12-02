@@ -18,21 +18,16 @@
 
 ### 二、知识储备
 
-1. **PropertyResolver**
-
-   - [PropertyResolver](/spring-env/spring-env-propertyResolver/README.md) 接口是 Spring 框架的一个核心组件，专注于提供一套灵活且强大的机制来处理应用程序配置属性。它定义了一系列方法，用于访问和操纵来自各种源（例如属性文件、环境变量、JVM 参数）的属性值。
-
-2. **ConfigurablePropertyResolver**
-
-   - [ConfigurablePropertyResolver](/spring-env/spring-env-configurablePropertyResolver/README.md) 接口在Spring中关键作用是提供灵活的配置属性解析。它能从多种源读取并转换属性值，支持占位符解析以增强配置的动态性。接口提供类型转换，确保属性值符合期望格式。它还允许检查属性存在性，并处理默认值，增加健壮性。
-
-3. **Environment**
-
-   - [Environment](/spring-env/spring-env-environment/README.md) 接口是 Spring 框架中的一个核心部分，它提供了一个统一的方式来访问各种外部化的配置数据，例如环境变量、JVM 系统属性、命令行参数、以及应用程序配置文件（如 properties 或 YAML 文件）。
-
-4. **ConfigurableEnvironment**
-
-   + [ConfigurableEnvironment](/spring-env/spring-env-configurableEnvironment/README.md) 是 Spring 框架中的一个核心接口，用于灵活地管理和访问应用程序的配置环境。它提供了统一的接口来处理来自不同来源（如属性文件、环境变量、命令行参数）的配置数据，并允许在运行时动态地添加、移除或修改这些属性源。
+1. **Java I/O 和文件处理**
+   + 需要熟悉 Java 文件 I/O 操作，特别是如何读取和写入文件，理解处理 `.properties` 文件的 Java 类如 `Properties`，以及如何利用类路径和文件系统路径来定位和加载资源文件，这些知识对于从文件系统或类路径加载属性文件至关重要。
+2. **Spring 资源抽象**：
+   + 需要了解 Spring 的 [Resource](/spring-resources/spring-resource/README.md) 接口及其实现，比如 `ClassPathResource`、`FileSystemResource` 和 `UrlResource`，这包括理解如何利用 Spring 的强大资源加载机制来读取外部配置文件，这对于从各种位置加载配置文件非常有用。
+3. **Java 集合框架**
+   + 使用 `MapPropertySource` 要求对 Java 集合框架有深入了解，特别是 `Map` 接口及其实现如 `HashMap` 和 `LinkedHashMap`，这包括知道如何在 Map 中存储、检索和更新键值对，这对于从键值对集合中加载属性至关重要。
+4. **系统环境和 Java 系统属性**
+   + 需要了解 Java 中如何访问和操作系统环境变量和系统属性，包括使用 `System.getenv()` 和 `System.getProperties()`，并理解这些变量在不同操作系统中如何设置和修改，这对于从操作系统环境中加载配置非常重要。
+5. **命令行参数解析**
+   + 需要了解如何在 Java 程序中解析命令行参数，包括不同的参数格式（如标志、键值对），以及如何使用第三方库简化命令行参数的解析，这对于从命令行参数中加载配置非常关键。
 
 ### 三、基本描述
 
