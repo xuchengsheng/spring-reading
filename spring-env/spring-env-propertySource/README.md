@@ -20,19 +20,19 @@
 
 1. **PropertyResolver**
 
-   - [PropertyResolver](https://github.com/xuchengsheng/spring-reading/blob/master/spring-env/spring-env-propertyResolver/README.md) 接口是 Spring 框架的一个核心组件，专注于提供一套灵活且强大的机制来处理应用程序配置属性。它定义了一系列方法，用于访问和操纵来自各种源（例如属性文件、环境变量、JVM 参数）的属性值。
+   - [PropertyResolver](/spring-env/spring-env-propertyResolver/README.md) 接口是 Spring 框架的一个核心组件，专注于提供一套灵活且强大的机制来处理应用程序配置属性。它定义了一系列方法，用于访问和操纵来自各种源（例如属性文件、环境变量、JVM 参数）的属性值。
 
 2. **ConfigurablePropertyResolver**
 
-   - [ConfigurablePropertyResolver](https://github.com/xuchengsheng/spring-reading/blob/master/spring-env/spring-env-configurablePropertyResolver/README.md) 接口在Spring中关键作用是提供灵活的配置属性解析。它能从多种源读取并转换属性值，支持占位符解析以增强配置的动态性。接口提供类型转换，确保属性值符合期望格式。它还允许检查属性存在性，并处理默认值，增加健壮性。
+   - [ConfigurablePropertyResolver](/spring-env/spring-env-configurablePropertyResolver/README.md) 接口在Spring中关键作用是提供灵活的配置属性解析。它能从多种源读取并转换属性值，支持占位符解析以增强配置的动态性。接口提供类型转换，确保属性值符合期望格式。它还允许检查属性存在性，并处理默认值，增加健壮性。
 
 3. **Environment**
 
-   - [Environment](https://github.com/xuchengsheng/spring-reading/blob/master/spring-env/spring-env-environment/README.md) 接口是 Spring 框架中的一个核心部分，它提供了一个统一的方式来访问各种外部化的配置数据，例如环境变量、JVM 系统属性、命令行参数、以及应用程序配置文件（如 properties 或 YAML 文件）。
+   - [Environment](/spring-env/spring-env-environment/README.md) 接口是 Spring 框架中的一个核心部分，它提供了一个统一的方式来访问各种外部化的配置数据，例如环境变量、JVM 系统属性、命令行参数、以及应用程序配置文件（如 properties 或 YAML 文件）。
 
 4. **ConfigurableEnvironment**
 
-   + [ConfigurableEnvironment](spring-env/spring-env-configurableEnvironment/README.md) 是 Spring 框架中的一个核心接口，用于灵活地管理和访问应用程序的配置环境。它提供了统一的接口来处理来自不同来源（如属性文件、环境变量、命令行参数）的配置数据，并允许在运行时动态地添加、移除或修改这些属性源。
+   + [ConfigurableEnvironment](/spring-env/spring-env-configurableEnvironment/README.md) 是 Spring 框架中的一个核心接口，用于灵活地管理和访问应用程序的配置环境。它提供了统一的接口来处理来自不同来源（如属性文件、环境变量、命令行参数）的配置数据，并允许在运行时动态地添加、移除或修改这些属性源。
 
 ### 三、基本描述
 
