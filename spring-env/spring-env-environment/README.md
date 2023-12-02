@@ -18,13 +18,11 @@
 
 ### 二、知识储备
 
-1. `PropertyResolver`
-
-   + [PropertyResolver](/spring-env/spring-env-propertyResolver/README.md) 接口是 Spring 框架的一个核心组件，专注于提供一套灵活且强大的机制来处理应用程序配置属性。它定义了一系列方法，用于访问和操纵来自各种源（例如属性文件、环境变量、JVM 参数）的属性值。
-
-2. `ConfigurablePropertyResolver`
-
-   + [ConfigurablePropertyResolver](/spring-env/spring-env-configurablePropertyResolver/README.md) 接口在Spring中关键作用是提供灵活的配置属性解析。它能从多种源读取并转换属性值，支持占位符解析以增强配置的动态性。接口提供类型转换，确保属性值符合期望格式。它还允许检查属性存在性，并处理默认值，增加健壮性。
+1. **PropertyResolver**
++ [PropertyResolver](/spring-env/spring-env-propertyResolver/README.md) 接口是 Spring 框架的一个核心组件，专注于提供一套灵活且强大的机制来处理应用程序配置属性。它定义了一系列方法，用于访问和操纵来自各种源（例如属性文件、环境变量、JVM 参数）的属性值。
+   
+2. **ConfigurablePropertyResolver**
++ [ConfigurablePropertyResolver](/spring-env/spring-env-configurablePropertyResolver/README.md) 接口在Spring中关键作用是提供灵活的配置属性解析。它能从多种源读取并转换属性值，支持占位符解析以增强配置的动态性。接口提供类型转换，确保属性值符合期望格式。它还允许检查属性存在性，并处理默认值，增加健壮性。
 
 ### 三、基本描述
 
@@ -158,7 +156,7 @@ public interface Environment extends PropertyResolver {
 
 ### 七、最佳实践
 
-创建 `StandardEnvironment` 实例来访问系统属性以及处理配置文件（profiles），并演示了如何获取当前激活的配置文件、默认配置文件，以及检查特定配置文件是否激活。
+使用 Spring 的 `StandardEnvironment` 在 Java 程序中模拟配置文件的激活和属性访问。它设置并展示了激活的配置文件（"test"），默认配置文件（"dev"），并检查了特定配置文件（"test"）的激活状态，以及获取并打印了系统的 Java 版本。
 
 ```java
 public class EnvironmentDemo {
@@ -190,7 +188,7 @@ public class EnvironmentDemo {
 }
 ```
 
-运行结果发现， `StandardEnvironment` 如何有效地处理和模拟 Spring 环境中的关键方面，特别是在配置文件管理和属性访问方面。
+运行结果发现， `StandardEnvironment` 在模拟和管理 Spring 配置文件以及访问系统属性方面的有效性，特别是在不依赖于完整 Spring 应用程序上下文的场景中。
 
 ```java
 java.version: 11

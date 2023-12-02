@@ -17,7 +17,7 @@
 
 ### 二、知识储备
 
-1. `PropertyResolver`
+1. **PropertyResolver**
    + [PropertyResolver](/spring-env/spring-env-propertyResolver/README.md) 接口是 Spring 框架的一个核心组件，专注于提供一套灵活且强大的机制来处理应用程序配置属性。它定义了一系列方法，用于访问和操纵来自各种源（例如属性文件、环境变量、JVM 参数）的属性值。
 
 ### 三、基本描述
@@ -52,7 +52,7 @@
 
 ### 五、接口源码
 
-`ConfigurablePropertyResolver` 接口提供了一系列用于管理和处理配置属性的方法。它允许自定义属性值的类型转换服务，管理占位符的前缀和后缀，处理默认值分隔符，以及设置是否忽略无法解析的嵌套占位符。
+`ConfigurablePropertyResolver` 接口提供了一系列用于管理和处理配置属性的方法。允许自定义属性值的类型转换服务，管理占位符的前缀和后缀，处理默认值分隔符，以及设置是否忽略无法解析的嵌套占位符。
 
 ```java
 /**
@@ -127,7 +127,7 @@ public interface ConfigurablePropertyResolver extends PropertyResolver {
 
 ### 七、最佳实践
 
-下面代码演示了关于`ConfigurablePropertyResolver`接口 ，包括了处理占位符、默认值、以及转换服务配置方面的应用。
+使用 Spring 的 `ConfigurablePropertyResolver` 接口来管理和解析配置属性。我们首先创建并配置了属性源，接着实例化了 `PropertySourcesPropertyResolver` 作为属性解析器。在此基础上，代码设置了属性值的转换服务、定义了占位符的前后缀、配置了默认值分隔符，并处理了未解析占位符的情况。此外，还指定并验证了必需的属性，最后读取并输出了配置属性值。
 
 ```java
 public class ConfigurablePropertyResolverDemo {
@@ -172,7 +172,7 @@ public class ConfigurablePropertyResolverDemo {
 }
 ```
 
-运行结果发现，验证了 `PropertySourcesPropertyResolver` 正确地从提供的属性源中解析出了属性值。它也展示了 `ConfigurablePropertyResolver` 接口在实际应用中的基本用法，即从一个或多个配置源中检索配置属性。
+运行结果发现，`PropertySourcesPropertyResolver` 能够正确地从给定的属性源中解析出属性值，并且代码中的属性源配置和属性解析器的使用是正确的。
 
 ```java
 获取属性 app.name: Spring-Reading
