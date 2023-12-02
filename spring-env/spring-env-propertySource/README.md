@@ -19,14 +19,23 @@
 ### 二、知识储备
 
 1. **Java I/O 和文件处理**
+
    + 需要熟悉 Java 文件 I/O 操作，特别是如何读取和写入文件，理解处理 `.properties` 文件的 Java 类如 `Properties`，以及如何利用类路径和文件系统路径来定位和加载资源文件，这些知识对于从文件系统或类路径加载属性文件至关重要。
-2. **Spring 资源抽象**：
+
+2. **Spring 资源抽象**
+
    + 需要了解 Spring 的 [Resource](/spring-resources/spring-resource/README.md) 接口及其实现，比如 `ClassPathResource`、`FileSystemResource` 和 `UrlResource`，这包括理解如何利用 Spring 的强大资源加载机制来读取外部配置文件，这对于从各种位置加载配置文件非常有用。
+
 3. **Java 集合框架**
-   + 使用 `MapPropertySource` 要求对 Java 集合框架有深入了解，特别是 `Map` 接口及其实现如 `HashMap` 和 `LinkedHashMap`，这包括知道如何在 Map 中存储、检索和更新键值对，这对于从键值对集合中加载属性至关重要。
+
+   + 需要了解 Java 集合框架有深入了解，特别是 `Map` 接口及其实现如 `HashMap` 和 `LinkedHashMap`，这包括知道如何在 Map 中存储、检索和更新键值对，这对于从键值对集合中加载属性至关重要。
+
 4. **系统环境和 Java 系统属性**
+
    + 需要了解 Java 中如何访问和操作系统环境变量和系统属性，包括使用 `System.getenv()` 和 `System.getProperties()`，并理解这些变量在不同操作系统中如何设置和修改，这对于从操作系统环境中加载配置非常重要。
+
 5. **命令行参数解析**
+
    + 需要了解如何在 Java 程序中解析命令行参数，包括不同的参数格式（如标志、键值对），以及如何使用第三方库简化命令行参数的解析，这对于从命令行参数中加载配置非常关键。
 
 ### 三、基本描述
