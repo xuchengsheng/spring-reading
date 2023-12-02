@@ -18,6 +18,7 @@
         <module>spring-env-configurableEnvironment</module>
         <module>spring-env-configurablePropertyResolver</module>
         <module>spring-env-propertySource</module>
+        <module>spring-env-propertySources</module>
     </modules>
 
 </project>
