@@ -18,6 +18,7 @@
 ### 二、知识储备
 
 1. **PropertySource**
+
    + [PropertySource](spring-env/spring-env-propertySource/README.md) 类是 Spring 框架中的一个关键抽象类，专门用于封装不同来源的配置数据，如文件、环境变量、系统属性等。它为这些配置源提供了一个统一的接口，使得可以以一致的方式访问各种不同类型的配置数据。这个类的核心是其 `getProperty(String name)` 方法，它根据提供的属性名来检索属性值。在 Spring 的环境抽象中，`PropertySource` 的实例可以被添加到 `Environment` 对象中，从而允许我们在应用程序中方便地访问和管理这些属性。
 
 ### 三、基本描述
@@ -86,6 +87,7 @@ public interface PropertySources extends Iterable<PropertySource<?>> {
 ### 六、主要实现
 
 1. **MutablePropertySources**
+
    + 这是最常用的实现，提供了一个可修改的属性源集合。它允许添加、替换和移除属性源，是处理动态环境属性时的首选。
 
 ### 七、最佳实践
