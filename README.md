@@ -105,11 +105,16 @@
 - 属性解析和环境配置
 
   - [`PropertySource`](spring-env/spring-env-propertySource/README.md)：管理各种配置源的抽象类，支持灵活地加载和访问应用配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-- [`PropertySources`](spring-env/spring-env-propertySources/README.md)：用于统一管理和访问多个 PropertySource 实例，简化配置数据的处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+
+  - [`PropertySources`](spring-env/spring-env-propertySources/README.md)：用于统一管理和访问多个 PropertySource 实例，简化配置数据的处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+
   - [`PropertyResolver`](spring-env/spring-env-propertyResolver/README.md)：通用属性解析，获取配置值，处理属性缺失，简便灵活<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-- [`ConfigurablePropertyResolver`](spring-env/spring-env-configurablePropertyResolver/README.md)：属性解析配置，占位符设置，适应不同配置需求。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+
+  - [`ConfigurablePropertyResolver`](spring-env/spring-env-configurablePropertyResolver/README.md)：属性解析配置，占位符设置，适应不同配置需求。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+
   - [`Environment`](spring-env/spring-env-environment/README.md)：应用环境表示，提供属性访问，支持配置文件，实现动态配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-- [`ConfigurableEnvironment`](spring-env/spring-env-configurableEnvironment/README.md)：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+
+  - [`ConfigurableEnvironment`](spring-env/spring-env-configurableEnvironment/README.md)：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   
 - Bean定义导入与组合
 
