@@ -18,29 +18,8 @@
 
 ### 二、知识储备
 
-1. **Spring 属性占位符解析**
-
-   + 理解 `${...}` 占位符的使用，这是 Spring 配置中的一个关键特性，允许从外部源（如配置文件、环境变量）动态注入属性值。
-
-2. **Spring Environment 抽象**
-
-   + 熟悉 `Environment` 接口及其如何与 `PropertyResolver` 协作，用于处理配置和属性值。这是理解属性解析和占位符处理的基础。
-
-3. **属性文件和配置管理**
-
-   + 了解如何在 Java 和 Spring 应用程序中使用和管理配置文件（例如 `.properties` 和 `.yml` 文件），以及如何在这些文件中使用占位符。
-
-4. **Spring 表达式语言（SpEL）**
-
-   + 虽然与 `PropertyResolver` 直接关系不大，但对 Spring 表达式语言的理解有助于深入理解在 Spring 中处理动态属性值的各种方式。
-
-5. **环境配置和 Profile**
-
-   + 理解 Spring Profiles 的概念和如何在不同环境（如开发、测试、生产）中使用不同的配置。
-
-6. **泛型和类型转换**
-
-   + 对 Java 泛型的了解对于理解 `PropertyResolver` 中的类型安全属性访问方法（如 `<T> T getProperty(String key, Class<T> targetType)`）很重要。
+1. **PropertySource**
+   - [PropertySource](https://github.com/xuchengsheng/spring-reading/blob/master/spring-env/spring-env-propertySources/spring-env/spring-env-propertySource/README.md) 类是 Spring 框架中的一个关键抽象类，专门用于封装不同来源的配置数据，如文件、环境变量、系统属性等。它为这些配置源提供了一个统一的接口，使得可以以一致的方式访问各种不同类型的配置数据。这个类的核心是其 `getProperty(String name)` 方法，它根据提供的属性名来检索属性值。在 Spring 的环境抽象中，`PropertySource` 的实例可以被添加到 `Environment` 对象中，从而允许我们在应用程序中方便地访问和管理这些属性。
 
 ### 三、基本描述
 
@@ -50,27 +29,26 @@
 
 1. **获取属性值**
 
-   + 通过 `getProperty(String key)` 方法可以获取给定键名的属性值。这是处理配置数据时最常用的功能。
+   + 通过 `getProperty(key)` 方法可以获取给定键名的属性值。这是处理配置数据时最常用的功能。
 
 2. **带默认值的属性获取**
 
-   + 如果指定的属性键不存在，`getProperty(String key, String defaultValue)` 方法允许返回一个默认值。
+   + 如果指定的属性键不存在，`getProperty(key, defaultValue)` 方法允许返回一个默认值。
 
 3. **属性值类型转换**
-
-   + `getProperty(String key, Class<T> targetType)` 和 `getProperty(String key, Class<T> targetType, T defaultValue)` 方法使得可以将属性值转换成指定的数据类型，如从字符串转换为整数或布尔值。
-
++ `getProperty(key, targetType)` 和 `getProperty(key,targetType,defaultValue)` 方法使得可以将属性值转换成指定的数据类型，如从字符串转换为整数或布尔值。
+   
 4. **检查属性存在性**
 
-   + `containsProperty(String key)` 方法用于判断是否存在特定的属性键。
+   + `containsProperty(key)` 方法用于判断是否存在特定的属性键。
 
 5. **获取必需属性**
 
-   + `getRequiredProperty(String key)` 和 `getRequiredProperty(String key, Class<T> targetType)` 方法用于获取必须存在的属性值。如果属性不存在，这些方法会抛出异常。
+   + `getRequiredProperty(key)` 和 `getRequiredProperty(key, targetType)` 方法用于获取必须存在的属性值。如果属性不存在，这些方法会抛出异常。
 
 6. **解析占位符**
 
-   + `resolvePlaceholders(String text)` 方法支持解析字符串中的占位符，并用相应的属性值替换它们。这对于处理包含动态内容的配置文件非常有用。
+   + `resolvePlaceholders(text)` 方法支持解析字符串中的占位符，并用相应的属性值替换它们。这对于处理包含动态内容的配置文件非常有用。
 
 ### 五、接口源码
 
@@ -171,7 +149,7 @@ public interface PropertyResolver {
 
 ### 七、最佳实践
 
-下面代码演示了关于`PropertyResolver`接口 ，包括了获取属性值、检查属性存在性、处理默认值、获取必需属性以及解析占位符等多个方面。
+使用  `PropertyResolver` 来演示配置属性的管理和解析。我们创建了一个包含应用信息的属性源，通过 `PropertySourcesPropertyResolver` 获取和检查属性，处理默认值，以及解析带有占位符的字符串。
 
 ```java
 public class SimplePropertyResolverDemo {
@@ -221,7 +199,7 @@ public class SimplePropertyResolverDemo {
 }
 ```
 
-运行结果发现，可以看到如何在实际场景中使用 `PropertyResolver` 接口来灵活处理配置属性。
+运行结果发现，`PropertyResolver` 成功地从配置中获取了属性值、验证了属性的存在性、提供了默认值、解析了包含占位符的字符串，
 
 ```java
 获取属性 app.name: Spring-Reading
