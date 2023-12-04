@@ -118,7 +118,7 @@
   
 - 验证、数据绑定与类型转换
 
-  - [`Validator`](spring-dataops/spring-dataops-validator/README.md)：提供自定义数据验证逻辑，确保模型对象满足业务规则。
+  - [`Validator`](spring-dataops/spring-dataops-validator/README.md)：提供自定义数据验证逻辑，确保模型对象满足业务规则。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - `BeanWrapper`：用于操作JavaBean的属性，实现动态属性设置和获取。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
