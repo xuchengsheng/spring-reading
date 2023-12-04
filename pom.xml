@@ -31,6 +31,7 @@
         <module>spring-context</module>
         <module>spring-factory</module>
         <module>spring-env</module>
+        <module>spring-dataops</module>
     </modules>
 
     <dependencies>

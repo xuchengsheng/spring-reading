@@ -116,19 +116,20 @@
 
   - [`ConfigurableEnvironment`](spring-env/spring-env-configurableEnvironment/README.md)：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   
-- 验证、数据绑定与类型转换
+- 验证、数据绑定和类型转换
 
-  - [`Validator`](spring-dataops/spring-dataops-validator/README.md)：提供自定义数据验证逻辑，确保模型对象满足业务规则。
-  - `BeanWrapper`：用于操作JavaBean的属性，实现动态属性设置和获取。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `PropertyEditor`：自定义JavaBean属性的转换逻辑，处理属性类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `Converter`：用于不同类型间的转换，定义简单的源至目标类型转换规则。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `ConverterFactory`：创建针对特定源类型的转换器，用于类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `GenericConverter`：更复杂的转换器，支持多种源和目标类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `ConditionalConverter`：根据条件选择是否执行转换的转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `ConversionService`：提供统一的类型转换服务接口，管理转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `Parser`：用于将文本解析为对象，专注于解析逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `Printer`：用于将对象格式化为文本，专注于格式化输出。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-  - `AnnotationFormatterFactory`：针对带注解字段的格式化器工厂，链接注解与格式化逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - `Validator`
+  - `BeanWrapper`
+  - `PropertyEditor` 
+  - `Converter`
+
+  - `ConverterFactory`
+  - `GenericConverter`
+  - `ConditionalConverter`
+  - `ConversionService`
+  - `Parser`
+  - `Printer`
+  - `AnnotationFormatterFactory`
 
 - Bean定义导入与组合
 
@@ -273,6 +274,139 @@
   - [`@PreDestroy`](spring-jsr/spring-jsr250-preDestroy/README.md)：指定销毁方法。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
 
   - [`Provider`](spring-jsr/spring-jsr330-provider/README.md)：Java标准库提供的通用Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
+
+#### Spring AOP
+
++ AOP 术语：Aspect、Join point、Advice、Pointcut 等
+
++ Spring AOP 实现原理
+
++ 动态代理：JDK 与 CGLIB
+
++ @AspectJ 支持与使用
+
++ 切点表达式解析
+
+#### Spring 事件机制
+
++ 事件的发布与监听
+
++ 自定义事件
+
+#### Spring 事务管理
+
++ Spring 事务管理介绍
+
++ 编程式与声明式事务
+
++ @Transactional 注解解析
+
++ 事务传播行为
+
++ 事务隔离级别
+
++ 事务管理器实现原理
+
+#### Spring MVC
+
+- `@Controller`：定义类为 Spring MVC 控制器，处理请求并返回视图。
+
+- `@RequestMapping`：映射请求 URL 到处理方法。
+
+- `@RequestMapping`：简化 HTTP 方法映射注解，处理 GET、POST、PUT 和 DELETE 请求。
+
+- `@RequestParam`：绑定请求参数到方法参数。
+
+- `@PathVariable`：提取 URI 中的模板变量。
+
+- `@RequestBody`：绑定请求体内容到方法参数，通常用于处理 POST 请求中的 JSON 数据。
+
+- `@ResponseBody`：将方法返回值直接写入 HTTP 响应体。
+
+- `@ModelAttribute`：将方法返回值或参数添加到模型，使其在视图中可访问。
+
+- `@SessionAttribute`：指定模型属性存储在会话中，以在多个请求之间共享。
+
+- `@InitBinder`：定制数据绑定过程，例如将字符串转换为日期。
+
+- `@Validated`：类级别注解，标记验证组。
+
+- `@ResponseBodyAdvice`：全局定制控制器方法返回值的处理。
+
+- `@RestController`：定义类为 RESTful 控制器，直接将每个方法的返回值写入响应体。
+
+- `@RequestMappingHandlerMapping`：配置自定义的请求映射处理器。
+
+- `@SessionAttributes`：控制器类上标记，指定哪些模型属性存储在会话中，用于在多个请求中共享。
+
+- `@ModelAttribute`：在方法级别和参数级别使用，将模型属性绑定到方法参数，实现数据传递。
+
+- `@SessionAttribute`：将模型属性存储在会话中，实现在多个请求中的数据共享。
+
+- `@InitBinder`：在类和方法级别使用，定制数据绑定过程，例如字符串转日期。
+
+- `@Validated`：类级别注解，标记验证组，与验证框架一起使用。
+
+- `@ResponseBodyAdvice`：全局处理控制器方法返回值，用于定制响应体逻辑。
+
+- `@RestController`：类似于 @Controller，专注于 RESTful 服务，直接将方法返回值写入响应体。
+
+- `@RequestMappingHandlerMappin`g：配置自定义请求映射处理器，用于个性化 URL 映射逻辑。
+
+#### Spring Boot
+
++ `@SpringBootApplication`：启动类标识，包含了组合注解 。
+
++ `@EnableAutoConfiguration`：启用 Spring Boot 的自动配置。
+
++ `@ConfigurationProperties`：将配置文件中的属性值注入到配置类的属性中。
+
++ `@EnableCaching`：启用缓存支持。
+
++ `@Async`：异步方法注解。
+
++ `@EventListener`：监听事件。
+
+#### Spring Cloud
+
+- `@EnableDiscoveryClient`：启用服务发现客户端，用于将服务注册到服务注册中心（例如 Eureka）。
+
+- `@EnableEurekaServer`：启用 Eureka 服务端，用于搭建服务注册中心。
+
+- `@LoadBalanced`：启用负载均衡，通常用于 RestTemplate 和 WebClient，使其具备负载均衡的能力。
+
+- `@FeignClient`：声明一个声明式的 HTTP 客户端，简化了服务调用的过程。
+
+- `@EnableCircuitBreaker`：启用断路器，用于防止分布式系统中的雪崩效应。
+
+- `@HystrixCommand`：定义一个熔断器命令。
+
+- `@EnableZuulProxy`：启用 Zuul API 网关代理。
+
+- `@ZuulRoute`：用于配置 Zuul 路由。
+
+- `@EnableConfigServer`：启用配置中心服务端。
+
+- `@RefreshScope`：用于刷新配置，通常与 Spring Cloud Config 配合使用。
+
+- `@EnableZipkinServer`：启用 Zipkin 服务器，用于分布式链路追踪。
+
+- `@EnableBinding`：绑定消息通道，与 Spring Cloud Stream 配合使用。
+
+- `@GlobalTransactional`：全局事务注解，与 Seata 等分布式事务框架配合使用。
+
+- `@SentinelResource`：Sentinel 限流和熔断注解。
+
+- `@DubboTransported`：用于 Dubbo 服务的注解。
+
+- `@NacosInjected`：用于注入 Nacos 相关的实例。
+
+
+#### Spring 编程风格与设计模式
+
++ 设计模式在 Spring 源码中的应用
+
++ Spring 源码阅读技巧
 
 ## 💬与我联系
 
