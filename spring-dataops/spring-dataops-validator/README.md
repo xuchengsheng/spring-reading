@@ -204,6 +204,13 @@ public class Person {
 }
 ```
 
+运行结果发现， `PersonValidator` 正确地根据定义的验证规则识别出了 `Person` 对象的不合规数据，并通过 `Errors` 对象生成了相应的错误消息。
+
+```
+name:姓名不能为空
+age:目前年龄最大的是120岁
+```
+
 ### 八、与其他组件的关系
 
 + **Spring MVC框架**
