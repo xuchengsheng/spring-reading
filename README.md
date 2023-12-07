@@ -119,25 +119,15 @@
 - 验证、数据绑定与类型转换
 
   - [`Validator`](spring-dataops/spring-dataops-validator/README.md)：提供自定义数据验证逻辑，确保模型对象满足业务规则。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-
+- [`PropertyEditor`](spring-dataops/spring-dataops-propertyEditor/README.md)：自定义JavaBean属性的转换逻辑，处理属性类型转换。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   - `BeanWrapper`：用于操作JavaBean的属性，实现动态属性设置和获取。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `PropertyEditor`：自定义JavaBean属性的转换逻辑，处理属性类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `Converter`：用于不同类型间的转换，定义简单的源至目标类型转换规则。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
+- `Converter`：用于不同类型间的转换，定义简单的源至目标类型转换规则。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - `ConverterFactory`：创建针对特定源类型的转换器，用于类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `GenericConverter`：更复杂的转换器，支持多种源和目标类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
+- `GenericConverter`：更复杂的转换器，支持多种源和目标类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - `ConditionalConverter`：根据条件选择是否执行转换的转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `ConversionService`：提供统一的类型转换服务接口，管理转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
+- `ConversionService`：提供统一的类型转换服务接口，管理转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - `Parser`：用于将文本解析为对象，专注于解析逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `Printer`：用于将对象格式化为文本，专注于格式化输出。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
+- `Printer`：用于将对象格式化为文本，专注于格式化输出。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   - `AnnotationFormatterFactory`：针对带注解字段的格式化器工厂，链接注解与格式化逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
 - Bean定义导入与组合
