@@ -353,7 +353,7 @@ public interface BeanFactory {
 
 ### 五、主要实现
 
-+ `DefaultListableBeanFactory`
++ **DefaultListableBeanFactory**
   + `DefaultListableBeanFactory`是Spring框架中实现`BeanFactory`接口的关键类之一，负责注册、管理和初始化应用程序中的所有Bean定义。它支持依赖注入、不同作用域的Bean管理、处理`FactoryBean`、层次性容器、以及各种生命周期回调等功能，是Spring IoC容器的核心实现，提供了灵活而强大的Bean管理和配置机制。
 
 ### 六、最佳实践

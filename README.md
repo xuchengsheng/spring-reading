@@ -126,7 +126,7 @@
 
   - `ConverterFactory`：创建针对特定源类型的转换器，用于类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
-  - `GenericConverter`：更复杂的转换器，支持多种源和目标类型转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - [`GenericConverter`](https://github.com/xuchengsheng/spring-reading)：更复杂的转换器，支持多种源和目标类型转换。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - `ConditionalConverter`：根据条件选择是否执行转换的转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
