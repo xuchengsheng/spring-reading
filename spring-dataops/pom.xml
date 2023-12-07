@@ -17,6 +17,7 @@
         <module>spring-dataops-propertyEditor</module>
         <module>spring-dataops-converter</module>
         <module>spring-dataops-genericConverter</module>
+        <module>spring-dataops-converterFactory</module>
     </modules>
 
 </project>
