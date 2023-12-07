@@ -420,27 +420,28 @@ public class BeanFactoryDemo {
 1. **ApplicationContext**
 
    - `ApplicationContext` 是 `BeanFactory` 的子接口之一，提供了更多的企业级功能，是 Spring 应用程序的上下文容器。它扩展了 `BeanFactory`，并在其基础上添加了事件发布、国际化支持、AOP 功能等。
-   
-2. **ListableBeanFactory**
-- `ListableBeanFactory` 是继承自 `BeanFactory` 接口的子接口，它扩展了 `BeanFactory`，提供了更多的方法用于列举 Bean。可以列举所有的 Bean，包括按类型查找、按名称查找、获取所有 Bean 的名称等。
-   
-3. **ConfigurableBeanFactory**
 
-   - `ConfigurableBeanFactory` 是继承自 `AutowireCapableBeanFactory` 接口的子接口，它扩展了 `BeanFactory`，提供了更多的配置方法。允许配置属性编辑器、作用域、类加载器等。
+2. **ListableBeanFactory**
+   + `ListableBeanFactory` 是继承自 `BeanFactory` 接口的子接口，它扩展了 `BeanFactory`，提供了更多的方法用于列举 Bean。可以列举所有的 Bean，包括按类型查找、按名称查找、获取所有 Bean 的名称等。
+
+3. **ConfigurableBeanFactory**
+   - `ConfigurableBeanFactory` 是继承自 `HierarchicalBeanFactory` 接口的子接口，它扩展了 `BeanFactory`，提供了更多的配置方法。允许配置属性编辑器、作用域、类加载器等。
    
 4. **AutowireCapableBeanFactory**
-
    - `AutowireCapableBeanFactory` 是继承自 `BeanFactory` 接口的子接口，它扩展了 `BeanFactory`，提供了更多的自动装配方法。允许通过构造函数注入、属性注入等方式进行自动装配。
    
 5. **SingletonBeanRegistry**
-- `SingletonBeanRegistry` 是定义了对单例 Bean 的注册和获取的接口。定义了注册和获取单例 Bean 的方法，允许在容器中注册和获取单例 Bean。
-   
+
+   + `SingletonBeanRegistry` 是定义了对单例 Bean 的注册和获取的接口。定义了注册和获取单例 Bean 的方法，允许在容器中注册和获取单例 Bean。
+
 6. **BeanDefinitionRegistry**
-- `BeanDefinitionRegistry` 定义了对 Bean 定义的注册和获取的接口。允许在容器中注册和获取 Bean 定义，包括根据名称和类型注册 Bean。
-   
+
+   + `BeanDefinitionRegistry` 定义了对 Bean 定义的注册和获取的接口。允许在容器中注册和获取 Bean 定义，包括根据名称和类型注册 Bean。
+
 7. **BeanPostProcessor**
-- `BeanPostProcessor` 是一个接口，允许在 Bean 的初始化前后执行自定义的逻辑。`BeanFactory` 通过注册 `BeanPostProcessor` 实现了对 Bean 生命周期的定制。
-   
+
+   + `BeanPostProcessor` 是一个接口，允许在 Bean 的初始化前后执行自定义的逻辑。`BeanFactory` 通过注册 `BeanPostProcessor` 实现了对 Bean 生命周期的定制。
+
 8. **BeanFactoryPostProcessor**
 
    - `BeanFactoryPostProcessor` 是一个接口，用于在容器实例化任何 Bean 之前修改容器的配置。允许在容器启动时对 `BeanFactory` 进行修改，例如修改属性值、注册新的 Bean 等。
