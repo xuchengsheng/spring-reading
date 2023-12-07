@@ -59,7 +59,7 @@
 
 ### 五、接口源码
 
-`PropertyEditor` 接口在 Java Beans 规范中用于管理和编辑属性。它包括方法来转换属性值（如 `setAsText` 和 `getAsText`）、获取和设置属性（`setValue` 和 `getValue`）、支持属性的图形展示（`isPaintable` 和 `paintValue`）以及生成属性的初始化代码（`getJavaInitializationString`）。此外，接口支持自定义编辑器的创建和使用，以及属性更改的监听机制。
+`PropertyEditor` 接口在 Java Beans 规范中用于管理和编辑属性。包括方法来转换属性值（如 `setAsText` 和 `getAsText`）、获取和设置属性（`setValue` 和 `getValue`）、支持属性的图形展示（`isPaintable` 和 `paintValue`）以及生成属性的初始化代码（`getJavaInitializationString`）。此外，接口支持自定义编辑器的创建和使用，以及属性更改的监听机制。
 
 ```java
 public interface PropertyEditor {
@@ -310,7 +310,7 @@ public class MyCustomDateEditor extends PropertyEditorSupport {
 }
 ```
 
-`MyBean`是一个 Java Bean，提供了基本的属性封装和访问方法。通过它的 getter 和 setter 方法，可以方便地访问和修改这两个属性的值。此外，它的 `toString` 方法提供了一种方便的方式来查看 `MyBean` 实例的当前状态。
+`MyBean`是一个 Java Bean，提供了基本的属性封装和访问方法。通过 getter 和 setter 方法，可以方便地访问和修改这两个属性的值。此外， `toString` 方法提供了一种方便的方式来查看 `MyBean` 实例的当前状态。
 
 ```java
 public class MyBean {
@@ -359,11 +359,11 @@ MyBean = MyBean{path=\opt\spring-reading, date=Thu Jan 05 00:00:00 CST 2023}
 
 2. **Spring 框架**
 
-   - 在 Spring 框架中，`PropertyEditor` 用于在运行时处理属性文件或注解中的数据转换。它使得可以将配置文件（如 XML）中的字符串转换为 Java 对象的属性值。`PropertyEditor` 与 Spring 的 `BeanWrapper` 和 `DataBinder` 组件紧密相关，这些组件用于绑定和验证 Bean 属性。
+   - 在 Spring 框架中，`PropertyEditor` 用于在运行时处理属性文件或注解中的数据转换。使得可以将配置文件（如 XML）中的字符串转换为 Java 对象的属性值。`PropertyEditor` 与 Spring 的 `BeanWrapper` 和 `DataBinder` 组件紧密相关，这些组件用于绑定和验证 Bean 属性。
 
 3. **数据绑定**
 
-   - `PropertyEditor` 在数据绑定过程中起着关键作用，尤其是在 Web 应用程序中。在将请求参数映射到对象属性时，它用于将字符串参数转换为相应的属性类型。
+   - `PropertyEditor` 在数据绑定过程中起着关键作用，尤其是在 Web 应用程序中。在将请求参数映射到对象属性时，用于将字符串参数转换为相应的属性类型。
 
 4. **类型转换**
 
