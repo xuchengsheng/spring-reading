@@ -261,19 +261,19 @@ Converted result: 8
 
 ### 八、与其他组件的关系
 
-1. **`Converter` **
+1. **Converter**
 
    - `Converter<S, T>` 是一个简单的接口，用于将一种类型 `S` 转换为另一种类型 `T`。`ConditionalConverter` 可以与 `Converter` 接口结合使用，允许基于特定条件执行转换。
 
-2. **`GenericConverter` **
+2. **GenericConverter**
 
    - `GenericConverter` 是一个更复杂的接口，允许更灵活的类型转换，包括集合和泛型类型。`ConditionalConverter` 可以与 `GenericConverter` 结合使用，为复杂的转换提供条件控制。
 
-3. **`ConverterFactory` **
+3. **ConverterFactory**
 
    - `ConverterFactory` 用于创建特定类型之间的转换器。当与 `ConditionalConverter` 结合时，可以在创建转换器时加入条件判断的逻辑。
 
-4. **`ConditionalGenericConverter` **
+4. **ConditionalGenericConverter**
 
    - `ConditionalGenericConverter` 是 `GenericConverter` 和 `ConditionalConverter` 的结合体，用于复杂的转换场景，同时需要基于条件判断是否执行转换。
 
