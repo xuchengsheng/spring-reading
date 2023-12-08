@@ -20,6 +20,7 @@
         <module>spring-dataops-converterFactory</module>
         <module>spring-dataops-conditionalConverter</module>
         <module>spring-dataops-conversionService</module>
+        <module>spring-dataops-printer</module>
     </modules>
 
 </project>
