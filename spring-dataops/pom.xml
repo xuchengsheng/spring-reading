@@ -18,6 +18,7 @@
         <module>spring-dataops-converter</module>
         <module>spring-dataops-genericConverter</module>
         <module>spring-dataops-converterFactory</module>
+        <module>spring-dataops-conditionalConverter</module>
     </modules>
 
 </project>

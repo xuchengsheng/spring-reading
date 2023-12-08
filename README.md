@@ -128,7 +128,7 @@
 
   - [`GenericConverter`](spring-dataops/spring-dataops-genericConverter/README.md)：更复杂的转换器，支持多种源和目标类型转换。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
-  - `ConditionalConverter`：根据条件选择是否执行转换的转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  - [`ConditionalConverter`](/spring-dataops/spring-dataops-conditionalConverter/README.md)：根据条件选择是否执行转换的转换器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   - `ConversionService`：提供统一的类型转换服务接口，管理转换器。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
