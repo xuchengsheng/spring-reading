@@ -19,10 +19,15 @@
 ### 二、知识储备
 
 1. **Converter**
+
    + [Converter](/spring-dataops/spring-dataops-converter/README.md) 接口是 Spring 框架中用于实现类型转换的一个关键组件。定义了一个简单的方法，用于将一种类型（源类型 S）转换为另一种类型（目标类型 T）。通过实现这个接口，我们可以创建自定义的转换逻辑，以便在 Spring 应用程序中无缝地进行复杂的数据转换。
+
 2. **ConverterFactory**
+
    + [ConverterFactory](/spring-dataops/spring-dataops-converterFactory/README.md) 是 Spring 框架中的一个接口，用于实现类型转换的工厂。在 Spring 的类型转换体系中，`ConverterFactory` 接口扮演着创建特定类型转换器(`Converter`)的角色。这个接口主要用于那些有共同特性的一组类型转换场景。
+
 3. **GenericConverter**
+
    + [GenericConverter](/spring-dataops/spring-dataops-genericConverter/README.md) 是 Spring 框架中的一个关键接口，专门用于类型转换。这个接口与 Spring 的类型转换系统紧密相关，其主要功能是将一个类型的对象转换为另一个类型。与 `Converter` 接口相比，`GenericConverter` 提供了更灵活的转换机制，允许转换操作在多个源目标类型和目标类型之间进行。
 
 ### 三、基本描述
