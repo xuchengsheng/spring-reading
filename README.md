@@ -140,6 +140,36 @@
 
   - `AnnotationFormatterFactory`：针对带注解字段的格式化器工厂，链接注解与格式化逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
+- Spring 表达式语言（SpEL）
+
+  - `ExpressionParser`: 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `Expression`: 代表解析后的 SpEL 表达式，提供求值、赋值等功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `EvaluationContext`: 定义用于 SpEL 表达式求值的环境，包括变量、根对象等。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `PropertyAccessor`: 处理属性的读写操作，支持表达式中的属性访问。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `MethodResolver`: 在表达式中解析并调用方法，支持自定义方法解析。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `TypeLocator`: 用于在表达式中定位和引用特定的类型，例如类名。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `TypeConverter`: 实现不同类型间的转换，用于表达式中的值转换。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `BeanResolver`: 用于在表达式中解析并访问 Spring 容器中的 beans。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `ConstructorResolver`: 解析并执行表达式中的构造函数调用。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `OperatorOverloader`: 用于自定义表达式中的操作符行为，如加减乘除。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `ParserContext`: 提供解析 SpEL 表达式时的上下文信息。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `SpelNode`: 构成 SpEL 表达式内部结构的节点，表示表达式的各个部分。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `LiteralExpression`: 表示简单的文字值表达式，如数字、字符串。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
+  - `CompoundExpression`: 组合多个子表达式，形成复合的 SpEL 表达式。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+  
 - Bean定义导入与组合
 
   - `ImportBeanDefinitionRegistrar`：运行时动态注册 Bean，实现灵活配置，扩展配置类功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
