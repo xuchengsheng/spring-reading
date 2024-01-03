@@ -1,4 +1,5 @@
 ## @PropertySource
+
 - [@PropertySource](#propertysource)
   - [一、基本信息](#一基本信息)
   - [二、注解描述](#二注解描述)
@@ -480,23 +481,23 @@ private void addPropertySource(PropertySource<?> propertySource) {
 ### 八、注意事项
 
 1. **文件位置**
-   + 确保我们提供的文件路径是正确的。例如，`classpath:` 前缀表示文件应该在类路径中，而 `file:` 前缀则表示文件应该在文件系统的特定位置。
+   + 确保你提供的文件路径是正确的。例如，`classpath:` 前缀表示文件应该在类路径中，而 `file:` 前缀则表示文件应该在文件系统的特定位置。
 2. **占位符**
-   + 在 `@PropertySource` 的 `value` 属性中，我们可以使用 `${...}` 占位符，它们将会被已注册的任何属性源解析。
+   + 在 `@PropertySource` 的 `value` 属性中，你可以使用 `${...}` 占位符，它们将会被已注册的任何属性源解析。
 3. **处理重复的属性源名称**
-   + 如果我们有多个 `@PropertySource` 注解（或使用 `@PropertySources` 注解）且它们具有相同的名称，那么它们会合并。后声明的 `@PropertySource` 将覆盖先前声明的同名 `@PropertySource`。
+   + 如果你有多个 `@PropertySource` 注解（或使用 `@PropertySources` 注解）且它们具有相同的名称，那么它们会合并。后声明的 `@PropertySource` 将覆盖先前声明的同名 `@PropertySource`。
 4. **属性源的顺序**
-   + 属性源的顺序很重要，因为在多个属性源中定义的同名属性将使用先找到的值。我们可以使用 `PropertySource` 的 `name` 属性来明确指定属性源的名称，以控制其在环境中的顺序。
+   + 属性源的顺序很重要，因为在多个属性源中定义的同名属性将使用先找到的值。你可以使用 `PropertySource` 的 `name` 属性来明确指定属性源的名称，以控制其在环境中的顺序。
 5. **忽略找不到的资源**
-   + 我们可以使用 `ignoreResourceNotFound` 属性来指定当属性文件找不到时是否应该抛出异常。默认情况下，这是 `false`，意味着如果属性文件找不到，会抛出异常。设置为 `true` 可以让Spring在找不到文件时安静地继续运行。
+   + 你可以使用 `ignoreResourceNotFound` 属性来指定当属性文件找不到时是否应该抛出异常。默认情况下，这是 `false`，意味着如果属性文件找不到，会抛出异常。设置为 `true` 可以让Spring在找不到文件时安静地继续运行。
 6. **字符编码**
-   + 从Spring 4.3开始，`@PropertySource` 注解有一个 `encoding` 属性，允许我们为给定的资源指定特定的字符编码。
+   + 从Spring 4.3开始，`@PropertySource` 注解有一个 `encoding` 属性，允许你为给定的资源指定特定的字符编码。
 7. **自定义属性源工厂**
-   + 如果我们需要特殊的逻辑来创建属性源，可以使用 `factory` 属性来指定一个自定义的 `PropertySourceFactory`。
+   + 如果你需要特殊的逻辑来创建属性源，可以使用 `factory` 属性来指定一个自定义的 `PropertySourceFactory`。
 8. **激活属性占位符解析**
-   + 仅仅使用 `@PropertySource` 并不会激活属性占位符解析。为了替换我们的bean定义中的 `${...}` 占位符，我们还需要添加 `@Bean` 定义为 `PropertySourcesPlaceholderConfigurer`。
+   + 仅仅使用 `@PropertySource` 并不会激活属性占位符解析。为了替换你的bean定义中的 `${...}` 占位符，你还需要添加 `@Bean` 定义为 `PropertySourcesPlaceholderConfigurer`。
 9. **与Profiles结合**
-   + 我们可以与Spring的Profile功能结合使用 `@PropertySource`，以根据不同的环境加载不同的属性文件。
+   + 你可以与Spring的Profile功能结合使用 `@PropertySource`，以根据不同的环境加载不同的属性文件。
 
 ### 九、总结
 

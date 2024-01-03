@@ -32,6 +32,7 @@
         <module>spring-factory</module>
         <module>spring-env</module>
         <module>spring-dataops</module>
+        <module>spring-spel</module>
     </modules>
 
     <dependencies>

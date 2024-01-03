@@ -142,10 +142,8 @@
 
 - Spring 表达式语言（SpEL）
 
-  - `ExpressionParser`: 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
-  - `Expression`: 代表解析后的 SpEL 表达式，提供求值、赋值等功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-
+  - [`ExpressionParser`](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  
   - `EvaluationContext`: 定义用于 SpEL 表达式求值的环境，包括变量、根对象等。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
 
   - `PropertyAccessor`: 处理属性的读写操作，支持表达式中的属性访问。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
