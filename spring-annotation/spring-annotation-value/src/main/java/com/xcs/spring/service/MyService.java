@@ -42,6 +42,9 @@ public class MyService implements InitializingBean {
     @Value("#{${app.val1} + ${app.val2}}")
     private int sumOfValues;
 
+    @Value("${myapp.names[0]}")
+    private String firstName;
+
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println("直接注入值: " + someString);
@@ -49,5 +52,6 @@ public class MyService implements InitializingBean {
         System.out.println("使用默认值: " + appDescription);
         System.out.println("注入列表和属性: " + servers);
         System.out.println("使用Spring的SpEL: " + sumOfValues);
+        System.out.println("firstName: " + firstName);
     }
 }
