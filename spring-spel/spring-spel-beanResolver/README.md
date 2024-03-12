@@ -124,6 +124,7 @@ public class BeanFactoryResolver implements BeanResolver {
 ### 六、主要实现
 
 1. **BeanFactoryResolver**
+
    + `BeanFactoryResolver` 是一个实现了 `BeanResolver` 接口的类，在 Spring 框架中用于从 Bean 工厂中解析 Bean。通过构造函数接收一个 BeanFactory 实例，在调用 resolve 方法时，根据给定的 Bean 名称从 BeanFactory 中获取相应的 Bean 实例。
 
 ### 七、最佳实践
@@ -177,10 +178,17 @@ myBean = com.xcs.spring.MyBean@34123d65
 ### 九、常见问题
 
 1. **如何自定义 BeanResolver 的实现？**
+
    - 我们可能想要根据特定需求自定义 `BeanResolver` 的实现，例如从不同的数据源中获取 Bean 实例。解决方法通常包括创建一个新的类实现 `BeanResolver` 接口，并根据需要覆盖 `resolve` 方法。
+
 2. **如何处理 Bean 解析失败的情况？**
+
    - 当 `BeanResolver` 无法解析请求的 Bean 时，可能会抛出异常。开发人员需要考虑如何处理这种异常情况，例如记录日志、返回默认值或者向用户提供友好的错误消息。
+
 3. **如何在 SpEL 表达式中引用 Bean？**
+
    - 我们可能需要在 SpEL 表达式中引用 Spring 容器中的 Bean，以便执行特定的逻辑。通常情况下，可以使用 `@beanName` 或 `&beanName` 表达式来引用 Bean，其中 `@` 表示获取 Bean 实例，`&` 表示获取 Bean 的工厂实例。
+
 4. **如何解决循环依赖问题？**
+
    - 当存在循环依赖的 Bean 时，可能会导致 `BeanResolver` 无法正常解析 Bean。我们需要谨慎设计 Bean 之间的依赖关系，或者使用延迟初始化等技术来解决循环依赖问题。
