@@ -114,7 +114,7 @@
     - `DeferredImportSelector`：运行时动态导入配置，支持条件选择和按组别延迟加载。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
   + Bean生命周期
     - [`Bean的定义注册过程`](spring-core/spring-core-registerBeanDefinition)：加载与解析配置文件，注册解析Bean定义，类名、作用域、属性等。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
-    - [`Bean的初始化过程`](spring-core/spring-core-getBean/README.md)：实例化、属性注入、Aware回调、后置处理器、初始化方法调用、Bean就绪。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    - [`Bean的初始化过程`](spring-core/spring-core-getBean/README.md)：实例化、属性注入、Aware回调、后置处理器、初始化方法调用。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [`Bean的依赖解析过程`](spring-core/spring-core-resolveDependency/README.md)：声明依赖，查找依赖，注入依赖，处理循环依赖，延迟依赖解析。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [`Bean的销毁过程`](spring-core/spring-core-destroyBean/README.md)：销毁方法调用，接口回调，后处理清理，通知触发，GC回收资源。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
   + 属性解析和环境配置
@@ -132,7 +132,7 @@
     - [`BeanPostProcessor`](spring-interface/spring-interface-beanPostProcessor/README.md)：在Bean初始化前后，进行自定义处理，可影响所有Bean。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`InstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-instantiationAwareBeanPostProcessor/README.md)：提供更深层次的实例化和属性注入控制。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`DestructionAwareBeanPostProcessor`](spring-interface/spring-interface-destructionAwareBeanPostProcessor/README.md)： 允许在Bean销毁前进行额外的清理操作。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
-    - [`MergedBeanDefinitionPostProcessor`](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)：在合并Bean定义时，对BeanDefinition进行进一步处理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
+    - [`MergedBeanDefinitionPostProcessor`](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)：在合并Bean定义时对BeanDefinition进行处理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`SmartInstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)：提供更智能的实例化控制。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`SmartInitializingSingleton`](spring-interface/spring-interface-smartInitializingSingleton/README.md)：在所有单例Bean初始化完成后，执行自定义逻辑。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
   + Aware接口系列
