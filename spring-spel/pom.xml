@@ -16,6 +16,10 @@
         <module>spring-spel-expressionParser</module>
         <module>spring-spel-evaluationContext</module>
         <module>spring-spel-propertyAccessor</module>
+        <module>spring-spel-constructorResolver</module>
+        <module>spring-spel-methodResolver</module>
+        <module>spring-spel-beanResolver</module>
+        <module>spring-spel-typeLocator</module>
     </modules>
 
 </project>

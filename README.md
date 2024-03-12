@@ -70,6 +70,7 @@
       - [`AnnotationMetadata`](spring-metadata/spring-metadata-annotationMetadata/README.md)：动态获取和操作运行时类注解信息。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
       - [`TypeFilter`](spring-metadata/spring-metadata-typeFilter/README.md)：组件扫描时自定义类筛选，支持复杂条件和精确过滤。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
       - [`Condition`](spring-metadata/spring-metadata-condition/README.md)：条件判断，决定Bean创建和配置的灵活机制。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+      
   + 验证、数据绑定和类型转换
       - [`Validator`](spring-dataops/spring-dataops-validator/README.md)：提供自定义数据验证逻辑，确保模型对象满足业务规则。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
       - [`PropertyEditor`](spring-dataops/spring-dataops-propertyEditor/README.md)：自定义JavaBean属性的转换逻辑，处理属性类型转换。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
@@ -82,11 +83,16 @@
       - [`Parser`](spring-dataops/spring-dataops-parser/README.md)：用于将文本解析为对象，专注于解析逻辑。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
       - `BeanWrapper`：用于操作JavaBean的属性，实现动态属性设置和获取。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
       - `AnnotationFormatterFactory`：针对带注解字段的格式化器工厂，链接注解与格式化逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+      
   + Spring 表达式语言（SpEL）
+    - [`ExpressionParser`](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`EvaluationContext`](spring-spel/spring-spel-evaluationContext/README.md): 管理SpEL表达式的上下文信息<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`PropertyAccessor`](spring-spel/spring-spel-propertyAccessor/README.md): 用于读取和写入对象的属性，可用于实现自定义的属性访问逻辑<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`ExpressionParser`](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  
+    - [`ConstructorResolver`](spring-spel/spring-spel-constructorResolver/README.md): 解析构造函数以实例化bean<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`MethodResolver`](spring-spel/spring-spel-methodResolver/README.md): 解析方法以调用对象的方法<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`BeanResolver`](spring-spel/spring-spel-beanResolver/README.md): 解析Bean以获取其实例<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`TypeLocator`](spring-spel/spring-spel-typeLocator/README.md): 定位并获取类型信息<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    
   + Bean工厂
     - [`BeanFactory`](spring-factory/spring-factory-beanFactory/README.md)：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`ListableBeanFactory`](spring-factory/spring-factory-listableBeanFactory/README.md)：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
@@ -94,29 +100,35 @@
     - [`ConfigurableBeanFactory`](spring-factory/spring-factory-configurableBeanFactory/README.md)：提供对BeanFactory配置的扩展，如属性编辑器、作用域等。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     + [`AutowireCapableBeanFactory`](spring-factory/spring-factory-autowireCapableBeanFactory/README.md)：Bean创建、初始化、注入、销毁的核心功能接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     + [`ConfigurableListableBeanFactory`](spring-factory/spring-factory-configurableListableBeanFactory/README.md)：支持配置和列表操作的可配置Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    
   + 容器上下文
     - [`ClassPathXmlApplicationContext`](spring-context/spring-context-classPathXmlApplicationContext/README.md)：类路径（classpath）加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`AnnotationConfigApplicationContext`](spring-context/spring-context-annotationConfigApplicationContext/README.md)：注解配置类中加载配置信息的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - `GenericApplicationContext`：支持多种配置方式，XML、注解、手动注册的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+    
   + Bean定义与注册
     - [`BeanDefinition`](spring-beans/spring-bean-beanDefinition/README.md)：详细描述Bean，支持依赖注入、AOP、作用域控制等核心功能。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`BeanDefinitionHolder`](spring-beans/spring-bean-beanDefinitionHolder/README.md)：管理和操作BeanDefinition的关键类。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`BeanDefinitionRegistry`](spring-beans/spring-bean-beanDefinitionRegistry/README.md)：Bean定义注册管理关键接口，处理Bean元数据。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    
   + Bean定义读取与扫描
     - [`XmlBeanDefinitionReader`](spring-beans/spring-bean-xmlBeanDefinitionReader/README.md)：加载解析XML配置，构建IOC容器，注册Bean定义。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`PropertiesBeanDefinitionReader`](spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md)：属性文件加载，解析为Bean定义。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`GroovyBeanDefinitionReader`](spring-beans/spring-bean-groovyBeanDefinitionReader/README.md)：Groovy脚本解析为Bean定义。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`AnnotatedBeanDefinitionReader`](spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md)：注解配置，自动扫描注册Spring组件，简化Bean定义配置。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`ClassPathBeanDefinitionScanner`](spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md)：类路径扫描注册Spring Bean，支持自动装配。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    
   + Bean定义导入与组合
     - `ImportBeanDefinitionRegistrar`：运行时动态注册 Bean，实现灵活配置，扩展配置类功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
     - `ImportSelector`：运行时动态导入配置类，实现条件选择和灵活配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
     - `DeferredImportSelector`：运行时动态导入配置，支持条件选择和按组别延迟加载。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+    
   + Bean生命周期
     - [`Bean的定义注册过程`](spring-core/spring-core-registerBeanDefinition)：加载与解析配置文件，注册解析Bean定义，类名、作用域、属性等。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`Bean的初始化过程`](spring-core/spring-core-getBean/README.md)：实例化、属性注入、Aware回调、后置处理器、初始化方法调用。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [`Bean的依赖解析过程`](spring-core/spring-core-resolveDependency/README.md)：声明依赖，查找依赖，注入依赖，处理循环依赖，延迟依赖解析。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [`Bean的销毁过程`](spring-core/spring-core-destroyBean/README.md)：销毁方法调用，接口回调，后处理清理，通知触发，GC回收资源。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    
   + 属性解析和环境配置
     - [`PropertySource`](spring-env/spring-env-propertySource/README.md)：管理各种配置源的抽象类，支持灵活地加载和访问应用配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`PropertySources`](spring-env/spring-env-propertySources/README.md)：用于统一管理和访问多个 PropertySource 实例，简化配置数据的处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
@@ -124,6 +136,7 @@
     - [`ConfigurablePropertyResolver`](spring-env/spring-env-configurablePropertyResolver/README.md)：属性解析配置，占位符设置，适应不同配置需求。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`Environment`](spring-env/spring-env-environment/README.md)：应用环境表示，提供属性访问，支持配置文件，实现动态配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`ConfigurableEnvironment`](spring-env/spring-env-configurableEnvironment/README.md)：动态配置应用环境，激活、默认配置，提升应用灵活性。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    
   + Bean初始化与扩展点
     - [`InitializingBean`](spring-interface/spring-interface-initializingBean/README.md)：提供Bean初始化时执行自定义逻辑的接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`DisposableBean`](spring-interface/spring-interface-disposableBean/README.md)：定义Bean销毁前执行清理操作的接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
@@ -135,6 +148,7 @@
     - [`MergedBeanDefinitionPostProcessor`](spring-interface/spring-interface-mergedBeanDefinitionPostProcessor/README.md)：在合并Bean定义时对BeanDefinition进行处理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`SmartInstantiationAwareBeanPostProcessor`](spring-interface/spring-interface-smartInstantiationAwareBeanPostProcessor/README.md)：提供更智能的实例化控制。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`SmartInitializingSingleton`](spring-interface/spring-interface-smartInitializingSingleton/README.md)：在所有单例Bean初始化完成后，执行自定义逻辑。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
+    
   + Aware接口系列
     - [`BeanNameAware`](spring-aware/spring-aware-beanNameAware/README.md)：让Bean获取自身在容器中的名字。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`BeanClassLoaderAware`](spring-aware/spring-aware-beanClassLoaderAware/README.md)：允许Bean获取其类加载器。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
@@ -147,6 +161,7 @@
     - [`ApplicationStartupAware`](spring-aware/spring-aware-applicationStartupAware/README.md)：允许Bean获取应用程序启动信息。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`ApplicationContextAware`](spring-aware/spring-aware-applicationContextAware/README.md)：允许Bean获取应用程序上下文。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`ImportAware`](spring-aware/spring-aware-importAware/README.md)：允许被导入的配置类获取导入它的类的信息。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
+    
   + 核心注解
     - [`@Configuration`](spring-annotation/spring-annotation-configuration/README.md)：声明类为配置类，定义Bean和Bean之间的依赖关系。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [`@ComponentScan`](spring-annotation/spring-annotation-componentScan/README.md)：启用组件扫描，自动发现并注册标记为组件的类。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
@@ -163,6 +178,7 @@
     - `@Role`：为Bean提供角色提示，用于区分相似类型的Bean。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
     - `@Indexed`： 标记Bean用于索引。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
     - `@Order`：指定Bean的加载顺序。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+    
   + JSR规范
     - [`@Inject`](spring-jsr/spring-jsr330-inject/README.md)：JSR-330标准的依赖注入注解。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [`@Named`](spring-jsr/spring-jsr330-named/README.md)：JSR-330标准的命名注解。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
