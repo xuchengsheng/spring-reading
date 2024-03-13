@@ -86,12 +86,12 @@
       
   + Spring 表达式语言（SpEL）
     - [`ExpressionParser`](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`EvaluationContext`](spring-spel/spring-spel-evaluationContext/README.md): 管理SpEL表达式的上下文信息<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`PropertyAccessor`](spring-spel/spring-spel-propertyAccessor/README.md): 用于读取和写入对象的属性，可用于实现自定义的属性访问逻辑<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`ConstructorResolver`](spring-spel/spring-spel-constructorResolver/README.md): 解析构造函数以实例化bean<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`MethodResolver`](spring-spel/spring-spel-methodResolver/README.md): 解析方法以调用对象的方法<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`BeanResolver`](spring-spel/spring-spel-beanResolver/README.md): 解析Bean以获取其实例<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [`TypeLocator`](spring-spel/spring-spel-typeLocator/README.md): 定位并获取类型信息<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`EvaluationContext`](spring-spel/spring-spel-evaluationContext/README.md): 管理SpEL表达式的上下文信息。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`PropertyAccessor`](spring-spel/spring-spel-propertyAccessor/README.md): 用于读取和写入对象的属性，可用于实现自定义的属性访问逻辑。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`ConstructorResolver`](spring-spel/spring-spel-constructorResolver/README.md): 解析构造函数确定bean的实例化方式。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`MethodResolver`](spring-spel/spring-spel-methodResolver/README.md): 解析类方法，确保正确调用，处理重载和参数匹配。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`BeanResolver`](spring-spel/spring-spel-beanResolver/README.md): 解析bean定义，包括依赖、属性设置，实例化并返回。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`TypeLocator`](spring-spel/spring-spel-typeLocator/README.md): 动态查找类，返回Class对象，在表达式解析、类型转换等。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     
   + Bean工厂
     - [`BeanFactory`](spring-factory/spring-factory-beanFactory/README.md)：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
