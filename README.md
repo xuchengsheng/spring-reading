@@ -92,8 +92,12 @@
     - [`MethodResolver`](spring-spel/spring-spel-methodResolver/README.md): 解析类方法，确保正确调用，处理重载和参数匹配。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`BeanResolver`](spring-spel/spring-spel-beanResolver/README.md): 解析bean定义，包括依赖、属性设置，实例化并返回。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [`TypeLocator`](spring-spel/spring-spel-typeLocator/README.md): 动态查找类，返回Class对象，在表达式解析、类型转换等。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`TypeConverter`](spring-spel/spring-spel-typeLocator/README.md): 类型转换功能，将表达式中的数据从一种类型转换为另一种类型。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`TypeComparator`](spring-spel/spring-spel-typeLocator/README.md): 类型比较功能，定义了比较两个对象是否相等的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [`OperatorOverloader`](spring-spel/spring-spel-typeLocator/README.md): 运算符重载功能，对表达式中的运算符进行自定义操作的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     
   + Bean工厂
+    
     - [`BeanFactory`](spring-factory/spring-factory-beanFactory/README.md)：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`ListableBeanFactory`](spring-factory/spring-factory-listableBeanFactory/README.md)：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [`HierarchicalBeanFactory`](spring-factory/spring-factory-hierarchicalBeanFactory/README.md)：支持父子容器关系，实现Bean定义的层次结构。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>

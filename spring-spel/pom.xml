@@ -20,6 +20,9 @@
         <module>spring-spel-methodResolver</module>
         <module>spring-spel-beanResolver</module>
         <module>spring-spel-typeLocator</module>
+        <module>spring-spel-typeConverter</module>
+        <module>spring-spel-typeComparator</module>
+        <module>spring-spel-operatorOverloader</module>
     </modules>
 
 </project>
