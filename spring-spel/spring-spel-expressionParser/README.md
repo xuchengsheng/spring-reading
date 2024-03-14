@@ -14,8 +14,6 @@
   - [十、与其他组件的关系](#十与其他组件的关系)
   - [十一、常见问题](#十一常见问题)
 
-
-
 ### 一、基本信息
 
 ✒ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
@@ -125,7 +123,7 @@ public interface ExpressionParser {
 
 ### 七、最佳实践
 
-使用 Spring Expression Language（SpEL）解析器来计算一个简单的数学表达式 `"100 * 2 + 10"` 的结果，并将结果打印输出。
+首先创建了一个 SpEL 表达式解析器实例 `SpelExpressionParser`，然后使用该解析器解析了一个简单的数学表达式 `"100 * 2 + 10"`，最后将`Expression` 打印输出。
 
 ```java
 public class ExpressionParserDemo {
@@ -133,19 +131,18 @@ public class ExpressionParserDemo {
     public static void main(String[] args) {
         // 创建解析器实例
         ExpressionParser parser = new SpelExpressionParser();
-
         // 解析基本表达式
         Expression expression = parser.parseExpression("100 * 2 + 10");
-        Integer result = expression.getValue(Integer.class);
-        System.out.println("表达式 '100 * 2 + 10' 的结果为: " + result);
+
+        System.out.println("expression = " + expression);
     }
 }
 ```
 
-运行结果，`SpelExpressionParser` 如何能够处理包括数学运算和变量替换在内的复杂表达式，并准确地计算出结果。
+运行结果，`SpelExpressionParser` 解析给定表达式后返回的 `SpelExpression` 对象。这个对象包含了对表达式的内部表示，可以用于后续的表达式计算。
 
 ```java
-表达式 '100 * 2 + 10' 的结果为: 210
+expression = org.springframework.expression.spel.standard.SpelExpression@754ba872
 ```
 
 ### 八、时序图

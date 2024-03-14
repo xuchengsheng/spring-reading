@@ -23,6 +23,7 @@
         <module>spring-spel-typeConverter</module>
         <module>spring-spel-typeComparator</module>
         <module>spring-spel-operatorOverloader</module>
+        <module>spring-spel-expression</module>
     </modules>
 
 </project>

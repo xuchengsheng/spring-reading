@@ -88,7 +88,8 @@
       - AnnotationFormatterFactory：针对带注解字段的格式化器工厂，链接注解与格式化逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
       
   + Spring 表达式语言（SpEL）
-    - [ExpressionParser](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [ExpressionParser](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    - [Expression](spring-spel/spring-spel-expression/README.md): 对表达式字符串进行求值的功能，支持类型转换、获取原始字符串等操作。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [EvaluationContext](spring-spel/spring-spel-evaluationContext/README.md): 管理SpEL表达式的上下文信息。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [PropertyAccessor](spring-spel/spring-spel-propertyAccessor/README.md): 用于读取和写入对象的属性，可用于实现自定义的属性访问逻辑。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [ConstructorResolver](spring-spel/spring-spel-constructorResolver/README.md): 解析构造函数确定bean的实例化方式。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>

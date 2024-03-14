@@ -15,10 +15,9 @@ public class ExpressionParserDemo {
     public static void main(String[] args) {
         // 创建解析器实例
         ExpressionParser parser = new SpelExpressionParser();
-
         // 解析基本表达式
         Expression expression = parser.parseExpression("100 * 2 + 10");
-        Integer result = expression.getValue(Integer.class);
-        System.out.println("表达式 '100 * 2 + 10' 的结果为: " + result);
+
+        System.out.println("expression = " + expression);
     }
 }
