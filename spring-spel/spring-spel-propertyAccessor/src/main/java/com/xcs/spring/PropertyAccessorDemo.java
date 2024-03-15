@@ -12,26 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyAccessorDemo {
-    public static void main(String[] args) throws AccessException {
-        // 创建 ReflectivePropertyAccessor 对象
-        ReflectivePropertyAccessor propertyAccessor = new ReflectivePropertyAccessor();
+    public static void main(String[] args)  {
+        // 创建一个SpEL表达式解析器
+        ExpressionParser parser = new SpelExpressionParser();
 
-        // 创建一个对象，我们将在表达式中访问它的属性
-        MyBean myBean = new MyBean();
-        myBean.setName("spring-reading");
-
-        // 创建一个 EvaluationContext 对象
         StandardEvaluationContext context = new StandardEvaluationContext();
+        context.setVariable("myBean",new MyBean("spring-reading"));
 
-        // 演示 read 方法
-        if (propertyAccessor.canRead(context, myBean, "name")) {
-            System.out.println("Name: " + propertyAccessor.read(context, myBean, "name"));
-        }
+        // 解析SpEL表达式，并使用构造函数实例化对象
+        String name = parser.parseExpression("#myBean.name").getValue(context, String.class);
 
-        // 演示 write 方法
-        if (propertyAccessor.canWrite(context, myBean, "name")) {
-            propertyAccessor.write(context, myBean, "name", "spring-reading-xcs");
-            System.out.println("Updated Name: " + myBean.getName());
-        }
+        System.out.println("name = " + name);
     }
 }

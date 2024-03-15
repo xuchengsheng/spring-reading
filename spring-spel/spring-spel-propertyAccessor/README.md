@@ -162,31 +162,21 @@ public interface PropertyAccessor {
 
 ### 七、最佳实践
 
-使用 `ReflectivePropertyAccessor` 对象来访问对象的属性。首先，创建了一个 `MyBean` 对象，并设置了其属性值。然后，创建了一个 `StandardEvaluationContext` 对象作为属性访问的上下文。接着，通过 `canRead()` 方法判断是否可以读取对象的属性，如果可以则使用 `read()` 方法读取属性值，并通过 `canWrite()` 方法判断是否可以写入属性，如果可以则使用 `write()` 方法更新属性值。最后，输出了更新后的属性值。
+创建了一个 SpEL 表达式解析器对象 `ExpressionParser`，然后创建了一个 `StandardEvaluationContext` 对象作为 SpEL 表达式的上下文。在上下文中设置了一个名为 `myBean` 的变量，其值为一个 `MyBean` 对象。接着，通过 `parser.parseExpression("#myBean.name")` 解析了一个 SpEL 表达式，该表达式表示访问 `myBean` 对象的 `name` 属性。最后，通过 `getValue(context, String.class)` 方法获取了属性值，并将其输出。
 
 ```java
 public class PropertyAccessorDemo {
-    public static void main(String[] args) throws AccessException {
-        // 创建 ReflectivePropertyAccessor 对象
-        ReflectivePropertyAccessor propertyAccessor = new ReflectivePropertyAccessor();
+    public static void main(String[] args)  {
+        // 创建一个SpEL表达式解析器
+        ExpressionParser parser = new SpelExpressionParser();
 
-        // 创建一个对象，我们将在表达式中访问它的属性
-        MyBean myBean = new MyBean();
-        myBean.setName("spring-reading");
-
-        // 创建一个 EvaluationContext 对象
         StandardEvaluationContext context = new StandardEvaluationContext();
+        context.setVariable("myBean",new MyBean("spring-reading"));
 
-        // 演示 read 方法
-        if (propertyAccessor.canRead(context, myBean, "name")) {
-            System.out.println("Name: " + propertyAccessor.read(context, myBean, "name"));
-        }
+        // 解析SpEL表达式，并使用构造函数实例化对象
+        String name = parser.parseExpression("#myBean.name").getValue(context, String.class);
 
-        // 演示 write 方法
-        if (propertyAccessor.canWrite(context, myBean, "name")) {
-            propertyAccessor.write(context, myBean, "name", "spring-reading-xcs");
-            System.out.println("Updated Name: " + myBean.getName());
-        }
+        System.out.println("name = " + name);
     }
 }
 ```
@@ -198,6 +188,10 @@ public class MyBean {
 
     private String name;
 
+    public MyBean(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -205,14 +199,20 @@ public class MyBean {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "MyBean{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
 ```
 
-运行结果发现，在输出结果中，“Name” 表示读取到的属性值，而 “Updated Name” 则表示经过写入后的新属性值。
+运行结果，通过 SpEL 表达式解析器访问了对象的属性，并得到了属性值 "spring-reading"。
 
 ```properties
-Name: TypedValue: 'spring-reading' of [java.lang.String]
-Updated Name: spring-reading-xcs
+name = spring-reading
 ```
 
 ### 八、与其他组件的关系

@@ -84,9 +84,7 @@
       - [ConversionService](spring-dataops/spring-dataops-conversionService/README.md)：提供统一的类型转换服务接口，管理转换器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
       - [Printer](spring-dataops/spring-dataops-printer/README.md)：用于将对象格式化为文本，专注于格式化输出。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
       - [Parser](spring-dataops/spring-dataops-parser/README.md)：用于将文本解析为对象，专注于解析逻辑。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-      - BeanWrapper：用于操作JavaBean的属性，实现动态属性设置和获取。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-      - AnnotationFormatterFactory：针对带注解字段的格式化器工厂，链接注解与格式化逻辑。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-      
+    
   + Spring 表达式语言（SpEL）
     - [ExpressionParser](spring-spel/spring-spel-expressionParser/README.md): 解析字符串形式的 SpEL 表达式，创建并返回 Expression 实例。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [Expression](spring-spel/spring-spel-expression/README.md): 对表达式字符串进行求值的功能，支持类型转换、获取原始字符串等操作。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
@@ -99,33 +97,32 @@
     - [TypeConverter](spring-spel/spring-spel-typeLocator/README.md): 类型转换功能，将表达式中的数据从一种类型转换为另一种类型。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [TypeComparator](spring-spel/spring-spel-typeLocator/README.md): 类型比较功能，定义了比较两个对象是否相等的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [OperatorOverloader](spring-spel/spring-spel-typeLocator/README.md): 运算符重载功能，对表达式中的运算符进行自定义操作的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    
-  + Bean工厂
-    
-    - [BeanFactory](spring-factory/spring-factory-beanFactory/README.md)：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [ListableBeanFactory](spring-factory/spring-factory-listableBeanFactory/README.md)：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [HierarchicalBeanFactory](spring-factory/spring-factory-hierarchicalBeanFactory/README.md)：支持父子容器关系，实现Bean定义的层次结构。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [ConfigurableBeanFactory](spring-factory/spring-factory-configurableBeanFactory/README.md)：提供对BeanFactory配置的扩展，如属性编辑器、作用域等。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    + [AutowireCapableBeanFactory](spring-factory/spring-factory-autowireCapableBeanFactory/README.md)：Bean创建、初始化、注入、销毁的核心功能接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    + [ConfigurableListableBeanFactory](spring-factory/spring-factory-configurableListableBeanFactory/README.md)：支持配置和列表操作的可配置Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    
-  + 容器上下文
-    - [ClassPathXmlApplicationContext](spring-context/spring-context-classPathXmlApplicationContext/README.md)：类路径（classpath）加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [AnnotationConfigApplicationContext](spring-context/spring-context-annotationConfigApplicationContext/README.md)：注解配置类中加载配置信息的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - GenericApplicationContext：支持多种配置方式，XML、注解、手动注册的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
-    
+
   + Bean定义与注册
     - [BeanDefinition](spring-beans/spring-bean-beanDefinition/README.md)：详细描述Bean，支持依赖注入、AOP、作用域控制等核心功能。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [BeanDefinitionHolder](spring-beans/spring-bean-beanDefinitionHolder/README.md)：管理和操作BeanDefinition的关键类。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [BeanDefinitionRegistry](spring-beans/spring-bean-beanDefinitionRegistry/README.md)：Bean定义注册管理关键接口，处理Bean元数据。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    
+
   + Bean定义读取与扫描
     - [XmlBeanDefinitionReader](spring-beans/spring-bean-xmlBeanDefinitionReader/README.md)：加载解析XML配置，构建IOC容器，注册Bean定义。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [PropertiesBeanDefinitionReader](spring-beans/spring-bean-propertiesBeanDefinitionReader/README.md)：属性文件加载，解析为Bean定义。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [GroovyBeanDefinitionReader](spring-beans/spring-bean-groovyBeanDefinitionReader/README.md)：Groovy脚本解析为Bean定义。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AnnotatedBeanDefinitionReader](spring-beans/spring-bean-annotatedBeanDefinitionReader/README.md)：注解配置，自动扫描注册Spring组件，简化Bean定义配置。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [ClassPathBeanDefinitionScanner](spring-beans/spring-bean-classPathBeanDefinitionScanner/README.md)：类路径扫描注册Spring Bean，支持自动装配。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+
+  + Bean工厂
+    - [BeanFactory](spring-factory/spring-factory-beanFactory/README.md)：Spring的核心接口，提供对Bean的配置、创建、管理的基本功能。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [ListableBeanFactory](spring-factory/spring-factory-listableBeanFactory/README.md)：支持按类型获取Bean的集合。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [HierarchicalBeanFactory](spring-factory/spring-factory-hierarchicalBeanFactory/README.md)：支持父子容器关系，实现Bean定义的层次结构。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [ConfigurableBeanFactory](spring-factory/spring-factory-configurableBeanFactory/README.md)：提供对BeanFactory配置的扩展，如属性编辑器、作用域等。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AutowireCapableBeanFactory](spring-factory/spring-factory-autowireCapableBeanFactory/README.md)：Bean创建、初始化、注入、销毁的核心功能接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [ConfigurableListableBeanFactory](spring-factory/spring-factory-configurableListableBeanFactory/README.md)：支持配置和列表操作的可配置Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     
+  + 容器上下文
+    - [ClassPathXmlApplicationContext](spring-context/spring-context-classPathXmlApplicationContext/README.md)：类路径（classpath）加载 XML 配置文件的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [AnnotationConfigApplicationContext](spring-context/spring-context-annotationConfigApplicationContext/README.md)：注解配置类中加载配置信息的上下文。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - GenericApplicationContext：支持多种配置方式，XML、注解、手动注册的上下文。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
+
   + Bean定义导入与组合
     - ImportBeanDefinitionRegistrar：运行时动态注册 Bean，实现灵活配置，扩展配置类功能。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>
     - ImportSelector：运行时动态导入配置类，实现条件选择和灵活配置。<img src="https://img.shields.io/badge/%E5%8D%B3%E5%B0%86%E6%9B%B4%E6%96%B0-339933"></img>

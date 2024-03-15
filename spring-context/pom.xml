@@ -15,6 +15,7 @@
     <modules>
         <module>spring-context-classPathXmlApplicationContext</module>
         <module>spring-context-annotationConfigApplicationContext</module>
+        <module>spring-context-genericApplicationContext</module>
     </modules>
 
 </project>

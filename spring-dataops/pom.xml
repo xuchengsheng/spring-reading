@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>spring-dataops-validator</module>
-        <module>spring-dataops-beanWrapper</module>
         <module>spring-dataops-propertyEditor</module>
         <module>spring-dataops-converter</module>
         <module>spring-dataops-genericConverter</module>
