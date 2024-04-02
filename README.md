@@ -196,7 +196,7 @@
     - [Provider](spring-jsr/spring-jsr330-provider/README.md)：Java标准库提供的通用Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
   
   + Spring AOP
-    - [Pointcut](spring-jsr/spring-jsr330-inject/README.md)：定义切入点，匹配被拦截的方法。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    - [Pointcut](spring-aop/spring-aop-pointcut/README.md)：定义切入点，匹配被拦截的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
   
   + Spring AOT
   
