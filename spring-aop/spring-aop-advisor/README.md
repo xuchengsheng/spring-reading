@@ -100,14 +100,23 @@ public interface Advisor {
 ### 六、主要实现
 
 1. **RegexpMethodPointcutAdvisor**
+
    - 基于正则表达式来匹配方法名的切点。通过使用正则表达式，可以根据方法名模式匹配连接点，并将通知应用于匹配的连接点，从而实现基于方法名模式的切面逻辑。
+
 2. **AspectJExpressionPointcutAdvisor**
+
    - 基于AspectJ表达式来定义切点。通过使用AspectJ的语法，可以更灵活地定义切面，从而匹配连接点，并将通知应用于匹配的连接点，实现更复杂的切面逻辑。
+
 3. **NameMatchMethodPointcutAdvisor**
+
    - 基于方法名模式匹配来定义切点。通过使用方法名模式，可以轻松地匹配连接点，并将通知应用于匹配的连接点，从而实现基于方法名模式的切面逻辑。
+
 4. **DefaultPointcutAdvisor**
+
    - 一个通用的切点Advisor，用于将切点和通知组合在一起。它允许将任何类型的通知与任何类型的切点结合使用，并将通知应用于匹配的连接点，从而实现横切关注点的管理。
+
 5. **DefaultIntroductionAdvisor**
+
    + 是Spring AOP中的一个特殊类型的Advisor实现，用于引入新的接口（或Mixin）到目标类中。它允许将新的接口实现引入到现有的目标类中，以扩展目标类的功能。通过`DefaultIntroductionAdvisor`，可以在不修改现有类的情况下，向其添加新的行为或功能，从而实现更好的代码复用和扩展性。
 
 ### 七、最佳实践
