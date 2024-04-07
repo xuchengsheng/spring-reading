@@ -6,6 +6,10 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
+/**
+ * @author xcs
+ * @date 2024年4月7日15:42:49
+ */
 public class PointcutDemo {
     public static void main(String[] args) {
         customPointcut();

@@ -3,16 +3,23 @@ package com.xcs.spring;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.DefaultIntroductionAdvisor;
 
+/**
+ * @author xcs
+ * @date 2024年4月7日15:42:49
+ */
 public class AdviceDemo {
 
     public static void main(String[] args) {
-//        methodInterceptor();
+        methodInterceptor();
 //        beforeAdvice();
 //        afterAdvice();
 //        throwsAdvice();
-        introductionAdvice();
+//        introductionAdvice();
     }
 
+    /**
+     * 方法拦截器
+     */
     private static void methodInterceptor() {
         // 创建代理工厂&创建目标对象
         ProxyFactory proxyFactory = new ProxyFactory(new MyService());
@@ -24,6 +31,9 @@ public class AdviceDemo {
         proxy.doSomething();
     }
 
+    /**
+     * 前置通知
+     */
     private static void beforeAdvice() {
         // 创建代理工厂&创建目标对象
         ProxyFactory proxyFactory = new ProxyFactory(new MyService());
@@ -35,6 +45,9 @@ public class AdviceDemo {
         proxy.doSomething();
     }
 
+    /**
+     * 后置通知
+     */
     private static void afterAdvice() {
         // 创建代理工厂&创建目标对象
         ProxyFactory proxyFactory = new ProxyFactory(new MyService());
@@ -46,6 +59,9 @@ public class AdviceDemo {
         proxy.doSomething();
     }
 
+    /**
+     * 异常通知
+     */
     private static void throwsAdvice() {
         // 创建代理工厂&创建目标对象
         ProxyFactory proxyFactory = new ProxyFactory(new MyService());
@@ -57,6 +73,9 @@ public class AdviceDemo {
         proxy.doSomethingException();
     }
 
+    /**
+     * 引介通知
+     */
     private static void introductionAdvice() {
         // 创建代理工厂&创建目标对象
         ProxyFactory proxyFactory = new ProxyFactory(new MyService());
