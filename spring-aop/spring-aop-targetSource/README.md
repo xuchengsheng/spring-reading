@@ -114,12 +114,19 @@ public interface TargetSource extends TargetClassAware {
 ### 六、主要实现
 
 1. **SingletonTargetSource**
+
    + 用于管理单例对象的目标源。该实现每次调用 `getTarget()` 方法都返回同一个单例对象，适用于目标对象是单例的情况。
+
 2. **PrototypeTargetSource**
+
    + 用于每次调用时创建新对象的目标源。该实现每次调用 `getTarget()` 方法都返回一个新的目标对象实例，适用于目标对象需要频繁更新或重置的情况。
+
 3. **ThreadLocalTargetSource**
+
    + 用于在每个线程中保持一个目标对象的引用。该实现在每个线程中都维护一个目标对象的副本，适用于需要在多线程环境中使用不同的目标对象实例的情况。
+
 4. **CommonsPool2TargetSource**
+
    + 用于使用 Apache Commons Pool 来管理目标对象的池化目标源。该实现通过对象池管理目标对象的创建和销毁，以提高对象的重用性和性能。
 
 ### 七、最佳实践
