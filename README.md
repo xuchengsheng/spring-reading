@@ -200,6 +200,7 @@
     - [Advice](spring-aop/spring-aop-advice/README.md)：AOP核心接口，定义切面通知行为。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [Advisor](spring-aop/spring-aop-advisor/README.md)：用于将通知和切点结合，实现切面编程的横切关注点。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AdvisorAdapter](spring-aop/spring-aop-advisorAdapter/README.md)：适配不同类型通知到拦截器链。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [TargetSource](spring-aop/spring-aop-targetSource/README.md)：管理AOP代理对象的获取与释放。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   + Spring AOT
   
