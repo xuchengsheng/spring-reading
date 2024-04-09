@@ -214,7 +214,7 @@ doSomething method result = hello world
    +  `java.lang.reflect.Proxy` 类是 Java 标准库中的一个类，用于创建基于接口的动态代理对象。它提供了静态方法 `newProxyInstance`，可以根据指定的类加载器、接口列表和调用处理器来创建代理对象。
    
 3. **org.springframework.cglib.proxy.Enhancer**
-+ `org.springframework.cglib.proxy.Enhancer` 类是 CGLIB 库中的一个类，用于创建基于类的动态代理对象。它能够生成目标类的子类，并重写其中的方法以实现方法拦截和增强。
+   + `org.springframework.cglib.proxy.Enhancer` 类是 CGLIB 库中的一个类，用于创建基于类的动态代理对象。它能够生成目标类的子类，并重写其中的方法以实现方法拦截和增强。
 
 ### 九、常见问题
 
