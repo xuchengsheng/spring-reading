@@ -14,6 +14,7 @@
         <module>spring-aop-advice</module>
         <module>spring-aop-advisorAdapter</module>
         <module>spring-aop-targetSource</module>
+        <module>spring-aop-aopProxy</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

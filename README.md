@@ -196,6 +196,7 @@
     - [Provider](spring-jsr/spring-jsr330-provider/README.md)：Java标准库提供的通用Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
   
   + Spring AOP
+    - [AopProxy](spring-aop/spring-aop-pointcut/README.md)：创建和管理AOP代理对象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [Pointcut](spring-aop/spring-aop-pointcut/README.md)：定义切入点，匹配被拦截的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [Advice](spring-aop/spring-aop-advice/README.md)：AOP核心接口，定义切面通知行为。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [Advisor](spring-aop/spring-aop-advisor/README.md)：用于将通知和切点结合，实现切面编程的横切关注点。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>

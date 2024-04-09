@@ -524,8 +524,8 @@ public class MyService {
 Doing something exception...
 Exception thrown: / by zero
 Exception in thread "main" java.lang.ArithmeticException: / by zero
-	at com.xcs.spring.MyService.doSomethingException(MyService.java:12)
-	at com.xcs.spring.MyService$$FastClassBySpringCGLIB$$c768e93b.invoke(<generated>)
+	at com.xcs.spring.MyServiceImpl.doSomethingException(MyService.java:12)
+	at com.xcs.spring.MyServiceImpl$$FastClassBySpringCGLIB$$c768e93b.invoke(<generated>)
 	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
@@ -534,7 +534,7 @@ Exception in thread "main" java.lang.ArithmeticException: / by zero
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:692)
-	at com.xcs.spring.MyService$$EnhancerBySpringCGLIB$$c20ef0aa.doSomethingException(<generated>)
+	at com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$c20ef0aa.doSomethingException(<generated>)
 	at com.xcs.spring.AdviceDemo.throwsAdvice(AdviceDemo.java:57)
 	at com.xcs.spring.AdviceDemo.main(AdviceDemo.java:12)
 ```
