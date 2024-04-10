@@ -196,6 +196,7 @@
     - [Provider](spring-jsr/spring-jsr330-provider/README.md)：Java标准库提供的通用Bean工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
   
   + Spring AOP
+    - [JDK动态代理](spring-aop/spring-aop-jdkProxy/README.md)：接口实现，动态生成代理类，处理方法调用，统一横切关注点。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AopProxy](spring-aop/spring-aop-aopProxy/README.md)：创建和管理AOP代理对象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [ClassFilter](spring-aop/spring-aop-classFilter/README.md)：确定类是否匹配拦截条件。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [MethodMatcher](spring-aop/spring-aop-methodMatcher/README.md)：确定方法是否匹配拦截条件。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>

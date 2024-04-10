@@ -17,6 +17,8 @@
         <module>spring-aop-aopProxy</module>
         <module>spring-aop-classFilter</module>
         <module>spring-aop-methodMatcher</module>
+        <module>spring-aop-jdkProxy</module>
+        <module>spring-aop-cglibProxy</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
