@@ -1,15 +1,15 @@
 ## JDK动态代理
 
-- [JDK动态代理](#JDK动态代理)
-    - [一、基本信息](#一基本信息)
-    - [二、知识储备](#二知识储备)
-    - [三、基本描述](#三基本描述)
-    - [四、主要功能](#四主要功能)
-    - [五、接口源码](#五接口源码)
-    - [六、主要实现](#六主要实现)
-    - [七、最佳实践](#七最佳实践)
-    - [八、与其他组件的关系](#八与其他组件的关系)
-    - [九、常见问题](#九常见问题)
+- [JDK动态代理](#jdk动态代理)
+  - [一、基本信息](#一基本信息)
+  - [二、知识储备](#二知识储备)
+  - [三、基本描述](#三基本描述)
+  - [四、主要功能](#四主要功能)
+  - [五、最佳实践](#五最佳实践)
+  - [六、源码分析](#六源码分析)
+  - [七、与其他组件的关系](#七与其他组件的关系)
+  - [八、常见问题](#八常见问题)
+
 
 ### 一、基本信息
 
@@ -59,74 +59,7 @@ JDK动态代理是一种在运行时生成代理类的机制，它基于接口�
 
    + 动态代理是AOP（面向切面编程）的基础之一，可以通过动态代理实现切面的横切关注点，将应用程序核心业务逻辑与横切关注点分离开来，提高了代码的可维护性和灵活性。
 
-### 五、接口源码
-
-在Java JDK 中的动态代理机制中，`Proxy` 类提供了静态方法 `newProxyInstance`，用于动态生成代理对象。通过传入类加载器、接口数组和 `InvocationHandler` 对象，该方法在运行时生成一个代理对象。内部实现使用了反射机制，通过调用代理类的构造函数，将 `InvocationHandler` 对象传递给代理对象。
-
-```java
-public class Proxy implements java.io.Serializable {
-
-    protected InvocationHandler h;
-
-    private Proxy() {
-    }
-
-    protected Proxy(InvocationHandler h) {
-        Objects.requireNonNull(h);
-        this.h = h;
-    }
-    
-    // ... [代码部分省略以简化]
-    
-    @CallerSensitive
-    public static Object newProxyInstance(ClassLoader loader,
-                                          Class<?>[] interfaces,
-                                          InvocationHandler h) {
-        Objects.requireNonNull(h);
-
-        final Class<?> caller = System.getSecurityManager() == null
-                                    ? null
-                                    : Reflection.getCallerClass();
-
-        /*
-         * Look up or generate the designated proxy class and its constructor.
-         */
-        Constructor<?> cons = getProxyConstructor(caller, loader, interfaces);
-
-        return newProxyInstance(caller, cons, h);
-    }
-    
-    // ... [代码部分省略以简化]
-    
-    private static Object newProxyInstance(Class<?> caller, // null if no SecurityManager
-                                           Constructor<?> cons,
-                                           InvocationHandler h) {
-        /*
-         * Invoke its constructor with the designated invocation handler.
-         */
-        try {
-            if (caller != null) {
-                checkNewProxyPermission(caller, cons.getDeclaringClass());
-            }
-
-            return cons.newInstance(new Object[]{h});
-        } catch (IllegalAccessException | InstantiationException e) {
-            throw new InternalError(e.toString(), e);
-        } catch (InvocationTargetException e) {
-            Throwable t = e.getCause();
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new InternalError(t.toString(), t);
-            }
-        }
-    }
-    
-    // ... [代码部分省略以简化]
-}
-```
-
-### 六、最佳实践
+### 五、最佳实践
 
 使用 JDK 动态代理的基本流程。首先，创建目标对象 `MyService` 的实例，然后获取目标对象的类信息。接着，通过调用 `Proxy.newProxyInstance` 方法创建代理对象，传入目标对象的类加载器、实现的接口以及调用处理器。最后，通过代理对象调用方法，实际上会调用 `MyInvocationHandler` 中的 `invoke` 方法来处理方法调用，并在方法执行前后添加额外的逻辑。
 
@@ -194,11 +127,9 @@ hello world
 After method execution
 ```
 
-### 七、源码分析
+### 六、源码分析
 
-> com.sun.proxy.$Proxy0 类是通过 Arthas 运行时编译生成的。Arthas 是一个强大的 Java 诊断工具，可以在运行时进行类的动态修改和增强，生成代理类以便进行调试和分析。
-
-这段代码是由JDK动态代理生成的代理类，位于`com.sun.proxy`包下，命名为`$Proxy0`。它继承自`Proxy`类并实现了`MyService`接口，包含了目标接口中的方法实现，同时通过`InvocationHandler`对象委托处理方法调用。在静态代码块中获取了目标接口和`Object`类中的方法，并提供了方法的具体实现。
+这段代码是通过 Arthas 工具反编译得到的结果。它是一个代理类，位于 `com.sun.proxy` 包下，命名为 `$Proxy0`。该类继承自 `Proxy` 类，并实现了 `MyService` 接口。在 `doSomething` 方法中，通过 `InvocationHandler` 对象的 `invoke` 方法调用了目标对象的 `doSomething` 方法。在静态代码块中，获取了 `java.lang.Object` 类中的 `equals`、`hashCode` 和 `toString` 方法，以及 `MyService` 接口中的 `doSomething` 方法的 `Method` 对象。
 
 ```java
 package com.sun.proxy;
@@ -255,12 +186,11 @@ public final class $Proxy0 extends Proxy implements MyService {
 }
 ```
 
-### 八、与其他组件的关系
+### 七、与其他组件的关系
 
 1. **接口实现关系**
-
    + JDK动态代理通常基于接口实现。在使用动态代理时，需要传入一个接口类型作为参数，代理对象会实现这个接口，并且在运行时生成的代理类会实现该接口定义的所有方法。因此，与其他组件接口的关系是通过实现这些接口来实现的。
-
+   
 2. **代理类关系**
 
    + JDK动态代理生成的代理类是在运行时动态生成的。这些代理类继承自`Proxy`类，并且实现了传入的接口。因此，代理类与其他组件接口的关系体现在代理类实现了这些接口，从而拥有了对应接口定义的方法。
@@ -269,7 +199,7 @@ public final class $Proxy0 extends Proxy implements MyService {
 
    + 在使用JDK动态代理时，需要提供一个调用处理器（`InvocationHandler`）来处理方法调用。该调用处理器可以是自定义的类，它与其他组件接口或类的关系取决于在其`invoke`方法中对方法调用的处理逻辑。
 
-### 九、常见问题
+### 八、常见问题
 
 1. **代理对象的类型限制**
 
