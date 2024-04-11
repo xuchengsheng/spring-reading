@@ -1,38 +1,26 @@
 ## AopProxy
 
-- [AopProxy](#AopProxy)
-    - [一、基本信息](#一基本信息)
-    - [二、知识储备](#二知识储备)
-    - [三、基本描述](#三基本描述)
-    - [四、主要功能](#四主要功能)
-    - [五、接口源码](#五接口源码)
-    - [六、主要实现](#六主要实现)
-    - [七、最佳实践](#七最佳实践)
-    - [八、与其他组件的关系](#八与其他组件的关系)
-    - [九、常见问题](#九常见问题)
+- [AopProxy](#aopproxy)
+  - [一、基本信息](#一基本信息)
+  - [二、基本描述](#二基本描述)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [六、最佳实践](#六最佳实践)
+    - [JDK动态代理](#jdk动态代理)
+    - [CGLIB代理](#cglib代理)
+  - [七、源码分析](#七源码分析)
+  - [七、常见问题](#七常见问题)
 
 ### 一、基本信息
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
 
-### 二、知识储备
-
-1. **代理模式**
-
-   + 了解代理模式的概念，包括静态代理和动态代理。Spring AOP就是通过代理模式来实现切面功能的。
-
-2. **JDK动态代理和CGLIB**
-   + 了解JDK动态代理和CGLIB代理的区别，以及Spring AOP是如何选择代理方式的。`AopProxy` 接口的实现通常涉及这两种代理方式。
-   
-3. **Spring AOP的实现原理**
-
-   + 深入了解Spring AOP的实现原理，包括如何创建代理、如何应用通知等。`AopProxy` 接口在Spring AOP中扮演着重要的角色，它负责创建代理对象。
-
-### 三、基本描述
+### 二、基本描述
 
 `AopProxy` 接口是Spring框架中用于支持面向切面编程（AOP）的关键组件之一，它定义了生成代理对象的标准接口，允许在运行时动态地创建代理对象，以实现对目标对象的方法调用进行拦截和增强。
 
-### 四、主要功能
+### 三、主要功能
 
 1. **代理对象的创建与管理**
 
@@ -50,7 +38,7 @@
 
    + 通过 `AopProxy` 接口，可以将AOP的横切关注点与业务逻辑进行分离，提高了代码的模块化和可维护性，同时也使得横切关注点可以被重用在多个不同的业务逻辑中。
 
-### 五、接口源码
+### 四、接口源码
 
 `AopProxy` 接口是一个委托接口，用于配置AOP代理，并允许创建实际的代理对象。它提供了两个方法用于创建代理对象，第一个方法使用默认的类加载器创建代理对象，通常是线程上下文类加载器；第二个方法允许指定类加载器创建代理对象。可以使用JDK动态代理或者CGLIB代理技术来生成代理对象。
 
@@ -90,17 +78,16 @@ public interface AopProxy {
 }
 ```
 
-### 六、主要实现
+### 五、主要实现
 
 1. **JdkDynamicAopProxy**
-
    + 使用 JDK 动态代理实现的 `AopProxy` 实现类。当目标对象实现了至少一个接口时，Spring 将使用该类创建代理对象。该类通过 Java 标准库中的 `java.lang.reflect.Proxy` 类来创建代理对象。
-
+   
 2. **CglibAopProxy**
 
    + 使用 CGLIB（Code Generation Library）动态代理实现的 `AopProxy` 实现类。当目标对象没有实现任何接口时，Spring 将使用该类创建代理对象。该类通过生成目标类的子类来创建代理对象，实现了对目标对象方法的拦截和增强。
 
-### 七、最佳实践
+### 六、最佳实践
 
 #### JDK动态代理
 
@@ -204,19 +191,11 @@ Cglib Class = class com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$3c23100
 doSomething method result = hello world
 ```
 
-### 八、与其他组件的关系
+### 七、源码分析
 
-1. **AdvisedSupport**
+暂无
 
-   + `AopProxy` 接口的实现类需要依赖 `AdvisedSupport` 对象来获取配置信息，包括目标对象、通知、切点等。通过 `AdvisedSupport` 对象，`AopProxy` 实现类可以知道如何创建代理对象。
-
-2. **java.lang.reflect.Proxy**
-   +  `java.lang.reflect.Proxy` 类是 Java 标准库中的一个类，用于创建基于接口的动态代理对象。它提供了静态方法 `newProxyInstance`，可以根据指定的类加载器、接口列表和调用处理器来创建代理对象。
-   
-3. **org.springframework.cglib.proxy.Enhancer**
-   + `org.springframework.cglib.proxy.Enhancer` 类是 CGLIB 库中的一个类，用于创建基于类的动态代理对象。它能够生成目标类的子类，并重写其中的方法以实现方法拦截和增强。
-
-### 九、常见问题
+### 七、常见问题
 
 1. **选择合适的代理方式**
 
