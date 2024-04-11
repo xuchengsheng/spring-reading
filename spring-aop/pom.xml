@@ -31,6 +31,9 @@
         <module>spring-aop-annotation-enableLoadTimeWeaving</module>
         <module>spring-aop-advice-methodInterceptor</module>
         <module>spring-aop-advice-methodBeforeAdvice</module>
+        <module>spring-aop-advice-afterReturningAdvice</module>
+        <module>spring-aop-advice-throwsAdvice</module>
+        <module>spring-aop-advice-introductionInterceptor</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
