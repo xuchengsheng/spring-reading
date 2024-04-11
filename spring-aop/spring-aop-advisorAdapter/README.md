@@ -1,43 +1,24 @@
 ## AdvisorAdapter
 
-- [AdvisorAdapter](#AdvisorAdapter)
-    - [一、基本信息](#一基本信息)
-    - [二、知识储备](#二知识储备)
-    - [三、基本描述](#三基本描述)
-    - [四、主要功能](#四主要功能)
-    - [五、接口源码](#五接口源码)
-    - [六、主要实现](#六主要实现)
-    - [七、最佳实践](#七最佳实践)
-    - [八、与其他组件的关系](#八与其他组件的关系)
-    - [九、常见问题](#九常见问题)
+- [AdvisorAdapter](#advisoradapter)
+  - [一、基本信息](#一基本信息)
+  - [二、基本描述](#二基本描述)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [六、最佳实践](#六最佳实践)
+  - [七、源码分析](#七源码分析)
+  - [八、常见问题](#八常见问题)
 
 ### 一、基本信息
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
 
-### 二、知识储备
-
-1. **Advice** 
-
-   + 在目标方法执行前、后或出现异常时执行的逻辑。通知是 AOP 横切逻辑的具体实现，可以在切点之前、切点之后、抛出异常时或者环绕一个连接点来执行。常见的通知类型包括前置通知（Before Advice）、后置通知（After Advice）、返回通知（After Returning Advice）和异常通知（After Throwing Advice）等。
-
-2. **Advisor** 
-
-   + 用于将切面（Aspect）与切点（Pointcut）以及通知（Advice）关联起来。`Advisor` 实质上是切面的逻辑定义，它定义了切点和通知之间的关系，并提供了一种方式将它们组合在一起。Spring 提供了多种类型的 Advisor，例如 `DefaultPointcutAdvisor`、`AspectJExpressionPointcutAdvisor` 等。
-
-3. **Pointcut** 
-
-   + 用于描述切面在何处生效的条件，即在哪些连接点上应用通知。切点定义了一组连接点，它们是应用通知的目标方法。Spring 提供了多种类型的切点表达式，如基于名称、基于方法签名、基于 AspectJ 表达式等。
-
-4. **设计模式** 
-
-   + 适配器模式是一种结构型设计模式，它通过将一个类的接口转换成客户端所期望的另一个接口，使得原本由于接口不兼容而不能一起工作的类可以一起工作。
-
-### 三、基本描述
+### 二、基本描述
 
 `AdvisorAdapter` 接口是 Spring AOP 中的一个重要接口，用于将不同类型的通知（Advice）适配到拦截器链中，以便将其应用于目标方法的执行。它允许我们自定义适配器来将自定义的通知与 Spring AOP 框架结合，从而实现对目标方法的前置、后置、环绕等类型的增强操作，为 AOP 的灵活性和可扩展性提供了支持。
 
-### 四、主要功能
+### 三、主要功能
 
 1. **通知适配** 
 
@@ -59,7 +40,7 @@
 
    + 允许将多种类型的通知与目标方法结合起来，实现更复杂的 AOP 操作，如前置通知和后置通知的组合等。
 
-### 五、接口源码
+### 四、接口源码
 
 这个接口定义了一种机制，允许向 Spring AOP 框架中引入新的 Advisor 和 Advice 类型。实现该接口的对象可以将自定义的 Advice 类型转换为 AOP Alliance 拦截器，使得这些自定义的 Advice 类型能够在 Spring AOP 框架中被使用。通常情况下，大多数 Spring 用户不需要直接实现这个接口；只有在需要引入新的 Advisor 或 Advice 类型时才需要这样做。
 
@@ -95,7 +76,7 @@ public interface AdvisorAdapter {
 }
 ```
 
-### 六、主要实现
+### 五、主要实现
 
 1. **MethodBeforeAdviceAdapter** 
 
@@ -109,7 +90,7 @@ public interface AdvisorAdapter {
 
    + 用于将 `AfterReturningAdvice` 类型的通知适配到 Spring AOP 拦截器链中。`AfterReturningAdvice` 通知在目标方法正常返回后执行。
 
-### 七、最佳实践
+### 六、最佳实践
 
 用自定义的 AdvisorAdapter 和 Advice 来实现对目标方法的增强。在示例中，首先注册了一个自定义的 AdvisorAdapter（NullReturningAdviceAdapter），然后创建了一个代理工厂（ProxyFactory）并向其添加了一个自定义的通知（MyNullReturningAdvice）。最后，通过代理工厂获取了代理对象，并调用了两个方法，其中一个方法会触发通知，另一个方法不会触发通知。
 
@@ -267,25 +248,11 @@ Null Returning method bar is called.
 bar return value : hello default value
 ```
 
-### 八、与其他组件的关系
+### 七、源码分析
 
-1. **Advisor**
+暂无
 
-   + `Advisor` 接口定义了一个通知（Advice）和切点（Pointcut）的组合，用于描述在何时和何地应用通知。`AdvisorAdapter` 接口通过适配器模式，将不同类型的通知适配到拦截器链中，从而使其能够与 `Advisor` 相关联。
-
-2. **Advice**
-
-   + `Advice` 接口是 Spring AOP 中通知的标准接口，它定义了各种类型的通知，如前置通知、后置通知、环绕通知等。`AdvisorAdapter` 接口通过适配器模式，将不同类型的通知适配到拦截器链中，以便在目标方法的执行前后应用通知逻辑。
-
-3. **MethodInterceptor**
-
-   +  `MethodInterceptor` 接口是 AOP Alliance 中定义的一个标准接口，用于拦截目标方法的执行并执行额外的逻辑。`AdvisorAdapter` 接口的 `getInterceptor` 方法返回一个 `MethodInterceptor` 实例，将通知的行为暴露给基于拦截的 AOP 框架。
-
-4. **ProxyFactory**
-
-   + `ProxyFactory` 是 Spring AOP 中用于创建代理对象的工厂类，它可以添加通知和切点来创建代理对象。在创建代理对象时，`ProxyFactory` 会使用 `AdvisorAdapter` 接口将通知适配到拦截器链中，并将其应用于目标方法的执行。
-
-### 九、常见问题
+### 八、常见问题
 
 1. **如何实现自定义的 AdvisorAdapter？**
 
