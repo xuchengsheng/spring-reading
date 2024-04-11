@@ -59,35 +59,15 @@ public interface MethodInterceptor extends Interceptor {
 
 ### 五、主要实现
 
-1. **AspectJAroundAdvice** 
-
-   + 实现了环绕通知，使用 AspectJ 风格定义的通知，可以在目标方法执行前后进行增强，并控制目标方法的执行过程。
-
-2. **AspectJMethodBeforeAdvice** 
-
-   + 实现了前置通知，使用 AspectJ 风格定义的通知，用于在目标方法执行前执行额外的逻辑。
-
-3. **AspectJAfterAdvice** 
-
-   + 实现了后置通知，使用 AspectJ 风格定义的通知，用于在目标方法执行后执行额外的逻辑。
-
-4. **AspectJAfterReturningAdvice** 
-
-   + 实现了返回后通知，使用 AspectJ 风格定义的通知，用于在目标方法成功执行并返回结果后执行额外的逻辑。
-
-5. **AspectJAfterThrowingAdvice** 
-
-   + 实现了异常抛出后通知，使用 AspectJ 风格定义的通知，用于在目标方法抛出异常后执行额外的逻辑。
-
-6. **MethodBeforeAdviceInterceptor** 
+1. **MethodBeforeAdviceInterceptor** 
 
    + 实现了前置通知的拦截器。前置通知在目标方法执行之前执行，允许我们在方法执行前插入额外的逻辑。通常用于日志记录、参数验证等场景。
 
-7. **AfterReturningAdviceInterceptor** 
+2. **AfterReturningAdviceInterceptor** 
 
    + 实现了返回后通知的拦截器。返回后通知在目标方法成功执行并返回结果后执行，允许我们在方法返回后插入额外的逻辑。通常用于日志记录、结果处理等场景。
 
-8. **ThrowsAdviceInterceptor** 
+3. **ThrowsAdviceInterceptor** 
 
    + 实现了异常抛出后通知的拦截器。异常抛出后通知在目标方法抛出异常后执行，允许我们在方法抛出异常后插入额外的逻辑。通常用于异常处理、日志记录等场景。
 
