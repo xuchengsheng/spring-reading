@@ -2,42 +2,28 @@
 
 - [Pointcut](#pointcut)
   - [一、基本信息](#一基本信息)
-  - [二、知识储备](#二知识储备)
-  - [三、基本描述](#三基本描述)
-  - [四、主要功能](#四主要功能)
-  - [五、接口源码](#五接口源码)
-  - [六、主要实现](#六主要实现)
-  - [七、最佳实践](#七最佳实践)
+  - [二、基本描述](#二基本描述)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [六、最佳实践](#六最佳实践)
     - [自定义Pointcut](#自定义pointcut)
     - [AspectJExpressionPointcut](#aspectjexpressionpointcut)
     - [AnnotationMatchingPointcut](#annotationmatchingpointcut)
     - [NameMatchMethodPointcut](#namematchmethodpointcut)
-  - [八、与其他组件的关系](#八与其他组件的关系)
-  - [九、常见问题](#九常见问题)
+  - [七、源码分析](#七源码分析)
+  - [八、常见问题](#八常见问题)
+
 
 ### 一、基本信息
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
 
-### 二、知识储备
-
-1. **AOP 概念**
-
-   + 了解面向切面编程（AOP）的基本概念和原理，包括切面、连接点、通知、切点等概念。理解 AOP 的作用和用途，以及它与传统的面向对象编程的区别。
-
-2. **Spring AOP**
-
-   + 熟悉 Spring 框架中的 AOP 实现方式，了解 Spring AOP 如何在运行时将切面织入到目标对象的方法中，以及它的工作原理。
-
-3. **代理模式**
-
-   + 了解代理模式的基本原理和实现方式，包括静态代理和动态代理。在 Spring AOP 中，代理对象负责拦截目标对象的方法调用，并在必要时应用切面逻辑。
-
-### 三、基本描述
+### 二、基本描述
 
 `Pointcut` 接口主要用于定义切入点，即确定哪些方法应该被切面所影响。Pointcut 接口提供了匹配规则，以确定在哪些类的哪些方法上应用切面，以及在何种情况下应该应用切面。
 
-### 四、主要功能
+### 三、主要功能
 
 1. **定义切入点**
 
@@ -55,7 +41,7 @@
 
    + `getMethodMatcher()` 方法用于获取一个 `MethodMatcher` 对象，该对象用于确定哪些方法应该被匹配。我们可以根据自己的需求自定义方法匹配逻辑。
 
-### 五、接口源码
+### 四、接口源码
 
 `Pointcut`接口定义了 Spring AOP 中的切入点的核心抽象，由 `ClassFilter` 和 `MethodMatcher` 组成，分别用于确定哪些类和方法应该被匹配。通过这个接口，可以创建不同的切入点，并灵活地组合它们来定义复杂的切面。接口中还定义了一个常量 `TRUE`，代表始终匹配的切入点。
 
@@ -96,7 +82,7 @@ public interface Pointcut {
 }
 ```
 
-### 六、主要实现
+### 五、主要实现
 
 1. **NameMatchMethodPointcut** 
 
@@ -126,7 +112,7 @@ public interface Pointcut {
 
    + 用于基于注解匹配的切入点定义。它可以根据指定的注解类型匹配类或方法，并用于将通知应用于带有特定注解的目标对象的方法。
 
-### 七、最佳实践
+### 六、最佳实践
 
 #### 自定义Pointcut
 
@@ -317,21 +303,11 @@ public class PointcutDemo {
 }
 ```
 
-### 八、与其他组件的关系
+### 七、源码分析
 
-1. **Advisor**
+暂无
 
-   +  Advisor 包含了切入点和通知，而切入点就是由 Pointcut 定义的。Advisor 使用 Pointcut 来确定在何处应该应用通知。
-
-2. **切面（Aspect）** 
-
-   + 切面是一种横切关注点的模块化实现，其中包含了切入点和通知。切面通常将 Pointcut 与 Advice（通知）结合在一起，定义了在何处和如何应用通知。
-
-3. **Pointcut实现类** 
-
-   + `Pointcut` 接口是定义切入点的核心接口。Spring AOP 提供了多种实现了 `Pointcut` 接口的类，如 `NameMatchMethodPointcut`、`AspectJExpressionPointcut` 等，用于实现不同类型的切入点匹配规则。
-
-### 九、常见问题
+### 八、常见问题
 
 1. **切入点表达式定义错误** 
 
