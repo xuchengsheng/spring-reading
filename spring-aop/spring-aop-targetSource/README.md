@@ -15,25 +15,11 @@
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
 
-### 二、知识储备
-
-1. **AOP 编程模型**
-
-   + 了解 AOP 编程模型，包括横切关注点和切面等，以及如何使用 Spring AOP 在这个模型下进行编程。
-
-2. **目标对象管理**
-
-   + 理解在 Spring AOP 中如何管理目标对象以及切面如何与目标对象进行交互。
-
-3. **设计模式**
-
-   + 熟悉一些设计模式对理解和实现 `TargetSource` 接口可能会有所帮助，特别是工厂模式、代理模式等。因为在实现 `TargetSource` 接口时，你可能会使用到这些模式。
-
-### 三、基本描述
+### 二、基本描述
 
 `TargetSource` 接口是 Spring AOP 框架中的一个关键组件，用于定义获取目标对象的策略，允许我们灵活地管理目标对象的创建和管理。通过实现该接口，可以实现各种目标对象的获取方式，如单例、原型、池化等，从而为 AOP 切面提供了更高度的可定制性和灵活性。
 
-### 四、主要功能
+### 三、主要功能
 
 1. **目标对象获取方法**
 
@@ -55,7 +41,7 @@
 
    + 我们可以通过实现 `TargetSource` 接口来实现自定义的目标源，从而满足特定场景下的需求，如基于线程的对象管理、对象池管理等。
 
-### 五、接口源码
+### 四、接口源码
 
 `TargetSource` 接口用于获取当前 AOP 调用的目标对象，通过 `getTarget()` 方法获取目标对象，并通过 `releaseTarget(Object target)` 方法释放目标对象。接口定义了 `getTargetClass()` 方法用于返回目标对象的类型，`isStatic()` 方法用于检查是否所有调用 `getTarget()` 方法的返回值都是相同的对象。此接口支持静态和动态目标源，静态目标源始终返回相同的目标对象，而动态目标源支持池化、热交换等功能。
 
@@ -111,7 +97,7 @@ public interface TargetSource extends TargetClassAware {
 }	
 ```
 
-### 六、主要实现
+### 五、主要实现
 
 1. **SingletonTargetSource**
 
@@ -129,7 +115,7 @@ public interface TargetSource extends TargetClassAware {
 
    + 用于使用 Apache Commons Pool 来管理目标对象的池化目标源。该实现通过对象池管理目标对象的创建和销毁，以提高对象的重用性和性能。
 
-### 七、最佳实践
+### 六、最佳实践
 
 使用 Spring 的代理工厂（`ProxyFactory`）和目标源（`TargetSource`）来创建代理对象。在这个示例中，我们创建了一个连接池目标源（`ConnectionPoolTargetSource`），设置连接池的大小为 3。然后，我们将这个连接池目标源设置为代理工厂的目标源，并通过代理工厂获取代理对象。最后，我们通过代理对象调用了10次方法。
 
@@ -279,17 +265,11 @@ MyConnection Name = Connection2
 MyConnection Name = Connection0
 ```
 
-### 八、与其他组件的关系
+### 七、源码分析
 
-1. **ProxyFactory**
+暂时
 
-   + 用于创建代理对象。`ProxyFactory` 可以设置 `TargetSource` 实现类，并通过 `getProxy()` 方法来获取代理对象，从而在运行时对目标对象应用切面逻辑。
-
-2. **Advice**
-
-   + 用于在目标对象的方法执行前、后或异常时执行特定的逻辑。Advice 可以通过 AOP 拦截器与 `TargetSource` 关联，从而实现对目标对象的增强操作。
-
-### 九、常见问题
+### 八、常见问题
 
 1. **目标对象类型不匹配**
 
