@@ -19,6 +19,17 @@
         <module>spring-aop-methodMatcher</module>
         <module>spring-aop-jdkProxy</module>
         <module>spring-aop-cglibProxy</module>
+        <module>spring-aop-annotation-aspect</module>
+        <module>spring-aop-annotation-pointcut</module>
+        <module>spring-aop-annotation-around</module>
+        <module>spring-aop-annotation-before</module>
+        <module>spring-aop-annotation-after</module>
+        <module>spring-aop-annotation-afterReturning</module>
+        <module>spring-aop-annotation-afterThrowing</module>
+        <module>spring-aop-annotation-declareParents</module>
+        <module>spring-aop-annotation-enableAspectJAutoProxy</module>
+        <module>spring-aop-annotation-enableLoadTimeWeaving</module>
+        <module>spring-aop-advice-methodInterceptor</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
