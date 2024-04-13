@@ -1,6 +1,5 @@
 package com.xcs.spring;
 
-import com.xcs.spring.service.MyService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class AspectDemo {

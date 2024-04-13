@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 class LoggingAspect {
 
-    @Before("execution(* com.xcs.spring.service.MyService.doSomething(..))")
+    @Before("execution(* com.xcs.spring.MyService.doSomething(..))")
     public void beforeAdvice() {
         System.out.println("Before executing the method..." );
     }

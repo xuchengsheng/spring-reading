@@ -199,6 +199,7 @@
     - [JDK动态代理](spring-aop/spring-aop-jdkProxy/README.md)：接口实现，动态生成代理类，处理方法调用，统一横切关注点。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [Cglib动态代理](spring-aop/spring-aop-cglibProxy/README.md)：基于字节码生成的库，无需接口，可拦截类方法并进行增强。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AopProxy](spring-aop/spring-aop-aopProxy/README.md)：创建和管理AOP代理对象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [AopProxyFactory](spring-aop/spring-aop-aopProxyFactory/README.md)：创建AOP代理工厂，支持JDK和CGLIB。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [ClassFilter](spring-aop/spring-aop-classFilter/README.md)：确定类是否匹配拦截条件。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [MethodMatcher](spring-aop/spring-aop-methodMatcher/README.md)：确定方法是否匹配拦截条件。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [Pointcut](spring-aop/spring-aop-pointcut/README.md)：定义切入点，匹配被拦截的方法。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>

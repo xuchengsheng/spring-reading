@@ -1,4 +1,4 @@
-package com.xcs.spring.service;
+package com.xcs.spring;
 
 import org.springframework.stereotype.Service;
 
