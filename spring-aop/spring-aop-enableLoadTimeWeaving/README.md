@@ -262,6 +262,14 @@ public class FooService {
 }
 ```
 
+这是启动参数，使用AspectJ Weaver和Spring Instrumentation实现加载时编织。它确保了在应用程序启动时启用了加载时编织，使AspectJ切面能够拦截和处理方法调用。
+
+> 使用自定义的jar包存放位置（如aspectjweaver-1.9.7.jar，spring-instrument-5.3.10.jar）时，注意确保在引用这些jar包时路径替换的正确性。在启动参数或配置文件中指定的路径应该与实际jar包存放位置一致，以避免加载时编织或其他功能无法正常工作。
+
+```shell
+java -javaagent:D:\tools\repository\org\aspectj\aspectjweaver\1.9.7\aspectjweaver-1.9.7.jar -javaagent:D:\tools\repository\org\springframework\spring-instrument\5.3.10\spring-instrument-5.3.10.jar -Dfile.encoding=UTF-8 com.xcs.spring.EnableLoadTimeWeavingDemo
+```
+
 运行结果，加载时编织成功地拦截了通过 Spring 容器获取的 `FooService` bean，以及直接使用 `new` 操作符创建的 `FooService` 对象。在每次调用 `foo()` 方法时，都会先打印方法被调用的消息，然后执行原始的方法逻辑（打印 "foo"），最后打印方法返回值，并返回给调用方。这证明切面 `MyLTWAspect` 中定义的逻辑在目标方法调用前后得到了执行，不论是从 Spring 容器中获取的 bean 还是直接创建的对象，都受到了拦截。
 
 ```java
