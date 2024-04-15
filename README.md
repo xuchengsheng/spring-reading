@@ -215,6 +215,7 @@
     - [@EnableLoadTimeWeaving](spring-aop/spring-aop-enableLoadTimeWeaving/README.md)：启用Spring加载时编织。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AspectInstanceFactory](spring-aop/spring-aop-aspectInstanceFactory/README.md)：创建切面实例，支持多种实现方式。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [MetadataAwareAspectInstanceFactory](spring-aop/spring-aop-metadataAwareAspectInstanceFactory/README.md)：管理切面实例和元数据，支持多种实例化策略。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AspectJAdvisorFactory](spring-aop/spring-aop-aspectJAdvisorFactory/README.md)：创建AspectJ通知器实例，管理切面通知的创建和配置。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
 
   + Spring AOT
   
