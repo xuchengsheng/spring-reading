@@ -34,6 +34,9 @@
         <module>spring-aop-advice-throwsAdvice</module>
         <module>spring-aop-advice-introductionInterceptor</module>
         <module>spring-aop-aopProxyFactory</module>
+        <module>spring-aop-annotationAwareAspectJAutoProxyCreator</module>
+        <module>spring-aop-aspectInstanceFactory</module>
+        <module>spring-aop-metadataAwareAspectInstanceFactory</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

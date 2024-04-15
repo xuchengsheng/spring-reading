@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-class LoggingAspect {
+class MyAspect {
 
     @Before("execution(* com.xcs.spring.MyService.doSomething(..))")
     public void beforeAdvice() {

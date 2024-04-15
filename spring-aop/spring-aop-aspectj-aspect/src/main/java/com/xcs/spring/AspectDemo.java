@@ -6,7 +6,11 @@ public class AspectDemo {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         MyService service = context.getBean(MyService.class);
-        System.out.println("service.getClass() = " + service.getClass());
+        System.out.println("MyService = " + service.getClass());
         service.doSomething();
+
+        MyTestService myTestService = context.getBean(MyTestService.class);
+        System.out.println("MyTestService = " + myTestService.getClass());
+        myTestService.test();
     }
 }
