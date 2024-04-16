@@ -85,6 +85,13 @@ public class MyService {
 }
 ```
 
+运行结果，显示了两个 Advisor 对象的信息，它们分别对应着切面类 `MyAspect` 中的 `before()` 和 `after()` 方法，并针对相同的切点表达式 `execution(* com.xcs.spring.MyService.doSomething(..))`。
+
+```java
+InstantiationModelAwarePointcutAdvisor: expression [execution(* com.xcs.spring.MyService.doSomething(..))]; advice method [public void com.xcs.spring.MyAspect.before()]; perClauseKind=SINGLETON
+InstantiationModelAwarePointcutAdvisor: expression [execution(* com.xcs.spring.MyService.doSomething(..))]; advice method [public void com.xcs.spring.MyAspect.after()]; perClauseKind=SINGLETON
+```
+
 ### 五、源码分析
 
 在`org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder#buildAspectJAdvisors`方法中，主要负责在当前的 Bean 工厂中查找使用 AspectJ 注解标记的切面 Bean，并将其转换为 Spring AOP Advisors 的列表。它遍历所有的 Bean 名称，识别切面 Bean，并根据其实例化模型（单例或多例）创建对应的 AspectJ Advisors。在处理过程中，还会缓存单例切面的 Advisors，以提高性能。
