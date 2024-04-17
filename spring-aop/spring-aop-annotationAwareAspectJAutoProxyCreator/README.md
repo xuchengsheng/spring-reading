@@ -442,7 +442,7 @@ public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean ha
  * @return 切点是否能够应用于任何方法
  */
 public static boolean canApply(Pointcut pc, Class<?> targetClass, boolean hasIntroductions) {
-    Assert.notNull(pc, "切点不能为空");
+	Assert.notNull(pc, "Pointcut must not be null");
     // 首先检查类过滤器是否匹配目标类
     if (!pc.getClassFilter().matches(targetClass)) {
         return false;
