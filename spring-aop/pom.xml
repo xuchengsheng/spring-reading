@@ -32,6 +32,7 @@
         <module>spring-aop-aspectJAdvisorFactory</module>
         <module>spring-aop-beanFactoryAspectJAdvisorsBuilder</module>
         <module>spring-aop-beanFactoryAdvisorRetrievalHelper</module>
+        <module>spring-aop-proxyFactory</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
