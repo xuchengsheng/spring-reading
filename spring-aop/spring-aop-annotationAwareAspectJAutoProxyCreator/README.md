@@ -301,7 +301,7 @@ protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName
 
 在`org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator#findCandidateAdvisors`方法中，重写了父类方法 `findCandidateAdvisors()`，首先调用了父类方法以获取所有Spring Advisors，然后利用 `aspectJAdvisorsBuilder` 构建了所有AspectJ切面对应的Advisors，并将其添加到`advisors`列表中返回。
 
-[BeanFactoryAspectJAdvisorsBuilder源码分析](./spring-aop-beanFactoryAspectJAdvisorsBuilder/README.md)
+[BeanFactoryAspectJAdvisorsBuilder源码分析](../spring-aop-beanFactoryAspectJAdvisorsBuilder/README.md)
 
 ```java
 @Override
@@ -318,7 +318,7 @@ protected List<Advisor> findCandidateAdvisors() {
 
 在`org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator#findCandidateAdvisors`方法中，调用`BeanFactoryAdvisorRetrievalHelper.findAdvisorBeans()` 方法来获取候选的Advisors列表。
 
-[BeanFactoryAdvisorRetrievalHelper源码分析](./spring-aop-beanFactoryAdvisorRetrievalHelper/README.md)
+[BeanFactoryAdvisorRetrievalHelper源码分析](../spring-aop-beanFactoryAdvisorRetrievalHelper/README.md)
 
 ```java
 /**
