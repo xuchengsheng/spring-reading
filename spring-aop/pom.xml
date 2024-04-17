@@ -18,14 +18,6 @@
         <module>spring-aop-methodMatcher</module>
         <module>spring-aop-jdkProxy</module>
         <module>spring-aop-cglibProxy</module>
-        <module>spring-aop-aspectj-aspect</module>
-        <module>spring-aop-aspectj-pointcut</module>
-        <module>spring-aop-aspectj-around</module>
-        <module>spring-aop-aspectj-before</module>
-        <module>spring-aop-aspectj-after</module>
-        <module>spring-aop-aspectj-afterReturning</module>
-        <module>spring-aop-aspectj-afterThrowing</module>
-        <module>spring-aop-aspectj-declareParents</module>
         <module>spring-aop-enableAspectJAutoProxy</module>
         <module>spring-aop-enableLoadTimeWeaving</module>
         <module>spring-aop-advice-methodInterceptor</module>
