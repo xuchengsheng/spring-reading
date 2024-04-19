@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 public class AopProxyDemo {
 
     public static void main(String[] args) throws Exception {
-        cglibProxy();
+//        cglibProxy();
         jdkProxy();
     }
 
@@ -22,12 +22,14 @@ public class AopProxyDemo {
         AdvisedSupport advisedSupport = new AdvisedSupport();
         // 设置目标对象
         advisedSupport.setTarget(new MyServiceImpl());
+        // 添加拦截器
+        advisedSupport.addAdvice(new MyMethodInterceptor());
 
         // 获取CglibAopProxy的Class对象
-        Class cglibClass = Class.forName("org.springframework.aop.framework.CglibAopProxy");
+        Class<?> cglibClass = Class.forName("org.springframework.aop.framework.CglibAopProxy");
 
         // 获取CglibAopProxy的构造方法
-        Constructor constructor = cglibClass.getConstructor(AdvisedSupport.class);
+        Constructor<?> constructor = cglibClass.getConstructor(AdvisedSupport.class);
         constructor.setAccessible(true);
 
         // 使用构造方法创建CglibAopProxy实例
@@ -39,7 +41,7 @@ public class AopProxyDemo {
         // 输出代理对象的信息
         System.out.println("Cglib Class = " + myService.getClass());
         // 调用代理对象的方法
-        System.out.println("doSomething method result = " + myService.doSomething());
+        myService.doSomething();
     }
 
     /**
@@ -54,12 +56,14 @@ public class AopProxyDemo {
         advisedSupport.setTarget(new MyServiceImpl());
         // 设置目标对象实现的接口
         advisedSupport.setInterfaces(MyService.class);
+        // 添加拦截器
+        advisedSupport.addAdvice(new MyMethodInterceptor());
 
         // 获取JdkDynamicAopProxy的Class对象
-        Class jdkClass = Class.forName("org.springframework.aop.framework.JdkDynamicAopProxy");
+        Class<?> jdkClass = Class.forName("org.springframework.aop.framework.JdkDynamicAopProxy");
 
         // 获取JdkDynamicAopProxy的构造方法
-        Constructor constructor = jdkClass.getConstructor(AdvisedSupport.class);
+        Constructor<?> constructor = jdkClass.getConstructor(AdvisedSupport.class);
         constructor.setAccessible(true);
 
         // 使用构造方法创建JdkDynamicAopProxy实例
@@ -71,6 +75,6 @@ public class AopProxyDemo {
         // 输出代理对象的信息
         System.out.println("JDK Class = " + myService.getClass());
         // 调用代理对象的方法
-        System.out.println("doSomething method result = " + myService.doSomething());
+        myService.doSomething();
     }
 }
