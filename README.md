@@ -211,7 +211,7 @@
     - [IntroductionInterceptor](spring-aop/spring-aop-advice-introductionInterceptor/README.md)：动态地向目标对象引入新的功能或属性。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [Advisor](spring-aop/spring-aop-advisor/README.md)：用于将通知和切点结合，实现切面编程的横切关注点。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AdvisorAdapter](spring-aop/spring-aop-advisorAdapter/README.md)：适配不同类型通知到拦截器链。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [Advised](spring-aop/spring-aop-advisor/README.md)：配置AOP代理的通知、通知器、目标等。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [Advised](spring-aop/spring-aop-advised/README.md)：配置AOP代理的通知、通知器、目标等。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [TargetSource](spring-aop/spring-aop-targetSource/README.md)：管理AOP代理对象的获取与释放。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [@EnableAspectJAutoProxy](spring-aop/spring-aop-enableAspectJAutoProxy/README.md)：启用AspectJ切面自动代理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [@EnableLoadTimeWeaving](spring-aop/spring-aop-enableLoadTimeWeaving/README.md)：启用Spring加载时编织。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
@@ -223,6 +223,7 @@
     - [AnnotationAwareAspectJAutoProxyCreator](spring-aop/spring-aop-annotationAwareAspectJAutoProxyCreator/README.md)：创建AOP代理以应用AspectJ风格的切面。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [AdvisorChainFactory](spring-aop/spring-aop-advisorChainFactory/README.md)：创建Advisor链的工厂接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AdvisorAdapterRegistry](spring-aop/spring-aop-advisorAdapterRegistry/README.md)：适配各种Advice到AOP拦截器，注册和管理Advisor适配器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [AopContext](spring-aop/spring-aop-aopContext/README.md)：获取Spring AOP代理对象的工具。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   + Spring AOT
 
