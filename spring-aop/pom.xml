@@ -35,6 +35,7 @@
         <module>spring-aop-proxyFactory</module>
         <module>spring-aop-advisorChainFactory</module>
         <module>spring-aop-advisorAdapterRegistry</module>
+        <module>spring-aop-advised</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
