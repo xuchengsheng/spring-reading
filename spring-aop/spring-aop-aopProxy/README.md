@@ -200,8 +200,8 @@ autonumber
 AopProxyDemo->>JdkDynamicAopProxy:new JdkDynamicAopProxy()
 JdkDynamicAopProxy->>JdkDynamicAopProxy:this.advised
 JdkDynamicAopProxy->>JdkDynamicAopProxy:this.proxiedInterfaces
-JdkDynamicAopProxy->>AopProxyDemo:aopProxy
-AopProxyDemo->>JdkDynamicAopProxy:getProxy()
+JdkDynamicAopProxy->>AopProxyDemo:返回aopProxy
+AopProxyDemo->>JdkDynamicAopProxy:aopProxy.getProxy()
 JdkDynamicAopProxy->>JdkDynamicAopProxy:getProxy(classLoader)
 JdkDynamicAopProxy->>AopProxyDemo:返回代理对象
 AopProxyDemo->>$Proxy0:aopProxy.doSomething()
@@ -212,12 +212,43 @@ loop 递归拦截器
     JdkDynamicAopProxy->>ReflectiveMethodInvocation:invocation.proceed()
     ReflectiveMethodInvocation->>ReflectiveMethodInvocation:invokeJoinpoint()
     ReflectiveMethodInvocation->>AopUtils:invokeJoinpointUsingReflection()
-    AopUtils->>$Proxy0:method.invoke(target, args)
+    AopUtils->>Method:method.invoke(target, args)
+    Method->>$Proxy0:doSomething()
 end
 
 ~~~
 
 #### CglibAopProxy
+
+~~~mermaid
+sequenceDiagram
+autonumber
+AopProxyDemo->>CglibAopProxy:new CglibAopProxy()
+CglibAopProxy->>CglibAopProxy:this.advised
+CglibAopProxy->>CglibAopProxy:this.advisedDispatcher
+CglibAopProxy->>AopProxyDemo:返回aopProxy
+AopProxyDemo->>CglibAopProxy:aopProxy.getProxy()
+CglibAopProxy->>CglibAopProxy:getProxy(classLoader)
+CglibAopProxy->>Enhancer:new Enhancer()
+Enhancer->>CglibAopProxy:返回enhancer
+CglibAopProxy->>CglibAopProxy:getCallbacks()
+CglibAopProxy->>CglibAopProxy:createProxyClassAndInstance()
+CglibAopProxy->>Enhancer:enhancer.create()
+CglibAopProxy->>AopProxyDemo:返回代理对象
+AopProxyDemo->>MyServiceImpl$$EnhancerBySpringCGLIB$$:aopProxy.doSomething()
+MyServiceImpl$$EnhancerBySpringCGLIB$$->>DynamicAdvisedInterceptor:intercept()
+DynamicAdvisedInterceptor->>CglibMethodInvocation:new CglibMethodInvocation()
+MethodProxy->>CglibMethodInvocation:传递methodProxy
+CglibMethodInvocation->>CglibMethodInvocation:接收methodProxy
+CglibMethodInvocation->>DynamicAdvisedInterceptor:返回invocation
+DynamicAdvisedInterceptor->>CglibMethodInvocation:invocation.proceed()
+loop 递归拦截器
+    CglibMethodInvocation->>ReflectiveMethodInvocation:super.proceed()
+    ReflectiveMethodInvocation->>CglibMethodInvocation:invokeJoinpoint()
+    CglibMethodInvocation->>MethodProxy:this.methodProxy.invoke()
+    MethodProxy->>MyServiceImpl$$EnhancerBySpringCGLIB$$:doSomething()
+end
+~~~
 
 ### 七、源码分析
 
@@ -720,6 +751,25 @@ public Object proceed() throws Throwable {
             // aligned with standard JDK dynamic proxy behavior.
             throw new UndeclaredThrowableException(ex);
         }
+    }
+}
+```
+
+在`org.springframework.aop.framework.CglibAopProxy.CglibMethodInvocation#invokeJoinpoint`方法中，重写了 `ReflectiveMethodInvocation` 类的 `invokeJoinpoint()` 方法。`ReflectiveMethodInvocation` 是 Spring AOP 框架中的一个关键类，用于执行方法调用链。而在这个方法中，它通过检查是否存在方法代理来提升性能，避免了在调用公共方法时使用反射直接调用目标方法。而方法代理的具体实现是由 `MethodProxy` 类提供的。`MethodProxy` 是 CGLIB 库中的一个重要组件，它允许在运行时动态生成的代理类中，以高效的方式调用目标方法。
+
+```java
+/**
+ * 在调用公共方法时，相比使用反射调用目标，使用此方法可以略微提升性能。
+ */
+@Override
+protected Object invokeJoinpoint() throws Throwable {
+     // 如果方法代理不为null
+    if (this.methodProxy != null) {
+         // 使用方法代理调用目标方法
+        return this.methodProxy.invoke(this.target, this.arguments);
+    }
+    else {
+        return super.invokeJoinpoint(); // 否则调用父类的invokeJoinpoint方法
     }
 }
 ```
