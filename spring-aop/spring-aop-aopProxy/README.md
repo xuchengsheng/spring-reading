@@ -9,8 +9,14 @@
   - [六、最佳实践](#六最佳实践)
     - [JDK动态代理](#jdk动态代理)
     - [CGLIB代理](#cglib代理)
+  - [七、时序图](#七时序图)
+    - [JdkDynamicAopProxy](#jdkdynamicaopproxy)
+    - [CglibAopProxy](#cglibaopproxy)
   - [七、源码分析](#七源码分析)
-  - [七、常见问题](#七常见问题)
+    - [JdkDynamicAopProxy](#jdkdynamicaopproxy-1)
+    - [CglibAopProxy](#cglibaopproxy-1)
+  - [八、常见问题](#八常见问题)
+
 
 ### 一、基本信息
 
@@ -81,10 +87,12 @@ public interface AopProxy {
 ### 五、主要实现
 
 1. **JdkDynamicAopProxy**
+
    + 使用 JDK 动态代理实现的 `AopProxy` 实现类。当目标对象实现了至少一个接口时，Spring 将使用该类创建代理对象。该类通过 Java 标准库中的 `java.lang.reflect.Proxy` 类来创建代理对象。
    
 2. **CglibAopProxy**
-+ 使用 CGLIB（Code Generation Library）动态代理实现的 `AopProxy` 实现类。当目标对象没有实现任何接口时，Spring 将使用该类创建代理对象。该类通过生成目标类的子类来创建代理对象，实现了对目标对象方法的拦截和增强。
+
+     + 使用 CGLIB（Code Generation Library）动态代理实现的 `AopProxy` 实现类。当目标对象没有实现任何接口时，Spring 将使用该类创建代理对象。该类通过生成目标类的子类来创建代理对象，实现了对目标对象方法的拦截和增强。
 
 ### 六、最佳实践
 
