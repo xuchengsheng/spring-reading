@@ -211,17 +211,26 @@ JdkDynamicAopProxy->>JdkDynamicAopProxy:this.proxiedInterfaces
 JdkDynamicAopProxy->>AopProxyDemo:返回aopProxy
 AopProxyDemo->>JdkDynamicAopProxy:aopProxy.getProxy()
 JdkDynamicAopProxy->>JdkDynamicAopProxy:getProxy(classLoader)
+JdkDynamicAopProxy->>Proxy:Proxy.newProxyInstance()
 JdkDynamicAopProxy->>AopProxyDemo:返回代理对象
 AopProxyDemo->>$Proxy0:aopProxy.doSomething()
 $Proxy0->>JdkDynamicAopProxy:invoke()
-JdkDynamicAopProxy->>ReflectiveMethodInvocation:new ReflectiveMethodInvocation()
-ReflectiveMethodInvocation->>JdkDynamicAopProxy:返回invocation
-loop 递归拦截器
-    JdkDynamicAopProxy->>ReflectiveMethodInvocation:invocation.proceed()
-    ReflectiveMethodInvocation->>ReflectiveMethodInvocation:invokeJoinpoint()
-    ReflectiveMethodInvocation->>AopUtils:invokeJoinpointUsingReflection()
-    AopUtils->>Method:method.invoke(target, args)
-    Method->>$Proxy0:doSomething()
+alt 不存在拦截链
+	rect rgb(122,197,205)
+		JdkDynamicAopProxy->>AopUtils: invokeJoinpointUsingReflection()
+		AopUtils->>Method:method.invoke(target, args)
+        Method->>$Proxy0:doSomething()
+	end
+else 存在拦截链
+	rect rgb(155,205,155)
+		JdkDynamicAopProxy->>ReflectiveMethodInvocation:new ReflectiveMethodInvocation()
+		ReflectiveMethodInvocation->>JdkDynamicAopProxy:返回invocation
+		JdkDynamicAopProxy->>ReflectiveMethodInvocation:invocation.proceed()
+        ReflectiveMethodInvocation->>ReflectiveMethodInvocation:invokeJoinpoint()
+        ReflectiveMethodInvocation->>AopUtils:invokeJoinpointUsingReflection()
+        AopUtils->>Method:method.invoke(target, args)
+        Method->>$Proxy0:doSomething()
+    end
 end
 
 ~~~
@@ -245,16 +254,23 @@ CglibAopProxy->>Enhancer:enhancer.create()
 CglibAopProxy->>AopProxyDemo:返回代理对象
 AopProxyDemo->>MyServiceImpl$$EnhancerBySpringCGLIB$$:aopProxy.doSomething()
 MyServiceImpl$$EnhancerBySpringCGLIB$$->>DynamicAdvisedInterceptor:intercept()
-DynamicAdvisedInterceptor->>CglibMethodInvocation:new CglibMethodInvocation()
-MethodProxy->>CglibMethodInvocation:传递methodProxy
-CglibMethodInvocation->>CglibMethodInvocation:接收methodProxy
-CglibMethodInvocation->>DynamicAdvisedInterceptor:返回invocation
-DynamicAdvisedInterceptor->>CglibMethodInvocation:invocation.proceed()
-loop 递归拦截器
-    CglibMethodInvocation->>ReflectiveMethodInvocation:super.proceed()
-    ReflectiveMethodInvocation->>CglibMethodInvocation:invokeJoinpoint()
-    CglibMethodInvocation->>MethodProxy:this.methodProxy.invoke()
-    MethodProxy->>MyServiceImpl$$EnhancerBySpringCGLIB$$:doSomething()
+alt 不存在拦截链
+	rect rgb(122,197,205)
+		DynamicAdvisedInterceptor->>MethodProxy:this.methodProxy.invoke()
+		MethodProxy->>MyServiceImpl$$EnhancerBySpringCGLIB$$:doSomething()
+	end
+else 存在拦截链
+	rect rgb(155,205,155)
+		DynamicAdvisedInterceptor->>CglibMethodInvocation:new CglibMethodInvocation()
+        MethodProxy->>CglibMethodInvocation:传递methodProxy
+        CglibMethodInvocation->>CglibMethodInvocation:接收methodProxy
+        CglibMethodInvocation->>DynamicAdvisedInterceptor:返回invocation
+        DynamicAdvisedInterceptor->>CglibMethodInvocation:invocation.proceed()
+        CglibMethodInvocation->>ReflectiveMethodInvocation:super.proceed()
+        ReflectiveMethodInvocation->>CglibMethodInvocation:invokeJoinpoint()
+        CglibMethodInvocation->>MethodProxy:this.methodProxy.invoke()
+        MethodProxy->>MyServiceImpl$$EnhancerBySpringCGLIB$$:doSomething()
+    end
 end
 ~~~
 
