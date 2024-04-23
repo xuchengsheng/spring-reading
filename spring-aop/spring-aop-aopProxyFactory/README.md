@@ -21,12 +21,15 @@
 ### 三、主要功能
 
 1. **创建 AOP 代理对象**
+
    + 根据传入的 `AdvisedSupport` 对象，利用指定的代理方式（JDK 动态代理或 CGLIB 代理）生成 AOP 代理对象。
    
 2. **决定代理方式**
+
    + 根据目标类的类型和配置信息，确定是否使用 JDK 动态代理或 CGLIB 代理。这个决定通常是基于配置中的一些条件，例如是否需要代理接口或者是否允许使用 CGLIB 代理。
    
 3. **支持灵活配置**
+
    + 通过实现该接口，可以灵活地定制 AOP 代理的生成方式，以满足不同场景下的需求。
 
 ### 四、接口源码
@@ -68,6 +71,7 @@ public interface AopProxyFactory {
 ### 五、主要实现
 
 1. **DefaultAopProxyFactory**
+
    + `DefaultAopProxyFactory` 是 `AopProxyFactory` 接口的默认实现类，它负责根据给定的 `AdvisedSupport` 配置对象创建 AOP 代理，根据配置信息选择合适的代理方式（JDK 动态代理或 CGLIB 代理），并处理可能出现的异常情况，使得 Spring AOP 能够灵活地生成并使用 AOP 代理对象，实现切面编程的功能。
 
 ### 六、最佳实践
