@@ -6,9 +6,10 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、源码分析](#七源码分析)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
   - [八、常见问题](#八常见问题)
+
 
 ### 一、基本信息
 
@@ -134,7 +135,40 @@ public interface MethodMatcher {
 
    + 这个类使用 AspectJ 表达式语言来创建切点，它允许我们使用更加灵活和强大的语法来定义切点。AspectJ 表达式支持更多的特性，包括访问方法参数、异常类型等。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AbstractRegexpMethodPointcut
+class AnnotationMethodMatcher
+class AspectJExpressionPointcut
+class ControlFlowPointcut
+class IntroductionAwareMethodMatcher {
+<<Interface>>
+
+}
+class JdkRegexpMethodPointcut
+class MethodMatcher {
+<<Interface>>
+
+}
+class NameMatchMethodPointcut
+class StaticMethodMatcher
+class StaticMethodMatcherPointcut
+
+AbstractRegexpMethodPointcut  -->  StaticMethodMatcherPointcut 
+AnnotationMethodMatcher  -->  StaticMethodMatcher 
+AspectJExpressionPointcut  ..>  IntroductionAwareMethodMatcher 
+ControlFlowPointcut  ..>  MethodMatcher 
+IntroductionAwareMethodMatcher  -->  MethodMatcher 
+JdkRegexpMethodPointcut  -->  AbstractRegexpMethodPointcut 
+NameMatchMethodPointcut  -->  StaticMethodMatcherPointcut 
+StaticMethodMatcher  ..>  MethodMatcher 
+StaticMethodMatcherPointcut  -->  StaticMethodMatcher 
+~~~
+
+### 七、最佳实践
 
 使用不同类型的方法匹配器来检查特定方法是否满足不同的条件。其中，使用 AnnotationMethodMatcher 来检查方法是否具有特定的注解；使用 AspectJExpressionPointcut 基于 AspectJ 表达式来匹配方法；使用 NameMatchMethodPointcut 基于方法名称来匹配方法；使用 JdkRegexpMethodPointcut 基于正则表达式来匹配方法。
 
@@ -163,10 +197,6 @@ public class MethodMatcherDemo {
     }
 }
 ```
-
-### 七、源码分析
-
-暂无
 
 ### 八、常见问题
 

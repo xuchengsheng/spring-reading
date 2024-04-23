@@ -6,8 +6,9 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、常见问题](#七常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
+  - [八、常见问题](#八常见问题)
 
 
 ### 一、基本信息
@@ -87,7 +88,30 @@ public interface ClassFilter {
 
    + 主要用于基于 AspectJ 表达式匹配目标类。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AnnotationClassFilter
+class AspectJExpressionPointcut
+class ClassFilter {
+<<Interface>>
+
+}
+class RootClassFilter
+class TypePatternClassFilter
+
+AnnotationClassFilter  ..>  ClassFilter 
+AspectJExpressionPointcut  ..>  ClassFilter 
+RootClassFilter  ..>  ClassFilter 
+TypePatternClassFilter  ..>  ClassFilter 
+
+~~~
+
+
+
+### 七、最佳实践
 
 使用不同类型的类过滤器在 Spring AOP 中的使用方式。我们创建了四种不同的类过滤器实例，并测试它们是否匹配了特定的类。通过打印输出结果，展示了每个类过滤器的匹配情况，从而说明了它们在过滤目标类方面的作用。
 
@@ -123,7 +147,7 @@ RootClassFilter 是否匹配 MySubService 的根类：true
 AspectJExpressionPointcut 是否匹配 MyService 类：true
 ```
 
-### 七、常见问题
+### 八、常见问题
 
 1. **匹配准确性**
 
