@@ -112,7 +112,42 @@ public interface Pointcut {
 
    + 用于基于注解匹配的切入点定义。它可以根据指定的注解类型匹配类或方法，并用于将通知应用于带有特定注解的目标对象的方法。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AbstractExpressionPointcut
+class AbstractRegexpMethodPointcut
+class AnnotationMatchingPointcut
+class AspectJExpressionPointcut
+class DynamicMethodMatcherPointcut
+class ExpressionPointcut {
+<<Interface>>
+
+}
+class JdkRegexpMethodPointcut
+class NameMatchMethodPointcut
+class Pointcut {
+<<Interface>>
+
+}
+class StaticMethodMatcherPointcut
+class TruePointcut
+
+AbstractExpressionPointcut  ..>  ExpressionPointcut 
+AbstractRegexpMethodPointcut  -->  StaticMethodMatcherPointcut 
+AnnotationMatchingPointcut  ..>  Pointcut 
+AspectJExpressionPointcut  -->  AbstractExpressionPointcut 
+DynamicMethodMatcherPointcut  ..>  Pointcut 
+ExpressionPointcut  -->  Pointcut 
+JdkRegexpMethodPointcut  -->  AbstractRegexpMethodPointcut 
+NameMatchMethodPointcut  -->  StaticMethodMatcherPointcut 
+StaticMethodMatcherPointcut  ..>  Pointcut 
+TruePointcut  ..>  Pointcut 
+~~~
+
+### 七、最佳实践
 
 #### 自定义Pointcut
 
@@ -302,10 +337,6 @@ public class PointcutDemo {
     }
 }
 ```
-
-### 七、源码分析
-
-暂无
 
 ### 八、常见问题
 
