@@ -4,11 +4,12 @@
   - [一、基本信息](#一基本信息)
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
-  - [四、最佳实践](#四最佳实践)
-  - [五、源码分析](#五源码分析)
+  - [四、类源码](#四类源码)
+  - [五、最佳实践](#五最佳实践)
+  - [六、源码分析](#六源码分析)
     - [JDK动态代理拦截器](#jdk动态代理拦截器)
     - [CGLIB动态代理拦截器](#cglib动态代理拦截器)
-  - [六、常见问题](#六常见问题)
+  - [七、常见问题](#七常见问题)
 
 ### 一、基本信息
 
@@ -32,7 +33,78 @@
 
    + 在一些特定场景下，可能需要在不同的方法间传递AOP代理对象，而不是直接调用`this`。`AopContext`类提供了一种解决方案，可以在方法调用间传递AOP代理对象。
 
-### 四、最佳实践
+### 四、类源码
+
+`AopContext`类提供了用于获取当前AOP调用信息的静态方法集合。通过`currentProxy()`方法可以获取当前AOP代理对象，前提是AOP框架已配置为暴露代理对象。这对目标对象或通知进行增强调用，以及查找通知配置非常有用。然而，由于性能成本较高，Spring的AOP框架默认不会暴露代理对象。
+
+```java
+/**
+ * 用于获取当前AOP调用信息的静态方法集合。
+ * 
+ * <p>如果AOP框架配置为暴露当前代理对象（非默认情况），则可使用 {@code currentProxy()} 方法获取正在使用的AOP代理对象。
+ * 目标对象或通知可以使用此方法进行增强调用，类似于EJB中的 {@code getEJBObject()}。也可用于查找通知配置。
+ * 
+ * <p>Spring的AOP框架默认不暴露代理对象，因为这样做会带来性能开销。
+ * 
+ * <p>此类中的功能可被目标对象使用，以获取调用中的资源。然而，当存在合理替代方案时，不应使用此方法，因为这会使应用程序代码依赖于AOP下的使用和Spring AOP框架。
+ * 
+ * @author Rod Johnson
+ * @author Juergen Hoeller
+ * @since 13.03.2003
+ */
+public final class AopContext {
+
+	/**
+	 * 线程本地变量，用于保存与该线程关联的AOP代理对象。
+	 * 除非控制代理配置的“exposeProxy”属性被设置为“true”，否则将包含{@code null}。
+	 * @see ProxyConfig#setExposeProxy
+	 */
+	private static final ThreadLocal<Object> currentProxy = new NamedThreadLocal<>("Current AOP proxy");
+
+
+	private AopContext() {
+	}
+
+
+	/**
+	 * 尝试返回当前AOP代理对象。此方法仅在调用方法通过AOP调用，并且AOP框架已设置为暴露代理对象时可用。
+	 * 否则，此方法将抛出IllegalStateException异常。
+	 * @return 当前AOP代理对象（永远不会返回{@code null}）
+	 * @throws IllegalStateException 如果无法找到代理对象，因为该方法是在AOP调用上下文之外调用的，或者因为AOP框架尚未配置为暴露代理对象
+	 */
+	public static Object currentProxy() throws IllegalStateException {
+		Object proxy = currentProxy.get();
+		if (proxy == null) {
+			throw new IllegalStateException(
+					"Cannot find current proxy: Set 'exposeProxy' property on Advised to 'true' to make it available, and " +
+							"ensure that AopContext.currentProxy() is invoked in the same thread as the AOP invocation context.");
+		}
+		return proxy;
+	}
+
+	/**
+	 * 使给定的代理对象可通过{@code currentProxy()}方法访问。
+	 * <p>注意，调用者应谨慎地保留旧值。
+	 * @param proxy 要暴露的代理对象（或{@code null}以重置）
+	 * @return 旧的代理对象，如果没有绑定，则可能为{@code null}
+	 * @see #currentProxy()
+	 */
+	@Nullable
+	static Object setCurrentProxy(@Nullable Object proxy) {
+		Object old = currentProxy.get();
+		if (proxy != null) {
+			currentProxy.set(proxy);
+		}
+		else {
+			currentProxy.remove();
+		}
+		return old;
+	}
+
+}
+```
+
+### 五、最佳实践
 
 使用Spring AOP创建一个代理对象，并在代理对象的方法调用前应用自定义的前置通知。首先，通过`ProxyFactory`创建了一个代理工厂，并设置了要被代理的目标对象`MyService`。然后通过`proxyFactory.setExposeProxy(true)`来暴露代理对象，以便在方法内部可以使用`AopContext`类访问到代理对象。接着，使用`proxyFactory.addAdvisor()`方法添加了一个切面通知器，将自定义的前置通知`MyMethodBeforeAdvice`应用到被`MyAnnotation`注解标记的方法上。最后，通过`proxyFactory.getProxy()`获取代理对象，并调用其方法`foo()`。
 
@@ -111,7 +183,7 @@ Before method bar is called.
 bar...
 ```
 
-### 五、源码分析
+### 六、源码分析
 
 在Spring AOP框架中，无论是在JDK动态代理还是CGLIB动态代理的拦截器中，都对`AopContext.setCurrentProxy(proxy)`进行了赋值操作。这个赋值操作的目的是将当前AOP代理对象设置为当前线程的上下文中，以便在方法内部可以通过`AopContext.currentProxy()`获取代理对象。
 
@@ -174,20 +246,14 @@ public Object intercept(Object proxy, Method method, Object[] args, MethodProxy 
 }
 ```
 
-### 六、常见问题
+### 七、常见问题
 
 1. **代理对象为空问题** 
 
    + 如果在没有启用`exposeProxy`选项的情况下尝试使用`AopContext.currentProxy()`来获取代理对象，则可能会导致返回的代理对象为空，因为AOP代理对象并未暴露给方法内部。
-
 2. **多线程环境下的线程安全问题** 
 
    + `AopContext`是基于线程的，如果在多线程环境下并发调用了`AopContext.setCurrentProxy(proxy)`和`AopContext.currentProxy()`，可能会出现线程安全问题，因此需要谨慎处理多线程情况。
-
-3. **性能问题** 
-
-   + 在某些情况下，频繁地使用`AopContext.currentProxy()`来获取代理对象可能会带来性能开销，因为每次调用都需要对当前线程的上下文进行操作。
-
 4. **可读性问题** 
 
    + 在方法内部频繁地使用`AopContext.currentProxy()`来获取代理对象可能会降低代码的可读性，因为会使代码变得复杂，难以理解

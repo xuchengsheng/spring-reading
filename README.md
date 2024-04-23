@@ -225,6 +225,7 @@
     - [AdvisorChainFactory](spring-aop/spring-aop-advisorChainFactory/README.md)：创建Advisor链的工厂接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AdvisorAdapterRegistry](spring-aop/spring-aop-advisorAdapterRegistry/README.md)：适配各种Advice到AOP拦截器，注册和管理Advisor适配器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [AopContext](spring-aop/spring-aop-aopContext/README.md)：获取Spring AOP代理对象的工具。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+    - [ExposeInvocationInterceptor](spring-aop/spring-aop-exposeInvocationInterceptor/README.md)：暴露Spring AOP方法调用上下文的拦截器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 
   + Spring AOT
 
