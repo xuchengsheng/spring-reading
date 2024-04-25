@@ -8,7 +8,11 @@
   - [五、主要实现](#五主要实现)
   - [六、最佳实践](#六最佳实践)
   - [七、源码分析](#七源码分析)
+    - [注册适配器](#注册适配器)
+    - [适配器转换拦截器](#适配器转换拦截器)
+    - [拦截器执行](#拦截器执行)
   - [八、常见问题](#八常见问题)
+
 
 ### 一、基本信息
 
@@ -32,13 +36,6 @@
 
    + 允许我们注册和管理不同类型通知的适配器，以便在应用中使用不同类型的通知。
 
-4. **灵活性和扩展性** 
-
-   + 提供了灵活的方式来扩展 Spring AOP 的功能，允许开发者自定义适配器以满足特定的需求，从而增强 AOP 的灵活性和可扩展性。
-
-5. **支持多种通知类型的组合** 
-
-   + 允许将多种类型的通知与目标方法结合起来，实现更复杂的 AOP 操作，如前置通知和后置通知的组合等。
 
 ### 四、接口源码
 
@@ -109,7 +106,7 @@ public class AdvisorAdapterDemo {
         // 不会触发通知
         System.out.println("foo return value : " + proxy.foo());
         // 换行
-        System.out.println();
+        System.out.println("==================================");
         // 会触发通知
         System.out.println("bar return value : " + proxy.bar());
     }
@@ -207,50 +204,251 @@ public interface NullReturningAdvice extends AfterAdvice {
 
 ```
 
-实现了`NullReturningAdvice`空返回通知接口，用于在目标方法返回值为空时执行特定逻辑。在 nullReturning 方法中，它打印出被调用的方法名称，并返回一个默认的字符串值。
+实现了`NullReturningAdvice`空返回通知接口，用于在目标方法返回值为空时执行特定逻辑。在 nullReturning 方法中返回一个默认的字符串值。
 
 ```java
 public class MyNullReturningAdvice implements NullReturningAdvice {
 
     @Override
     public Object nullReturning(Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("Null Returning method " + method.getName() + " is called.");
-        return "hello default value";
+        return "this is a defaultValue";
     }
 }
 ```
 
-简单的服务类，包含了两个方法 foo 和 bar。foo 方法执行后返回字符串 "hello foo"，而 bar 方法执行后返回 null。
+简单的服务类，包含了两个方法 foo 和 bar。foo 方法执行后返回字符串 "this is a foo"，而 bar 方法执行后返回 null。
 
 ```java
 public class MyService {
 
     public String foo() {
-        System.out.println("Executing foo method");
-        return "hello foo";
+        System.out.println("foo...");
+        return "this is a foo";
     }
 
     public String bar() {
-        System.out.println("Executing bar method");
+        System.out.println("bar...");
         return null;
     }
 }
 ```
 
-运行结果，调用了 foo 方法，它返回 "hello foo"；然后调用了 bar 方法，由于其返回值为 null，因此触发了空返回通知，打印了相应的消息，并返回了默认值 "hello default value"。
+运行结果，调用了 foo 方法，它返回 "this is a foo"；然后调用了 bar 方法，由于其返回值为 null，因此触发了空返回通知，打印了相应的消息，并返回了默认值 "this is a defaultValue"。
 
 ```java
-Executing foo method
-foo return value : hello foo
-
-Executing bar method
-Null Returning method bar is called.
-bar return value : hello default value
+foo...
+foo return value : this is a foo
+==================================
+bar...
+bar return value : this is a defaultValue
 ```
 
 ### 七、源码分析
 
-暂无
+#### 注册适配器
+
+在`org.springframework.aop.framework.adapter.DefaultAdvisorAdapterRegistry#registerAdvisorAdapter`方法中，向适配器列表中注册一个新的 AdvisorAdapter 实例。
+
+```java
+/**
+ * 注册一个Advisor适配器。
+ * @param adapter 要注册的Advisor适配器
+ */
+@Override
+public void registerAdvisorAdapter(AdvisorAdapter adapter) {
+    this.adapters.add(adapter);
+}
+```
+
+在`org.springframework.aop.framework.adapter.DefaultAdvisorAdapterRegistry#adapters`字段中，用于存储 AdvisorAdapter 实例
+
+```java
+private final List<AdvisorAdapter> adapters = new ArrayList<>(3);
+```
+
+#### 适配器转换拦截器
+
+在`org.springframework.aop.framework.JdkDynamicAopProxy#invoke`方法中，JDK动态代理入口中，获取指定方法的拦截链。
+
+```java
+@Override
+@Nullable
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    // ... [代码部分省略以简化]
+
+    try {
+        // ... [代码部分省略以简化]
+
+        // Get the interception chain for this method.
+        List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+
+        // ... [代码部分省略以简化]
+    }
+    finally {
+        // ... [代码部分省略以简化]
+    }
+}
+```
+
+在`org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept`方法中，CGLIB动态代理入口中，获取指定方法的拦截链。
+
+```java
+@Override
+@Nullable
+public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+    // ... [代码部分省略以简化]
+    try {
+        // ... [代码部分省略以简化]
+        List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+        // ... [代码部分省略以简化]
+    }
+    finally {
+        // ... [代码部分省略以简化]
+    }
+}
+```
+
+在`org.springframework.aop.framework.AdvisedSupport#getInterceptorsAndDynamicInterceptionAdvice`方法中，配置确定给定方法的拦截器链，首先尝试从缓存中获取，如果缓存中不存在，则通过 AdvisorChainFactory 获取，并将结果存入缓存后返回。
+
+```java
+/**
+ * 根据配置确定给定方法的拦截器链。
+ * @param method 被代理的方法
+ * @param targetClass 目标类
+ * @return 方法拦截器列表（可能还包括 InterceptorAndDynamicMethodMatchers）
+ */
+public List<Object> getInterceptorsAndDynamicInterceptionAdvice(Method method, @Nullable Class<?> targetClass) {
+    // 创建方法缓存键
+    MethodCacheKey cacheKey = new MethodCacheKey(method);
+    // 从缓存中获取拦截器链
+    List<Object> cached = this.methodCache.get(cacheKey);
+    // 如果缓存为空
+    if (cached == null) {
+        // 通过AdvisorChainFactory获取拦截器链
+        cached = this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(
+                this, method, targetClass);
+        // 将拦截器链放入缓存中
+        this.methodCache.put(cacheKey, cached);
+    }
+    // 返回拦截器链
+    return cached;
+}
+```
+
+在`org.springframework.aop.framework.DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice`方法中，根据给定的AOP配置和方法，从Advisor列表中获取适用于该方法的拦截器链和动态拦截通知。然后根据配置和目标类的匹配情况选择性地添加适当的拦截器到列表中，并返回该列表。
+
+```java
+/**
+ * 根据给定的AOP配置和方法，获取拦截器链和动态拦截通知。
+ * @param config AOP配置对象
+ * @param method 被代理的方法
+ * @param targetClass 目标类
+ * @return 返回一个拦截器链和动态拦截通知的列表
+ */
+@Override
+public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
+       Advised config, Method method, @Nullable Class<?> targetClass) {
+
+    // 获取全局的AdvisorAdapterRegistry实例
+    AdvisorAdapterRegistry registry = GlobalAdvisorAdapterRegistry.getInstance();
+    // 获取AOP配置中的所有Advisor数组
+    Advisor[] advisors = config.getAdvisors();
+    // 创建一个拦截器列表，初始化大小为advisors数组的长度
+    List<Object> interceptorList = new ArrayList<>(advisors.length);
+    
+    // ... [代码部分省略以简化]
+
+    // 遍历所有的Advisor
+    for (Advisor advisor : advisors) {
+        
+       // ... [代码部分省略以简化]
+        
+       // 获取Advisor对应的拦截器数组
+       Interceptor[] interceptors = registry.getInterceptors(advisor);
+       // 将拦截器数组添加到拦截器列表中
+       interceptorList.addAll(Arrays.asList(interceptors));
+        
+       // ... [代码部分省略以简化]
+    }
+
+    // 返回拦截器列表
+    return interceptorList;
+}
+```
+
+在`org.springframework.aop.framework.adapter.DefaultAdvisorAdapterRegistry#getInterceptors`方法中，根据给定的Advisor对象，获取其对应的拦截器数组。它首先检查Advisor中的Advice类型，如果是MethodInterceptor类型，则直接添加到拦截器列表中。然后遍历注册的AdvisorAdapter，查找适配器支持的Advice类型，并将适配器返回的拦截器添加到列表中。最后将拦截器列表转换为数组并返回，如果未找到适配的拦截器则抛出UnknownAdviceTypeException异常。
+
+```java
+/**
+ * 根据Advisor获取拦截器数组。
+ * @param advisor Advisor对象
+ * @return 返回拦截器数组
+ * @throws UnknownAdviceTypeException 如果Advisor中的Advice类型无法识别
+ */
+@Override
+public MethodInterceptor[] getInterceptors(Advisor advisor) throws UnknownAdviceTypeException {
+    // 创建一个拦截器列表
+    List<MethodInterceptor> interceptors = new ArrayList<>(3);
+    // 获取Advisor中的Advice对象
+    Advice advice = advisor.getAdvice();
+    // 如果Advice对象是MethodInterceptor类型
+    if (advice instanceof MethodInterceptor) {
+       // 将MethodInterceptor添加到拦截器列表中
+       interceptors.add((MethodInterceptor) advice);
+    }
+    // 遍历所有的适配器
+    for (AdvisorAdapter adapter : this.adapters) {
+       // 如果适配器支持Advice对象
+       if (adapter.supportsAdvice(advice)) {
+          // 获取适配器的拦截器并添加到拦截器列表中
+          interceptors.add(adapter.getInterceptor(advisor));
+       }
+    }
+    // 如果拦截器列表为空
+    if (interceptors.isEmpty()) {
+       // 抛出未知通知类型异常
+       throw new UnknownAdviceTypeException(advisor.getAdvice());
+    }
+    // 将拦截器列表转换为数组并返回
+    return interceptors.toArray(new MethodInterceptor[0]);
+}
+```
+
+在`com.xcs.spring.NullReturningAdviceAdapter#supportsAdvice`方法中，检查该适配器是否支持给定的Advice类型。
+
+```java
+/**
+ * 检查该适配器是否支持给定的Advice类型。
+ * @param advice Advice对象
+ * @return 如果适配器支持给定的Advice类型，则返回true；否则返回false
+ */
+@Override
+public boolean supportsAdvice(Advice advice) {
+    // 检查Advice对象是否是NullReturningAdvice类型
+    return (advice instanceof NullReturningAdvice);
+}
+```
+
+在`com.xcs.spring.NullReturningAdviceAdapter#getInterceptor`方法中，首先从Advisor中获取Advice对象，并将其强制转换为NullReturningAdvice类型。然后，使用该Advice对象创建一个NullReturningAdviceInterceptor拦截器，并返回。
+
+```java
+/**
+ * 根据Advisor获取拦截器。
+ * @param advisor Advisor对象
+ * @return 返回一个拦截器
+ */
+@Override
+public MethodInterceptor getInterceptor(Advisor advisor) {
+    // 强制转换Advisor中的Advice对象为NullReturningAdvice类型
+    NullReturningAdvice advice = (NullReturningAdvice) advisor.getAdvice();
+    // 创建一个NullReturningAdviceInterceptor拦截器，将Advisor中的Advice作为参数传入
+    return new NullReturningAdviceInterceptor(advice);
+}
+```
+
+#### 拦截器执行
+
+[MethodInterceptor源码分析](../spring-aop-advice-methodInterceptor/README.md)
 
 ### 八、常见问题
 
@@ -261,14 +459,6 @@ bar return value : hello default value
 2. **如何注册自定义的 AdvisorAdapter？**
 
    - 一旦实现了自定义的 `AdvisorAdapter` 接口，我们需要知道如何将其注册到 Spring AOP 框架中，以便在应用中使用。这涉及到配置文件、注解或编程方式的注册。
-
-3. **适配器的执行顺序是如何确定的？**
-
-   - 当一个目标方法被调用时，多个适配器会被调用以适配不同类型的通知。我们会关心适配器的执行顺序以确保通知被正确地应用。在 Spring AOP 中，通常使用 AdvisorAdapterRegistry 来管理适配器，并且它通常遵循注册的顺序来决定适配器的执行顺序。
-
-4. **如何处理支持多种类型通知的适配器？**
-
-   - 有些适配器支持多种类型的通知。在这种情况下，我们需要了解如何确保适配器可以正确地识别和处理不同类型的通知，并将其适配到拦截器链中。
 
 5. **如何处理不支持的通知类型？**
 

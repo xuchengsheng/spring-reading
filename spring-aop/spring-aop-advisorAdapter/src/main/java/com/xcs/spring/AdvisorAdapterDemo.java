@@ -17,7 +17,7 @@ public class AdvisorAdapterDemo {
         // 不会触发通知
         System.out.println("foo return value : " + proxy.foo());
         // 换行
-        System.out.println();
+        System.out.println("==================================");
         // 会触发通知
         System.out.println("bar return value : " + proxy.bar());
     }
