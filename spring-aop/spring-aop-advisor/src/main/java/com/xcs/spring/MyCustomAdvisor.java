@@ -2,13 +2,13 @@ package com.xcs.spring;
 
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Pointcut;
-import org.springframework.aop.support.AbstractPointcutAdvisor;
+import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 /**
  * 自定义Advisor，用于将通知应用于带有特定注解的方法。
  */
-public class MyCustomAdvisor extends AbstractPointcutAdvisor {
+public class MyCustomAdvisor implements PointcutAdvisor {
 
     /**
      * 通知对象
@@ -28,5 +28,10 @@ public class MyCustomAdvisor extends AbstractPointcutAdvisor {
     @Override
     public Advice getAdvice() {
         return advice;
+    }
+
+    @Override
+    public boolean isPerInstance() {
+        return true;
     }
 }
