@@ -1,5 +1,5 @@
 package com.xcs.spring;
 
-@MyAnnotation
+@MyClassAnnotation
 public class MyService {
 }

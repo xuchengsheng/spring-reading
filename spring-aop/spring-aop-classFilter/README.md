@@ -113,46 +113,62 @@ TypePatternClassFilter  ..>  ClassFilter
 
 ### 七、最佳实践
 
-使用不同类型的类过滤器在 Spring AOP 中的使用方式。我们创建了四种不同的类过滤器实例，并测试它们是否匹配了特定的类。通过打印输出结果，展示了每个类过滤器的匹配情况，从而说明了它们在过滤目标类方面的作用。
+使用不同类型的类过滤器（AnnotationClassFilter、TypePatternClassFilter、RootClassFilter）以及基于 AspectJ 表达式的切点（AspectJExpressionPointcut）来匹配目标类，并输出匹配结果。
 
 ```java
 public class ClassFilterDemo {
     public static void main(String[] args) {
         // 创建 AnnotationClassFilter 实例，匹配带有 MyAnnotation 注解的类
-        ClassFilter filter1 = new AnnotationClassFilter(MyAnnotation.class);
-        System.out.println("AnnotationClassFilter 是否匹配 MyService 类：" + filter1.matches(MyService.class));
+        ClassFilter annotationClassFilter = new AnnotationClassFilter(MyClassAnnotation.class);
+        System.out.println("annotationClassFilter matches =" + annotationClassFilter.matches(MyService.class));
 
         // 创建 TypePatternClassFilter 实例，匹配指定类名的类
-        ClassFilter filter2 = new TypePatternClassFilter("com.xcs.spring.MyService");
-        System.out.println("TypePatternClassFilter 是否匹配 MyService 类：" + filter2.matches(MyService.class));
+        ClassFilter typePatternClassFilter = new TypePatternClassFilter("com.xcs.spring.MyService");
+        System.out.println("typePatternClassFilter matches =" + typePatternClassFilter.matches(MyService.class));
 
         // 创建 RootClassFilter 实例，匹配指定类的根类
-        ClassFilter filter3 = new RootClassFilter(MyService.class);
-        System.out.println("RootClassFilter 是否匹配 MySubService 的根类：" + filter3.matches(MySubService.class));
+        ClassFilter rootClassFilter = new RootClassFilter(MyService.class);
+        System.out.println("rootClassFilter matches = " + rootClassFilter.matches(MySubService.class));
 
         // 创建 AspectJExpressionPointcut 实例，根据 AspectJ 表达式匹配类和方法
-        AspectJExpressionPointcut filter4 = new AspectJExpressionPointcut();
-        filter4.setExpression("execution(* com.xcs.spring.MyService.*(..))");
-        System.out.println("AspectJExpressionPointcut 是否匹配 MyService 类：" + filter4.matches(MyService.class));
+        AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
+        aspectJExpressionPointcut.setExpression("execution(* com.xcs.spring.MyService.*(..))");
+        System.out.println("aspectJExpressionPointcut matches = " + aspectJExpressionPointcut.matches(MyService.class));
     }
+}
+```
+
+`MyService` 类被 `@MyClassAnnotation` 注解修饰。
+
+```java
+@MyClassAnnotation
+public class MyService {
+}
+```
+
+`MyClassAnnotation` 注解，应用于类级别的元素。
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface MyClassAnnotation {
 }
 ```
 
 运行结果，四种不同类型的类过滤器都成功地匹配了相应的目标类。
 
 ```java
-AnnotationClassFilter 是否匹配 MyService 类：true
-TypePatternClassFilter 是否匹配 MyService 类：true
-RootClassFilter 是否匹配 MySubService 的根类：true
-AspectJExpressionPointcut 是否匹配 MyService 类：true
+annotationClassFilter matches =true
+typePatternClassFilter matches =true
+rootClassFilter matches = true
+aspectJExpressionPointcut matches = true
 ```
 
 ### 八、常见问题
 
 1. **匹配准确性**
-
    + 可能会出现由于匹配规则不准确导致无法正确匹配目标类的情况。在使用 `ClassFilter` 时，需要确保定义的匹配规则能够准确地选择出目标类，否则可能会导致切面不正确地应用或不应用于预期的类。
-
+   
 2. **匹配范围不一致**
 
    + 在定义 `ClassFilter` 时，可能会出现匹配范围不一致的情况。例如，一个切面匹配了目标类的所有方法，而另一个切面只匹配了部分方法。在这种情况下，可能会出现不一致的行为，需要确保所有切面的匹配范围是一致的。
