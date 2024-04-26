@@ -1,6 +1,8 @@
 package com.xcs.spring;
 
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 
 public class MethodInterceptorDemo {
 
@@ -8,7 +10,7 @@ public class MethodInterceptorDemo {
         // 创建代理工厂&创建目标对象
         ProxyFactory proxyFactory = new ProxyFactory(new MyService());
         // 创建通知
-        proxyFactory.addAdvice(new MyMethodInterceptor());
+        proxyFactory.addAdvisor(new DefaultPointcutAdvisor(Pointcut.TRUE, new MyMethodInterceptor()));
         // 获取代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
