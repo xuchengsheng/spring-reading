@@ -170,32 +170,65 @@ StaticMethodMatcherPointcut  -->  StaticMethodMatcher
 
 ### 七、最佳实践
 
-使用不同类型的方法匹配器来检查特定方法是否满足不同的条件。其中，使用 AnnotationMethodMatcher 来检查方法是否具有特定的注解；使用 AspectJExpressionPointcut 基于 AspectJ 表达式来匹配方法；使用 NameMatchMethodPointcut 基于方法名称来匹配方法；使用 JdkRegexpMethodPointcut 基于正则表达式来匹配方法。
+获取了名为 "setName" 的方法，并使用四种不同类型的方法匹配器对其进行匹配检查。其中，AnnotationMethodMatcher 检查该方法是否具有特定注解，AspectJExpressionPointcut 基于 AspectJ 表达式匹配方法，NameMatchMethodPointcut 基于方法名称匹配方法，JdkRegexpMethodPointcut 基于正则表达式匹配方法。最后，程序输出了每种匹配器的匹配结果。
 
 ```java
 public class MethodMatcherDemo {
 
     public static void main(String[] args) throws Exception {
+        Class<MyService> target = MyService.class;
+        Method setNameMethod = target.getDeclaredMethod("setName");
+
         // 使用 AnnotationMethodMatcher 检查是否具有特定注解
-        AnnotationMethodMatcher methodMatcher = new AnnotationMethodMatcher(MyAnnotation.class);
-        System.out.println("方法是否具有特定注解： " + methodMatcher.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        AnnotationMethodMatcher annotationMethodMatcher = new AnnotationMethodMatcher(MyMethodAnnotation.class);
+        System.out.println("annotationMethodMatcher matches = " + annotationMethodMatcher.matches(setNameMethod, target));
 
         // 使用 AspectJExpressionPointcut 基于 AspectJ 表达式匹配方法
-        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* com.xcs.spring.MyService.*(..))");
-        System.out.println("方法是否匹配 AspectJ 表达式： " + pointcut.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
+        aspectJExpressionPointcut.setExpression("execution(* com.xcs.spring.MyService.*(..))");
+        System.out.println("aspectJExpressionPointcut matches = " + aspectJExpressionPointcut.matches(setNameMethod, target));
 
         // 使用 NameMatchMethodPointcut 基于方法名称匹配方法
-        NameMatchMethodPointcut pointcut2 = new NameMatchMethodPointcut();
-        pointcut2.setMappedName("myMethod");
-        System.out.println("方法是否匹配指定名称： " + pointcut2.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        NameMatchMethodPointcut nameMatchMethodPointcut = new NameMatchMethodPointcut();
+        nameMatchMethodPointcut.setMappedName("setName");
+        System.out.println("nameMatchMethodPointcut matches = " + nameMatchMethodPointcut.matches(setNameMethod, target));
 
         // 使用 JdkRegexpMethodPointcut 基于正则表达式匹配方法
-        JdkRegexpMethodPointcut pointcut3 = new JdkRegexpMethodPointcut();
-        pointcut3.setPattern(".*my.*");
-        System.out.println("方法是否匹配正则表达式： " + pointcut3.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        JdkRegexpMethodPointcut jdkRegexpMethodPointcut = new JdkRegexpMethodPointcut();
+        jdkRegexpMethodPointcut.setPattern(".*set.*");
+        System.out.println("jdkRegexpMethodPointcut matches = " + jdkRegexpMethodPointcut.matches(setNameMethod, target));
     }
 }
+```
+
+`MyService` 类中的 `setName` 方法被 `@MyMethodAnnotation` 注解修饰，表示该方法具有特定的自定义注解。
+
+```java
+public class MyService {
+
+    @MyMethodAnnotation
+    public void setName() {
+        System.out.println("setName...");
+    }
+}
+```
+
+`MyMethodAnnotation` 是一个自定义注解，该注解可以应用于方法上。
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MyMethodAnnotation {
+}
+```
+
+运行结果，对于目标类中的 "setName" 方法，无论是基于注解、AspectJ 表达式、方法名称还是正则表达式的匹配器，都返回了 true，即这些匹配器都成功匹配了该方法。
+
+```java
+annotationMethodMatcher matches = true
+aspectJExpressionPointcut matches = true
+nameMatchMethodPointcut matches = true
+jdkRegexpMethodPointcut matches = true
 ```
 
 ### 八、常见问题
@@ -203,7 +236,7 @@ public class MethodMatcherDemo {
 1. **如何编写自定义的 MethodMatcher 实现？** 
 
    + 我们可能想要实现自定义的 `MethodMatcher` 接口以满足特定的匹配需求。在这种情况下，他们需要了解接口的方法以及如何在实现中正确地实现匹配逻辑。
-
+   
 2. **如何使用不同类型的 MethodMatcher？** 
 
    + Spring AOP 提供了多种类型的 `MethodMatcher` 实现，如基于名称、基于注解、基于正则表达式、基于 AspectJ 表达式等。了解如何选择并使用正确的类型的 `MethodMatcher` 对于实现所需的匹配逻辑至关重要。

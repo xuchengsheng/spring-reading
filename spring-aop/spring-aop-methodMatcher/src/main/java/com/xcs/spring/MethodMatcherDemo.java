@@ -5,26 +5,31 @@ import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
 
+import java.lang.reflect.Method;
+
 public class MethodMatcherDemo {
 
     public static void main(String[] args) throws Exception {
+        Class<MyService> target = MyService.class;
+        Method setNameMethod = target.getDeclaredMethod("setName");
+
         // 使用 AnnotationMethodMatcher 检查是否具有特定注解
-        AnnotationMethodMatcher methodMatcher = new AnnotationMethodMatcher(MyAnnotation.class);
-        System.out.println("方法是否具有特定注解： " + methodMatcher.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        AnnotationMethodMatcher annotationMethodMatcher = new AnnotationMethodMatcher(MyMethodAnnotation.class);
+        System.out.println("annotationMethodMatcher matches = " + annotationMethodMatcher.matches(setNameMethod, target));
 
         // 使用 AspectJExpressionPointcut 基于 AspectJ 表达式匹配方法
-        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* com.xcs.spring.MyService.*(..))");
-        System.out.println("方法是否匹配 AspectJ 表达式： " + pointcut.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
+        aspectJExpressionPointcut.setExpression("execution(* com.xcs.spring.MyService.*(..))");
+        System.out.println("aspectJExpressionPointcut matches = " + aspectJExpressionPointcut.matches(setNameMethod, target));
 
         // 使用 NameMatchMethodPointcut 基于方法名称匹配方法
-        NameMatchMethodPointcut pointcut2 = new NameMatchMethodPointcut();
-        pointcut2.setMappedName("myMethod");
-        System.out.println("方法是否匹配指定名称： " + pointcut2.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        NameMatchMethodPointcut nameMatchMethodPointcut = new NameMatchMethodPointcut();
+        nameMatchMethodPointcut.setMappedName("setName");
+        System.out.println("nameMatchMethodPointcut matches = " + nameMatchMethodPointcut.matches(setNameMethod, target));
 
         // 使用 JdkRegexpMethodPointcut 基于正则表达式匹配方法
-        JdkRegexpMethodPointcut pointcut3 = new JdkRegexpMethodPointcut();
-        pointcut3.setPattern(".*my.*");
-        System.out.println("方法是否匹配正则表达式： " + pointcut3.matches(MyService.class.getDeclaredMethod("myMethod"), MyService.class));
+        JdkRegexpMethodPointcut jdkRegexpMethodPointcut = new JdkRegexpMethodPointcut();
+        jdkRegexpMethodPointcut.setPattern(".*set.*");
+        System.out.println("jdkRegexpMethodPointcut matches = " + jdkRegexpMethodPointcut.matches(setNameMethod, target));
     }
 }
