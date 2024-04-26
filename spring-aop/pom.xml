@@ -39,6 +39,7 @@
         <module>spring-aop-aopContext</module>
         <module>spring-aop-targetSourceCreator</module>
         <module>spring-aop-exposeInvocationInterceptor</module>
+        <module>spring-aop-advice</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
