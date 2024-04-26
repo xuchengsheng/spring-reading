@@ -7,8 +7,8 @@
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
   - [六、最佳实践](#六最佳实践)
-  - [七、源码分析](#七源码分析)
-  - [八、常见问题](#八常见问题)
+  - [七、常见问题](#七常见问题)
+
 
 ### 一、基本信息
 
@@ -23,6 +23,7 @@
 1. **组合切点和通知**
 
    + Advisor接口允许将切点（Pointcut）和通知（Advice）组合在一起。切点确定何时应该应用通知，而通知定义了在连接点处执行的代码。
+
 3. **提供AOP配置的抽象**
 
    + Advisor接口是AOP配置的一种抽象，它使得可以通过编程方式或声明式的方式定义切面，并将它们应用到目标对象上。
@@ -97,7 +98,7 @@ public interface Advisor {
 
 ### 六、最佳实践
 
-使用Advisor来创建代理对象并应用切面逻辑。首先，我们创建了一个代理工厂`ProxyFactory`，并将目标对象`MyService`传递给它。然后，我们通过`proxyFactory.addAdvisor(new MyCustomAdvisor())`添加了一个自定义的Advisor，该Advisor定义了切点和通知。接着，我们通过`proxyFactory.getProxy()`获取了代理对象`MyService`。最后，我们调用了代理对象的方法`proxy.foo()`和`proxy.bar()`。
+使用Advisor来创建代理对象并应用切面逻辑。首先，通过创建代理工厂`ProxyFactory`，并将目标对象`MyService`传递给它。然后，通过`proxyFactory.addAdvisor(new MyCustomAdvisor())`添加了一个自定义的Advisor，其中包含了切点和通知的定义。接着，通过`proxyFactory.getProxy()`获取了代理对象`MyService`。最后，调用了代理对象的`foo()`方法，该方法触发了切面逻辑的执行。
 
 ```java
 public class AdvisorDemo {
@@ -110,19 +111,19 @@ public class AdvisorDemo {
         // 获取代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用方法
-        proxy.foo(); // 会触发通知
-        proxy.bar(); // 不会触发通知
+        proxy.foo();
     }
 }
 ```
 
-`MyCustomAdvisor`类是一个自定义的Advisor，它继承自`AbstractPointcutAdvisor`，用于将通知应用于带有特定注解的方法。在该类中，我们定义了一个通知对象`advice`和一个切点对象`pointcut`，切点用于匹配带有自定义注解`MyCustomAnnotation`的方法。通过实现`getPointcut()`方法和`getAdvice()`方法，我们指定了切点和通知的逻辑。这样，在应用该Advisor时，它将会根据定义的切点匹配带有指定注解的方法，并在匹配的方法执行前后应用通知。
+`MyCustomAdvisor`类是一个自定义的Advisor，它实现了`PointcutAdvisor`接口，并用于将通知应用于带有特定注解的方法。在该类中，我们定义了一个通知对象`advice`和一个切点对象`pointcut`，切点用于匹配带有自定义注解`MyCustomAnnotation`的方法。通过实现`getPointcut()`方法和`getAdvice()`方法，我们指定了切点和通知的逻辑。
 
 ```java
+
 /**
  * 自定义Advisor，用于将通知应用于带有特定注解的方法。
  */
-public class MyCustomAdvisor extends AbstractPointcutAdvisor {
+public class MyCustomAdvisor implements PointcutAdvisor {
 
     /**
      * 通知对象
@@ -143,16 +144,28 @@ public class MyCustomAdvisor extends AbstractPointcutAdvisor {
     public Advice getAdvice() {
         return advice;
     }
+
+    @Override
+    public boolean isPerInstance() {
+        return true;
+    }
 }
 ```
 
-`MyAdvice`类是一个通知类，实现了`MethodBeforeAdvice`接口，用于在目标方法执行前执行一些操作。
+`MyAdvice`类是一个通知类，它实现了`MethodInterceptor`接口，用于在方法执行前后添加额外的逻辑。在`invoke`方法中，我们首先输出了正在调用的方法名，然后调用了`invocation.proceed()`方法来执行原始方法，并获取了方法执行的结果。最后，我们在方法执行之后再次输出了方法名。
 
 ```java
-public class MyAdvice implements MethodBeforeAdvice {
+public class MyAdvice implements MethodInterceptor {
+
     @Override
-    public void before(Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("Before method: " + method.getName());
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        // 在方法调用之前执行的逻辑
+        System.out.println("Before " + invocation.getMethod().getName());
+        // 调用原始方法
+        Object result = invocation.proceed();
+        // 在方法调用之后执行的逻辑
+        System.out.println("After " + invocation.getMethod().getName());
+        return result;
     }
 }
 ```
@@ -166,39 +179,31 @@ public @interface MyCustomAnnotation {
 }
 ```
 
-`MyService`类包含了两个方法`foo()`和`bar()`。其中，`foo()`方法被标记了`@MyCustomAnnotation`注解，而`bar()`方法没有。当调用`foo()`方法时，将会执行特定的逻辑，而调用`bar()`方法则不会执行特定逻辑。这种注解标记方式为方法提供了特殊的标记，使得在应用切面时可以针对带有特定注解的方法执行特定的通知。
+`MyCustomAnnotation`类其中包含一个名为`foo`的方法。该方法被`@MyCustomAnnotation`注解标记，表明需要特殊处理。
 
 ```java
 public class MyService {
 
     @MyCustomAnnotation
     public void foo() {
-        System.out.println("Executing foo method");
-    }
-
-    public void bar() {
-        System.out.println("Executing bar method");
+        System.out.println("foo...");
     }
 }
 ```
 
-运行结果，切面逻辑成功应用于带有特定注解的方法，并且未被标记的方法不受影响。
+运行结果，切面逻辑成功应用于带有特定注解的方法。
 
 ```java
-Before method: foo
-Executing foo method
-Executing bar method
+Before foo
+foo...
+After foo
 ```
 
-### 七、源码分析
-
-暂无
-
-### 八、常见问题
+### 七、常见问题
 
 1. **切点定义错误** 
 
-  + 切点定义不准确或逻辑错误，导致切面无法正确地匹配到预期的连接点。
+     + 切点定义不准确或逻辑错误，导致切面无法正确地匹配到预期的连接点。
 
 2. **通知逻辑错误** 
 

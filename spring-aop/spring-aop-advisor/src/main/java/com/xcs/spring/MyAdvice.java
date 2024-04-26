@@ -1,12 +1,18 @@
 package com.xcs.spring;
 
-import org.springframework.aop.MethodBeforeAdvice;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
-import java.lang.reflect.Method;
+public class MyAdvice implements MethodInterceptor {
 
-public class MyAdvice implements MethodBeforeAdvice {
     @Override
-    public void before(Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("Before method: " + method.getName());
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        // 在方法调用之前执行的逻辑
+        System.out.println("Before " + invocation.getMethod().getName());
+        // 调用原始方法
+        Object result = invocation.proceed();
+        // 在方法调用之后执行的逻辑
+        System.out.println("After " + invocation.getMethod().getName());
+        return result;
     }
 }
