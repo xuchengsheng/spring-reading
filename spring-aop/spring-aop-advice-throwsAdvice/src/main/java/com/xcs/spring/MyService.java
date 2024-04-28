@@ -2,8 +2,8 @@ package com.xcs.spring;
 
 public class MyService {
 
-    public void doSomethingException() {
-        System.out.println("Doing something exception...");
+    public void foo() {
+        System.out.println("foo...");
         int i = 1 / 0;
     }
 }

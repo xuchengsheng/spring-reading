@@ -15,10 +15,10 @@ public class IntroductionInterceptorDemo {
         // 创建代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
-        proxy.doSomething();
+        proxy.foo();
         // 开始监控
         ((MyMonitoringCapable) proxy).toggleMonitoring();
         // 再次调用代理对象的方法
-        proxy.doSomething();
+        proxy.foo();
     }
 }

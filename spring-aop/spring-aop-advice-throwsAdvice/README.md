@@ -16,7 +16,7 @@
 
 ### 二、基本描述
 
-`ThrowsAdvice`接口是Spring AOP中的一种通知类型，用于在方法抛出异常时执行额外的逻辑。实现该接口的类可以捕获方法抛出的异常并执行自定义的异常处理逻辑，比如记录日志、发送通知等。
+`ThrowsAdvice`接口是Spring AOP中的一种通知类型，用于在方法抛出异常时执行额外的逻辑。实现该接口的类可以捕获方法抛出的异常并执行自定义的异常处理逻辑。
 
 ### 三、主要功能
 
@@ -74,11 +74,12 @@ public interface ThrowsAdvice extends AfterAdvice {
 
 ### 五、主要实现
 
-暂无
+1. **ThrowsAdviceInterceptor**
+   + 用于拦截方法抛出的异常，并触发相应的异常通知（`ThrowsAdvice`）。它负责捕获方法执行过程中抛出的异常，并调用相关的异常通知来处理异常情况。
 
 ### 六、最佳实践
 
-使用`ThrowsAdvice`接口来处理方法抛出的异常。它创建了一个代理工厂，并将目标对象（`MyService`）和异常通知（`MyThrowsAdvice`）传递给代理工厂。然后，它通过代理工厂获取代理对象，并调用代理对象的方法`doSomethingException()`。
+使用`ThrowsAdvice`接口来处理方法抛出的异常。它创建了一个代理工厂，并将目标对象（`MyService`）和异常通知（`MyThrowsAdvice`）传递给代理工厂。然后，它通过代理工厂获取代理对象，并调用代理对象的方法`foo()`。
 
 ```java
 public class ThrowsAdviceDemo {
@@ -91,7 +92,7 @@ public class ThrowsAdviceDemo {
         // 获取代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
-        proxy.doSomethingException();
+        proxy.foo();
     }
 }
 ```
@@ -106,19 +107,19 @@ public class MyThrowsAdvice implements ThrowsAdvice {
 }
 ```
 
-`MyService`类包含了一个名为`doSomethingException()`的方法，该方法执行某些操作，并故意引发了一个异常（通过除以零）。
+`MyService`类包含了一个名为`foo()`的方法，该方法执行某些操作，并故意引发了一个异常（通过除以零）。
 
 ```java
 public class MyService {
 
-    public void doSomethingException() {
-        System.out.println("Doing something exception...");
+    public void foo() {
+        System.out.println("foo...");
         int i = 1 / 0;
     }
 }
 ```
 
-运行结果，当调用了`MyService`类的`doSomethingException()`方法，但在该方法中发生了除以零的错误，导致了`java.lang.ArithmeticException: / by zero`异常的抛出。
+运行结果，当调用了`MyService`类的`foo()`方法，但在该方法中发生了除以零的错误，导致了`java.lang.ArithmeticException: / by zero`异常的抛出。
 
 ```java
 Doing something exception...

@@ -2,8 +2,12 @@ package com.xcs.spring;
 
 public class MyService {
 
-    public String doSomething() {
-        System.out.println("Doing something...");
-        return "hello world";
+    public void foo() {
+        System.out.println("foo...");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

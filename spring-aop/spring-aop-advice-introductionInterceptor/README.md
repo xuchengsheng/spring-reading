@@ -1,14 +1,13 @@
 ## IntroductionInterceptor
 
-- [IntroductionInterceptor](#IntroductionInterceptor)
-    - [一、基本信息](#一基本信息)
-    - [二、基本描述](#二基本描述)
-    - [三、主要功能](#三主要功能)
-    - [四、接口源码](#四接口源码)
-    - [五、主要实现](#五主要实现)
-    - [六、最佳实践](#六最佳实践)
-    - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
+- [IntroductionInterceptor](#introductioninterceptor)
+  - [一、基本信息](#一基本信息)
+  - [二、基本描述](#二基本描述)
+  - [三、主要功能](#三主要功能)
+  - [四、接口源码](#四接口源码)
+  - [五、主要实现](#五主要实现)
+  - [六、最佳实践](#六最佳实践)
+  - [七、常见问题](#七常见问题)
 
 ### 一、基本信息
 
@@ -69,11 +68,11 @@ public class IntroductionInterceptorDemo {
         // 创建代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
-        proxy.doSomething();
+        proxy.foo();
         // 开始监控
         ((MyMonitoringCapable) proxy).toggleMonitoring();
         // 再次调用代理对象的方法
-        proxy.doSomething();
+        proxy.foo();
     }
 }
 ```
@@ -98,12 +97,11 @@ public class MyMonitoringIntroductionAdvice extends DelegatingIntroductionInterc
     @Override
     protected Object doProceed(MethodInvocation mi) throws Throwable {
         if (this.active) {
-            System.out.println("开启监控...");
+            System.out.println("[开启监控" + mi.getMethod().getName() + "]");
             long startTime = System.currentTimeMillis();
             Object result = super.doProceed(mi);
             long endTime = System.currentTimeMillis();
-            System.out.println(mi.getClass().getName() + "." + mi.getMethod().getName() + " 耗费时间：" + (endTime - startTime) + " 毫秒");
-            System.out.println("结束监控...");
+            System.out.println("[结束监控" + mi.getMethod().getName() + "] 耗费时间：" + (endTime - startTime) + " 毫秒");
             return result;
         }
         return super.doProceed(mi);
@@ -119,24 +117,36 @@ public interface MyMonitoringCapable {
 }
 ```
 
-`MyService` 类是一个简单的服务类，其中包含了一个名为 `doSomething()` 的方法。在上下文中，`MyService` 类被用作目标对象，即需要被拦截和增强的对象。
+`MyService` 类是一个简单的服务类，其中包含了一个名为 `foo()` 的方法。在上下文中，`MyService` 类被用作目标对象，即需要被拦截和增强的对象。
 
 ```java
 public class MyService {
 
-    public String doSomething() {
-        System.out.println("Doing something...");
-        return "hello world";
+    public void foo() {
+        System.out.println("foo...");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+```
+
+运行结果，这个运行结果说明了引介通知成功地增强了目标方法，实现了在目标方法执行前后动态地添加额外的逻辑。
+
+```java
+foo...
+[开启监控foo]
+foo...
+[结束监控foo] 耗费时间：1008 毫秒
 ```
 
 ### 七、常见问题
 
 1. **引介的作用和优势是什么？**
-
    - 这个问题探讨了引介在 AOP 中的作用和优势，以及它与其他 AOP 概念（如通知、切点）的区别。
-
+   
 2. **如何实现引介？**
 
    - 这个问题涉及到如何使用 `IntroductionInterceptor` 接口以及其子类来实现引介功能，以及在 Spring AOP 中如何配置和应用引介。

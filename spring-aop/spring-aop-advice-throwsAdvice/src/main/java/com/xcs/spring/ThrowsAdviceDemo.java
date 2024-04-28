@@ -12,6 +12,6 @@ public class ThrowsAdviceDemo {
         // 获取代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
-        proxy.doSomethingException();
+        proxy.foo();
     }
 }

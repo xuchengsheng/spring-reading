@@ -8,8 +8,6 @@
   - [六、最佳实践](#六最佳实践)
   - [七、常见问题](#七常见问题)
 
-
-
 ### 一、基本信息
 
 ✒️ **作者** - Lex 📝 **博客** - [掘金](https://juejin.cn/user/4251135018533068/posts) 📚 **源码地址** - [github](https://github.com/xuchengsheng/spring-reading)
@@ -85,45 +83,45 @@ public class MethodInterceptorDemo {
         // 获取代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
-        proxy.doSomething();
+        proxy.foo();
     }
 }
 ```
 
-`MyMethodInterceptor` 类用于实现方法拦截和增强的功能。在 `invoke()` 方法中，首先通过 `MethodInvocation` 对象获取被调用方法的信息，例如方法名等，并在方法调用之前输出方法被调用的信息。然后调用 `invocation.proceed()` 方法来执行原始方法，获取方法执行结果。最后，在方法调用之后输出方法返回值，并将其返回。
+`MyMethodInterceptor` 类用于实现方法拦截和增强的功能。在 `invoke()` 方法中，首先通过 `MethodInvocation` 对象获取被调用方法的信息，例如方法名等，并在方法调用之前输出方法被调用的信息。然后调用 `invocation.proceed()` 方法来执行原始方法，获取方法执行结果。最后并将其返回。
 
 ```java
 public class MyMethodInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         // 在方法调用之前执行的逻辑
-        System.out.println("Method " + invocation.getMethod().getName() + " is called.");
+        System.out.println("Before Method " + invocation.getMethod().getName());
         // 调用原始方法
         Object result = invocation.proceed();
         // 在方法调用之后执行的逻辑
-        System.out.println("Method " + invocation.getMethod().getName() + " returns " + result);
+        System.out.println("After Method " + invocation.getMethod().getName());
         return result;
     }
 }
 ```
 
-`MyService` 类是一个简单的服务类，其中包含了一个名为 `doSomething()` 的方法。在上下文中，`MyService` 类被用作目标对象，即需要被拦截和增强的对象。
+`MyService` 类是一个简单的服务类，其中包含了一个名为 `foo()` 的方法。在上下文中，`MyService` 类被用作目标对象，即需要被拦截和增强的对象。
 
 ```java
 public class MyService {
 
-    public void doSomething() {
-        System.out.println("Doing something...");
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
 
-运行结果，在调用 `MyService` 实例的 `doSomething()` 方法时，`MyMethodInterceptor` 拦截器成功地拦截了方法的执行，并在方法执行前后添加了额外的逻辑处理。
+运行结果，在调用 `MyService` 实例的 `foo()` 方法时，`MyMethodInterceptor` 拦截器成功地拦截了方法的执行，并在方法执行前后添加了额外的逻辑处理。
 
 ```java
-Method doSomething is called.
-Doing something...
-Method doSomething returns hello world
+Before Method foo
+foo...
+After Method foo
 ```
 
 ### 七、常见问题

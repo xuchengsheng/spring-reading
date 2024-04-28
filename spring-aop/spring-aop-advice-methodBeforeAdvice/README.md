@@ -93,7 +93,7 @@ public class MethodBeforeAdviceDemo {
 public class MyMethodBeforeAdvice implements MethodBeforeAdvice {
     @Override
     public void before(Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("Before method " + method.getName() + " is called.");
+        System.out.println("Before method " + method.getName());
     }
 }
 ```
@@ -103,18 +103,17 @@ public class MyMethodBeforeAdvice implements MethodBeforeAdvice {
 ```java
 public class MyService {
 
-    public String doSomething() {
-        System.out.println("Doing something...");
-        return "hello world";
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
 
-运行结果，调用目标方法`doSomething`之前，`MyMethodBeforeAdvice`中的前置通知被成功触发，并打印了相应的信息。
+运行结果，调用目标方法`foo`之前，`MyMethodBeforeAdvice`中的前置通知被成功触发，并打印了相应的信息。
 
 ```java
-Before method doSomething is called.
-Doing something...
+Before method foo
+foo...
 ```
 
 ### 七、常见问题

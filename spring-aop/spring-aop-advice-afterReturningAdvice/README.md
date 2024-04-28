@@ -15,7 +15,7 @@
 
 ### 二、基本描述
 
-`AfterReturningAdvice`接口是Spring AOP框架中的一个核心接口，用于在目标方法执行后拦截并执行自定义逻辑。通过实现该接口的`afterReturning`方法，可以在目标方法成功返回结果后进行一些操作，如日志记录、性能监控等。
+`AfterReturningAdvice`接口是Spring AOP框架中的一个核心接口，用于在目标方法执行后拦截并执行自定义逻辑。通过实现该接口的`afterReturning`方法，可以在目标方法成功返回结果后进行一些操作。
 
 ### 三、主要功能
 
@@ -24,9 +24,8 @@
    + 记录目标方法的执行情况，如方法名称、参数值、返回结果等，以便跟踪应用程序的运行状态。
 
 2. **性能监控**
-
    + 统计目标方法的执行时间，分析应用程序的性能瓶颈，优化程序性能。
-
+   
 3. **缓存处理**
 
    + 在方法返回结果后，将结果缓存起来，以提高后续相同请求的响应速度。
@@ -83,7 +82,7 @@ public class AfterReturningAdviceDemo {
         // 获取代理对象
         MyService proxy = (MyService) proxyFactory.getProxy();
         // 调用代理对象的方法
-        proxy.doSomething();
+        proxy.foo();
     }
 }
 ```
@@ -94,28 +93,27 @@ public class AfterReturningAdviceDemo {
 public class MyAfterReturningAdvice implements AfterReturningAdvice {
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("After method " + method.getName() + " is called, returned value: " + returnValue);
+        System.out.println("After Method " + method.getName());
     }
 }
 ```
 
-`MyService` 类是一个简单的服务类，其中包含了一个名为 `doSomething()` 的方法。在上下文中，`MyService` 类被用作目标对象，即需要被拦截和增强的对象。
+`MyService` 类是一个简单的服务类，其中包含了一个名为 `foo()` 的方法。在上下文中，`MyService` 类被用作目标对象，即需要被拦截和增强的对象。
 
 ```java
 public class MyService {
 
-    public String doSomething() {
-        System.out.println("Doing something...");
-        return "hello world";
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
 
-运行结果，成功地执行了代理对象的`doSomething()`方法，并在方法执行完成后，后置返回通知`MyAfterReturningAdvice`被触发。
+运行结果，成功地执行了代理对象的`foo()`方法，并在方法执行完成后，后置返回通知`MyAfterReturningAdvice`被触发。
 
 ```java
-Doing something...
-After method doSomething is called, returned value: hello world
+foo...
+After Method foo
 ```
 
 ### 七、常见问题
