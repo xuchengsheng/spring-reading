@@ -228,6 +228,37 @@ After Method foo
 
 ### 七、源码分析
 
+在`org.springframework.aop.framework.ReflectiveMethodInvocation#ReflectiveMethodInvocation`方法中，`ReflectiveMethodInvocation`类的构造函数，用于创建一个反射方法调用对象。它接收代理对象、目标对象、要调用的方法、方法参数、目标类以及拦截器和动态方法匹配器列表作为参数，并在构造过程中对这些参数进行初始化。
+
+```java
+/**
+ * 使用给定参数构造一个新的 ReflectiveMethodInvocation。
+ * @param proxy 调用所在的代理对象
+ * @param target 要调用的目标对象
+ * @param method 要调用的方法
+ * @param arguments 调用方法时传入的参数
+ * @param targetClass 目标类，用于方法匹配器的调用
+ * @param interceptorsAndDynamicMethodMatchers 应该应用的拦截器，以及需要在运行时进行评估的任何 InterceptorAndDynamicMethodMatchers。
+ * 此结构中包含的 MethodMatchers 必须已经被找到并匹配，尽可能地是静态的。传递一个数组可能会快约10%，但会使代码复杂化。并且它只能用于静态切入点。
+ */
+protected ReflectiveMethodInvocation(
+        Object proxy, @Nullable Object target, Method method, @Nullable Object[] arguments,
+        @Nullable Class<?> targetClass, List<Object> interceptorsAndDynamicMethodMatchers) {
+	// 代理对象
+    this.proxy = proxy;
+    // 目标对象
+    this.target = target; 
+    // 目标类
+    this.targetClass = targetClass; 
+    // 找到桥接方法
+    this.method = BridgeMethodResolver.findBridgedMethod(method); 
+    // 调整参数
+    this.arguments = AopProxyUtils.adaptArgumentsIfNecessary(method, arguments); 
+    // 拦截器和动态方法匹配器列表
+    this.interceptorsAndDynamicMethodMatchers = interceptorsAndDynamicMethodMatchers; 
+}
+```
+
 在`org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`方法中，首先判断当前拦截器索引是否到达了拦截器链的末尾，如果是，则调用连接点方法；否则，获取下一个拦截器或拦截器与动态方法匹配器对象，并进行动态方法匹配。如果方法匹配成功，则调用拦截器的 `invoke()` 方法；如果方法匹配失败，则跳过当前拦截器并调用链中的下一个拦截器。如果获取的是拦截器对象，则直接调用拦截器的 `invoke()` 方法。这个方法负责在方法调用链中依次执行拦截器或目标方法，实现了方法调用链的顺序执行。
 
 ```java
