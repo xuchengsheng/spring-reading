@@ -270,6 +270,22 @@ public Object proceed() throws Throwable {
 }
 ```
 
+在`org.springframework.aop.framework.ReflectiveMethodInvocation#invokeJoinpoint`方法中，使用反射调用连接点。
+
+```java
+/**
+ * 使用反射调用连接点。
+ * 子类可以重写此方法以使用自定义调用。
+ * @return 连接点的返回值
+ * @throws Throwable 如果调用连接点导致异常
+ */
+@Nullable
+protected Object invokeJoinpoint() throws Throwable {
+    // 使用反射调用连接点
+    return AopUtils.invokeJoinpointUsingReflection(this.target, this.method, this.arguments);
+}
+```
+
 在`org.springframework.aop.support.AopUtils#invokeJoinpointUsingReflection`方法中，通过反射调用目标方法，作为AOP方法调用的一部分。它接收目标对象、要调用的方法以及方法的参数作为输入，并尝试使用反射机制来调用方法。
 
 ```java
