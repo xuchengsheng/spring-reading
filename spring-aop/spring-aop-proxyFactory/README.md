@@ -89,17 +89,6 @@ public class ProxyFactoryDemo {
 }
 ```
 
-用于实现在目标方法调用之前执行的逻辑。在`before`方法中，通过参数`method`获取目标方法的信息，然后打印出目标方法的名称，表示在目标方法调用前执行的动作。这个类可以作为前置通知被添加到代理工厂中，以实现在目标对象的方法调用前执行额外的逻辑。
-
-```java
-public class MyMethodBeforeAdvice implements MethodBeforeAdvice {
-    @Override
-    public void before(Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("Before method " + method.getName() + " is called.");
-    }
-}
-```
-
 这个类可以作为一个目标对象，通过代理工厂创建代理对象，并在其方法调用前后应用额外的逻辑，实现面向切面编程的功能。
 
 ```java
@@ -208,32 +197,7 @@ protected final synchronized AopProxy createAopProxy() {
 
 ```
 
-### 七、操作Advice的对象
-
-`ProxyFactory`类提供了一系列方法来操作通知（Advice）和顾问（Advisor），从而实现对代理对象行为的控制和定制。以下是这些方法的简要描述：
-
-```java
-// 添加一个通知对象到通知链中
-void addAdvice(Advice advice) throws AopConfigException;
-// 在指定位置添加一个通知对象到通知链中
-void addAdvice(int pos, Advice advice) throws AopConfigException;
-// 添加一个顾问对象到顾问链中
-void addAdvisor(Advisor advisor) throws AopConfigException;
-// 在指定位置添加一个顾问对象到顾问链中
-void addAdvisor(int pos, Advisor advisor) throws AopConfigException;
-// 获取指定顾问对象在顾问链中的索引位置
-int indexOf(Advisor advisor);
-// 从顾问链中移除指定的顾问对象
-boolean removeAdvisor(Advisor advisor) throws AopConfigException;
-// 根据索引位置从顾问链中移除顾问对象
-void removeAdvisor(int index) throws AopConfigException;
-// 替换顾问链中的一个顾问对象为另一个顾问对象
-boolean replaceAdvisor(Advisor a, Advisor b) throws AopConfigException;
-// 检查代理工厂是否已被冻结
-boolean isFrozen();
-```
-
-### 八、常见问题
+### 七、常见问题
 
 1. **代理对象的类型问题**
 
