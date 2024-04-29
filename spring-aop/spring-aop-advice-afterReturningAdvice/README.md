@@ -67,7 +67,33 @@ public interface AfterReturningAdvice extends AfterAdvice {
 
    + 实现了返回后通知，使用 AspectJ 风格定义的通知，用于在目标方法成功执行并返回结果后执行额外的逻辑。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class Advice {
+<<Interface>>
+
+}
+class AfterAdvice {
+<<Interface>>
+
+}
+class AfterReturningAdvice {
+<<Interface>>
+
+}
+class AspectJAfterReturningAdvice
+
+AfterAdvice  -->  Advice 
+AfterReturningAdvice  -->  AfterAdvice 
+AspectJAfterReturningAdvice  ..>  Advice 
+AspectJAfterReturningAdvice  ..>  AfterAdvice 
+AspectJAfterReturningAdvice  ..>  AfterReturningAdvice 
+~~~
+
+### 七、最佳实践
 
 使用Spring AOP中的后置返回通知（AfterReturningAdvice）。首先，创建了一个代理工厂（ProxyFactory）并指定目标对象（MyService）。然后，创建了一个后置返回通知（MyAfterReturningAdvice）并添加到代理工厂中。接着，通过代理工厂获取代理对象，并调用代理对象的方法。
 
@@ -115,21 +141,3 @@ public class MyService {
 foo...
 After Method foo
 ```
-
-### 七、常见问题
-
-1. **无法拦截异常**
-
-   + 仅在目标方法成功返回时被调用，无法捕获和处理方法抛出的异常。
-   
-2. **无法修改返回值**
-
-   + `afterReturning`方法可以看到方法的返回值，但无法修改它。如果需要修改返回值，可以考虑使用环绕通知（Around Advice）。
-
-3. **无法访问方法体内的局部变量**
-
-   + 只能获取到方法的返回值、方法名称、参数和目标对象，无法访问方法内的局部变量。
-
-4. **无法控制方法执行流程**
-
-   + 只能在方法成功返回后执行，无法控制方法执行的前后顺序，也无法阻止方法的执行。
