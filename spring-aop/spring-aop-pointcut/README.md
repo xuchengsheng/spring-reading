@@ -13,7 +13,6 @@
     - [AnnotationMatchingPointcut](#annotationmatchingpointcut)
     - [NameMatchMethodPointcut](#namematchmethodpointcut)
     - [JdkRegexpMethodPointcut](#jdkregexpmethodpointcut)
-  - [八、常见问题](#八常见问题)
 
 
 ### 一、基本信息
@@ -376,17 +375,3 @@ MethodMatcher MyService getName = false
 MethodMatcher MyService getAge = false
 MethodMatcher MyService setName = true
 ```
-
-### 八、常见问题
-
-1. **切入点表达式定义错误** 
-
-   + 使用 AspectJ 表达式时，可能会由于表达式定义错误导致切入点匹配失败。例如，表达式写错了、漏掉了必要的切入点信息等。
-
-2. **切入点过于宽泛** 
-
-   + 切入点定义过于宽泛，导致匹配到了不必要的方法，使得通知影响范围过大。这可能会导致性能问题或意外的行为。
-
-4. **切入点过于狭窄** 
-
-   + 切入点定义过于狭窄，导致无法匹配到预期的目标方法，使得通知无法正确应用。这可能会导致切面无法达到预期的效果。
