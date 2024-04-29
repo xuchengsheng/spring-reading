@@ -1,14 +1,14 @@
 ## AdvisorChainFactory
 
-- [AdvisorChainFactory](#AdvisorChainFactory)
+- [AdvisorChainFactory](#advisorchainfactory)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
     - [四、接口源码](#四接口源码)
     - [五、主要实现](#五主要实现)
-    - [六、最佳实践](#六最佳实践)
-    - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
+    - [六、类关系图](#六类关系图)
+    - [七、最佳实践](#七最佳实践)
+    - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -62,7 +62,21 @@ public interface AdvisorChainFactory {
 
    + 负责根据给定的AOP配置、被代理的方法和目标类，确定应该应用哪些拦截器，并支持动态方法匹配和缓存机制，以提供高效的顾问链创建功能
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AdvisorChainFactory {
+<<Interface>>
+
+}
+class DefaultAdvisorChainFactory
+
+DefaultAdvisorChainFactory  ..>  AdvisorChainFactory 
+~~~
+
+### 七、最佳实践
 
 使用`DefaultAdvisorChainFactory`类来创建Advisor链。首先，创建了一个`AdvisedSupport`对象，配置了前置通知和后置返回通知。然后，指定了目标类和目标方法。接着，实例化了`DefaultAdvisorChainFactory`类，并调用其`getInterceptorsAndDynamicInterceptionAdvice()`方法获取Advisor链。最后，打印了Advisor链中的拦截器。
 
@@ -79,7 +93,7 @@ public class AdvisorChainFactoryDemo {
         // 设置目标类
         Class<MyService> targetClass = MyService.class;
         // 获取目标方法
-        Method method = targetClass.getDeclaredMethod("doSomething");
+        Method method = targetClass.getDeclaredMethod("foo");
 
         // 创建默认的Advisor链工厂实例
         DefaultAdvisorChainFactory chainFactory = new DefaultAdvisorChainFactory();
@@ -98,9 +112,11 @@ org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor@215be6bb
 org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor@4439f31e
 ```
 
-### 七、源码分析
+### 八、源码分析
 
 `DefaultAdvisorChainFactory`类。它提供了一种简单但确定的方法，根据给定的`Advised`对象，在方法级别确定通知链的构建顺序。通过遍历配置的Advisor数组，并根据Advisor的类型和Pointcut来确定应该应用哪些拦截器，最终返回一个拦截器列表。在此过程中，它支持动态方法匹配和引入拦截器的处理，并提供了一个缓存机制来提高性能。
+
+[AdvisorAdapterRegistry源码分析](../spring-aop-advisorAdapterRegistry/README.md)
 
 ```java
 /**
@@ -200,17 +216,3 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 
 }
 ```
-
-### 八、常见问题
-
-1. **拦截器未被正确应用** 
-
-   + 如果`AdvisorChainFactory`未正确构建Advisor链，可能会导致拦截器未按预期应用于目标方法。
-
-2. **动态方法匹配错误** 
-
-   + 如果动态方法匹配器（DynamicMethodMatcher）未正确配置或应用，可能会导致拦截器未在预期条件下执行。
-
-3. **引入拦截器未生效**
-
-   + 如果引入拦截器（IntroductionInterceptor）未被正确添加到Advisor链中，可能会导致引入功能无法正常工作。

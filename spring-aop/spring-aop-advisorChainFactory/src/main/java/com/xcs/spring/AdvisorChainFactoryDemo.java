@@ -18,7 +18,7 @@ public class AdvisorChainFactoryDemo {
         // 设置目标类
         Class<MyService> targetClass = MyService.class;
         // 获取目标方法
-        Method method = targetClass.getDeclaredMethod("doSomething");
+        Method method = targetClass.getDeclaredMethod("foo");
 
         // 创建默认的Advisor链工厂实例
         DefaultAdvisorChainFactory chainFactory = new DefaultAdvisorChainFactory();
