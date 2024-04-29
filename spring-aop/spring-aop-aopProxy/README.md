@@ -279,6 +279,10 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 
 在`org.springframework.aop.framework.JdkDynamicAopProxy#invoke`方法中，`JdkDynamicAopProxy`实现了`InvocationHandler`接口，因此可以执行`invoke`方法。在方法中，首先根据方法是否为`equals`或`hashCode`方法进行特殊处理，然后获取目标对象并获取拦截器链。接着，根据拦截器链是否为空，选择直接调用目标对象方法或者通过方法拦截器链依次执行。最后，根据方法的返回值类型进行处理，如果返回值为目标对象并且返回类型与代理类型相同，则将返回值修改为代理对象。在方法执行完毕后，确保释放目标对象并恢复旧的代理对象。
 
+[AdvisorChainFactory源码分析](../spring-aop-advisorChainFactory/README.md)
+
+[ProxyMethodInvocation源码分析](../spring-aop-proxyMethodInvocation/README.md)
+
 ```java
 /**
  * 实现了 {@code InvocationHandler.invoke} 方法。
@@ -523,6 +527,10 @@ private Callback[] getCallbacks(Class<?> rootClass) throws Exception {
 ```
 
 在`org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept`方法中，首先，它获取目标对象和目标类，并获取与指定方法相关的拦截器链。然后，根据拦截器链和方法的特性进行适当的处理。如果拦截器链为空且方法是公共的，则直接调用目标方法，否则创建一个方法调用。最后，处理方法调用的返回值并返回结果。在方法执行过程中，还会根据配置决定是否暴露代理对象，并在必要时设置AOP上下文。最后，在finally块中释放目标对象，并在必要时恢复旧的代理对象。
+
+[AdvisorChainFactory源码分析](../spring-aop-advisorChainFactory/README.md)
+
+[ProxyMethodInvocation源码分析](../spring-aop-proxyMethodInvocation/README.md)
 
 ```java
 @Override
