@@ -6,9 +6,8 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、常见问题](#七常见问题)
-
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
 
 ### 一、基本信息
 
@@ -24,9 +23,6 @@
 
    + Advisor接口允许将切点（Pointcut）和通知（Advice）组合在一起。切点确定何时应该应用通知，而通知定义了在连接点处执行的代码。
 
-3. **提供AOP配置的抽象**
-
-   + Advisor接口是AOP配置的一种抽象，它使得可以通过编程方式或声明式的方式定义切面，并将它们应用到目标对象上。
 
 ### 四、接口源码
 
@@ -74,29 +70,71 @@ public interface Advisor {
 }
 ```
 
+`PointcutAdvisor`接口是所有由切点驱动的Advisor的超级接口。它覆盖了几乎所有的Advisor，但不包括引介Advisor，因为引介Advisor不适用于方法级别的匹配。该接口表示由切点驱动的Advisor，通过`getPointcut()`方法获取驱动该Advisor的切点。 PointcutAdvisor通常用于基于切点的切面，通过指定切点来确定通知逻辑应该应用于哪些连接点。
+
+```java
+/**
+ * 所有由切点驱动的Advisor的超级接口。
+ * 这几乎涵盖了所有的Advisor，除了引介Advisor，
+ * 因为方法级别的匹配不适用于引介Advisor。
+ *
+ * 该接口是Advisor的子接口，用于表示由切点驱动的Advisor。
+ * 切点驱动的Advisor通常用于基于切点的切面，通过指定切点来确定通知逻辑应该应用于哪些连接点。
+ * 
+ * 作者：Rod Johnson
+ */
+public interface PointcutAdvisor extends Advisor {
+
+	/**
+	 * 获取驱动该Advisor的切点。
+	 */
+	Pointcut getPointcut();
+
+}
+```
+
 ### 五、主要实现
 
 1. **RegexpMethodPointcutAdvisor**
 
    - 基于正则表达式来匹配方法名的切点。通过使用正则表达式，可以根据方法名模式匹配连接点，并将通知应用于匹配的连接点，从而实现基于方法名模式的切面逻辑。
-
 2. **AspectJExpressionPointcutAdvisor**
 
    - 基于AspectJ表达式来定义切点。通过使用AspectJ的语法，可以更灵活地定义切面，从而匹配连接点，并将通知应用于匹配的连接点，实现更复杂的切面逻辑。
-
 3. **NameMatchMethodPointcutAdvisor**
 
    - 基于方法名模式匹配来定义切点。通过使用方法名模式，可以轻松地匹配连接点，并将通知应用于匹配的连接点，从而实现基于方法名模式的切面逻辑。
-
 4. **DefaultPointcutAdvisor**
 
    - 一个通用的切点Advisor，用于将切点和通知组合在一起。它允许将任何类型的通知与任何类型的切点结合使用，并将通知应用于匹配的连接点，从而实现横切关注点的管理。
 
-5. **DefaultIntroductionAdvisor**
+### 六、类关系图
 
-   + 是Spring AOP中的一个特殊类型的Advisor实现，用于引入新的接口（或Mixin）到目标类中。它允许将新的接口实现引入到现有的目标类中，以扩展目标类的功能。通过`DefaultIntroductionAdvisor`，可以在不修改现有类的情况下，向其添加新的行为或功能，从而实现更好的代码复用和扩展性。
+~~~mermaid
+classDiagram
+direction BT
+class Advisor {
+<<Interface>>
 
-### 六、最佳实践
+}
+class AspectJPointcutAdvisor
+class DefaultPointcutAdvisor
+class NameMatchMethodPointcutAdvisor
+class PointcutAdvisor {
+<<Interface>>
+
+}
+class RegexpMethodPointcutAdvisor
+
+AspectJPointcutAdvisor  ..>  PointcutAdvisor 
+DefaultPointcutAdvisor  ..>  PointcutAdvisor 
+NameMatchMethodPointcutAdvisor  ..>  PointcutAdvisor 
+PointcutAdvisor  -->  Advisor 
+RegexpMethodPointcutAdvisor  ..>  PointcutAdvisor 
+
+~~~
+
+### 七、最佳实践
 
 使用Advisor来创建代理对象并应用切面逻辑。首先，通过创建代理工厂`ProxyFactory`，并将目标对象`MyService`传递给它。然后，通过`proxyFactory.addAdvisor(new MyCustomAdvisor())`添加了一个自定义的Advisor，其中包含了切点和通知的定义。接着，通过`proxyFactory.getProxy()`获取了代理对象`MyService`。最后，调用了代理对象的`foo()`方法，该方法触发了切面逻辑的执行。
 
@@ -160,11 +198,11 @@ public class MyAdvice implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         // 在方法调用之前执行的逻辑
-        System.out.println("Before " + invocation.getMethod().getName());
+        System.out.println("Before Method " + invocation.getMethod().getName());
         // 调用原始方法
         Object result = invocation.proceed();
         // 在方法调用之后执行的逻辑
-        System.out.println("After " + invocation.getMethod().getName());
+        System.out.println("After Method " + invocation.getMethod().getName());
         return result;
     }
 }
@@ -194,25 +232,7 @@ public class MyService {
 运行结果，切面逻辑成功应用于带有特定注解的方法。
 
 ```java
-Before foo
+Before Method foo
 foo...
-After foo
+After Method foo
 ```
-
-### 七、常见问题
-
-1. **切点定义错误** 
-
-     + 切点定义不准确或逻辑错误，导致切面无法正确地匹配到预期的连接点。
-
-2. **通知逻辑错误** 
-
-   + 通知逻辑的实现可能存在错误，导致切面的行为与预期不符。
-
-3. **切面顺序问题** 
-
-   + 当存在多个Advisor时，通知的应用顺序可能会影响最终的切面逻辑，需要正确地管理切面的顺序。
-
-4. **切面匹配范围问题** 
-
-   + 切面匹配范围过于宽泛或过于狭窄，导致切面的逻辑影响到不应该被影响的连接点，或者未能影响到应该被影响的连接点。
