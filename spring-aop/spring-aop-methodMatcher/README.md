@@ -230,21 +230,3 @@ aspectJExpressionPointcut matches = true
 nameMatchMethodPointcut matches = true
 jdkRegexpMethodPointcut matches = true
 ```
-
-### 八、常见问题
-
-1. **如何编写自定义的 MethodMatcher 实现？** 
-
-   + 我们可能想要实现自定义的 `MethodMatcher` 接口以满足特定的匹配需求。在这种情况下，他们需要了解接口的方法以及如何在实现中正确地实现匹配逻辑。
-   
-2. **如何使用不同类型的 MethodMatcher？** 
-
-   + Spring AOP 提供了多种类型的 `MethodMatcher` 实现，如基于名称、基于注解、基于正则表达式、基于 AspectJ 表达式等。了解如何选择并使用正确的类型的 `MethodMatcher` 对于实现所需的匹配逻辑至关重要。
-
-3. **如何与 Pointcut 一起使用 MethodMatcher？**
-
-   +  `MethodMatcher` 接口通常作为切点（Pointcut）的一部分使用。我们需要了解如何创建和配置切点，并将适当的 `MethodMatcher` 与之关联，以便在 AOP 拦截器中选择正确的方法。
-
-4. **如何处理动态匹配需求？** 
-
-   + 在某些情况下，方法匹配可能需要在运行时动态确定，而不是静态地在代理创建时确定。我们需要了解如何处理动态匹配需求，并确定是否需要实现 `isRuntime()` 方法以支持此功能。
