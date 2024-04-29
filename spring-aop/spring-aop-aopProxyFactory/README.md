@@ -73,7 +73,21 @@ public interface AopProxyFactory {
 
    + `DefaultAopProxyFactory` 是 `AopProxyFactory` 接口的默认实现类，它负责根据给定的 `AdvisedSupport` 配置对象创建 AOP 代理，根据配置信息选择合适的代理方式（JDK 动态代理或 CGLIB 代理），并处理可能出现的异常情况，使得 Spring AOP 能够灵活地生成并使用 AOP 代理对象，实现切面编程的功能。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AopProxyFactory {
+<<Interface>>
+
+}
+class DefaultAopProxyFactory
+
+DefaultAopProxyFactory  ..>  AopProxyFactory 
+~~~
+
+### 七、最佳实践
 
 何使用 Spring AOP 创建 JDK 动态代理和 CGLIB 代理。在 `jdkProxy()` 方法中，首先创建了一个 `AdvisedSupport` 对象用于配置 AOP 代理，然后通过 `DefaultAopProxyFactory` 实例创建 JDK 动态代理对象，并打印生成的代理类。而在 `cglibProxy()` 方法中，同样创建了一个 `AdvisedSupport` 对象用于配置 AOP 代理，然后通过 `DefaultAopProxyFactory` 实例创建 CGLIB 代理对象，并打印生成的代理类。
 
@@ -130,7 +144,7 @@ jdkProxy = class com.sun.proxy.$Proxy0
 cglibProxy = class com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$3c109cf5
 ```
 
-### 七、源码分析
+### 八、源码分析
 
 `DefaultAopProxyFactory` 是 `AopProxyFactory` 接口的默认实现，根据给定的 `AdvisedSupport` 配置对象，可以创建 CGLIB 代理或 JDK 动态代理。如果对于给定的 `AdvisedSupport` 实例满足以下条件之一，则会创建 CGLIB 代理：优化标志被设置、代理目标类标志被设置，或者未指定代理接口。通常情况下，可以通过指定 `proxyTargetClass` 来强制使用 CGLIB 代理，或者通过指定一个或多个接口来使用 JDK 动态代理。
 
