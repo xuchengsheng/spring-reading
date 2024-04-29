@@ -194,3 +194,17 @@ protected final synchronized AopProxy createAopProxy() {
 }
 
 ```
+
+在`org.springframework.aop.framework.ProxyCreatorSupport#getAopProxyFactory`
+方法中，用于返回该代理配置所使用的AOP代理工厂（AopProxyFactory）。在`ProxyCreatorSupport()`构造方法中，`aopProxyFactory`
+对象被初始化为`DefaultAopProxyFactory`的实例。因此，当调用`getAopProxyFactory()`方法时，将返回一个`DefaultAopProxyFactory`
+对象，该对象用于创建AOP代理对象。
+
+```java
+/**
+ * 返回该代理配置使用的AopProxyFactory。
+ */
+public AopProxyFactory getAopProxyFactory() {
+    return this.aopProxyFactory;
+}
+```
