@@ -1,14 +1,14 @@
 ## ProxyMethodInvocation
 
-- [ProxyMethodInvocation](#ProxyMethodInvocation)
+- [ProxyMethodInvocation](#proxymethodinvocation)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
     - [四、接口源码](#四接口源码)
     - [五、主要实现](#五主要实现)
-    - [六、最佳实践](#六最佳实践)
-    - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
+    - [六、类关系图](#六类关系图)
+    - [七、最佳实践](#七最佳实践)
+    - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -120,7 +120,38 @@ public interface ProxyMethodInvocation extends MethodInvocation {
 
    + 基于CGLIB动态代理生成子类来执行方法调用。当目标对象是基于类的CGLIB代理时，Spring会使用`CglibMethodInvocation`来处理方法调用。它通常比`ReflectiveMethodInvocation`性能更高，主要用于代理非接口类型的目标对象。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class CglibMethodInvocation
+class Invocation {
+<<Interface>>
+
+}
+class Joinpoint {
+<<Interface>>
+
+}
+class MethodInvocation {
+<<Interface>>
+
+}
+class ProxyMethodInvocation {
+<<Interface>>
+
+}
+class ReflectiveMethodInvocation
+
+CglibMethodInvocation  -->  ReflectiveMethodInvocation 
+Invocation  -->  Joinpoint 
+MethodInvocation  -->  Invocation 
+ProxyMethodInvocation  -->  MethodInvocation 
+ReflectiveMethodInvocation  ..>  ProxyMethodInvocation 
+~~~
+
+### 七、最佳实践
 
 使用Java动态代理创建代理对象并调用方法。首先，创建了一个目标对象 `MyService target = new MyServiceImpl()`，然后通过 `Proxy.newProxyInstance()` 方法创建了代理对象，指定了目标对象的类加载器、实现的接口以及调用处理器。最后，通过代理对象调用方法，实际上会触发调用处理器中的 `invoke()` 方法来执行额外的逻辑。
 
@@ -226,7 +257,7 @@ foo...
 After Method foo
 ```
 
-### 七、源码分析
+### 八、源码分析
 
 在`org.springframework.aop.framework.ReflectiveMethodInvocation#ReflectiveMethodInvocation`方法中，`ReflectiveMethodInvocation`类的构造函数，用于创建一个反射方法调用对象。它接收代理对象、目标对象、要调用的方法、方法参数、目标类以及拦截器和动态方法匹配器列表作为参数，并在构造过程中对这些参数进行初始化。
 
@@ -357,17 +388,3 @@ public static Object invokeJoinpointUsingReflection(@Nullable Object target, Met
 }
 
 ```
-
-### 八、常见问题
-
-1. **方法调用链中的拦截器执行顺序问题**
-
-   + 拦截器的执行顺序对于实现预期的方法拦截和增强至关重要。我们可能会遇到拦截器执行顺序不正确的问题，导致期望的功能无法正常工作。
-
-2. **拦截器链中的异常处理**
-
-   + 拦截器链中的一个拦截器可能会抛出异常，而这会影响到后续拦截器的执行或者最终方法调用的结果。如何正确地处理拦截器链中的异常是一个常见的问题。
-
-3. **动态方法匹配器的使用**
-
-   + 在某些情况下，拦截器可能需要根据方法的参数或其他条件来动态地决定是否执行。因此，我们需要了解如何正确地使用动态方法匹配器，并确保其逻辑正确性。
