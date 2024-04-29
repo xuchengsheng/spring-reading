@@ -92,8 +92,6 @@ BeforeAdvice  -->  Advice
 MethodBeforeAdvice  -->  BeforeAdvice 
 ~~~
 
-
-
 ### 七、最佳实践
 
 使用`MethodBeforeAdvice`接口。首先，通过创建代理工厂和目标对象，然后创建自定义的前置通知`MyMethodBeforeAdvice`，将其添加到代理工厂中。接着，通过代理工厂获取代理对象，并调用代理对象的方法。在方法调用之前，前置通知会被触发执行，执行自定义的逻辑。
