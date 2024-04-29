@@ -6,12 +6,9 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、源码分析](#七源码分析)
-    - [注册适配器](#注册适配器)
-    - [适配器转换拦截器](#适配器转换拦截器)
-    - [拦截器执行](#拦截器执行)
-  - [八、常见问题](#八常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
+  - [八、源码分析](#八源码分析)
 
 
 ### 一、基本信息
@@ -87,7 +84,25 @@ public interface AdvisorAdapter {
 
    + 用于将 `AfterReturningAdvice` 类型的通知适配到 Spring AOP 拦截器链中。`AfterReturningAdvice` 通知在目标方法正常返回后执行。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AdvisorAdapter {
+<<Interface>>
+
+}
+class AfterReturningAdviceAdapter
+class MethodBeforeAdviceAdapter
+class ThrowsAdviceAdapter
+
+AfterReturningAdviceAdapter  ..>  AdvisorAdapter 
+MethodBeforeAdviceAdapter  ..>  AdvisorAdapter 
+ThrowsAdviceAdapter  ..>  AdvisorAdapter 
+~~~
+
+### 七、最佳实践
 
 用自定义的 AdvisorAdapter 和 Advice 来实现对目标方法的增强。在示例中，首先注册了一个自定义的 AdvisorAdapter（NullReturningAdviceAdapter），然后创建了一个代理工厂（ProxyFactory）并向其添加了一个自定义的通知（MyNullReturningAdvice）。最后，通过代理工厂获取了代理对象，并调用了两个方法，其中一个方法会触发通知，另一个方法不会触发通知。
 
@@ -243,9 +258,9 @@ bar...
 bar return value : this is a defaultValue
 ```
 
-### 七、源码分析
+### 八、源码分析
 
-#### 注册适配器
+**注册适配器**
 
 在`org.springframework.aop.framework.adapter.DefaultAdvisorAdapterRegistry#registerAdvisorAdapter`方法中，向适配器列表中注册一个新的 AdvisorAdapter 实例。
 
@@ -266,7 +281,7 @@ public void registerAdvisorAdapter(AdvisorAdapter adapter) {
 private final List<AdvisorAdapter> adapters = new ArrayList<>(3);
 ```
 
-#### 适配器转换拦截器
+**适配器转换拦截器**
 
 在`org.springframework.aop.framework.JdkDynamicAopProxy#invoke`方法中，JDK动态代理入口中，获取指定方法的拦截链。
 
@@ -445,21 +460,3 @@ public MethodInterceptor getInterceptor(Advisor advisor) {
     return new NullReturningAdviceInterceptor(advice);
 }
 ```
-
-#### 拦截器执行
-
-[MethodInterceptor源码分析](../spring-aop-advice-methodInterceptor/README.md)
-
-### 八、常见问题
-
-1. **如何实现自定义的 AdvisorAdapter？**
-
-   - 我们想要实现自定义的 `AdvisorAdapter` 接口以支持特定类型的通知。在这种情况下，他们需要了解如何适配不同类型的通知到拦截器链中，并确保适配器的实现正确地处理目标方法的执行。
-
-2. **如何注册自定义的 AdvisorAdapter？**
-
-   - 一旦实现了自定义的 `AdvisorAdapter` 接口，我们需要知道如何将其注册到 Spring AOP 框架中，以便在应用中使用。这涉及到配置文件、注解或编程方式的注册。
-
-5. **如何处理不支持的通知类型？**
-
-   - 在某些情况下，会出现不支持的通知类型。我们需要了解如何处理这种情况，例如抛出异常或忽略不支持的通知类型。
