@@ -6,8 +6,8 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、常见问题](#七常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
 
 ### 一、基本信息
 
@@ -67,7 +67,34 @@ public interface MethodBeforeAdvice extends BeforeAdvice {
 
    - 实现了前置通知，使用 AspectJ 风格定义的通知，用于在目标方法执行前执行额外的逻辑。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class Advice {
+<<Interface>>
+
+}
+class AspectJMethodBeforeAdvice
+class BeforeAdvice {
+<<Interface>>
+
+}
+class MethodBeforeAdvice {
+<<Interface>>
+
+}
+
+AspectJMethodBeforeAdvice  ..>  Advice 
+AspectJMethodBeforeAdvice  ..>  MethodBeforeAdvice 
+BeforeAdvice  -->  Advice 
+MethodBeforeAdvice  -->  BeforeAdvice 
+~~~
+
+
+
+### 七、最佳实践
 
 使用`MethodBeforeAdvice`接口。首先，通过创建代理工厂和目标对象，然后创建自定义的前置通知`MyMethodBeforeAdvice`，将其添加到代理工厂中。接着，通过代理工厂获取代理对象，并调用代理对象的方法。在方法调用之前，前置通知会被触发执行，执行自定义的逻辑。
 
@@ -93,7 +120,7 @@ public class MethodBeforeAdviceDemo {
 public class MyMethodBeforeAdvice implements MethodBeforeAdvice {
     @Override
     public void before(Method method, Object[] args, Object target) throws Throwable {
-        System.out.println("Before method " + method.getName());
+        System.out.println("Before Method " + method.getName());
     }
 }
 ```
@@ -112,16 +139,6 @@ public class MyService {
 运行结果，调用目标方法`foo`之前，`MyMethodBeforeAdvice`中的前置通知被成功触发，并打印了相应的信息。
 
 ```java
-Before method foo
+Before Method foo
 foo...
 ```
-
-### 七、常见问题
-
-1. **前置通知的执行顺序问题**
-
-   + 当一个类中有多个前置通知时，它们的执行顺序是怎样的？这可能涉及到AOP代理链中各个通知的调用顺序问题。
-
-2. **目标方法参数获取**
-
-   + 如何在前置通知中获取目标方法的参数？`before`方法的参数`args`提供了目标方法的参数数组，但如何准确地获取和处理这些参数可能需要进一步的了解。
