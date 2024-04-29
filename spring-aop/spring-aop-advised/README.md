@@ -1,12 +1,13 @@
 ## Advised
+
 - [Advised](#advised)
 	- [一、基本信息](#一基本信息)
 	- [二、基本描述](#二基本描述)
 	- [三、主要功能](#三主要功能)
 	- [四、接口源码](#四接口源码)
 	- [五、主要实现](#五主要实现)
-	- [六、最佳实践](#六最佳实践)
-	- [七、常见问题](#七常见问题)
+	- [六、类关系图](#六类关系图)
+	- [七、最佳实践](#七最佳实践)
 
 ### 一、基本信息
 
@@ -247,7 +248,26 @@ public interface Advised extends TargetClassAware {
 
   + 负责管理 AOP 代理配置信息的核心类，它包含了通知器、目标对象、目标源等关键属性，能够灵活地配置和管理 AOP 代理的创建过程，并提供了各种方法来处理代理配置的冻结状态、代理暴露等功能。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class Advised {
+<<Interface>>
+
+}
+class AdvisedSupport
+class TargetClassAware {
+<<Interface>>
+
+}
+
+Advised  -->  TargetClassAware 
+AdvisedSupport  ..>  Advised 
+~~~
+
+### 七、最佳实践
 
 使用 `AdvisedSupport` 类来配置代理对象的相关属性，包括设置目标对象、接口、通知、通知器、是否暴露代理对象、是否使用 CGLIB 代理以及冻结对象，并通过 `toProxyConfigString()` 方法打印代理配置信息。
 
@@ -281,7 +301,7 @@ public class AdvisedDemo {
 
 ```java
 public interface MyService {
-    void doSomething();
+    void foo();
 }
 ```
 
@@ -291,8 +311,8 @@ public interface MyService {
 public class MyServiceImpl implements MyService {
 
     @Override
-    public void doSomething() {
-        System.out.println("doSomething...");
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
@@ -302,33 +322,3 @@ public class MyServiceImpl implements MyService {
 ```java
 AdvisedSupport = org.springframework.aop.framework.AdvisedSupport: 1 interfaces [com.xcs.spring.MyService]; 2 advisors [org.springframework.aop.support.DefaultPointcutAdvisor: pointcut [Pointcut.TRUE]; advice [com.xcs.spring.AdvisedDemo$1@32d992b2], org.springframework.aop.support.DefaultPointcutAdvisor: pointcut [Pointcut.TRUE]; advice [org.springframework.aop.Advisor$1@215be6bb]]; targetSource [SingletonTargetSource for target object [com.xcs.spring.MyServiceImpl@5d5eef3d]]; proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=true; frozen=true
 ```
-
-### 七、常见问题
-
-1. **AOP配置冻结问题** 
-
-   + 当 `Advised` 实例被冻结时，意味着无法再对其进行修改，包括添加或移除通知、更改代理目标等操作。
-
-2. **目标对象类型问题** 
-
-   + 在使用 `Advised` 接口时，需要考虑目标对象的类型，包括是否代理了目标类的全部方法，或者只是代理了指定的接口。
-
-3. **通知顺序问题** 
-
-   + 添加多个通知时，它们的顺序可能会影响最终的代理行为，需要确保通知器按照期望的顺序应用。
-
-4. **代理类型问题**
-
-   + `Advised` 接口提供了设置代理类型的方法，可以选择使用 JDK 动态代理还是 CGLIB 代理，需要根据需求和目标对象的特性进行选择。
-
-5. **代理暴露问题** 
-
-   + 当设置了代理的暴露属性时，需要注意可能带来的性能影响，以及对目标对象内部方法调用的影响。
-
-6. **代理预过滤问题** 
-
-   + 可以通过设置代理预过滤属性来优化代理性能，但需要注意确保预过滤的准确性和适用性。
-
-7. **目标源问题** 
-
-   + 了解目标源的概念及其在代理过程中的作用，包括如何设置和获取目标源对象。
