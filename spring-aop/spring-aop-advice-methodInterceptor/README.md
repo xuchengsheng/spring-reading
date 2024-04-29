@@ -22,10 +22,6 @@
 
    + 可以在目标方法执行前后、异常抛出时等关键点对方法进行拦截和增强，从而实现横切关注点的代码集中管理。
 
-2. **横切关注点的集中管理**
-
-   + 可以对横切关注点（如日志记录、权限控制、事务管理等）进行集中管理，避免代码重复，提高代码的可维护性。
-
 ### 四、接口源码
 
 `MethodInterceptor`接口是用于拦截接口方法调用并在目标方法之前和之后执行额外处理的核心接口。我们需要实现其中的`invoke`方法来定义拦截器的具体行为，例如，可以实现一个跟踪拦截器来追踪被拦截方法的调用情况。在`invoke`方法中，通常会调用`proceed()`方法来继续执行目标方法，并在必要时对返回值或异常进行处理。
@@ -67,8 +63,31 @@ public interface MethodInterceptor extends Interceptor {
 3. **ThrowsAdviceInterceptor** 
    + 实现了异常抛出后通知的拦截器。异常抛出后通知在目标方法抛出异常后执行，允许我们在方法抛出异常后插入额外的逻辑。通常用于异常处理、日志记录等场景。
 
+### 六、类关系图
 
-### 六、最佳实践
+~~~mermaid
+classDiagram
+direction BT
+class AfterReturningAdviceInterceptor
+class Interceptor {
+<<Interface>>
+
+}
+class MethodBeforeAdviceInterceptor
+class MethodInterceptor {
+<<Interface>>
+
+}
+class ThrowsAdviceInterceptor
+
+AfterReturningAdviceInterceptor  ..>  MethodInterceptor 
+MethodBeforeAdviceInterceptor  ..>  MethodInterceptor 
+MethodInterceptor  -->  Interceptor 
+ThrowsAdviceInterceptor  ..>  MethodInterceptor 
+~~~
+
+
+### 七、最佳实践
 
 创建了一个代理工厂 `ProxyFactory`，并传入了目标对象 `MyService`。然后通过 `proxyFactory.addAdvice()` 方法添加了一个自定义的方法拦截器 `MyMethodInterceptor` 作为通知。接着，通过 `proxyFactory.getProxy()` 方法获取代理对象 `MyService` 的实例。最后，调用代理对象的方法 `doSomething()`。
 
@@ -123,17 +142,3 @@ Before Method foo
 foo...
 After Method foo
 ```
-
-### 七、常见问题
-
-1. **使用问题** 
-
-   + 我们可能会遇到如何正确实现和使用 `MethodInterceptor` 接口的问题，包括如何编写拦截器逻辑、如何将拦截器应用到目标方法上等。
-
-2. **执行顺序问题** 
-
-   + 在多个拦截器同时作用于同一个目标方法时，我们可能会关注拦截器的执行顺序问题，即哪个拦截器会先执行、哪个会后执行等。
-
-3. **异常处理问题** 
-
-   + 当目标方法执行过程中发生异常时，我们可能需要考虑如何在拦截器中处理异常，以及如何保证异常处理不会影响其他拦截器的执行。
