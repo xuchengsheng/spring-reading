@@ -1,14 +1,14 @@
 ## AdvisorAdapterRegistry
 
-- [AdvisorAdapterRegistry](#AdvisorAdapterRegistry)
+- [AdvisorAdapterRegistry](#advisoradapterregistry)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
     - [四、接口源码](#四接口源码)
     - [五、主要实现](#五主要实现)
-    - [六、最佳实践](#六最佳实践)
-    - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
+    - [六、类关系图](#六类关系图)
+    - [七、最佳实践](#七最佳实践)
+    - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -86,7 +86,21 @@ public interface AdvisorAdapterRegistry {
 
    + 默认Advisor适配器注册表实现，预先注册了标准的Advisor适配器，支持将各种类型的Advice适配到AOP Alliance MethodInterceptor，并允许我们注册自定义的Advisor适配器，从而实现了Advisor与拦截器之间的灵活适配和管理。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AdvisorAdapterRegistry {
+<<Interface>>
+
+}
+class DefaultAdvisorAdapterRegistry
+
+DefaultAdvisorAdapterRegistry  ..>  AdvisorAdapterRegistry 
+~~~
+
+### 七、最佳实践
 
 使用`DefaultAdvisorAdapterRegistry`来包装自定义的`MyMethodBeforeAdvice`，并获取其对应的拦截器数组。通过`wrap()`方法将`MyMethodBeforeAdvice`转换为`Advisor`，然后使用`getInterceptors()`方法获取该`Advisor`中的拦截器数组，最后输出拦截器的信息。
 
@@ -109,9 +123,11 @@ public class AdvisorAdapterRegistryDemo {
 }
 ```
 
-### 七、源码分析
+### 八、源码分析
 
 实现了`AdvisorAdapterRegistry`接口的默认实现`DefaultAdvisorAdapterRegistry`，支持将不同类型的Advice对象适配为Advisor，并提供获取Advisor中拦截器数组的功能。它预先注册了一些常见的Advisor适配器，并允许用户注册自定义的适配器。其核心逻辑包括将Advice对象包装为Advisor、根据Advisor获取拦截器数组以及注册Advisor适配器。
+
+[AdvisorAdapter源码分析](../spring-aop-advisorAdapter/README.md)
 
 ```java
 /**
@@ -224,17 +240,3 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 
 }
 ```
-
-### 八、常见问题
-
-1. **适配器未注册**
-
-   - 如果尝试使用某种类型的Advice对象，而对应的适配器未被注册到`AdvisorAdapterRegistry`实例中，可能会导致无法将Advice对象包装为Advisor，进而导致运行时异常。
-
-2. **适配器不支持特定类型的Advice**
-
-   - 每个Advisor适配器可能只支持特定类型的Advice，如果尝试使用一个不受支持的Advice对象，可能会导致运行时异常或者Advice对象无法被正确地适配为Advisor。
-
-3. **Advice对象无法被正确适配**
-
-   - 某些特定类型的Advice对象可能无法被任何已注册的适配器正确地适配为Advisor。这可能是因为没有适合该Advice类型的适配器，或者适配器的实现存在缺陷。
