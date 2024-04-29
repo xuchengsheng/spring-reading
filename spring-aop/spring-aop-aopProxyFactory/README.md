@@ -1,6 +1,6 @@
 ## AopProxyFactory
 
-- [AopProxyFactory](#AopProxyFactory)
+- [AopProxyFactory](#aopproxyfactory)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
@@ -8,7 +8,6 @@
     - [五、主要实现](#五主要实现)
     - [六、最佳实践](#六最佳实践)
     - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
 
 ### 一、基本信息
 
@@ -135,6 +134,8 @@ cglibProxy = class com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$3c109cf5
 
 `DefaultAopProxyFactory` 是 `AopProxyFactory` 接口的默认实现，根据给定的 `AdvisedSupport` 配置对象，可以创建 CGLIB 代理或 JDK 动态代理。如果对于给定的 `AdvisedSupport` 实例满足以下条件之一，则会创建 CGLIB 代理：优化标志被设置、代理目标类标志被设置，或者未指定代理接口。通常情况下，可以通过指定 `proxyTargetClass` 来强制使用 CGLIB 代理，或者通过指定一个或多个接口来使用 JDK 动态代理。
 
+[AopProxy源码分析](../spring-aop-aopProxy/README.md)
+
 ```java
 /**
  * 默认的 {@link AopProxyFactory} 实现，根据条件创建 CGLIB 代理或 JDK 动态代理。
@@ -194,17 +195,3 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 }
 ```
-
-### 八、常见问题
-
-1. **代理选择问题** 
-
-   + 我们可能会困惑于何时使用 CGLIB 代理，何时使用 JDK 动态代理。这可能涉及到代理目标类是否实现了接口、是否需要强制使用 CGLIB 代理等因素。
-
-2. **代理配置错误** 
-
-   + 配置不当可能导致代理对象的创建失败或不符合预期。例如，未正确设置目标对象、未指定要代理的接口、优化标志或代理目标类标志设置错误等。
-
-3. **异常处理** 
-
-   + 在代理对象创建过程中可能会发生各种异常，如配置错误、代理对象无法生成等。我们需要正确处理这些异常，并根据具体情况进行调试和修复。
