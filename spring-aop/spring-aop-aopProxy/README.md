@@ -6,16 +6,10 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-    - [JDK动态代理](#jdk动态代理)
-    - [CGLIB代理](#cglib代理)
-  - [七、时序图](#七时序图)
-    - [JdkDynamicAopProxy](#jdkdynamicaopproxy)
-    - [CglibAopProxy](#cglibaopproxy)
-  - [七、源码分析](#七源码分析)
-    - [JdkDynamicAopProxy](#jdkdynamicaopproxy-1)
-    - [CglibAopProxy](#cglibaopproxy-1)
-  - [八、常见问题](#八常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
+  - [八、时序图](#八时序图)
+  - [九、源码分析](#九源码分析)
 
 
 ### 一、基本信息
@@ -32,17 +26,9 @@
 
    + `AopProxy` 接口定义了创建和管理代理对象的标准方法，可以通过这些方法在运行时动态地生成代理对象。
 
-2. **对目标对象方法的拦截与增强**
-
-   + AOP代理对象通过 `AopProxy` 接口实现对目标对象方法的拦截，允许在方法执行前、后或异常时执行额外的逻辑，从而实现对方法行为的增强。
-
 3. **支持不同的代理方式**
 
    + `AopProxy` 接口支持多种代理方式，包括JDK动态代理和CGLIB代理。这样可以根据目标对象是否实现接口来选择合适的代理方式。
-
-4. **实现AOP的横切关注点**
-
-   + 通过 `AopProxy` 接口，可以将AOP的横切关注点与业务逻辑进行分离，提高了代码的模块化和可维护性，同时也使得横切关注点可以被重用在多个不同的业务逻辑中。
 
 ### 四、接口源码
 
@@ -94,9 +80,27 @@ public interface AopProxy {
 
      + 使用 CGLIB（Code Generation Library）动态代理实现的 `AopProxy` 实现类。当目标对象没有实现任何接口时，Spring 将使用该类创建代理对象。该类通过生成目标类的子类来创建代理对象，实现了对目标对象方法的拦截和增强。
 
-### 六、最佳实践
+### 六、类关系图
 
-#### JDK动态代理
+~~~mermaid
+classDiagram
+direction BT
+class AopProxy {
+<<Interface>>
+
+}
+class CglibAopProxy
+class JdkDynamicAopProxy
+class ObjenesisCglibAopProxy
+
+CglibAopProxy  ..>  AopProxy 
+JdkDynamicAopProxy  ..>  AopProxy 
+ObjenesisCglibAopProxy  -->  CglibAopProxy 
+~~~
+
+### 七、最佳实践
+
+**JDK动态代理**
 
 使用 JDK 动态代理来创建 AOP 代理对象。在 `jdkProxy` 方法中，通过配置 `AdvisedSupport` 对象，设置目标对象和接口，然后利用反射创建 `JdkDynamicAopProxy` 实例，并调用 `AopProxy` 接口的 `getProxy` 方法生成代理对象。最后，输出代理对象的信息和调用代理对象方法的结果。
 
@@ -136,19 +140,21 @@ public class AopProxyDemo {
         // 输出代理对象的信息
         System.out.println("JDK Class = " + myService.getClass());
         // 调用代理对象的方法
-        System.out.println("doSomething method result = " + myService.doSomething());
+        myService.foo();
     } 
 }
 ```
 
-运行结果，代理对象的类为 `com.sun.proxy.$Proxy0`，调用代理对象的 `doSomething` 方法结果为 `"hello world"`。
+运行结果，代理对象的类为 `com.sun.proxy.$Proxy0`。
 
 ```java
 JDK Class = class com.sun.proxy.$Proxy0
-doSomething method result = hello world
+Before foo
+foo...
+After foo
 ```
 
-#### CGLIB代理
+**CGLIB代理**
 
 使用 CGLIB 动态代理来创建 AOP 代理对象。在 `cglibProxy` 方法中，通过配置 `AdvisedSupport` 对象，设置目标对象，然后利用反射创建 `CglibAopProxy` 实例，并调用 `AopProxy` 接口的 `getProxy` 方法生成代理对象。最后，输出代理对象的信息和调用代理对象方法的结果。
 
@@ -186,21 +192,23 @@ public class AopProxyDemo {
         // 输出代理对象的信息
         System.out.println("Cglib Class = " + myService.getClass());
         // 调用代理对象的方法
-        System.out.println("doSomething method result = " + myService.doSomething());
+        myService.foo();
     }   
 }
 ```
 
-运行结果，代理对象的类为 `com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$3c231008`，调用代理对象的 `doSomething` 方法结果为 `"hello world"`。
+运行结果，代理对象的类为 `com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$db84547f`。
 
 ```java
-Cglib Class = class com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$3c231008
-doSomething method result = hello world
+Cglib Class = class com.xcs.spring.MyServiceImpl$$EnhancerBySpringCGLIB$$db84547f
+Before foo
+foo...
+After foo
 ```
 
-### 七、时序图
+### 八、时序图
 
-#### JdkDynamicAopProxy
+**JdkDynamicAopProxy**
 
 ~~~mermaid
 sequenceDiagram
@@ -213,29 +221,14 @@ AopProxyDemo->>JdkDynamicAopProxy:aopProxy.getProxy()
 JdkDynamicAopProxy->>JdkDynamicAopProxy:getProxy(classLoader)
 JdkDynamicAopProxy->>Proxy:Proxy.newProxyInstance()
 JdkDynamicAopProxy->>AopProxyDemo:返回代理对象
-AopProxyDemo->>$Proxy0:aopProxy.doSomething()
+AopProxyDemo->>$Proxy0:aopProxy.foo()
 $Proxy0->>JdkDynamicAopProxy:invoke()
-alt 不存在拦截链
-	rect rgb(122,197,205)
-		JdkDynamicAopProxy->>AopUtils: invokeJoinpointUsingReflection()
-		AopUtils->>Method:method.invoke(target, args)
-        Method->>$Proxy0:doSomething()
-	end
-else 存在拦截链
-	rect rgb(155,205,155)
-		JdkDynamicAopProxy->>ReflectiveMethodInvocation:new ReflectiveMethodInvocation()
-		ReflectiveMethodInvocation->>JdkDynamicAopProxy:返回invocation
-		JdkDynamicAopProxy->>ReflectiveMethodInvocation:invocation.proceed()
-        ReflectiveMethodInvocation->>ReflectiveMethodInvocation:invokeJoinpoint()
-        ReflectiveMethodInvocation->>AopUtils:invokeJoinpointUsingReflection()
-        AopUtils->>Method:method.invoke(target, args)
-        Method->>$Proxy0:doSomething()
-    end
-end
-
+JdkDynamicAopProxy->>ReflectiveMethodInvocation:new ReflectiveMethodInvocation()
+ReflectiveMethodInvocation->>JdkDynamicAopProxy:返回invocation
+JdkDynamicAopProxy->>ReflectiveMethodInvocation:invocation.proceed()
 ~~~
 
-#### CglibAopProxy
+**CglibAopProxy**
 
 ~~~mermaid
 sequenceDiagram
@@ -252,31 +245,16 @@ CglibAopProxy->>CglibAopProxy:getCallbacks()
 CglibAopProxy->>CglibAopProxy:createProxyClassAndInstance()
 CglibAopProxy->>Enhancer:enhancer.create()
 CglibAopProxy->>AopProxyDemo:返回代理对象
-AopProxyDemo->>MyServiceImpl$$EnhancerBySpringCGLIB$$:aopProxy.doSomething()
+AopProxyDemo->>MyServiceImpl$$EnhancerBySpringCGLIB$$:aopProxy.foo()
 MyServiceImpl$$EnhancerBySpringCGLIB$$->>DynamicAdvisedInterceptor:intercept()
-alt 不存在拦截链
-	rect rgb(122,197,205)
-		DynamicAdvisedInterceptor->>MethodProxy:this.methodProxy.invoke()
-		MethodProxy->>MyServiceImpl$$EnhancerBySpringCGLIB$$:doSomething()
-	end
-else 存在拦截链
-	rect rgb(155,205,155)
-		DynamicAdvisedInterceptor->>CglibMethodInvocation:new CglibMethodInvocation()
-        MethodProxy->>CglibMethodInvocation:传递methodProxy
-        CglibMethodInvocation->>CglibMethodInvocation:接收methodProxy
-        CglibMethodInvocation->>DynamicAdvisedInterceptor:返回invocation
-        DynamicAdvisedInterceptor->>CglibMethodInvocation:invocation.proceed()
-        CglibMethodInvocation->>ReflectiveMethodInvocation:super.proceed()
-        ReflectiveMethodInvocation->>CglibMethodInvocation:invokeJoinpoint()
-        CglibMethodInvocation->>MethodProxy:this.methodProxy.invoke()
-        MethodProxy->>MyServiceImpl$$EnhancerBySpringCGLIB$$:doSomething()
-    end
-end
+DynamicAdvisedInterceptor->>CglibMethodInvocation:new CglibMethodInvocation()
+CglibMethodInvocation->>DynamicAdvisedInterceptor:返回invocation
+DynamicAdvisedInterceptor->>CglibMethodInvocation:invocation.proceed()
 ~~~
 
-### 七、源码分析
+### 九、源码分析
 
-#### JdkDynamicAopProxy
+**JdkDynamicAopProxy**
 
 在`org.springframework.aop.framework.JdkDynamicAopProxy#getProxy()`方法中，主要作用是返回一个代理对象，使用默认的类加载器来生成代理。
 
@@ -390,131 +368,7 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 }
 ```
 
-在`org.springframework.aop.framework.ReflectiveMethodInvocation#ReflectiveMethodInvocation`方法中，`ReflectiveMethodInvocation`类的构造函数，用于创建一个反射方法调用对象。它接收代理对象、目标对象、要调用的方法、方法参数、目标类以及拦截器和动态方法匹配器列表作为参数，并在构造过程中对这些参数进行初始化。
-
-```java
-/**
- * 使用给定参数构造一个新的 ReflectiveMethodInvocation。
- * @param proxy 调用所在的代理对象
- * @param target 要调用的目标对象
- * @param method 要调用的方法
- * @param arguments 调用方法时传入的参数
- * @param targetClass 目标类，用于方法匹配器的调用
- * @param interceptorsAndDynamicMethodMatchers 应该应用的拦截器，以及需要在运行时进行评估的任何 InterceptorAndDynamicMethodMatchers。
- * 此结构中包含的 MethodMatchers 必须已经被找到并匹配，尽可能地是静态的。传递一个数组可能会快约10%，但会使代码复杂化。并且它只能用于静态切入点。
- */
-protected ReflectiveMethodInvocation(
-        Object proxy, @Nullable Object target, Method method, @Nullable Object[] arguments,
-        @Nullable Class<?> targetClass, List<Object> interceptorsAndDynamicMethodMatchers) {
-	// 代理对象
-    this.proxy = proxy;
-    // 目标对象
-    this.target = target; 
-    // 目标类
-    this.targetClass = targetClass; 
-    // 找到桥接方法
-    this.method = BridgeMethodResolver.findBridgedMethod(method); 
-    // 调整参数
-    this.arguments = AopProxyUtils.adaptArgumentsIfNecessary(method, arguments); 
-    // 拦截器和动态方法匹配器列表
-    this.interceptorsAndDynamicMethodMatchers = interceptorsAndDynamicMethodMatchers; 
-}
-```
-
-在`org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`方法中，首先，检查当前拦截器索引是否到达了链的末尾，如果是，则直接调用`invokeJoinpoint()`方法执行方法调用。如果不是末尾，获取当前拦截器或拦截器通知，并根据其类型进行不同的处理。如果是`InterceptorAndDynamicMethodMatcher`类型，则评估动态方法匹配器，如果匹配成功，则调用对应的拦截器的`invoke()`方法。如果匹配失败，则跳过此拦截器，继续调用链中的下一个拦截器。如果是普通的拦截器，则直接调用其`invoke()`方法。
-
-```java
-/**
- * 执行方法拦截器链中的下一个拦截器或方法调用。
- * @return 方法调用的结果
- * @throws Throwable 如果执行方法调用时发生异常
- */
-@Override
-@Nullable
-public Object proceed() throws Throwable {
-    // 我们从 -1 开始索引，并尽早递增。
-    if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
-        return invokeJoinpoint();
-    }
-
-    // 获取当前拦截器或拦截器通知
-    Object interceptorOrInterceptionAdvice =
-            this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
-    if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
-        // 在此处评估动态方法匹配器：静态部分已经被评估并确定匹配。
-        InterceptorAndDynamicMethodMatcher dm =
-                (InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
-        Class<?> targetClass = (this.targetClass != null ? this.targetClass : this.method.getDeclaringClass());
-        if (dm.methodMatcher.matches(this.method, targetClass, this.arguments)) {
-            return dm.interceptor.invoke(this);
-        } else {
-            // 动态匹配失败。
-            // 跳过此拦截器，并调用链中的下一个。
-            return proceed();
-        }
-    } else {
-        // 它是一个拦截器，所以我们只是调用它：在此对象构造之前，切入点将已经被静态评估。
-        return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
-    }
-}
-```
-
-在`org.springframework.aop.framework.ReflectiveMethodInvocation#invokeJoinpoint`方法中，调用`AopUtils.invokeJoinpointUsingReflection`方法来实现连接点的调用，该方法接收目标对象、方法和参数，并返回连接点的结果。
-
-```java
-/**
- * 使用反射调用连接点。
- * 子类可以重写此方法以使用自定义调用。
- * @return 连接点的返回值
- * @throws Throwable 如果调用连接点导致异常
- */
-@Nullable
-protected Object invokeJoinpoint() throws Throwable {
-    return AopUtils.invokeJoinpointUsingReflection(this.target, this.method, this.arguments);
-}
-```
-
-在`org.springframework.aop.support.AopUtils#invokeJoinpointUsingReflection`方法中，通过`ReflectionUtils.makeAccessible(method)`方法确保要调用的方法是可访问的。然后，使用`method.invoke(target, args)`方法调用目标对象的方法，并传入参数。
-
-```java
-/**
- * 使用反射调用给定目标对象的方法，作为AOP方法调用的一部分。
- * @param target 目标对象
- * @param method 要调用的方法
- * @param args 方法的参数
- * @return 调用结果，如果有的话
- * @throws Throwable 如果目标方法抛出异常
- * @throws org.springframework.aop.AopInvocationException 如果发生反射错误
- */
-@Nullable
-public static Object invokeJoinpointUsingReflection(@Nullable Object target, Method method, Object[] args)
-        throws Throwable {
-
-    // 使用反射调用方法。
-    try {
-        // 使方法可访问
-        ReflectionUtils.makeAccessible(method); 
-        // 调用方法
-        return method.invoke(target, args); 
-    }
-    catch (InvocationTargetException ex) {
-        // 调用的方法抛出了一个已检查的异常。
-        // 我们必须重新抛出它。客户端不会看到拦截器。
-        throw ex.getTargetException(); // 抛出目标异常
-    }
-    catch (IllegalArgumentException ex) {
-        // 参数异常
-        throw new AopInvocationException("AOP configuration seems to be invalid: tried calling method [" +
-					method + "] on target [" + target + "]", ex);
-    }
-    catch (IllegalAccessException ex) {
-        // 非法访问异常
-        throw new AopInvocationException("Could not access method [" + method + "]", ex);
-    }
-}
-```
-
-#### CglibAopProxy
+**CglibAopProxy**
 
 在`org.springframework.aop.framework.CglibAopProxy#getProxy()`方法中，它返回代理对象。在没有指定目标类加载器的情况下，它调用了另一个重载方法 `getProxy(null)` 来生成代理对象并返回。
 
@@ -670,8 +524,6 @@ private Callback[] getCallbacks(Class<?> rootClass) throws Exception {
 
 在`org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept`方法中，首先，它获取目标对象和目标类，并获取与指定方法相关的拦截器链。然后，根据拦截器链和方法的特性进行适当的处理。如果拦截器链为空且方法是公共的，则直接调用目标方法，否则创建一个方法调用。最后，处理方法调用的返回值并返回结果。在方法执行过程中，还会根据配置决定是否暴露代理对象，并在必要时设置AOP上下文。最后，在finally块中释放目标对象，并在必要时恢复旧的代理对象。
 
-> 在 `CglibAopProxy` 中，`DynamicAdvisedInterceptor` 是一个特殊的拦截器，它被添加到了回调数组中。当执行方法时，回调数组中的 `DynamicAdvisedInterceptor` 将拦截目标方法的调用。这个拦截器负责处理 AOP 的核心功能，例如应用通知（Advice）、织入横切逻辑等。在 `DynamicAdvisedInterceptor` 的 `intercept` 方法中，它会根据代理配置获取目标方法的拦截器链，并依次调用这些拦截器来实现 AOP 功能。
-
 ```java
 @Override
 @Nullable
@@ -728,82 +580,3 @@ public Object intercept(Object proxy, Method method, Object[] args, MethodProxy 
     }
 }
 ```
-
-在`org.springframework.aop.framework.CglibAopProxy.CglibMethodInvocation#CglibMethodInvocation`方法中，`CglibMethodInvocation` 类的构造方法。它接收代理对象、目标对象、方法、方法参数、目标类、拦截器链和方法代理作为参数，并调用父类的构造方法进行初始化。在这个构造方法中，它会检查方法的修饰符是否为公共的且不是继承自 `java.lang.Object` 的方法，如果是，则将方法代理赋值给成员变量 `methodProxy`；否则将 `methodProxy` 设置为 `null`。
-
-```java
-public CglibMethodInvocation(Object proxy, @Nullable Object target, Method method,
-				Object[] arguments, @Nullable Class<?> targetClass,
-				List<Object> interceptorsAndDynamicMethodMatchers, MethodProxy methodProxy) {
-    // 调用父类的构造方法，初始化方法调用
-    super(proxy, target, method, arguments, targetClass, interceptorsAndDynamicMethodMatchers);
-
-    // 只对公共方法且不是继承自 java.lang.Object 的方法使用方法代理
-    this.methodProxy = (Modifier.isPublic(method.getModifiers()) &&
-            method.getDeclaringClass() != Object.class && !AopUtils.isEqualsMethod(method) &&
-            !AopUtils.isHashCodeMethod(method) && !AopUtils.isToStringMethod(method) ?
-            methodProxy : null); // 设置方法代理
-}
-```
-
-在`org.springframework.aop.framework.CglibAopProxy.CglibMethodInvocation#proceed`方法中，用于执行方法调用链。它首先尝试调用父类的 `proceed()` 方法来执行方法调用链。如果在执行过程中捕获到运行时异常，则直接抛出该异常。
-
-> 调用父类的 proceed 方法执行方法调用链，请参考org.springframework.aop.framework.ReflectiveMethodInvocation#proceed
-
-```java
-@Override
-@Nullable
-public Object proceed() throws Throwable {
-    try {
-        // 调用父类的 proceed 方法执行方法调用链
-        return super.proceed(); 
-    }
-    catch (RuntimeException ex) { 
-        throw ex;
-    }
-    catch (Exception ex) {
-        if (ReflectionUtils.declaresException(getMethod(), ex.getClass()) ||
-                KotlinDetector.isKotlinType(getMethod().getDeclaringClass())) {
-            // Propagate original exception if declared on the target method
-            // (with callers expecting it). Always propagate it for Kotlin code
-            // since checked exceptions do not have to be explicitly declared there.
-            throw ex;
-        }
-        else {
-            // Checked exception thrown in the interceptor but not declared on the
-            // target method signature -> apply an UndeclaredThrowableException,
-            // aligned with standard JDK dynamic proxy behavior.
-            throw new UndeclaredThrowableException(ex);
-        }
-    }
-}
-```
-
-在`org.springframework.aop.framework.CglibAopProxy.CglibMethodInvocation#invokeJoinpoint`方法中，重写了 `ReflectiveMethodInvocation` 类的 `invokeJoinpoint()` 方法。`ReflectiveMethodInvocation` 是 Spring AOP 框架中的一个关键类，用于执行方法调用链。而在这个方法中，它通过检查是否存在方法代理来提升性能，避免了在调用公共方法时使用反射直接调用目标方法。而方法代理的具体实现是由 `MethodProxy` 类提供的。`MethodProxy` 是 CGLIB 库中的一个重要组件，它允许在运行时动态生成的代理类中，以高效的方式调用目标方法。
-
-```java
-/**
- * 在调用公共方法时，相比使用反射调用目标，使用此方法可以略微提升性能。
- */
-@Override
-protected Object invokeJoinpoint() throws Throwable {
-     // 如果方法代理不为null
-    if (this.methodProxy != null) {
-         // 使用方法代理调用目标方法
-        return this.methodProxy.invoke(this.target, this.arguments);
-    }
-    else {
-        return super.invokeJoinpoint(); // 否则调用父类的invokeJoinpoint方法
-    }
-}
-```
-
-### 八、常见问题
-
-1. **选择合适的代理方式**
-
-   + 在使用 Spring AOP 时，需要根据目标对象是否实现接口来选择合适的代理方式（JDK 动态代理还是 CGLIB 动态代理）。如果目标对象实现了接口，则会使用 JDK 动态代理，否则会使用 CGLIB 动态代理。选择合适的代理方式可以影响到代理对象的性能和行为。
-
-2. **代理对象的类型**
-
-   + 生成的代理对象的类型可能与原始目标对象的类型不同。这可能会导致一些类型转换或 instanceof 判断出现问题。因此，在使用代理对象时，需要注意其类型和行为与原始对象可能存在的差异。

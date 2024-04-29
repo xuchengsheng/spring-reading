@@ -8,8 +8,8 @@ import java.lang.reflect.Constructor;
 public class AopProxyDemo {
 
     public static void main(String[] args) throws Exception {
-        cglibProxy();
-//        jdkProxy();
+//        cglibProxy();
+        jdkProxy();
     }
 
     /**
@@ -41,7 +41,7 @@ public class AopProxyDemo {
         // 输出代理对象的信息
         System.out.println("Cglib Class = " + myService.getClass());
         // 调用代理对象的方法
-        myService.doSomething();
+        myService.foo();
     }
 
     /**
@@ -75,6 +75,6 @@ public class AopProxyDemo {
         // 输出代理对象的信息
         System.out.println("JDK Class = " + myService.getClass());
         // 调用代理对象的方法
-        myService.doSomething();
+        myService.foo();
     }
 }

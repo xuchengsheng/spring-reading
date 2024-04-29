@@ -3,7 +3,7 @@ package com.xcs.spring;
 public class MyServiceImpl implements MyService {
 
     @Override
-    public void doSomething() {
-        System.out.println("doSomething...");
+    public void foo() {
+        System.out.println("foo...");
     }
 }
