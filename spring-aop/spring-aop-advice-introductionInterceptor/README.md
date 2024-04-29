@@ -6,8 +6,8 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、常见问题](#七常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
 
 ### 一、基本信息
 
@@ -21,7 +21,7 @@
 
 1. **引介新的接口或类**
 
-   + 通过实现 `introduce()` 方法，在目标对象的方法调用之前，向目标对象引介新的接口或类，从而使目标对象具有额外的功能或属性。
+    + 通过实现 `implementsInterface()` 方法，在目标对象的方法调用之前，向目标对象引介新的接口或类，从而使目标对象具有额外的功能或属性。
 
 ### 四、接口源码
 
@@ -51,7 +51,44 @@ public interface IntroductionInterceptor extends MethodInterceptor, DynamicIntro
 
    + `DelegatePerTargetObjectIntroductionInterceptor` 是 `DelegatingIntroductionInterceptor` 的子类，为每个目标对象创建一个独立的引介代理对象。这意味着每个目标对象都可以拥有自己独立的引介逻辑，而不会受到其他目标对象的影响。这种灵活性特别适用于需要为不同的目标对象动态添加不同功能或属性的场景，提供了更高级的定制能力。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class Advice {
+<<Interface>>
+
+}
+class DelegatePerTargetObjectIntroductionInterceptor
+class DelegatingIntroductionInterceptor
+class DynamicIntroductionAdvice {
+<<Interface>>
+
+}
+class Interceptor {
+<<Interface>>
+
+}
+class IntroductionInterceptor {
+<<Interface>>
+
+}
+class MethodInterceptor {
+<<Interface>>
+
+}
+
+DelegatePerTargetObjectIntroductionInterceptor  ..>  IntroductionInterceptor 
+DelegatingIntroductionInterceptor  ..>  IntroductionInterceptor 
+DynamicIntroductionAdvice  -->  Advice 
+Interceptor  -->  Advice 
+IntroductionInterceptor  -->  DynamicIntroductionAdvice 
+IntroductionInterceptor  -->  MethodInterceptor 
+MethodInterceptor  -->  Interceptor 
+~~~
+
+### 七、最佳实践
 
 使用 Spring AOP 中的引介功能。它创建了一个代理工厂，并通过设置强制使用 CGLIB 代理来创建代理对象。然后，它添加了一个通知器，将自定义的引介通知（`MyMonitoringIntroductionAdvice`）应用于目标对象（`MyService` 类），使得目标对象实现了 `MyMonitoringCapable` 接口。最后，它调用了代理对象的方法，并在必要时启用了监控功能，展示了如何在运行时动态地向目标对象引入新的功能。
 
@@ -141,32 +178,3 @@ foo...
 foo...
 [结束监控foo] 耗费时间：1008 毫秒
 ```
-
-### 七、常见问题
-
-1. **引介的作用和优势是什么？**
-   - 这个问题探讨了引介在 AOP 中的作用和优势，以及它与其他 AOP 概念（如通知、切点）的区别。
-   
-2. **如何实现引介？**
-
-   - 这个问题涉及到如何使用 `IntroductionInterceptor` 接口以及其子类来实现引介功能，以及在 Spring AOP 中如何配置和应用引介。
-
-3. **引介和通知之间的区别是什么？**
-
-   - 这个问题探讨了引介和其他类型的通知（如前置通知、后置通知）之间的区别，以及它们在 AOP 中的不同用途。
-
-4. **引介在哪些场景下会被使用？**
-
-   - 这个问题讨论了引介在实际开发中的应用场景，以及它如何帮助解决特定的横切关注点。
-
-5. **引介是否有性能影响？**
-
-   - 这个问题关注引介在运行时对性能的影响，以及如何优化引介以减少潜在的性能开销。
-
-6. **如何处理引介与目标类之间的依赖关系？**
-
-   - 这个问题涉及引介与目标类之间的依赖关系管理，以及如何确保引介逻辑能够正确地与目标类交互。
-
-7. **引介在 Spring 中的实现原理是什么？**
-
-   - 这个问题探讨了 Spring AOP 是如何利用代理机制实现引介功能的，以及它与其他 AOP 框架的实现方式的区别。

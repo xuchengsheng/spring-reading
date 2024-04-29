@@ -6,8 +6,8 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、常见问题](#七常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
 
 
 ### 一、基本信息
@@ -77,7 +77,29 @@ public interface ThrowsAdvice extends AfterAdvice {
 1. **ThrowsAdviceInterceptor**
    + 用于拦截方法抛出的异常，并触发相应的异常通知（`ThrowsAdvice`）。它负责捕获方法执行过程中抛出的异常，并调用相关的异常通知来处理异常情况。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class Advice {
+<<Interface>>
+
+}
+class AfterAdvice {
+<<Interface>>
+
+}
+class ThrowsAdvice {
+<<Interface>>
+
+}
+
+AfterAdvice  -->  Advice 
+ThrowsAdvice  -->  AfterAdvice 
+~~~
+
+### 七、最佳实践
 
 使用`ThrowsAdvice`接口来处理方法抛出的异常。它创建了一个代理工厂，并将目标对象（`MyService`）和异常通知（`MyThrowsAdvice`）传递给代理工厂。然后，它通过代理工厂获取代理对象，并调用代理对象的方法`foo()`。
 
@@ -138,21 +160,3 @@ Exception in thread "main" java.lang.ArithmeticException: / by zero
 	at com.xcs.spring.MyService$$EnhancerBySpringCGLIB$$abe9fbc2.doSomethingException(<generated>)
 	at com.xcs.spring.ThrowsAdviceDemo.main(ThrowsAdviceDemo.java:15)
 ```
-
-### 七、常见问题
-
-1. **异常处理的影响范围** 
-
-   + 异常通知对整个目标方法的异常都起作用，这可能不是所期望的行为。有时候可能只想针对特定类型的异常执行特定的处理逻辑。
-
-2. **异常信息的捕获和处理** 
-
-   + 在异常通知中捕获到的异常信息可能不够详细，特别是对于大型应用程序中的复杂异常场景，可能需要更多的异常信息来进行适当的处理。
-
-3. **异常类型的匹配**
-
-   + 在异常通知中定义的异常类型需要与目标方法抛出的异常类型匹配，否则可能无法正确执行异常处理逻辑。
-
-4. **对目标方法参数的访问** 
-
-   + 在异常通知中可以访问目标方法的参数，但需要小心处理参数可能为空的情况，以避免出现空指针异常。

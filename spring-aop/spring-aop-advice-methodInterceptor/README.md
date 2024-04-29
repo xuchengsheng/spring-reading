@@ -33,7 +33,7 @@
  * 拦截器，用于拦截接口方法调用并在目标方法之前和之后执行额外处理。
  * 这些拦截器被嵌套在目标方法之上。
  *
- * <p>用户应该实现 {@link #invoke(MethodInvocation)} 方法来修改原始行为。例如，以下类实现了一个跟踪拦截器（跟踪所有被拦截方法的调用）：
+ * <p>用户应该实现 {@link #invoke(MethodInvocation)} 方法来修改原始行为。例如，以下类实现了一个跟踪拦截器（跟踪所有被拦截方法的调用）
  *
  * @author Rod Johnson
  */
@@ -56,35 +56,70 @@ public interface MethodInterceptor extends Interceptor {
 
 1. **MethodBeforeAdviceInterceptor** 
 
-   + 实现了前置通知的拦截器。前置通知在目标方法执行之前执行，允许我们在方法执行前插入额外的逻辑。通常用于日志记录、参数验证等场景。
-   
+    + 实现了前置通知的拦截器。前置通知在目标方法执行之前执行，允许我们在方法执行前插入额外的逻辑。
+
 2. **AfterReturningAdviceInterceptor** 
 
-   + 实现了返回后通知的拦截器。返回后通知在目标方法成功执行并返回结果后执行，允许我们在方法返回后插入额外的逻辑。通常用于日志记录、结果处理等场景。
-   
+    + 实现了返回后通知的拦截器。返回后通知在目标方法成功执行并返回结果后执行，允许我们在方法返回后插入额外的逻辑。
+
 3. **ThrowsAdviceInterceptor** 
-   + 实现了异常抛出后通知的拦截器。异常抛出后通知在目标方法抛出异常后执行，允许我们在方法抛出异常后插入额外的逻辑。通常用于异常处理、日志记录等场景。
+
+    + 实现了异常抛出后通知的拦截器。异常抛出后通知在目标方法抛出异常后执行，允许我们在方法抛出异常后插入额外的逻辑。
+
+4. **AspectJAfterAdvice**
+
+    + 实现了后置通知（After Advice），在目标方法执行后执行额外逻辑，不影响目标方法的执行结果。
+
+5. **AspectJAfterThrowingAdvice**
+
+    + 实现了异常抛出后通知（After Throwing Advice），在目标方法抛出异常后执行额外逻辑，允许处理异常或执行一些清理操作。
+
+6. **AspectJAroundAdvice**
+
+    + 实现了环绕通知（Around Advice），是最强大的一种通知类型，允许在目标方法执行前后添加额外逻辑，并完全控制目标方法的执行过程，包括是否执行目标方法和如何处理返回值。
 
 ### 六、类关系图
 
 ~~~mermaid
 classDiagram
 direction BT
-class AfterReturningAdviceInterceptor
+class AbstractAspectJAdvice
+class Advice {
+<<Interface>>
+
+}
+
+class AspectJAfterAdvice
+class AspectJAfterThrowingAdvice
+class AspectJAroundAdvice
 class Interceptor {
 <<Interface>>
 
 }
 class MethodBeforeAdviceInterceptor
+class AfterReturningAdviceInterceptor
 class MethodInterceptor {
 <<Interface>>
 
 }
 class ThrowsAdviceInterceptor
 
+AbstractAspectJAdvice  ..>  Advice 
+AfterReturningAdviceInterceptor  ..>  Advice 
 AfterReturningAdviceInterceptor  ..>  MethodInterceptor 
+AspectJAfterAdvice  -->  AbstractAspectJAdvice 
+AspectJAfterAdvice  ..>  Advice 
+AspectJAfterAdvice  ..>  MethodInterceptor 
+AspectJAfterThrowingAdvice  -->  AbstractAspectJAdvice 
+AspectJAfterThrowingAdvice  ..>  Advice 
+AspectJAfterThrowingAdvice  ..>  MethodInterceptor 
+AspectJAroundAdvice  -->  AbstractAspectJAdvice 
+AspectJAroundAdvice  ..>  MethodInterceptor 
+Interceptor  -->  Advice 
+MethodBeforeAdviceInterceptor  ..>  Advice 
 MethodBeforeAdviceInterceptor  ..>  MethodInterceptor 
 MethodInterceptor  -->  Interceptor 
+ThrowsAdviceInterceptor  ..>  Advice 
 ThrowsAdviceInterceptor  ..>  MethodInterceptor 
 ~~~
 
