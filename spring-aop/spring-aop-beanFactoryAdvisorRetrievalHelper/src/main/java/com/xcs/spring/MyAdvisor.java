@@ -1,10 +1,11 @@
 package com.xcs.spring;
 
 import org.aopalliance.aop.Advice;
-import org.springframework.aop.Advisor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MyAdvisor extends AbstractPointcutAdvisor {
 
     @Override
@@ -14,6 +15,6 @@ public class MyAdvisor extends AbstractPointcutAdvisor {
 
     @Override
     public Advice getAdvice() {
-        return Advisor.EMPTY_ADVICE;
+        return new MyAdvice();
     }
 }

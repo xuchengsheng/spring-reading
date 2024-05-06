@@ -1,4 +1,5 @@
 ## AnnotationAwareAspectJAutoProxyCreator
+
 - [AnnotationAwareAspectJAutoProxyCreator](#annotationawareaspectjautoproxycreator)
   - [一、基本信息](#一基本信息)
   - [二、基本描述](#二基本描述)
@@ -7,7 +8,6 @@
   - [五、最佳实践](#五最佳实践)
   - [六、时序图](#六时序图)
   - [七、源码分析](#七源码分析)
-  - [八、常见问题](#八常见问题)
 
 ### 一、基本信息
 
@@ -72,16 +72,8 @@ class InstantiationAwareBeanPostProcessor {
 <<Interface>>
 
 }
-class Ordered {
-<<Interface>>
-
-}
 class ProxyConfig
 class ProxyProcessorSupport
-class Serializable {
-<<Interface>>
-
-}
 class SmartInstantiationAwareBeanPostProcessor {
 <<Interface>>
 
@@ -96,45 +88,81 @@ AspectJAwareAdvisorAutoProxyCreator  -->  AbstractAdvisorAutoProxyCreator
 BeanClassLoaderAware  -->  Aware 
 BeanFactoryAware  -->  Aware 
 InstantiationAwareBeanPostProcessor  -->  BeanPostProcessor 
-ProxyConfig  ..>  Serializable 
 ProxyProcessorSupport  ..>  AopInfrastructureBean 
 ProxyProcessorSupport  ..>  BeanClassLoaderAware 
-ProxyProcessorSupport  ..>  Ordered 
 ProxyProcessorSupport  -->  ProxyConfig 
 SmartInstantiationAwareBeanPostProcessor  -->  InstantiationAwareBeanPostProcessor 
 ~~~
 
 ### 五、最佳实践
 
-`AnnotationAwareAspectJAutoProxyCreator`类以及注解驱动的切面编程。通过注册`AnnotationAwareAspectJAutoProxyCreator`作为Bean，并指定应用程序配置类，Spring容器能够自动创建切面代理，并在运行时织入切面逻辑。最后，从容器中获取`MyService` bean并调用其方法，实现了面向切面编程的横切关注点的功能。
+使用`EnableAspectJAutoProxy`
+注解和Spring的基于注解的应用上下文来启用AspectJ自动代理功能。在程序中，首先创建了一个基于注解的应用上下文，然后通过该上下文获取了`MyService`
+bean，并调用了其方法。
 
 ```java
-public class AnnotationAwareAspectJAutoProxyCreatorDemo {
+public class EnableAspectJAutoProxyDemo {
 
     public static void main(String[] args) {
-        // 创建一个默认的 Bean 工厂
-        AnnotationConfigApplicationContext beanFactory = new AnnotationConfigApplicationContext();
-        // 注册AnnotationAwareAspectJAutoProxyCreator作为Bean，用于自动创建切面代理
-        beanFactory.registerBeanDefinition("internalAutoProxyCreator", new RootBeanDefinition(AnnotationAwareAspectJAutoProxyCreator.class));
-        // 注册应用程序配置类
-        beanFactory.register(AppConfig.class);
-        // 刷新应用程序上下文
-        beanFactory.refresh();
-
-        // 从容器中获取MyService bean
-        MyService myService = beanFactory.getBean(MyService.class);
+        // 创建基于注解的应用上下文
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        // 从应用上下文中获取MyService bean
+        MyService myService = context.getBean(MyService.class);
         // 调用MyService的方法
-        myService.doSomething();
+        myService.foo();
     }
 }
 ```
 
-运行结果，执行`MyService`中的`doSomething()`方法之前和之后，切面逻辑已成功织入。
+`AppConfig` 类是一个使用 `@Configuration` 注解标记的配置类，通过 `@EnableAspectJAutoProxy` 开启了 AspectJ
+自动代理功能，并通过 `@ComponentScan` 启用了组件扫描，用于自动发现和注册 Spring 组件。
 
 ```java
-Before executing the method...
-Doing something...
-After executing the method...
+
+@Configuration
+@EnableAspectJAutoProxy
+@ComponentScan
+public class AppConfig {
+
+}
+```
+
+`MyService` 类是一个使用 `@Service` 注解标记的服务类，提供了一个名为 `foo()` 的方法，该方法在调用时会打印消息 "foo..."。
+
+```java
+
+@Service
+public class MyService {
+
+    public void foo() {
+        System.out.println("foo...");
+    }
+}
+```
+
+`MyAspect`是一个使用了`@Aspect`注解的Java类，表示它是一个切面。在这个类中，定义了一个名为`advice`的方法，并使用了`@Before`
+注解来指定在目标方法执行之前执行的通知。
+
+```java
+
+@Aspect
+@Component
+public class MyAspect {
+
+    @Before("execution(* com.xcs.spring.MyService+.*(..))")
+    public void before() {
+        System.out.println("Before method execution");
+    }
+}
+```
+
+运行结果，调用 `MyService` 类的 `foo()` 方法之前，成功地执行了一个切面通知，输出了 "Before method execution"
+的消息，然后执行了 `foo()` 方法，输出了 "foo..." 的消息。
+
+```java
+Before method
+execution
+foo...
 ```
 
 ### 六、时序图
@@ -569,18 +597,3 @@ protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
     return proxyFactory.getProxy(classLoader);
 }
 ```
-
-### 八、常见问题
-
-1. **无法注入依赖**
-
-   + 可能会遇到无法注入依赖的问题，这通常是由于AOP代理的顺序问题导致的。
-
-2. **切面未生效**
-
-   + 有时配置了切面，但是切面并没有生效，可能是由于切面表达式不正确，或者AOP代理配置错误导致的。
-
-
-4. **Bean未被代理**
-
-   + 有时候配置了AnnotationAwareAspectJAutoProxyCreator，但是某些Bean并没有被代理，可能是由于Bean的作用域、类型或其他条件不满足自动代理的条件。

@@ -5,8 +5,8 @@
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
   - [四、最佳实践](#四最佳实践)
-  - [五、源码分析](#五源码分析)
-  - [六、常见问题](#六常见问题)
+  - [五、时序图](#五时序图)
+  - [六、源码分析](#六源码分析)
 
 ### 一、基本信息
 
@@ -36,63 +36,95 @@
 
 ### 四、最佳实践
 
-使用 `BeanFactoryAspectJAdvisorsBuilder` 类来构建基于 AspectJ 注解的切面，首先创建了一个默认的 Bean 工厂，并注册了一个名为 "myAspect" 的单例 Bean，然后通过 `BeanFactoryAspectJAdvisorsBuilder` 实例构建了 AspectJ Advisors，并将其打印出来。
+使用基于注解的应用上下文来获取并调用 `MyService` Bean 的 `foo()`
+方法。首先，创建了一个 `AnnotationConfigApplicationContext` 实例，通过传入 `AppConfig.class`
+来初始化基于注解的应用上下文。然后，通过 `context.getBean(MyService.class)` 获取了 `MyService` Bean
+的实例，并调用了其 `foo()` 方法。
 
 ```java
 public class BeanFactoryAspectJAdvisorsBuilderDemo {
 
     public static void main(String[] args) {
-        // 创建一个默认的 Bean 工厂
-        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-        // 在 Bean 工厂中注册一个名为 "myAspect" 的单例 Bean，类型为 MyAspect
-        beanFactory.registerSingleton("myAspect", new MyAspect());
-
-        // 创建 BeanFactoryAspectJAdvisorsBuilder 实例，并传入 Bean 工厂和 ReflectiveAspectJAdvisorFactory 实例
-        BeanFactoryAspectJAdvisorsBuilder builder = new BeanFactoryAspectJAdvisorsBuilder(beanFactory, new ReflectiveAspectJAdvisorFactory(beanFactory));
-        // 构建 AspectJ Advisors
-        List<Advisor> advisors = builder.buildAspectJAdvisors();
-        // 打印 Advisors
-        advisors.forEach(System.out::println);
+        // 创建基于注解的应用上下文
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        // 从应用上下文中获取MyService bean
+        MyService myService = context.getBean(MyService.class);
+        // 调用MyService的方法
+        myService.foo();
     }
 }
 ```
 
-使用了 AspectJ 的注解 `@Aspect` 进行标记。在该切面类中，包含了两个通知方法`before()` 和 `after()`，分别使用 `@Before` 和 `@After` 注解标记。这两个通知方法分别在目标方法 `com.xcs.spring.MyService.doSomething()` 执行之前和之后执行，并输出相应的日志信息。
+`AppConfig` 类是一个使用 `@Configuration` 注解标记的配置类，通过 `@EnableAspectJAutoProxy` 开启了 AspectJ
+自动代理功能，并通过 `@ComponentScan` 启用了组件扫描，用于自动发现和注册 Spring 组件。
+
+```java
+
+@Configuration
+@EnableAspectJAutoProxy
+@ComponentScan
+public class AppConfig {
+
+}
+```
+
+通过 @Aspect 和 @Component 注解将其标记为 Spring 组件，并定义了一个在 com.xcs.spring.MyService 类的 foo
+方法执行前执行的前置通知（Before advice）。
 
 ```java
 @Aspect
+@Component
 class MyAspect {
 
-    @Before("execution(* com.xcs.spring.MyService.doSomething(..))")
+    @Before("execution(* com.xcs.spring.MyService.foo(..))")
     public void before() {
-        System.out.println("Before executing the method..." );
-    }
-
-    @After("execution(* com.xcs.spring.MyService.doSomething(..))")
-    public void after() {
-        System.out.println("After executing the method..." );
+        System.out.println("Before method execution");
     }
 }
 ```
 
-定义了一个名为 `MyService` 的简单 Java 类，其中包含一个名为 `doSomething()` 的方法。该方法简单地打印一条日志信息 "Doing something..."。这个类作为示例类使用，用来演示在 AOP 中如何应用切面逻辑。
+`MyService` 类是一个使用 `@Service` 注解标记的服务类，提供了一个名为 `foo()` 的方法，该方法在调用时会打印消息 "foo..."。
 
 ```java
+
+@Service
 public class MyService {
-    public void doSomething() {
-        System.out.println("Doing something...");
+
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
 
-运行结果，显示了两个 Advisor 对象的信息，它们分别对应着切面类 `MyAspect` 中的 `before()` 和 `after()` 方法，并针对相同的切点表达式 `execution(* com.xcs.spring.MyService.doSomething(..))`。
+运行结果，调用 `MyService` 类的 `foo()` 方法之前，成功地执行了一个切面通知，输出了 "Before method execution"
+的消息，然后执行了 `foo()` 方法，输出了 "foo..." 的消息。
 
 ```java
-InstantiationModelAwarePointcutAdvisor: expression [execution(* com.xcs.spring.MyService.doSomething(..))]; advice method [public void com.xcs.spring.MyAspect.before()]; perClauseKind=SINGLETON
-InstantiationModelAwarePointcutAdvisor: expression [execution(* com.xcs.spring.MyService.doSomething(..))]; advice method [public void com.xcs.spring.MyAspect.after()]; perClauseKind=SINGLETON
+Before method
+execution
+foo...
 ```
 
-### 五、源码分析
+### 五、时序图
+
+~~~mermaid
+sequenceDiagram
+    AbstractAutowireCapableBeanFactory->>AbstractAutoProxyCreator: postProcessAfterInitialization()
+    Note over AbstractAutowireCapableBeanFactory,AbstractAutoProxyCreator: 调用后处理方法
+    AbstractAutoProxyCreator->>AbstractAutoProxyCreator: wrapIfNecessary()
+    Note over AbstractAutoProxyCreator: 调用包装方法
+    AbstractAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: getAdvicesAndAdvisorsForBean()
+    Note over AbstractAutoProxyCreator,AbstractAdvisorAutoProxyCreator: 获取通知和 Advisors
+    AbstractAdvisorAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: findEligibleAdvisors()
+    Note over AbstractAdvisorAutoProxyCreator: 查找合适的 Advisors
+    AbstractAdvisorAutoProxyCreator->>AnnotationAwareAspectJAutoProxyCreator: findCandidateAdvisors()
+    Note over AbstractAdvisorAutoProxyCreator,AnnotationAwareAspectJAutoProxyCreator: 查找候选的 Advisors
+    AnnotationAwareAspectJAutoProxyCreator->>BeanFactoryAspectJAdvisorsBuilder: buildAspectJAdvisors()
+    Note over AnnotationAwareAspectJAutoProxyCreator,BeanFactoryAspectJAdvisorsBuilder: 构建 AspectJ Advisors
+    BeanFactoryAspectJAdvisorsBuilder->>AbstractAutoProxyCreator: 返回 advisors
+~~~
+
+### 六、源码分析
 
 在`org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder#buildAspectJAdvisors`方法中，主要负责在当前的 Bean 工厂中查找使用 AspectJ 注解标记的切面 Bean，并将其转换为 Spring AOP Advisors 的列表。它遍历所有的 Bean 名称，识别切面 Bean，并根据其实例化模型（单例或多例）创建对应的 AspectJ Advisors。在处理过程中，还会缓存单例切面的 Advisors，以提高性能。
 
@@ -226,8 +258,5 @@ private boolean hasAspectAnnotation(Class<?> clazz) {
 }
 ```
 
-### 六、常见问题
 
-1. **实例化模型匹配** 
 
-   + 在判断切面的实例化模型时，需要确保该模型与实际的 Bean 实例化策略相匹配。如果切面 Bean 被声明为单例模式，但实际上是多例的，或者反之，则可能会导致不一致或异常情况。

@@ -1,13 +1,13 @@
 ## @EnableAspectJAutoProxy
 
-- [@EnableAspectJAutoProxy](#@EnableAspectJAutoProxy)
+- [@EnableAspectJAutoProxy](#enableaspectjautoproxy)
   - [一、基本信息](#一基本信息)
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
-  - [四、注解源码](#注解源码)
+  - [四、注解源码](#四注解源码)
   - [五、最佳实践](#五最佳实践)
   - [六、源码分析](#六源码分析)
-  - [七、常见问题](#七常见问题)
+
 
 ### 一、基本信息
 
@@ -175,30 +175,23 @@ public class EnableAspectJAutoProxyDemo {
 }
 ```
 
-通过`@Configuration`注解表示它是一个配置类，用于配置Spring应用的bean。其中，通过`@EnableAspectJAutoProxy`
-注解启用了AspectJ自动代理功能，使得Spring能够自动处理切面。在配置中定义了两个bean：`MyService`和`MyAspect`
-，分别用于创建`MyService`的实例和`MyAspect`切面的实例。
+`AppConfig` 类是一个使用 `@Configuration` 注解标记的配置类，通过 `@EnableAspectJAutoProxy` 开启了 AspectJ
+自动代理功能，并通过 `@ComponentScan` 启用了组件扫描，用于自动发现和注册 Spring 组件。
 
 ```java
 @Configuration
 @EnableAspectJAutoProxy
+@ComponentScan
 public class AppConfig {
 
-    @Bean
-    public MyService myService() {
-        return new MyService();
-    }
-
-    @Bean
-    public MyAspect myAspect() {
-        return new MyAspect();
-    }
 }
 ```
 
-`FooService`是一个简单的Java类，其中包含了一个名为`foo`的方法。
+`MyService` 类是一个使用 `@Service` 注解标记的服务类，提供了一个名为 `foo()` 的方法，该方法在调用时会打印消息 "foo..."。
 
 ```java
+
+@Service
 public class MyService {
 
     public void foo() {
@@ -211,6 +204,7 @@ public class MyService {
 
 ```java
 @Aspect
+@Component
 public class MyAspect {
 
     @Before("execution(* com.xcs.spring.MyService+.*(..))")
@@ -218,6 +212,15 @@ public class MyAspect {
         System.out.println("Before method execution");
     }
 }
+```
+
+运行结果，调用 `MyService` 类的 `foo()` 方法之前，成功地执行了一个切面通知，输出了 "Before method execution"
+的消息，然后执行了 `foo()` 方法，输出了 "foo..." 的消息。
+
+```java
+Before method
+execution
+foo...
 ```
 
 ### 六、源码分析
@@ -259,6 +262,8 @@ public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessar
 ```
 
 在`org.springframework.aop.config.AopConfigUtils#registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry,source)`方法中，注册AspectJ注解自动代理创建器，并且可以指定源对象。在方法中，它调用了一个辅助方法`registerOrEscalateApcAsRequired`，该方法会根据需要注册或升级AspectJ注解自动代理创建器，并返回相应的BeanDefinition。
+
+[AnnotationAwareAspectJAutoProxyCreator源码分析](../spring-aop-annotationAwareAspectJAutoProxyCreator/README.md)
 
 ```java
 @Nullable

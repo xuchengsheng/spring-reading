@@ -217,16 +217,21 @@
     - [AdvisorAdapterRegistry](spring-aop/spring-aop-advisorAdapterRegistry/README.md)：适配各种Advice到AOP拦截器，注册和管理Advisor适配器。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AdvisorAdapter](spring-aop/spring-aop-advisorAdapter/README.md)：适配不同类型通知到拦截器链。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [ProxyMethodInvocation](spring-aop/spring-aop-proxyMethodInvocation/README.md)：AOP方法调用代理，处理拦截器链和方法调用。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [@EnableAspectJAutoProxy](spring-aop/spring-aop-enableAspectJAutoProxy/README.md)
+      ：启用AspectJ切面自动代理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AnnotationAwareAspectJAutoProxyCreator](spring-aop/spring-aop-annotationAwareAspectJAutoProxyCreator/README.md)
+      ：创建AOP代理以应用AspectJ风格的切面。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    - [BeanFactoryAspectJAdvisorsBuilder](spring-aop/spring-aop-beanFactoryAspectJAdvisorsBuilder/README.md)
+      ：构建@AspectJ注解切面，生成Spring AOP
+      Advisors。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [BeanFactoryAdvisorRetrievalHelper](spring-aop/spring-aop-beanFactoryAdvisorRetrievalHelper/README.md)：帮助检索并管理
+      Spring AOP 中的 Advisor Beans。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [TargetSource](spring-aop/spring-aop-targetSource/README.md)：管理AOP代理对象的获取与释放。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [TargetSourceCreator](spring-aop/spring-aop-targetSourceCreator/README.md)：创建特殊的目标源，定制代理对象的创建和管理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [@EnableAspectJAutoProxy](spring-aop/spring-aop-enableAspectJAutoProxy/README.md)：启用AspectJ切面自动代理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [@EnableLoadTimeWeaving](spring-aop/spring-aop-enableLoadTimeWeaving/README.md)：启用Spring加载时编织。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AspectInstanceFactory](spring-aop/spring-aop-aspectInstanceFactory/README.md)：创建切面实例，支持多种实现方式。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [MetadataAwareAspectInstanceFactory](spring-aop/spring-aop-metadataAwareAspectInstanceFactory/README.md)：管理切面实例和元数据，支持多种实例化策略。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AspectJAdvisorFactory](spring-aop/spring-aop-aspectJAdvisorFactory/README.md)：创建AspectJ通知器实例，管理切面通知的创建和配置。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [BeanFactoryAspectJAdvisorsBuilder](spring-aop/spring-aop-beanFactoryAspectJAdvisorsBuilder/README.md)：构建@AspectJ注解切面，生成Spring AOP Advisors。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [BeanFactoryAdvisorRetrievalHelper](spring-aop/spring-aop-beanFactoryAdvisorRetrievalHelper/README.md)：帮助检索并管理 Spring AOP 中的 Advisor Beans。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [AnnotationAwareAspectJAutoProxyCreator](spring-aop/spring-aop-annotationAwareAspectJAutoProxyCreator/README.md)：创建AOP代理以应用AspectJ风格的切面。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [AopContext](spring-aop/spring-aop-aopContext/README.md)：获取Spring AOP代理对象的工具。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [ExposeInvocationInterceptor](spring-aop/spring-aop-exposeInvocationInterceptor/README.md)：暴露Spring AOP方法调用上下文的拦截器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
 

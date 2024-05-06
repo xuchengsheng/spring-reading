@@ -5,8 +5,8 @@
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
   - [四、最佳实践](#四最佳实践)
-  - [五、源码分析](#五源码分析)
-  - [六、常见问题](#六常见问题)
+  - [五、时序图](#五时序图)
+  - [六、源码分析](#六源码分析)
 
 ### 一、基本信息
 
@@ -33,30 +33,44 @@
 
 ### 四、最佳实践
 
-使用 `BeanFactoryAdvisorRetrievalHelper` 类来从一个默认的 Bean 工厂中检索 Advisor，并打印出这些 Advisor 的列表。首先，我们创建一个默认的 Bean 工厂，并向其注册一个名为 "myAdvisor" 的 Advisor。然后，我们创建了 `BeanFactoryAdvisorRetrievalHelper` 实例，并将 Bean 工厂传入其中。接着，通过调用 `findAdvisorBeans()` 方法，我们获取了 Bean 工厂中的 Advisor 列表，并通过循环遍历的方式打印出每个 Advisor 的信息。
+使用基于注解的应用上下文来获取并调用 `MyService` Bean 的 `foo()`
+方法。首先，创建了一个 `AnnotationConfigApplicationContext` 实例，通过传入 `AppConfig.class`
+来初始化基于注解的应用上下文。然后，通过 `context.getBean(MyService.class)` 获取了 `MyService` Bean
+的实例，并调用了其 `foo()` 方法。
 
 ```java
 public class BeanFactoryAdvisorRetrievalHelperDemo {
 
     public static void main(String[] args) {
-        // 创建一个默认的 Bean 工厂
-        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-        // 向 Bean 工厂注册一个名为 "myAdvisor" 的 Advisor
-        beanFactory.registerSingleton("myAdvisor", new MyAdvisor());
-
-        // 创建 BeanFactoryAdvisorRetrievalHelper 实例，并传入 Bean 工厂
-        BeanFactoryAdvisorRetrievalHelper helper = new BeanFactoryAdvisorRetrievalHelper(beanFactory);
-        // 获取 Bean 工厂中的 Advisor 列表
-        List<Advisor> advisors = helper.findAdvisorBeans();
-        // 打印 Advisors
-        advisors.forEach(System.out::println);
+        // 创建基于注解的应用上下文
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        // 从应用上下文中获取MyService bean
+        MyService myService = context.getBean(MyService.class);
+        // 调用MyService的方法
+        myService.foo();
     }
 }
 ```
 
-`MyAdvisor` 类是一个自定义的 Advisor，继承自 `AbstractPointcutAdvisor`，用于定义切面的逻辑。在该类中，`getPointcut()` 方法返回一个始终为真的 Pointcut，表示适用于所有的连接点；`getAdvice()` 方法返回一个空的 Advice，表示不对目标方法添加任何额外的通知逻辑。因此，该 Advisor 没有实际的业务逻辑，仅作为演示目的。
+`AppConfig` 类是一个使用 `@Configuration` 注解标记的配置类，通过 `@EnableAspectJAutoProxy` 开启了 AspectJ
+自动代理功能，并通过 `@ComponentScan` 启用了组件扫描，用于自动发现和注册 Spring 组件。
 
 ```java
+
+@Configuration
+@EnableAspectJAutoProxy
+@ComponentScan
+public class AppConfig {
+
+}
+```
+
+使用 `@Component` 注解标记的自定义 Advisor，继承自 `AbstractPointcutAdvisor`。它定义了一个总是返回真值的 Pointcut，并将一个自定义的
+Advice `MyAdvice` 应用于目标方法上。
+
+```java
+
+@Component
 public class MyAdvisor extends AbstractPointcutAdvisor {
 
     @Override
@@ -66,18 +80,67 @@ public class MyAdvisor extends AbstractPointcutAdvisor {
 
     @Override
     public Advice getAdvice() {
-        return Advisor.EMPTY_ADVICE;
+        return new MyAdvice();
     }
 }
 ```
 
-运行结果，成功地从 Bean 工厂中获取了Advisor。
+`MyAdvice` 类是一个实现了 `MethodBeforeAdvice` 接口的自定义通知类，用于在目标方法执行前执行特定逻辑。在 `before()`
+方法中，它打印了一条消息："Before method execution"。
 
 ```java
-com.xcs.spring.MyAdvisor@1f7030a6
+public class MyAdvice implements MethodBeforeAdvice {
+    @Override
+    public void before(Method method, Object[] args, Object target) throws Throwable {
+        System.out.println("Before method execution");
+    }
+}
 ```
 
-### 五、源码分析
+`MyService` 类是一个使用 `@Service` 注解标记的服务类，提供了一个名为 `foo()` 的方法，该方法在调用时会打印消息 "foo..."。
+
+```java
+
+@Service
+public class MyService {
+
+    public void foo() {
+        System.out.println("foo...");
+    }
+}
+```
+
+运行结果，调用 `MyService` 类的 `foo()` 方法之前，成功地执行了一个切面通知，输出了 "Before method execution"
+的消息，然后执行了 `foo()` 方法，输出了 "foo..." 的消息。
+
+```java
+Before method
+execution
+foo...
+```
+
+### 五、时序图
+
+~~~mermaid
+sequenceDiagram
+    AbstractAutowireCapableBeanFactory->>AbstractAutoProxyCreator: postProcessAfterInitialization()
+    Note over AbstractAutowireCapableBeanFactory,AbstractAutoProxyCreator: 调用后处理方法
+    AbstractAutoProxyCreator->>AbstractAutoProxyCreator: wrapIfNecessary()
+    Note over AbstractAutoProxyCreator: 调用包装方法
+    AbstractAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: getAdvicesAndAdvisorsForBean()
+    Note over AbstractAutoProxyCreator,AbstractAdvisorAutoProxyCreator: 获取通知和 Advisors
+    AbstractAdvisorAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: findEligibleAdvisors()
+    Note over AbstractAdvisorAutoProxyCreator: 查找合适的 Advisors
+    AbstractAdvisorAutoProxyCreator->>AnnotationAwareAspectJAutoProxyCreator: findCandidateAdvisors()
+    Note over AbstractAdvisorAutoProxyCreator,AnnotationAwareAspectJAutoProxyCreator: 查找候选的 Advisors
+    AnnotationAwareAspectJAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: super.findCandidateAdvisors()
+    Note over AnnotationAwareAspectJAutoProxyCreator,AbstractAdvisorAutoProxyCreator: 调用父类的查找候选的 Advisors
+    AbstractAdvisorAutoProxyCreator->>BeanFactoryAdvisorRetrievalHelper: findAdvisorBeans()
+    Note over AbstractAdvisorAutoProxyCreator,BeanFactoryAdvisorRetrievalHelper: 查找当前Bean工厂中所有符合条件的Advisor
+    BeanFactoryAdvisorRetrievalHelper->>AbstractAutoProxyCreator: 返回 advisors
+~~~
+
+### 六、源码分析
 
 在`org.springframework.aop.framework.autoproxy.BeanFactoryAdvisorRetrievalHelper#findAdvisorBeans`方法中，主要功能是在当前的 Bean 工厂中查找所有符合条件的 Advisor Beans。它忽略了 FactoryBeans，并排除了当前正在创建中的 Beans。该方法首先确定 Advisor Bean 的名称列表，如果尚未缓存，则通过 `BeanFactoryUtils.beanNamesForTypeIncludingAncestors()` 方法获取。然后，它遍历这些 Advisor Bean 的名称，检查它们是否符合条件，并将符合条件的 Advisor Bean 添加到结果列表中。在添加之前，它会检查该 Bean 是否当前正在创建中，如果是，则跳过。最后，返回包含所有符合条件的 Advisor Beans 的列表。
 
@@ -142,21 +205,3 @@ public List<Advisor> findAdvisorBeans() {
     return advisors;
 }
 ```
-
-### 六、常见问题
-
-1. **忽略FactoryBeans**
-
-   + 在 `findAdvisorBeans()` 方法中，该类会忽略 FactoryBeans，只处理常规的 Advisor Beans。这是因为 FactoryBeans 可能会在初始化时产生副作用，而 `BeanFactoryAdvisorRetrievalHelper` 需要保持所有常规 Beans 未初始化，以便自动代理创建器能够正确地应用于它们。
-
-2. **排除当前正在创建的Beans**
-
-   + 在遍历 Advisor Beans 名称列表时，`findAdvisorBeans()` 方法会排除当前正在创建中的 Beans。这是为了避免在 Bean 的创建过程中引入不稳定的代理逻辑。
-
-3. **错误处理**
-
-   + 当尝试获取 Advisor Bean 时，可能会抛出 `BeanCreationException` 异常。`BeanFactoryAdvisorRetrievalHelper` 需要正确处理这些异常情况，例如，当 Advisor Bean 的依赖 Bean 正在创建中时，可以选择跳过该 Advisor。
-
-4. **缓存机制**
-
-   + 为了提高性能，`BeanFactoryAdvisorRetrievalHelper` 类使用了缓存机制来存储 Advisor Bean 的名称列表。需要注意，在 Bean 工厂中添加或删除 Advisor Bean 时，需要更新缓存以确保数据的一致性。
