@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.Before;
 @Aspect
 public class MyAspect {
 
-    @Before("execution(* FooService+.*(..))")
-    public void advice() {
+    @Before("execution(* com.xcs.spring.MyService+.*(..))")
+    public void before() {
         System.out.println("Before method execution");
     }
 }

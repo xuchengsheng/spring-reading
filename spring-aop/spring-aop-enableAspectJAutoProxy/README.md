@@ -37,7 +37,7 @@
 
 5. **自动扫描切面**
 
-   + Spring会自动扫描应用中的AspectJ切面，并将其应用到相应的目标对象中，无需手动配置切面。
++ Spring会自动扫描应用中的AspectJ切面，并将其应用到相应的目标对象中，无需手动配置切面。
 
 ### 四、注解源码
 
@@ -157,7 +157,9 @@ public @interface EnableAspectJAutoProxy {
 
 ### 五、最佳实践
 
-使用`EnableAspectJAutoProxy`注解和Spring的基于注解的应用上下文来启用AspectJ自动代理功能。在程序中，首先创建了一个基于注解的应用上下文，然后通过该上下文获取了`FooService` bean，并调用了其方法。
+使用`EnableAspectJAutoProxy`
+注解和Spring的基于注解的应用上下文来启用AspectJ自动代理功能。在程序中，首先创建了一个基于注解的应用上下文，然后通过该上下文获取了`MyService`
+bean，并调用了其方法。
 
 ```java
 public class EnableAspectJAutoProxyDemo {
@@ -165,15 +167,17 @@ public class EnableAspectJAutoProxyDemo {
     public static void main(String[] args) {
         // 创建基于注解的应用上下文
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        // 从应用上下文中获取FooService bean
-        FooService fooService = context.getBean(FooService.class);
-        // 调用FooService的方法
-        fooService.foo();
+        // 从应用上下文中获取MyService bean
+        MyService myService = context.getBean(MyService.class);
+        // 调用MyService的方法
+        myService.foo();
     }
 }
 ```
 
-通过`@Configuration`注解表示它是一个配置类，用于配置Spring应用的bean。其中，通过`@EnableAspectJAutoProxy`注解启用了AspectJ自动代理功能，使得Spring能够自动处理切面。在配置中定义了两个bean：`FooService`和`MyAspect`，分别用于创建`FooService`的实例和`MyAspect`切面的实例。
+通过`@Configuration`注解表示它是一个配置类，用于配置Spring应用的bean。其中，通过`@EnableAspectJAutoProxy`
+注解启用了AspectJ自动代理功能，使得Spring能够自动处理切面。在配置中定义了两个bean：`MyService`和`MyAspect`
+，分别用于创建`MyService`的实例和`MyAspect`切面的实例。
 
 ```java
 @Configuration
@@ -181,8 +185,8 @@ public class EnableAspectJAutoProxyDemo {
 public class AppConfig {
 
     @Bean
-    public FooService fooService() {
-        return new FooService();
+    public MyService myService() {
+        return new MyService();
     }
 
     @Bean
@@ -195,10 +199,10 @@ public class AppConfig {
 `FooService`是一个简单的Java类，其中包含了一个名为`foo`的方法。
 
 ```java
-public class FooService {
+public class MyService {
 
     public void foo() {
-        System.out.println("foo");
+        System.out.println("foo...");
     }
 }
 ```
@@ -209,8 +213,8 @@ public class FooService {
 @Aspect
 public class MyAspect {
 
-    @Before("execution(* FooService+.*(..))")
-    public void advice() {
+    @Before("execution(* com.xcs.spring.MyService+.*(..))")
+    public void before() {
         System.out.println("Before method execution");
     }
 }
@@ -331,17 +335,3 @@ public static void forceAutoProxyCreatorToExposeProxy(BeanDefinitionRegistry reg
 }
 
 ```
-
-### 七、常见问题
-
-1. **代理类型选择**
-   + 在@EnableAspectJAutoProxy注解中有一个proxyTargetClass属性，用于指定代理类型。如果选择了错误的代理类型，可能会导致意外的行为或错误。通常，选择默认的接口代理是比较安全的选择。
-   
-2. **切面优先级问题**
-   + 如果同时存在多个切面，并且它们的通知方法匹配相同的连接点，可能会导致切面执行顺序不符合预期。可以通过实现Ordered接口或使用@Order注解来控制切面的执行顺序。
-   
-3. **代理对象暴露问题**
-   + 在某些情况下，可能需要访问代理对象本身，例如在同一个类的不同方法中调用被代理的方法。这时，需要确保在@EnableAspectJAutoProxy注解中设置了exposeProxy属性为true，以便将代理对象暴露为ThreadLocal。
-   
-4. **Spring配置问题**
-+ 配置类中的@EnableAspectJAutoProxy注解可能会被错误地放置在不正确的位置，或者与其他注解冲突。因此，需要确保@EnableAspectJAutoProxy注解正确地放置在@Configuration类上，并且没有与其他注解冲突。

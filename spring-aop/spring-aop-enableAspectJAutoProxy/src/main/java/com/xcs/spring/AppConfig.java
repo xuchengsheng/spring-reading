@@ -9,8 +9,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AppConfig {
 
     @Bean
-    public FooService fooService() {
-        return new FooService();
+    public MyService myService() {
+        return new MyService();
     }
 
     @Bean

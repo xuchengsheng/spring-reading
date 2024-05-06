@@ -209,7 +209,10 @@ public class AppConfig {
 }
 ```
 
-定义了一个切面类 `MyLTWAspect`，用于实现加载时编织（Load Time Weaving）功能。通过 `@Aspect` 注解标记该类为一个切面，并在其中定义了一个环绕通知方法 `around`，用于在目标方法调用前后执行特定逻辑。在该方法中，首先输出了目标方法的名称，然后调用了原始方法，并输出了方法返回值。同时，通过 `@Pointcut` 注解定义了一个切点 `ltwPointcut()`，指定了需要被切入的目标方法，这里是 `com.xcs.spring.FooService` 类中的所有公共方法。
+定义了一个切面类 `MyLTWAspect`，用于实现加载时编织（Load Time Weaving）功能。通过 `@Aspect`
+注解标记该类为一个切面，并在其中定义了一个环绕通知方法 `around`
+，用于在目标方法调用前后执行特定逻辑。在该方法中，首先输出了目标方法的名称，然后调用了原始方法，并输出了方法返回值。同时，通过 `@Pointcut`
+注解定义了一个切点 `ltwPointcut()`，指定了需要被切入的目标方法，这里是 `com.xcs.spring.MyService` 类中的所有公共方法。
 
 ```java
 @Aspect
@@ -226,7 +229,7 @@ public class MyLTWAspect {
         return result;
     }
 
-    @Pointcut("execution(public * com.xcs.spring.FooService.*(..))")
+    @Pointcut("execution(public * com.xcs.spring.MyService.*(..))")
     public void ltwPointcut(){}
 }
 ```
