@@ -1,15 +1,13 @@
 ## TargetSource
 
-- [TargetSource](#TargetSource)
+- [TargetSource](#targetsource)
     - [一、基本信息](#一基本信息)
-    - [二、知识储备](#二知识储备)
-    - [三、基本描述](#三基本描述)
-    - [四、主要功能](#四主要功能)
-    - [五、接口源码](#五接口源码)
-    - [六、主要实现](#六主要实现)
+    - [二、基本描述](#二基本描述)
+    - [三、主要功能](#三主要功能)
+    - [四、接口源码](#四接口源码)
+    - [五、主要实现](#五主要实现)
+    - [六、类关系图](#六类关系图)
     - [七、最佳实践](#七最佳实践)
-    - [八、与其他组件的关系](#八与其他组件的关系)
-    - [九、常见问题](#九常见问题)
 
 ### 一、基本信息
 
@@ -115,7 +113,32 @@ public interface TargetSource extends TargetClassAware {
 
    + 用于使用 Apache Commons Pool 来管理目标对象的池化目标源。该实现通过对象池管理目标对象的创建和销毁，以提高对象的重用性和性能。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class CommonsPool2TargetSource
+class PrototypeTargetSource
+class SingletonTargetSource
+class TargetClassAware {
+<<Interface>>
+
+}
+class TargetSource {
+<<Interface>>
+
+}
+class ThreadLocalTargetSource
+
+CommonsPool2TargetSource  ..>  TargetSource 
+PrototypeTargetSource  ..>  TargetSource 
+SingletonTargetSource  ..>  TargetSource 
+TargetSource  -->  TargetClassAware 
+ThreadLocalTargetSource  ..>  TargetSource 
+~~~
+
+### 七、最佳实践
 
 使用 Spring 的代理工厂（`ProxyFactory`）和目标源（`TargetSource`）来创建代理对象。在这个示例中，我们创建了一个连接池目标源（`ConnectionPoolTargetSource`），设置连接池的大小为 3。然后，我们将这个连接池目标源设置为代理工厂的目标源，并通过代理工厂获取代理对象。最后，我们通过代理对象调用了10次方法。
 
@@ -264,17 +287,3 @@ MyConnection Name = Connection1
 MyConnection Name = Connection2
 MyConnection Name = Connection0
 ```
-
-### 七、源码分析
-
-暂时
-
-### 八、常见问题
-
-1. **目标对象类型不匹配**
-
-   + 在配置 `TargetSource` 实现类时，需要确保目标对象的类型与实际目标对象的类型一致，否则可能会导致类型转换异常或者运行时错误。
-
-2. **目标对象生命周期管理**
-
-   + 在使用 `TargetSource` 时，需要确保目标对象的生命周期管理正确，特别是在目标对象的初始化、销毁和异常处理方面，需要注意避免资源泄漏和对象状态不一致等问题。

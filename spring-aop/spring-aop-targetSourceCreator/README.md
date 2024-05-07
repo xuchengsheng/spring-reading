@@ -1,14 +1,14 @@
 ## TargetSourceCreator
 
-- [TargetSourceCreator](#TargetSourceCreator)
+- [TargetSourceCreator](#targetsourcecreator)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
     - [四、接口源码](#四接口源码)
     - [五、主要实现](#五主要实现)
-    - [六、最佳实践](#六最佳实践)
-    - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
+    - [六、类关系图](#六类关系图)
+    - [七、最佳实践](#七最佳实践)
+    - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -70,7 +70,25 @@ public interface TargetSourceCreator {
 
    + 用于延迟创建目标源。它适用于需要延迟加载的场景，以减少启动时间或资源占用。根据特定的条件或策略，它会延迟地创建目标源，直到被请求时才进行加载。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AbstractBeanFactoryBasedTargetSourceCreator
+class LazyInitTargetSourceCreator
+class QuickTargetSourceCreator
+class TargetSourceCreator {
+<<Interface>>
+
+}
+
+AbstractBeanFactoryBasedTargetSourceCreator  ..>  TargetSourceCreator 
+LazyInitTargetSourceCreator  -->  AbstractBeanFactoryBasedTargetSourceCreator 
+QuickTargetSourceCreator  -->  AbstractBeanFactoryBasedTargetSourceCreator 
+~~~
+
+### 七、最佳实践
 
 使用Spring框架中的注解配置来创建应用程序上下文，并从上下文中获取`MyConnection` bean。然后，它打印了`MyConnection`实例的类名，并循环调用了`MyConnection`实例的`getName()`方法来获取实例的名称并打印输出。
 
@@ -266,7 +284,7 @@ MyConnection Name = Connection2
 MyConnection Name = Connection0
 ```
 
-### 七、源码分析
+### 八、源码分析
 
 在`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessBeforeInstantiation`方法中，在Bean实例化之前进行处理。首先，它检查缓存中是否存在目标Bean的信息，如果存在则直接返回null，否则继续执行。然后，它检查Bean是否是基础设施类或是否应该被跳过，如果是，则将其标记为不需要增强，并返回null。最后，如果存在自定义的目标源（TargetSource），则创建代理对象，并使用自定义的目标源处理目标实例，从而避免不必要的默认实例化过程。
 
@@ -348,9 +366,3 @@ protected TargetSource getCustomTargetSource(Class<?> beanClass, String beanName
     return null;
 }
 ```
-
-### 八、常见问题
-
-1. **如何在Spring应用程序中配置和使用TargetSourceCreator？**
-
-   - 配置`TargetSourceCreator`，创建一个实现`BeanPostProcessor`和`PriorityOrdered`接口的自定义类`SetMyTargetSourceCreator`，在其`postProcessAfterInitialization`方法中设置自定义的目标源创建器。
