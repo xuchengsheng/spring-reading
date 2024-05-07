@@ -1,14 +1,14 @@
 ## AspectJAdvisorFactory
 
-- [AspectJAdvisorFactory](#AspectJAdvisorFactory)
+- [AspectJAdvisorFactory](#aspectjadvisorfactory)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
     - [四、接口源码](#四接口源码)
     - [五、主要实现](#五主要实现)
-    - [六、最佳实践](#六最佳实践)
-    - [七、源码分析](#七源码分析)
-    - [八、常见问题](#八常见问题)
+    - [六、类关系图](#六类关系图)
+    - [七、最佳实践](#七最佳实践)
+    - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -117,7 +117,24 @@ public interface AspectJAdvisorFactory {
 
    + `ReflectiveAspectJAdvisorFactory` 实现类是利用反射机制解析 AspectJ 注解，并创建相应的 Advisor 对象，支持注解风格的 AspectJ 切面，为我们提供了灵活而强大的面向切面编程能力。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AbstractAspectJAdvisorFactory
+class AspectJAdvisorFactory {
+<<Interface>>
+
+}
+class ReflectiveAspectJAdvisorFactory
+
+AbstractAspectJAdvisorFactory  ..>  AspectJAdvisorFactory 
+ReflectiveAspectJAdvisorFactory  -->  AbstractAspectJAdvisorFactory 
+
+~~~
+
+### 七、最佳实践
 
 使用 `AspectJAdvisorFactory` 实现类 `ReflectiveAspectJAdvisorFactory`，以创建 Advisors 并打印它们。首先，通过 `DefaultListableBeanFactory` 创建了一个默认的 Bean 工厂，并在其中注册了一个名为 "myAspect" 的单例 Bean，类型为 `MyAspect`。然后，创建了一个 `MetadataAwareAspectInstanceFactory` 实例 `factory`，用于实例化切面。接着，创建了 `ReflectiveAspectJAdvisorFactory` 实例 `aspectJAdvisorFactory`，并使用它获取所有注解式 AspectJ 方法的 Advisors。最后，通过遍历 Advisors 并打印的方式展示了这些 Advisors。
 
@@ -177,7 +194,7 @@ InstantiationModelAwarePointcutAdvisor: expression [execution(* com.xcs.spring.M
 InstantiationModelAwarePointcutAdvisor: expression [execution(* com.xcs.spring.MyService.doSomething(..))]; advice method [public void com.xcs.spring.MyAspect.after()]; perClauseKind=SINGLETON
 ```
 
-### 七、源码分析
+### 八、源码分析
 
 在`org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory#getAdvisors`方法中，根据给定的切面实例工厂，获取切面类中的通知器列表。首先，验证切面类的有效性，然后使用元数据判断是否需要延迟实例化切面实例工厂。接着，遍历切面类中的方法，获取通知器，并将其添加到通知器列表中。如果切面是针对目标的并且是延迟实例化的，则添加一个虚拟实例化通知器。最后，查找切面类中的引入字段，获取相应的通知器，并将其添加到通知器列表中，最终返回该列表。
 
@@ -489,25 +506,3 @@ public Advice getAdvice(Method candidateAdviceMethod, AspectJExpressionPointcut 
     return springAdvice;
 }
 ```
-
-### 八、常见问题
-
-1. **切点表达式问题**
-
-   + 关于如何编写有效的切点表达式，以及如何在表达式中使用 AspectJ 的语法和通配符。
-
-2. **通知类型问题**
-
-   + 关于不同类型的通知（Before、After、Around 等）的使用场景和区别，以及如何在 AspectJ 注解中正确声明和使用它们。
-
-3. **参数绑定问题**
-
-   + 关于如何在通知方法中获取和使用方法参数，以及如何在切点表达式中指定参数名称。
-
-4. **Introduction（引入）问题**
-
-   + 关于如何在切面中引入新的接口或功能，以及如何正确配置和使用 Introduction 相关的注解和通知。
-
-5. **Spring AOP 与 AspectJ 的区别问题**
-
-   + 关于 Spring AOP 和 AspectJ 在实现方式、功能特性和应用场景上的区别，以及何时选择使用哪种方式。

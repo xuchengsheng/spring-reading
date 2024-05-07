@@ -1,18 +1,14 @@
 ## MetadataAwareAspectInstanceFactory
+
 - [MetadataAwareAspectInstanceFactory](#metadataawareaspectinstancefactory)
   - [一、基本信息](#一基本信息)
   - [二、基本描述](#二基本描述)
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、源码分析](#七源码分析)
-    - [SimpleMetadataAwareAspectInstanceFactory](#simplemetadataawareaspectinstancefactory)
-    - [SingletonMetadataAwareAspectInstanceFactory](#singletonmetadataawareaspectinstancefactory)
-    - [BeanFactoryAspectInstanceFactory](#beanfactoryaspectinstancefactory)
-    - [LazySingletonAspectInstanceFactoryDecorator](#lazysingletonaspectinstancefactorydecorator)
-  - [八、常见问题](#八常见问题)
-
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
+  - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -93,7 +89,40 @@ public interface MetadataAwareAspectInstanceFactory extends AspectInstanceFactor
 
    - 这个实现类是一个装饰器，用于延迟初始化单例的切面实例。它在首次请求切面实例时才进行实例化，以提高性能并延迟资源消耗。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AspectInstanceFactory {
+<<Interface>>
+
+}
+class BeanFactoryAspectInstanceFactory
+class LazySingletonAspectInstanceFactoryDecorator
+class MetadataAwareAspectInstanceFactory {
+<<Interface>>
+
+}
+class PrototypeAspectInstanceFactory
+class SimpleAspectInstanceFactory
+class SimpleMetadataAwareAspectInstanceFactory
+class SingletonAspectInstanceFactory
+class SingletonMetadataAwareAspectInstanceFactory
+
+BeanFactoryAspectInstanceFactory  ..>  MetadataAwareAspectInstanceFactory 
+LazySingletonAspectInstanceFactoryDecorator  ..>  MetadataAwareAspectInstanceFactory 
+MetadataAwareAspectInstanceFactory  -->  AspectInstanceFactory 
+PrototypeAspectInstanceFactory  -->  BeanFactoryAspectInstanceFactory 
+SimpleAspectInstanceFactory  ..>  AspectInstanceFactory 
+SimpleMetadataAwareAspectInstanceFactory  ..>  MetadataAwareAspectInstanceFactory 
+SimpleMetadataAwareAspectInstanceFactory  -->  SimpleAspectInstanceFactory 
+SingletonAspectInstanceFactory  ..>  AspectInstanceFactory 
+SingletonMetadataAwareAspectInstanceFactory  ..>  MetadataAwareAspectInstanceFactory 
+SingletonMetadataAwareAspectInstanceFactory  -->  SingletonAspectInstanceFactory 
+~~~
+
+### 七、最佳实践
 
 使用不同的 `MetadataAwareAspectInstanceFactory` 实现类来实例化切面，并展示了它们的不同行为。首先，使用 `SimpleMetadataAwareAspectInstanceFactory` 和 `SingletonMetadataAwareAspectInstanceFactory` 分别创建单例的切面实例，然后使用 `BeanFactoryAspectInstanceFactory` 在 Spring Bean 工厂中注册并实例化切面，最后使用 `LazySingletonAspectInstanceFactoryDecorator` 延迟初始化单例切面实例。在每个步骤中，都输出了切面实例及其元数据信息。
 
@@ -156,9 +185,9 @@ LazySingletonAspectInstanceFactoryDecorator AspectCreationMutex = null
 LazySingletonAspectInstanceFactoryDecorator AspectMetadata = {"aspectName":"myAspect","aspectClass":"com.xcs.spring.MyAspect","perClausePointcut":{}}
 ```
 
-### 七、源码分析
+### 八、源码分析
 
-#### SimpleMetadataAwareAspectInstanceFactory
+**SimpleMetadataAwareAspectInstanceFactory**
 
 `SimpleMetadataAwareAspectInstanceFactory` 是一个实现了 `MetadataAwareAspectInstanceFactory` 接口的类，它在每次调用 `getAspectInstance()` 方法时都会为指定的切面类创建一个新的实例。这个类通过 `AspectMetadata` 对象来管理切面的元数据信息，并且实现了 `getAspectMetadata()` 方法来提供这些元数据。它还实现了 `getAspectCreationMutex()` 方法来返回切面实例的创建锁，以及 `getOrderForAspectClass()` 方法来确定切面类的顺序。
 
@@ -219,7 +248,7 @@ public class SimpleMetadataAwareAspectInstanceFactory extends SimpleAspectInstan
 }
 ```
 
-#### SingletonMetadataAwareAspectInstanceFactory
+**SingletonMetadataAwareAspectInstanceFactory**
 
 `SingletonMetadataAwareAspectInstanceFactory` 是一个实现了 `MetadataAwareAspectInstanceFactory` 接口的类，它通过指定的单例对象支持切面实例的创建，每次调用 `getAspectInstance()` 方法都返回相同的实例。该类使用一个单例的切面实例，并通过 `AspectMetadata` 对象管理切面的元数据信息。它也实现了 `Serializable` 接口以支持序列化，并且继承自 `SingletonAspectInstanceFactory`，提供了获取切面实例的相关方法和逻辑。
 
@@ -284,7 +313,7 @@ public class SingletonMetadataAwareAspectInstanceFactory extends SingletonAspect
 }
 ```
 
-#### BeanFactoryAspectInstanceFactory
+**BeanFactoryAspectInstanceFactory**
 
 `BeanFactoryAspectInstanceFactory` 是一个实现了 `MetadataAwareAspectInstanceFactory` 接口的类，它通过 Spring 的 `BeanFactory` 支持切面实例的创建。这个工厂可以通过指定的 bean 名称从 `BeanFactory` 中获取切面实例，并且可以通过提供的类型来自省以创建 AspectJ 的元数据信息。它可以处理单例和非单例的情况，并且能够确定切面的顺序，支持使用 `Ordered` 接口或 `@Order` 注解来定义顺序。
 
@@ -420,7 +449,7 @@ public class BeanFactoryAspectInstanceFactory implements MetadataAwareAspectInst
 }
 ```
 
-#### LazySingletonAspectInstanceFactoryDecorator
+**LazySingletonAspectInstanceFactoryDecorator**
 
 `LazySingletonAspectInstanceFactoryDecorator`类是一个装饰器，用于确保一个 `MetadataAwareAspectInstanceFactory` 只实例化一次。它包装了另一个 `MetadataAwareAspectInstanceFactory` 实例，并在首次调用 `getAspectInstance()` 方法时进行实例化。在后续的调用中，它将返回已经实例化的对象，而不会再次实例化。
 
@@ -525,13 +554,3 @@ public class LazySingletonAspectInstanceFactoryDecorator implements MetadataAwar
 
 }
 ```
-
-### 八、常见问题
-
-1. **切面实例化策略** 
-
-   + 我们需要了解不同实现类的切面实例化策略，例如单例模式、原型模式等，以便选择适合应用场景的实现类。
-
-2. **AOP配置错误** 
-
-   + 在使用 `MetadataAwareAspectInstanceFactory` 实现时，可能会出现AOP配置错误导致切面无法正确实例化的问题，需要仔细检查配置并进行调试。

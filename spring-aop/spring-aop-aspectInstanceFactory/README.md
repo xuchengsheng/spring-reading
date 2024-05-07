@@ -6,12 +6,9 @@
   - [三、主要功能](#三主要功能)
   - [四、接口源码](#四接口源码)
   - [五、主要实现](#五主要实现)
-  - [六、最佳实践](#六最佳实践)
-  - [七、源码分析](#七源码分析)
-    - [SimpleAspectInstanceFactory](#simpleaspectinstancefactory)
-    - [SingletonAspectInstanceFactory](#singletonaspectinstancefactory)
-    - [SimpleBeanFactoryAwareAspectInstanceFactory](#simplebeanfactoryawareaspectinstancefactory)
-  - [八、常见问题](#八常见问题)
+  - [六、类关系图](#六类关系图)
+  - [七、最佳实践](#七最佳实践)
+  - [八、源码分析](#八源码分析)
 
 ### 一、基本信息
 
@@ -80,14 +77,32 @@ public interface AspectInstanceFactory extends Ordered {
    + 一个简单的切面实例工厂，用于创建基于注解的切面实例。
 
 2. **SingletonAspectInstanceFactory**
-
    + 一个单例的切面实例工厂，用于创建单例的切面实例。
 
 3. **SimpleBeanFactoryAwareAspectInstanceFactory**
 
-   + 一个简单的 Bean 工厂感知切面实例工厂，用于在创建切面实例时考虑 Bean 工厂的上下文信息。
++ 一个简单的 Bean 工厂感知切面实例工厂，用于在创建切面实例时考虑 Bean 工厂的上下文信息。
 
-### 六、最佳实践
+### 六、类关系图
+
+~~~mermaid
+classDiagram
+direction BT
+class AspectInstanceFactory {
+<<Interface>>
+
+}
+class SimpleAspectInstanceFactory
+class SimpleBeanFactoryAwareAspectInstanceFactory
+class SingletonAspectInstanceFactory
+
+SimpleAspectInstanceFactory  ..>  AspectInstanceFactory 
+SimpleBeanFactoryAwareAspectInstanceFactory  ..>  AspectInstanceFactory 
+SingletonAspectInstanceFactory  ..>  AspectInstanceFactory 
+
+~~~
+
+### 七、最佳实践
 
 使用不同类型的 `AspectInstanceFactory` 实现类来创建和管理切面实例。首先，通过 `SimpleAspectInstanceFactory` 和 `SingletonAspectInstanceFactory` 分别创建简单实例和单例实例的切面。然后，通过注册一个名为 "myAspect" 的单例 bean，并将其用于配置 `SimpleBeanFactoryAwareAspectInstanceFactory`，从而创建一个依赖于 Bean 工厂的切面实例。最后，展示了获取 `SimpleBeanFactoryAwareAspectInstanceFactory` 实例的切面对象，并输出其结果。
 
@@ -136,9 +151,9 @@ SimpleBeanFactoryAwareAspectInstanceFactory (1): com.xcs.spring.MyAspect@41ee392
 SimpleBeanFactoryAwareAspectInstanceFactory (2): com.xcs.spring.MyAspect@41ee392b
 ```
 
-### 七、源码分析
+### 八、源码分析
 
-#### SimpleAspectInstanceFactory
+**SimpleAspectInstanceFactory**
 
  `SimpleAspectInstanceFactory`类是 `AspectInstanceFactory` 接口的实现。每次调用 `getAspectInstance()` 方法创建指定切面类的新实例。它通过反射机制在运行时实例化切面类，并提供了方法来获取切面类、获取切面类的类加载器以及确定切面实例的顺序。
 
@@ -217,7 +232,7 @@ public class SimpleAspectInstanceFactory implements AspectInstanceFactory {
 }
 ```
 
-#### SingletonAspectInstanceFactory
+**SingletonAspectInstanceFactory**
 
  `SingletonAspectInstanceFactory` 类是 `AspectInstanceFactory` 接口的实现。该类通过指定的单例对象作为后端支持，每次调用 `getAspectInstance()` 方法时都返回相同的实例。此外，它还提供了方法来获取切面实例的类加载器以及确定切面实例的顺序，支持实现了 `Ordered` 接口的切面实例。
 
@@ -291,7 +306,7 @@ public class SingletonAspectInstanceFactory implements AspectInstanceFactory, Se
 }
 ```
 
-#### SimpleBeanFactoryAwareAspectInstanceFactory
+**SimpleBeanFactoryAwareAspectInstanceFactory**
 
 `SimpleBeanFactoryAwareAspectInstanceFactory` 类是 `AspectInstanceFactory` 接口的实现。该类通过配置的 bean 名称从 `BeanFactory` 中定位切面实例。每次调用 `getAspectInstance()` 方法时，都会查找并返回指定名称的 bean。此外，它还提供了方法来获取切面实例的类加载器以及确定切面实例的顺序，支持实现了 `Ordered` 接口的切面实例。
 
@@ -362,25 +377,3 @@ public class SimpleBeanFactoryAwareAspectInstanceFactory implements AspectInstan
     }
 }
 ```
-
-### 八、常见问题
-
-1. **切面实例化方式**
-
-   + 如何创建切面实例？不同的实现类可能采用不同的实例化方式，比如单例、原型等。
-
-2. **切面对象生命周期**
-
-   + 切面实例是单例还是多例？在 Spring AOP 中，切面对象通常是单例的，但也可以是原型的，这可能会影响到切面对象的状态管理和线程安全性。
-
-3. **切面对象获取方式**
-
-   + 切面对象是如何被获取的？有些实现类可能通过配置文件指定 bean 名称，然后从 `BeanFactory` 中获取，而另一些可能直接实例化切面对象。
-
-4. **切面对象依赖注入**
-
-   + 切面对象是否可以依赖注入其他 Spring 管理的 bean？如果是，如何实现依赖注入？
-
-5. **切面对象的顺序**
-
-   + 如果多个切面对象同时存在，它们的执行顺序是如何确定的？是否可以通过实现 `Ordered` 接口或其他方式指定切面对象的执行顺序？
