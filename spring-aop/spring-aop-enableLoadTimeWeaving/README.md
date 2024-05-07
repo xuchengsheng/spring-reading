@@ -1,13 +1,12 @@
 ## @EnableLoadTimeWeaving
 
-- [@EnableLoadTimeWeaving](#@EnableLoadTimeWeaving)
+- [@EnableLoadTimeWeaving](#enableloadtimeweaving)
     - [一、基本信息](#一基本信息)
     - [二、基本描述](#二基本描述)
     - [三、主要功能](#三主要功能)
-    - [四、注解源码](#注解源码)
+    - [四、注解源码](#四注解源码)
     - [五、最佳实践](#五最佳实践)
     - [六、源码分析](#六源码分析)
-    - [七、常见问题](#七常见问题)
 
 ### 一、基本信息
 
@@ -173,39 +172,28 @@ public @interface EnableLoadTimeWeaving {
 
 ### 五、最佳实践
 
-使用加载时编织（Load Time Weaving）功能。首先，它创建了一个基于注解的 Spring 应用程序上下文，并通过 `AppConfig` 类配置了应用程序的相关组件。然后，它从应用程序上下文中获取了一个 `FooService` 的 bean 实例，并调用了其 `foo` 方法。接着，它创建了一个 `FooService` 的普通实例，并再次调用了其 `foo` 方法。
+使用加载时编织（Load Time Weaving）功能。首先，它创建了一个基于注解的 Spring 应用程序上下文，并通过 `AppConfig`
+类配置了应用程序的相关组件。创建了一个 `MyService` 的普通实例，并调用了其 `foo` 方法。
 
 ```java
 public class EnableLoadTimeWeavingDemo {
 
     public static void main(String[] args) {
-        // 创建一个基于注解的应用程序上下文
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        // 从上下文中获取 FooService 的 bean 实例
-        FooService fooService = context.getBean(FooService.class);
-        // 调用 FooService 的 foo 方法
-        fooService.foo();
-        // 换行
-        System.out.println();
-        // 创建一个 FooService 的实例
-        FooService fooService1 = new FooService();
-        // 调用 FooService 实例的 foo 方法
-        fooService1.foo();
+        MyService myService = new MyService();
+        myService.foo();
+        context.close();
     }
 }
 ```
 
-通过 `@Configuration` 注解表明这是一个配置类，而 `@EnableLoadTimeWeaving` 注解则启用了加载时编织功能。在配置类中，通过 `@Bean` 注解定义了一个名为 `fooService` 的 bean，返回一个 `FooService` 的实例。
+通过 `@Configuration` 注解表明这是一个配置类，而 `@EnableLoadTimeWeaving` 注解则启用了加载时编织功能。
 
 ```java
 @Configuration
 @EnableLoadTimeWeaving
 public class AppConfig {
 
-    @Bean
-    public FooService fooService(){
-        return new FooService();
-    }
 }
 ```
 
@@ -221,16 +209,17 @@ public class MyLTWAspect {
     @Around("ltwPointcut()")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         // 在方法调用之前执行的逻辑
-        System.out.println("Method " + pjp.getSignature().getName() + " is called.");
+        System.out.println("Before Method " + pjp.getSignature().getName());
         // 调用原始方法
         Object result = pjp.proceed();
         // 在方法调用之后执行的逻辑
-        System.out.println("Method " + pjp.getSignature().getName() + " returns " + result);
+        System.out.println("After Method " + pjp.getSignature().getName());
         return result;
     }
 
     @Pointcut("execution(public * com.xcs.spring.MyService.*(..))")
-    public void ltwPointcut(){}
+    public void ltwPointcut() {
+    }
 }
 ```
 
@@ -253,14 +242,13 @@ public class MyLTWAspect {
 </aspectj>
 ```
 
- `FooService` 类定义了一个简单的方法 `foo()`。
+`MyService` 类定义了一个简单的方法 `foo()`。
 
 ```java
-public class FooService {
+public class MyService {
 
-    public String foo() {
-        System.out.println("foo");
-        return "this is a foo method";
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
@@ -273,16 +261,16 @@ public class FooService {
 java -javaagent:D:\tools\repository\org\aspectj\aspectjweaver\1.9.7\aspectjweaver-1.9.7.jar -javaagent:D:\tools\repository\org\springframework\spring-instrument\5.3.10\spring-instrument-5.3.10.jar -Dfile.encoding=UTF-8 com.xcs.spring.EnableLoadTimeWeavingDemo
 ```
 
-运行结果，加载时编织成功地拦截了通过 Spring 容器获取的 `FooService` bean，以及直接使用 `new` 操作符创建的 `FooService` 对象。在每次调用 `foo()` 方法时，都会先打印方法被调用的消息，然后执行原始的方法逻辑（打印 "foo"），最后打印方法返回值，并返回给调用方。这证明切面 `MyLTWAspect` 中定义的逻辑在目标方法调用前后得到了执行，不论是从 Spring 容器中获取的 bean 还是直接创建的对象，都受到了拦截。
+运行结果，直接使用 `new` 操作符创建的 `MyService` 对象。在调用 `foo()`
+方法时，都会先打印方法被调用的消息，然后执行原始的方法逻辑（打印 "foo..."），这证明切面 `MyLTWAspect`
+中定义的逻辑在目标方法调用前后得到了执行，不论是从 Spring 容器中获取的 bean 还是直接创建的对象，都受到了拦截。
 
 ```java
-Method foo is called.
+Before Method
 foo
-Method foo returns this is a foo method
-
-Method foo is called.
+foo...
+After Method
 foo
-Method foo returns this is a foo method
 ```
 
 ### 六、源码分析
@@ -478,25 +466,3 @@ public class AspectJWeavingEnabler
     }
 }
 ```
-
-### 七、常见问题
-
-1. **AspectJ Weaver 未配置或不可用** 
-
-   + 如果未正确配置 AspectJ Weaver，或者 Weaver 不可用，可能导致加载时编织无法正常工作。这通常需要检查项目的依赖配置和 AspectJ Weaver 的集成情况。
-
-2. **ClassLoader 冲突** 
-
-   + 在复杂的应用程序中，可能会存在 ClassLoader 冲突，特别是当使用多个模块或库时。这可能会影响加载时编织的行为，导致意外的结果。
-
-3. **AOP 切面匹配问题** 
-
-   + 当使用 AspectJ 编写切面时，可能会遇到切面匹配不准确或不完全的问题。这可能需要检查切面表达式以确保其正确匹配目标方法或类。
-
-4. **调试困难** 
-
-   + 在某些情况下，加载时编织可能会导致调试困难，特别是当与其他 AOP 技术或动态代理结合使用时。在调试时，可能需要额外的注意和技巧来定位和解决问题。
-
-5. **版本兼容性问题** 
-
-   + 加载时编织的实现可能与 Spring Framework 或 AspectJ 的特定版本不兼容，这可能会导致运行时错误或不一致的行为。在使用时需要注意版本兼容性，并确保选择适当的版本。
