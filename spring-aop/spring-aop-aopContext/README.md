@@ -7,9 +7,6 @@
   - [四、类源码](#四类源码)
   - [五、最佳实践](#五最佳实践)
   - [六、源码分析](#六源码分析)
-    - [JDK动态代理拦截器](#jdk动态代理拦截器)
-    - [CGLIB动态代理拦截器](#cglib动态代理拦截器)
-  - [七、常见问题](#七常见问题)
 
 ### 一、基本信息
 
@@ -187,7 +184,7 @@ bar...
 
 在Spring AOP框架中，无论是在JDK动态代理还是CGLIB动态代理的拦截器中，都对`AopContext.setCurrentProxy(proxy)`进行了赋值操作。这个赋值操作的目的是将当前AOP代理对象设置为当前线程的上下文中，以便在方法内部可以通过`AopContext.currentProxy()`获取代理对象。
 
-#### JDK动态代理拦截器
+**JDK动态代理拦截器**
 
 在`org.springframework.aop.framework.JdkDynamicAopProxy#invoke`方法中，是JDK动态代理拦截器的一部分。主要处理了AOP代理的上下文。具体来说，在方法执行前，如果AOP代理对象已经暴露了（即`this.advised.exposeProxy`为`true`），则通过`AopContext.setCurrentProxy(proxy)`方法将当前的AOP代理对象设置为当前线程的上下文中，以便在方法内部可以通过`AopContext.currentProxy()`来获取代理对象。在方法执行完成后，将之前设置的代理对象恢复，以保证AOP代理对象的上下文不会影响其他线程。
 
@@ -217,7 +214,7 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 }
 ```
 
-#### CGLIB动态代理拦截器
+**CGLIB动态代理拦截器**
 
 在`org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept`方法中，是CGLIB动态代理拦截器的一部分。在方法拦截过程中，它主要处理了AOP代理的上下文。具体来说，如果AOP代理对象已经暴露了（即`this.advised.exposeProxy`为`true`），则通过`AopContext.setCurrentProxy(proxy)`方法将当前的AOP代理对象设置为当前线程的上下文中，以便在方法内部可以通过`AopContext.currentProxy()`来获取代理对象。在方法执行完成后，将之前设置的代理对象恢复，以保证AOP代理对象的上下文不会影响其他线程。
 
@@ -245,15 +242,3 @@ public Object intercept(Object proxy, Method method, Object[] args, MethodProxy 
     }
 }
 ```
-
-### 七、常见问题
-
-1. **代理对象为空问题** 
-
-   + 如果在没有启用`exposeProxy`选项的情况下尝试使用`AopContext.currentProxy()`来获取代理对象，则可能会导致返回的代理对象为空，因为AOP代理对象并未暴露给方法内部。
-2. **多线程环境下的线程安全问题** 
-
-   + `AopContext`是基于线程的，如果在多线程环境下并发调用了`AopContext.setCurrentProxy(proxy)`和`AopContext.currentProxy()`，可能会出现线程安全问题，因此需要谨慎处理多线程情况。
-4. **可读性问题** 
-
-   + 在方法内部频繁地使用`AopContext.currentProxy()`来获取代理对象可能会降低代码的可读性，因为会使代码变得复杂，难以理解

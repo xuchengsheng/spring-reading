@@ -6,8 +6,8 @@
 	- [三、主要功能](#三主要功能)
 	- [四、类源码](#四类源码)
 	- [五、最佳实践](#五最佳实践)
-	- [六、源码分析](#六源码分析)
-	- [七、常见问题](#七常见问题)
+    - [六、时序图](#六时序图)
+    - [七、源码分析](#七源码分析)
 
 
 ### 一、基本信息
@@ -127,7 +127,7 @@ public final class ExposeInvocationInterceptor implements MethodInterceptor, Pri
 
 ### 五、最佳实践
 
-创建了一个基于注解的应用程序上下文，从中获取了一个名为 `MyService` 的 bean，并调用了其 `doSomething()` 方法。
+创建了一个基于注解的应用程序上下文，从中获取了一个名为 `MyService` 的 bean，并调用了其 `foo()` 方法。
 
 ```java
 public class ExposeInvocationInterceptorDemo {
@@ -138,7 +138,7 @@ public class ExposeInvocationInterceptorDemo {
         // 从上下文中获取 MyService
         MyService myService = context.getBean(MyService.class);
         // 调用方法
-        myService.doSomething();
+        myService.foo();
     }
 }
 ```
@@ -160,8 +160,8 @@ public class AppConfig {
 @Service
 public class MyService {
 
-    public void doSomething() {
-        System.out.println("Doing something...");
+    public void foo() {
+        System.out.println("foo...");
     }
 }
 ```
@@ -205,7 +205,25 @@ Proxy Class = class com.xcs.spring.MyService$$EnhancerBySpringCGLIB$$f30643a6
 Doing something...
 ```
 
-### 六、源码分析
+### 六、时序图
+
+~~~mermaid
+sequenceDiagram
+    AbstractAutowireCapableBeanFactory->>AbstractAutoProxyCreator: postProcessAfterInitialization()
+    Note over AbstractAutowireCapableBeanFactory,AbstractAutoProxyCreator: 调用后处理方法
+    AbstractAutoProxyCreator->>AbstractAutoProxyCreator: wrapIfNecessary()
+    Note over AbstractAutoProxyCreator: 调用包装方法
+    AbstractAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: getAdvicesAndAdvisorsForBean()
+    Note over AbstractAutoProxyCreator,AbstractAdvisorAutoProxyCreator: 获取通知和 Advisors
+    AbstractAdvisorAutoProxyCreator->>AbstractAdvisorAutoProxyCreator: findEligibleAdvisors()
+    Note over AbstractAdvisorAutoProxyCreator: 查找合适的 Advisors
+    AbstractAdvisorAutoProxyCreator->>AspectJAwareAdvisorAutoProxyCreator: extendAdvisors()
+    Note over AbstractAdvisorAutoProxyCreator,AspectJAwareAdvisorAutoProxyCreator: Advisor 的扩展钩子
+    AspectJAwareAdvisorAutoProxyCreator->>AspectJProxyUtils:makeAdvisorChainAspectJCapableIfNecessary()
+    Note over AspectJAwareAdvisorAutoProxyCreator,AspectJProxyUtils: 添加特殊的拦截器
+~~~
+
+### 七、源码分析
 
 在`org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator#extendAdvisors`方法中，在开头添加了一个 `ExposeInvocationInterceptor`。
 
@@ -220,7 +238,11 @@ protected void extendAdvisors(List<Advisor> candidateAdvisors) {
 }
 ```
 
-在`org.springframework.aop.aspectj.AspectJProxyUtils#makeAdvisorChainAspectJCapableIfNecessary`方法中，用于在代理链中添加特殊的拦截器，以确保与包含AspectJ建议的代理链一起正常工作。具体来说，它将 `ExposeInvocationInterceptor` 添加到建议列表的开头。这样做的目的是为了暴露当前Spring AOP调用（对于某些AspectJ切点匹配是必要的），并使当前AspectJ JoinPoint可用。如果建议链中不存在AspectJ建议，则此调用不会产生任何效果。方法返回 `true` 表示成功向建议列表中添加了 `ExposeInvocationInterceptor`，否则返回 `false`。
+在`org.springframework.aop.aspectj.AspectJProxyUtils#makeAdvisorChainAspectJCapableIfNecessary`
+方法中，用于在代理链中添加特殊的拦截器，以确保与包含AspectJ建议的代理链一起正常工作。具体来说，它将 `ExposeInvocationInterceptor`
+添加到advisors列表的开头。这样做的目的是为了暴露当前Spring AOP调用（对于某些AspectJ切点匹配是必要的），并使当前AspectJ
+JoinPoint可用。如果advisors链中不存在AspectJ advisor，则此调用不会产生任何效果。方法返回 `true`
+表示成功向建议列表中添加了 `ExposeInvocationInterceptor`，否则返回 `false`。
 
 ```java
 /**
@@ -266,13 +288,3 @@ private static boolean isAspectJAdvice(Advisor advisor) {
                 ((PointcutAdvisor) advisor).getPointcut() instanceof AspectJExpressionPointcut));
 }
 ```
-
-### 七、常见问题
-
-1. **什么时候应该使用 `ExposeInvocationInterceptor`**
-
-   - 当需要在 Spring AOP 中暴露方法调用的完整上下文时，通常使用 `ExposeInvocationInterceptor`。这在一些特定的切面编程场景下是必要的，比如需要在切点中访问方法参数、目标对象或其他方法调用信息时。
-
-2. **为什么调用 `ExposeInvocationInterceptor.currentInvocation()` 抛出异常？**
-
-   - 这可能是因为没有在拦截器链的开头正确配置 `ExposeInvocationInterceptor`，或者在不正确的线程上下文中调用了 `currentInvocation()` 方法。另外，如果没有正在进行的 AOP 调用，也会抛出异常。

@@ -10,6 +10,6 @@ public class ExposeInvocationInterceptorDemo {
         // 从上下文中获取 MyService
         MyService myService = context.getBean(MyService.class);
         // 调用方法
-        myService.doSomething();
+        myService.foo();
     }
 }
