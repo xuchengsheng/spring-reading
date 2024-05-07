@@ -8,12 +8,6 @@
   - [五、主要实现](#五主要实现)
   - [六、类关系图](#六类关系图)
   - [七、最佳实践](#七最佳实践)
-    - [MyCustomPointcut](#mycustompointcut)
-    - [AspectJExpressionPointcut](#aspectjexpressionpointcut)
-    - [AnnotationMatchingPointcut](#annotationmatchingpointcut)
-    - [NameMatchMethodPointcut](#namematchmethodpointcut)
-    - [JdkRegexpMethodPointcut](#jdkregexpmethodpointcut)
-
 
 ### 一、基本信息
 
@@ -149,7 +143,7 @@ TruePointcut  ..>  Pointcut
 
 ### 七、最佳实践
 
-#### MyCustomPointcut
+**MyCustomPointcut**
 
 使用自定义的 `Pointcut` 对象 `MyCustomPointcut`。在 `customPointcut` 方法中，我们创建了 `MyCustomPointcut` 的实例，并通过 `showMatchesLog` 方法展示了其对类和方法的匹配情况。最后，我们通过调用 `showMatchesLog` 方法来检查 `MyCustomPointcut` 对象对目标类 `MyService` 中的方法的匹配情况，并输出匹配结果。
 
@@ -254,7 +248,7 @@ MethodMatcher MyService getAge = true
 MethodMatcher MyService setName = false
 ```
 
-#### AspectJExpressionPointcut
+**AspectJExpressionPointcut**
 
 使用 `AspectJExpressionPointcut` 创建一个基于 AspectJ 表达式的切入点。在 `aspectJExpressionPointcut` 方法中，我们创建了 `AspectJExpressionPointcut` 的实例，并设置了 AspectJ 表达式 `"execution(* com.xcs.spring.MyService.get*())"`，该表达式匹配了 `com.xcs.spring.MyService` 类中以 `get` 开头的所有方法。最后，我们通过调用 `showMatchesLog` 方法来检查 `AspectJExpressionPointcut` 对象对指定类中的方法的匹配情况，并输出匹配结果。
 
@@ -285,7 +279,7 @@ MethodMatcher MyService getAge = true
 MethodMatcher MyService setName = false
 ```
 
-#### AnnotationMatchingPointcut
+**AnnotationMatchingPointcut**
 
 使用 `AnnotationMatchingPointcut` 创建一个基于注解匹配的切入点。在 `annotationMatchingPointcut` 方法中，我们创建了 `AnnotationMatchingPointcut` 的实例，并指定了类级别注解 `MyClassAnnotation` 和方法级别注解 `MyMethodAnnotation`，同时设置了不检查继承的方法。最后，我们通过调用 `showMatchesLog` 方法来检查 `AnnotationMatchingPointcut` 对象对指定类中的方法的匹配情况，并输出匹配结果。
 
@@ -315,7 +309,7 @@ MethodMatcher MyService getAge = false
 MethodMatcher MyService setName = true
 ```
 
-#### NameMatchMethodPointcut
+**NameMatchMethodPointcut**
 
 使用 `NameMatchMethodPointcut` 创建一个基于方法名匹配的切入点。在 `nameMatchMethodPointcut` 方法中，我们创建了 `NameMatchMethodPointcut` 的实例，并添加了要匹配的方法名 `getAge`。然后，我们通过调用 `showMatchesLog` 方法来检查 `NameMatchMethodPointcut` 对象对指定类中的方法的匹配情况，并输出匹配结果。
 
@@ -346,7 +340,7 @@ MethodMatcher MyService getAge = true
 MethodMatcher MyService setName = false
 ```
 
-#### JdkRegexpMethodPointcut
+**JdkRegexpMethodPointcut**
 
 使用 `JdkRegexpMethodPointcut` 创建一个基于 JDK 正则表达式匹配的切入点。在 `jdkRegexpMethodPointcut` 方法中，我们创建了 `JdkRegexpMethodPointcut` 的实例，并设置了正则表达式模式 `".*set.*"`，该模式匹配了所有包含 "set" 字符串的方法名。然后，我们通过调用 `showMatchesLog` 方法来检查 `JdkRegexpMethodPointcut` 对象对指定类中的方法的匹配情况，并输出匹配结果。
 

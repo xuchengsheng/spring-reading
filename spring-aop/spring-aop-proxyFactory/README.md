@@ -7,8 +7,6 @@
   - [四、类关系图](#四类关系图)
   - [五、最佳实践](#五最佳实践)
   - [六、源码分析](#六源码分析)
-    - [初始化阶段](#初始化阶段)
-    - [创建代理阶段](#创建代理阶段)
 
 
 ### 一、基本信息
@@ -103,7 +101,7 @@ proxy = class com.xcs.spring.MyService$$EnhancerBySpringCGLIB$$d9bdf44b
 
 ### 六、源码分析
 
-#### 初始化阶段
+**初始化阶段**
 
 在`org.springframework.aop.framework.ProxyCreatorSupport#ProxyCreatorSupport()`方法中，`ProxyCreatorSupport`类是`ProxyFactory`类的父类，因此当初始化`ProxyFactory`时，`ProxyCreatorSupport`也会跟着初始化，确保在创建代理对象时能够利用`ProxyCreatorSupport`的功能。在构造函数中，它初始化了`aopProxyFactory`成员变量，将其设置为一个`DefaultAopProxyFactory`对象，用于后续创建AOP代理对象。
 
@@ -160,7 +158,7 @@ public void setInterfaces(Class<?>... interfaces) {
 }
 ```
 
-#### 创建代理阶段
+**创建代理阶段**
 
 在`org.springframework.aop.framework.ProxyFactory#getProxy()`方法中，根据工厂中的配置创建一个新的代理对象。可以重复调用此方法，根据已添加或删除的接口以及添加或移除的拦截器的不同，其效果会有所变化。该方法会使用默认的类加载器，通常是线程上下文类加载器（如果需要代理创建时）。最终返回创建的代理对象。
 
