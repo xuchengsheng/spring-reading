@@ -272,23 +272,15 @@
 
 作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
 <div>
-<img alt="logo" src="image/WeChatPay.png" style="width: 370px;height: 400px">
-<img alt="logo" src="image/Alipay.png" style="width: 370px;height: 400px">
+<img alt="logo" src="image/WeChatPay.png" style="width: 370px;height: 410px">
+<img alt="logo" src="image/Alipay.png" style="width: 370px;height: 410px">
 </div>
 
-## 👥加入我们
+## 👥**扫码关注微信公众号**
 
-📢 想要一起加入我们的精彩微信群吗？跟着以下简单步骤：
-
-1️⃣ **扫描我的二维码**：使用微信的扫一扫功能，扫描下方的二维码，将我添加为你的好友。
+关注后，回复关键字 **“加群”**，即可加入我们的技术交流群，与更多开发者一起交流学习。
 
 <div>
-<img alt="logo" src="image/wechat-group.jpg" style="width: 344px;height: 483px">
+<img alt="logo" src="image/wechat-mp.png">
 </div>
-
-2️⃣ **等待好友请求被接受**：一旦你的好友请求被接受，你将收到一份群组邀请。
-
-3️⃣ **点击邀请链接**：打开邀请链接，立即加入我们的精彩群组！
-
-4️⃣ **尽情参与和分享**：在群组中，你将有机会与其他成员分享观点、经验和信息。我们热切期待你的参与！
 
