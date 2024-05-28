@@ -24,7 +24,6 @@
         <module>spring-transaction-springTransactionAnnotationParser</module>
         <module>spring-transaction-transactionAttributeSource</module>
         <module>spring-transaction-transactionInterceptor</module>
-        <module>spring-transaction-propagation1</module>
     </modules>
 
 </project>
