@@ -7,15 +7,8 @@
         <groupId>com.xcs.spring</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>spring-aware-applicationStartupAware</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>2.5.5</version>
-        </dependency>
-    </dependencies>
 </project>

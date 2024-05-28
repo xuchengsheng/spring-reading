@@ -10,8 +10,7 @@ public class ScoresServiceImpl implements ScoresService {
             readOnly = true,
             rollbackFor = Exception.class,
             isolation = Isolation.REPEATABLE_READ,
-            timeout = 30,
-            label = {"tx1", "tx2"}
+            timeout = 30
     )
     public void insertScore() {
         // TODO
