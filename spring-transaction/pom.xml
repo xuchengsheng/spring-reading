@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.xcs.spring</groupId>
+        <artifactId>spring-reading</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>spring-transaction</artifactId>
+
+    <modules>
+        <module>spring-transaction-enableTransactionManagement</module>
+        <module>spring-transaction-driverManager</module>
+        <module>spring-transaction-dataSource</module>
+        <module>spring-transaction-connection</module>
+        <module>spring-transaction-platformTransactionManager</module>
+        <module>spring-transaction-jdbcTemplate</module>
+        <module>spring-transaction-transactionDefinition</module>
+        <module>spring-transaction-transactionTemplate</module>
+        <module>spring-transaction-springTransactionAnnotationParser</module>
+        <module>spring-transaction-transactionAttributeSource</module>
+        <module>spring-transaction-transactionInterceptor</module>
+        <module>spring-transaction-propagation1</module>
+    </modules>
+
+</project>

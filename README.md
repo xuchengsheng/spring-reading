@@ -239,17 +239,32 @@
     - [ExposeInvocationInterceptor](spring-aop/spring-aop-exposeInvocationInterceptor/README.md)：暴露Spring AOP方法调用上下文的拦截器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [@EnableLoadTimeWeaving](spring-aop/spring-aop-enableLoadTimeWeaving/README.md)
       ：启用Spring加载时编织。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-
-  + Spring AOT
-
-  + Spring Log
-
-  + Data Buffer 和编解码器
++ Spring 事务
+  + [Connection](spring-transaction/spring-transaction-connection/README.md)
+    ：管理数据库连接，执行SQL，处理事务。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [DataSource](spring-transaction/spring-transaction-dataSource/README.md)
+    ：提供高效管理数据库连接的接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [DriverManager](spring-transaction/spring-transaction-driverManager/README.md)
+    ：管理和建立数据库连接的核心类。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [JdbcTemplate](spring-transaction/spring-transaction-jdbcTemplate/README.md)
+    ：简化了JDBC操作，提供了方便的数据库访问抽象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [TransactionDefinition](spring-transaction/spring-transaction-transactionDefinition/README.md)
+    ：定义事务的传播行为和隔离级别。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [TransactionAttributeSource](spring-transaction/spring-transaction-transactionAttributeSource/README.md)
+    ：用于获取事务属性的策略接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [PlatformTransactionManager](spring-transaction/spring-transaction-platformTransactionManager/README.md)
+    ：用于管理和协调事务的生命周期和执行。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+  + [TransactionTemplate](spring-transaction/spring-transaction-transactionTemplate/README.md)
+    ：简化事务管理，支持编程式事务控制与异常处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [SpringTransactionAnnotationParser](spring-transaction/spring-transaction-springTransactionAnnotationParser/README.md)
+    ：解析 `@Transactional`
+    注解并转换为事务配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [TransactionInterceptor](spring-transaction/spring-transaction-transactionInterceptor/README.md)
+    ：事务拦截器，用于管理方法级别的事务处理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+  + [EnableTransactionManagement](spring-transaction/spring-transaction-enableTransactionManagement/README.md)
+    ：启用Spring的注解驱动事务管理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
 
 + Spring MVC
-
-+ Spring 事务
-
 + Spring OpenFeign
 
 ## 💬与我联系
@@ -276,11 +291,10 @@
 <img alt="logo" src="image/Alipay.png" style="width: 370px;height: 410px">
 </div>
 
-## 👥**扫码关注微信公众号**
+## 👥**扫码加群**
 
 关注后，回复关键字 **“加群”**，即可加入我们的技术交流群，与更多开发者一起交流学习。
 
 <div>
 <img alt="logo" src="image/wechat-mp.png">
 </div>
-
