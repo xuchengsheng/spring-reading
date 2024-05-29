@@ -163,7 +163,6 @@
     - [ResourceLoaderAware](spring-aware/spring-aware-beanClassLoaderAware/README.md)：允许Bean获取资源加载器。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [ApplicationEventPublisherAware](spring-aware/spring-aware-applicationEventPublisherAware/README.md)：允许Bean发布应用程序事件。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [MessageSourceAware](spring-aware/spring-aware-messageSourceAware/README.md)：允许Bean获取消息源。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
-    - [ApplicationStartupAware](spring-aware/spring-aware-applicationStartupAware/README.md)：允许Bean获取应用程序启动信息。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [ApplicationContextAware](spring-aware/spring-aware-applicationContextAware/README.md)：允许Bean获取应用程序上下文。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
     - [ImportAware](spring-aware/spring-aware-importAware/README.md)：允许被导入的配置类获取导入它的类的信息。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF8C69"></img>
 
@@ -210,59 +209,36 @@
     - [Advisor](spring-aop/spring-aop-advisor/README.md)：用于将通知和切点结合，实现切面编程的横切关注点。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [Advised](spring-aop/spring-aop-advised/README.md)：配置AOP代理的通知、通知器、目标等。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [ProxyFactory](spring-aop/spring-aop-proxyFactory/README.md)：一种便捷的方式来创建代理对象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [AopProxyFactory](spring-aop/spring-aop-aopProxyFactory/README.md)
-      ：创建AOP代理工厂，支持JDK和CGLIB。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AopProxyFactory](spring-aop/spring-aop-aopProxyFactory/README.md)：创建AOP代理工厂，支持JDK和CGLIB。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AopProxy](spring-aop/spring-aop-aopProxy/README.md)：创建和管理AOP代理对象。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [AdvisorChainFactory](spring-aop/spring-aop-advisorChainFactory/README.md)：创建Advisor链的工厂接口。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AdvisorAdapterRegistry](spring-aop/spring-aop-advisorAdapterRegistry/README.md)：适配各种Advice到AOP拦截器，注册和管理Advisor适配器。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AdvisorAdapter](spring-aop/spring-aop-advisorAdapter/README.md)：适配不同类型通知到拦截器链。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [ProxyMethodInvocation](spring-aop/spring-aop-proxyMethodInvocation/README.md)：AOP方法调用代理，处理拦截器链和方法调用。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [@EnableAspectJAutoProxy](spring-aop/spring-aop-enableAspectJAutoProxy/README.md)
-      ：启用AspectJ切面自动代理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [AnnotationAwareAspectJAutoProxyCreator](spring-aop/spring-aop-annotationAwareAspectJAutoProxyCreator/README.md)
-      ：创建AOP代理以应用AspectJ风格的切面。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
-    - [BeanFactoryAdvisorRetrievalHelper](spring-aop/spring-aop-beanFactoryAdvisorRetrievalHelper/README.md)
-      ：帮助检索并管理Spring AOP 中的 Advisor
-      Beans。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [BeanFactoryAspectJAdvisorsBuilder](spring-aop/spring-aop-beanFactoryAspectJAdvisorsBuilder/README.md)
-      ：构建@AspectJ注解切面，生成Spring AOP
-      Advisors。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [AspectInstanceFactory](spring-aop/spring-aop-aspectInstanceFactory/README.md)
-      ：创建切面实例，支持多种实现方式。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [MetadataAwareAspectInstanceFactory](spring-aop/spring-aop-metadataAwareAspectInstanceFactory/README.md)
-      ：管理切面实例和元数据，支持多种实例化策略。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-    - [AspectJAdvisorFactory](spring-aop/spring-aop-aspectJAdvisorFactory/README.md)
-      ：创建AspectJ通知器实例，管理切面通知的创建和配置。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    - [@EnableAspectJAutoProxy](spring-aop/spring-aop-enableAspectJAutoProxy/README.md)：启用AspectJ切面自动代理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AnnotationAwareAspectJAutoProxyCreator](spring-aop/spring-aop-annotationAwareAspectJAutoProxyCreator/README.md)：创建AOP代理以应用AspectJ风格的切面。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+    - [BeanFactoryAdvisorRetrievalHelper](spring-aop/spring-aop-beanFactoryAdvisorRetrievalHelper/README.md)：帮助检索并管理Spring AOP 中的 Advisor Beans。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [BeanFactoryAspectJAdvisorsBuilder](spring-aop/spring-aop-beanFactoryAspectJAdvisorsBuilder/README.md)：构建@AspectJ注解切面，生成Spring AOP Advisors。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AspectInstanceFactory](spring-aop/spring-aop-aspectInstanceFactory/README.md)：创建切面实例，支持多种实现方式。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [MetadataAwareAspectInstanceFactory](spring-aop/spring-aop-metadataAwareAspectInstanceFactory/README.md)：管理切面实例和元数据，支持多种实例化策略。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [AspectJAdvisorFactory](spring-aop/spring-aop-aspectJAdvisorFactory/README.md)：创建AspectJ通知器实例，管理切面通知的创建和配置。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
     - [TargetSource](spring-aop/spring-aop-targetSource/README.md)：管理AOP代理对象的获取与释放。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [TargetSourceCreator](spring-aop/spring-aop-targetSourceCreator/README.md)：创建特殊的目标源，定制代理对象的创建和管理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
     - [AopContext](spring-aop/spring-aop-aopContext/README.md)：获取Spring AOP代理对象的工具。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
     - [ExposeInvocationInterceptor](spring-aop/spring-aop-exposeInvocationInterceptor/README.md)：暴露Spring AOP方法调用上下文的拦截器。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-    - [@EnableLoadTimeWeaving](spring-aop/spring-aop-enableLoadTimeWeaving/README.md)
-      ：启用Spring加载时编织。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+    - [@EnableLoadTimeWeaving](spring-aop/spring-aop-enableLoadTimeWeaving/README.md)：启用Spring加载时编织。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
 + Spring 事务
-  + [Connection](spring-transaction/spring-transaction-connection/README.md)
-    ：管理数据库连接，执行SQL，处理事务。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [DataSource](spring-transaction/spring-transaction-dataSource/README.md)
-    ：提供高效管理数据库连接的接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [DriverManager](spring-transaction/spring-transaction-driverManager/README.md)
-    ：管理和建立数据库连接的核心类。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [JdbcTemplate](spring-transaction/spring-transaction-jdbcTemplate/README.md)
-    ：简化了JDBC操作，提供了方便的数据库访问抽象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [TransactionDefinition](spring-transaction/spring-transaction-transactionDefinition/README.md)
-    ：定义事务的传播行为和隔离级别。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [TransactionAttributeSource](spring-transaction/spring-transaction-transactionAttributeSource/README.md)
-    ：用于获取事务属性的策略接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [PlatformTransactionManager](spring-transaction/spring-transaction-platformTransactionManager/README.md)
-    ：用于管理和协调事务的生命周期和执行。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
-  + [TransactionTemplate](spring-transaction/spring-transaction-transactionTemplate/README.md)
-    ：简化事务管理，支持编程式事务控制与异常处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [SpringTransactionAnnotationParser](spring-transaction/spring-transaction-springTransactionAnnotationParser/README.md)
-    ：解析 `@Transactional`
-    注解并转换为事务配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
-  + [TransactionInterceptor](spring-transaction/spring-transaction-transactionInterceptor/README.md)
-    ：事务拦截器，用于管理方法级别的事务处理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
-  + [EnableTransactionManagement](spring-transaction/spring-transaction-enableTransactionManagement/README.md)
-    ：启用Spring的注解驱动事务管理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+  + [Connection](spring-transaction/spring-transaction-connection/README.md)：管理数据库连接，执行SQL，处理事务。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [DataSource](spring-transaction/spring-transaction-dataSource/README.md)：提供高效管理数据库连接的接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [DriverManager](spring-transaction/spring-transaction-driverManager/README.md)：管理和建立数据库连接的核心类。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [JdbcTemplate](spring-transaction/spring-transaction-jdbcTemplate/README.md)：简化了JDBC操作，提供了方便的数据库访问抽象。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [TransactionDefinition](spring-transaction/spring-transaction-transactionDefinition/README.md)：定义事务的传播行为和隔离级别。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [TransactionAttributeSource](spring-transaction/spring-transaction-transactionAttributeSource/README.md)：用于获取事务属性的策略接口。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [PlatformTransactionManager](spring-transaction/spring-transaction-platformTransactionManager/README.md)：用于管理和协调事务的生命周期和执行。<img src="https://img.shields.io/badge/Level-%E5%9B%B0%E9%9A%BE-%23FF3030"></img>
+  + [TransactionTemplate](spring-transaction/spring-transaction-transactionTemplate/README.md)：简化事务管理，支持编程式事务控制与异常处理。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [SpringTransactionAnnotationParser](spring-transaction/spring-transaction-springTransactionAnnotationParser/README.md)：解析 `@Transactional`注解并转换为事务配置。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
+  + [TransactionInterceptor](spring-transaction/spring-transaction-transactionInterceptor/README.md)：事务拦截器，用于管理方法级别的事务处理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
+  + [EnableTransactionManagement](spring-transaction/spring-transaction-enableTransactionManagement/README.md)：启用Spring的注解驱动事务管理。<img src="https://img.shields.io/badge/Level-%E4%B8%80%E8%88%AC-%23FF6347"></img>
 
 + Spring MVC
 + Spring OpenFeign
@@ -279,22 +255,32 @@
 
 为了给大家提供最新🌱、最有价值的内容💼，我会坚持每天更新这个仓库⏳。每一天，你都可以期待看到一些新的内容或者对已有内容的改进✨。如果你有任何建议或反馈📣，欢迎随时联系我📞。我非常珍视每一个反馈💌，因为这是我持续改进的动力🚀。
 
-## 💻我的 GitHub 统计
+## ✨Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
+
+## 🎉Stargazers
+
+[![Stargazers123 repo roster for @xuchengsheng/spring-reading](https://reporoster.com/stars/xuchengsheng/spring-reading)](https://github.com/xuchengsheng/spring-reading/stargazers)
+
+## 🎉Forkers
+
+[![Forkers repo roster for @xuchengsheng/spring-reading](https://reporoster.com/forks/xuchengsheng/spring-reading)](https://github.com/xuchengsheng/spring-reading/network/members)
 
 ## 🍱请我吃盒饭？
 
 作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
 <div>
-<img alt="logo" src="image/WeChatPay.png" style="width: 370px;height: 410px">
-<img alt="logo" src="image/Alipay.png" style="width: 370px;height: 410px">
+<img alt="logo" src="image/WeChatPay.png" style="width: 300px;height: 340px">
+<img alt="logo" src="image/Alipay.png" style="width: 300px;height: 340px">
 </div>
+
 
 ## 👥**扫码加群**
 
 关注后，回复关键字 **“加群”**，即可加入我们的技术交流群，与更多开发者一起交流学习。
 
 <div>
-<img alt="logo" src="image/wechat-mp.png">
+<img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
+
