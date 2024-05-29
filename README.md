@@ -271,10 +271,10 @@
 
 作者晚上还要写博客✍️,平时还需要工作💼,如果帮到了你可以请作者吃个盒饭🥡
 <div>
-<img alt="logo" src="image/WeChatPay.png" style="width: 300px;height: 340px">
-<img alt="logo" src="image/Alipay.png" style="width: 300px;height: 340px">
+<img alt="logo" src="image/WeChatPay.png" style="width: 260px;height: 280px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img alt="logo" src="image/Alipay.png" style="width: 260px;height: 280px">
 </div>
-
 
 ## 👥**扫码加群**
 
@@ -283,4 +283,3 @@
 <div>
 <img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
-
