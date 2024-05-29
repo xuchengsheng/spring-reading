@@ -257,7 +257,7 @@
 
 ## ✨Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date)](https://star-history.com/#xuchengsheng/spring-reading&Date)
+<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=#xuchengsheng/spring-reading&Date" frameBorder="0"></iframe>
 
 ## 🎉Stargazers
 
