@@ -262,6 +262,7 @@
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date" />
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date" />
  </picture>
+
 ## 🎉Stargazers
 
 [![Stargazers123 repo roster for @xuchengsheng/spring-reading](https://reporoster.com/stars/xuchengsheng/spring-reading)](https://github.com/xuchengsheng/spring-reading/stargazers)
