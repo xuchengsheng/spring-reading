@@ -257,8 +257,11 @@
 
 ## ✨Star History
 
-<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=#xuchengsheng/spring-reading&Date" frameBorder="0"></iframe>
-
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xuchengsheng/spring-reading&type=Date" />
+ </picture>
 ## 🎉Stargazers
 
 [![Stargazers123 repo roster for @xuchengsheng/spring-reading](https://reporoster.com/stars/xuchengsheng/spring-reading)](https://github.com/xuchengsheng/spring-reading/stargazers)
