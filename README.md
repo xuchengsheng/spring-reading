@@ -280,15 +280,26 @@
 <img alt="logo" src="image/Alipay.png" style="width: 260px;height: 280px">
 </div>
 
-## 👥**扫码加群**
+## 👥**关注公众号**
 
 关注后，回复关键字 **“加群”**，即可加入我们的技术交流群，与更多开发者一起交流学习。
 
 <div>
 <img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
-或者可以直接扫描进群
+## 👥**微信群**
+
+📢 想要一起加入我们的精彩微信群吗？跟着以下简单步骤：
+
+1️⃣ **扫描我的二维码**：使用微信的扫一扫功能，扫描下方的二维码，将我添加为你的好友。
 
 <div>
-<img alt="logo" src="image/wechat.jpg" style="height: 500px">
+<img alt="logo" src="image/wechat.jpg" style="width: 344px;height: 483px">
 </div>
+
+
+2️⃣ **等待好友请求被接受**：一旦你的好友请求被接受，你将收到一份群组邀请。
+
+3️⃣ **点击邀请链接**：打开邀请链接，立即加入我们的精彩群组！
+
+4️⃣ **尽情参与和分享**：在群组中，你将有机会与其他成员分享观点、经验和信息。我们热切期待你的参与！
