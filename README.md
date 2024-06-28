@@ -288,7 +288,7 @@
 <img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
 
-## 👥**微信群**
+##  👥**微信群**
 
 📢 想要一起加入我们的精彩微信群吗？跟着以下简单步骤：
 
@@ -297,7 +297,6 @@
 <div>
 <img alt="logo" src="image/wechat.jpg" style="width: 344px;height: 483px">
 </div>
-
 
 2️⃣ **等待好友请求被接受**：一旦你的好友请求被接受，你将收到一份群组邀请。
 
