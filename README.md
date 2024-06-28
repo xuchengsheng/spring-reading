@@ -48,7 +48,9 @@
     <img src="https://img.shields.io/badge/Maven-3.6.3-%23437291?logo=Apache%20Maven&logoColor=%23C71A36&color=%23C71A36"/>
     <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
     <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
+    <a href="https://hellogithub.com/repository/f43b683fa175499ca3af4e9b1684e88b" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=f43b683fa175499ca3af4e9b1684e88b&claim_uid=AVv4KeNnZs2Ig3a&theme=neutral" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 </div>
+
 
 ## 👋简介
 大家好呀，我是Lex👨‍💻。我是一名拥有8年经验的Java 后端开发人员👨‍💼，也是一个对 Spring 框架充满热情❤️的程序员。为了帮助那些希望深入了解 Spring 框架的程序员们🧑‍💻，我创建了这个 “Spring 源码阅读系列”📖。通过这个系列，我希望能够与你们共同探索 Spring 的内部工作机制⚙️。如果您有同样的兴趣或问题🤔，请联系我📩！
@@ -287,19 +289,3 @@
 <div>
 <img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
-
-##  👥**微信群**
-
-📢 想要一起加入我们的精彩微信群吗？跟着以下简单步骤：
-
-1️⃣ **扫描我的二维码**：使用微信的扫一扫功能，扫描下方的二维码，将我添加为你的好友。
-
-<div>
-<img alt="logo" src="image/wechat.jpg" style="width: 344px;height: 483px">
-</div>
-
-2️⃣ **等待好友请求被接受**：一旦你的好友请求被接受，你将收到一份群组邀请。
-
-3️⃣ **点击邀请链接**：打开邀请链接，立即加入我们的精彩群组！
-
-4️⃣ **尽情参与和分享**：在群组中，你将有机会与其他成员分享观点、经验和信息。我们热切期待你的参与！
