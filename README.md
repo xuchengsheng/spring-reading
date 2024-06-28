@@ -287,6 +287,7 @@
 <div>
 <img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
+
 ## 👥**微信群**
 
 📢 想要一起加入我们的精彩微信群吗？跟着以下简单步骤：
