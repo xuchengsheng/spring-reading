@@ -287,3 +287,8 @@
 <div>
 <img alt="logo" src="image/wechat-mp.png" style="height: 220px">
 </div>
+或者可以直接扫描进群
+
+<div>
+<img alt="logo" src="image/wechat.jpg" style="height: 500px">
+</div>
