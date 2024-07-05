@@ -111,7 +111,7 @@ public class HierarchicalBeanFactoryDemo {
 
 1. **ApplicationContext接口**
 
-   - `HierarchicalBeanFactory` 接口是 `ApplicationContext` 接口的子接口。因此，任何实现了 `HierarchicalBeanFactory` 的类也是 `ApplicationContext` 的子类。`ApplicationContext` 是 Spring 中应用程序上下文的核心接口，提供了更多的功能，包括事件发布、国际化支持等。
+   - `ApplicationContext` 接口是 `HierarchicalBeanFactory` 接口的子接口。因此，任何实现了 `HierarchicalBeanFactory` 的类也是 `ApplicationContext` 的子类。`ApplicationContext` 是 Spring 中应用程序上下文的核心接口，提供了更多的功能，包括事件发布、国际化支持等。
 
 2. **ConfigurableApplicationContext接口**
 
