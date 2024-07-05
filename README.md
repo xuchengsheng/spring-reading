@@ -15,6 +15,7 @@
     <img src="https://visitor-badge.lithub.cc/badge?page_id=github.com/xuchengsheng&left_text=Visitors" alt="Visitor Badge"/>
     <img src="https://img.shields.io/badge/WeChat-spring_reading-%2307C160?logo=wechat" alt="Wechat Badge"/>
     <a href="https://blog.csdn.net/duzhuang2399"><img src="https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fblog.csdn.net%2Fduzhuang2399&query=%2F%2F*%5B%40id%3D%22userSkin%22%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%2Fdiv%5B2%5D%2Fdiv%5B1%5D%2Fdiv%5B1%5D%2Fdiv%5B2%5D%2Fspan&logo=C&logoColor=red&label=CSDN&color=red&cacheSeconds=3600" alt="CSDN Badge"></a>
+        <a href="https://hellogithub.com/repository/f43b683fa175499ca3af4e9b1684e88b" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=f43b683fa175499ca3af4e9b1684e88b&claim_uid=AVv4KeNnZs2Ig3a&theme=small" alt="Featured｜HelloGitHub"/></a>
 </p>
 <p align="center">
     ⚡ <a href="#技术">技术</a>
@@ -48,7 +49,6 @@
     <img src="https://img.shields.io/badge/Maven-3.6.3-%23437291?logo=Apache%20Maven&logoColor=%23C71A36&color=%23C71A36"/>
     <img src="https://img.shields.io/badge/JSR-330-%2366CCFF?logo=OpenJDK&logoColor=%2366CCFF&color=%2366CCFF"/>
     <img src="https://img.shields.io/badge/JSR-250-%23FF9900?logo=OpenJDK&logoColor=%23FF9900&color=%23FF9900"/>
-    <a href="https://hellogithub.com/repository/f43b683fa175499ca3af4e9b1684e88b" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=f43b683fa175499ca3af4e9b1684e88b&claim_uid=AVv4KeNnZs2Ig3a&theme=neutral" alt="Featured｜HelloGitHub" style="height: 30px;" /></a>
 </div>
 
 ## 👋简介
