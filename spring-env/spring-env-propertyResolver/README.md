@@ -144,7 +144,7 @@ public interface PropertyResolver {
 
    + 虽然 `AbstractEnvironment` 本身不直接实现 `PropertyResolver` 接口，但它提供了访问 `PropertyResolver` 功能的接口。`AbstractEnvironment` 通过内部持有的 `PropertySourcesPropertyResolver` 实例来提供属性解析服务。
 
-3. **`StandardEnvironment` 和 `ConfigurableEnvironment`**
+3. **`StandardEnvironment` 和 `StandardServletEnvironment`**
 
    + 这些类扩展了 `AbstractEnvironment`，提供了更具体的环境配置。它们通过继承 `AbstractEnvironment` 间接提供 `PropertyResolver` 的功能。
 
