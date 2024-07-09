@@ -142,7 +142,7 @@ public class DefaultResourceLoaderDemo {
         Resource classpathResource = loader.getResource("classpath:application.properties");
         try (InputStream is = classpathResource.getInputStream()) {
             // 读取和处理资源内容
-            System.out.println("Classpath = "+ new String(is.readAllBytes()));
+            System.out.println("Classpath Exists = " + classpathResource.exists());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,7 +151,7 @@ public class DefaultResourceLoaderDemo {
         Resource fileResource = loader.getResource("file:/idea-work-space-xcs/spring-reading/spring-resources/spring-resource-resourceLoader/myfile1.txt");
         try (InputStream is = fileResource.getInputStream()) {
             // 读取和处理资源内容
-            System.out.println("File = "+ new String(is.readAllBytes()));
+            System.out.println("File Exists = " + fileResource.exists());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -165,7 +165,7 @@ public class DefaultResourceLoaderDemo {
 - 从文件系统上，我们加载了一个文件：`myfile1.txt`。这些文件位于我们之前在代码中硬编码的文件路径 `/idea-work-space-xcs/spring-reading/spring-resources/spring-resource-resourceLoader/` 下。
 
 ```java
-Classpath Exists= true
+Classpath Exists = true
 File Exists = true
 ```
 
