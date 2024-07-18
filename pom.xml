@@ -16,7 +16,7 @@
         <java.version>11</java.version>
         <spring.version>5.2.15.RELEASE</spring.version>
         <mysql.version>8.0.30</mysql.version>
-        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
+        <spring.boot.version>2.7.16</spring.boot.version>
     </properties>
 
     <modules>
