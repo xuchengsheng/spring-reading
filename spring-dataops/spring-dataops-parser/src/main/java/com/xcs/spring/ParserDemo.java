@@ -23,7 +23,7 @@ public class ParserDemo {
         // 改变区域设置为中国
         LocaleContextHolder.setLocale(Locale.CHINA);
         // 将人民币格式的字符串转换为数值类型
-        Number formattedAmountForCHINA = conversionService.convert("￥1,234.56", Number.class);
+        Number formattedAmountForCHINA = conversionService.convert("¥1,234.56", Number.class);
         System.out.println("Parsed Currency (CHINA): " + formattedAmountForCHINA);
     }
 }
