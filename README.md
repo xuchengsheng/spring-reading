@@ -62,6 +62,38 @@
 
 ## 🌱Spring 源码阅读系列
 
+## 🧭推荐阅读顺序
+
+如果你是第一次阅读本项目，建议不要直接从复杂的生命周期或 AOP 入口开始，可以按下面的路径循序渐进：
+
+1. 先阅读 `Resource`、`ResourceLoader`、`ResourcePatternResolver`，理解 Spring 如何统一抽象文件、classpath 和通配符资源。
+2. 接着阅读 `MetadataReader`、`AnnotationMetadata`、`TypeFilter`，建立“类信息读取”和“组件扫描筛选”的基础概念。
+3. 然后阅读 `BeanDefinition`、`BeanDefinitionHolder`、`BeanDefinitionRegistry`，明确 Bean 元数据在容器中的表示方式。
+4. 再阅读 `XmlBeanDefinitionReader`、`AnnotatedBeanDefinitionReader`、`ClassPathBeanDefinitionScanner`，把配置文件、注解和扫描注册过程串起来。
+5. 掌握注册流程后，阅读 `BeanFactory`、`ListableBeanFactory`、`HierarchicalBeanFactory` 等接口，理解容器能力的分层。
+6. 继续阅读 `ConfigurableBeanFactory`、`AutowireCapableBeanFactory`、`ConfigurableListableBeanFactory`，关注可配置能力、自动装配能力和列表查询能力。
+7. 进入上下文阶段时，优先阅读 `ClassPathXmlApplicationContext` 和 `AnnotationConfigApplicationContext`，把前面的注册、加载和工厂能力连接到应用入口。
+8. 之后阅读 `PropertySource`、`PropertyResolver`、`Environment`、`ConfigurableEnvironment`，补齐属性解析和运行环境配置。
+9. 再阅读 `InitializingBean`、`DisposableBean`、`BeanPostProcessor`、`BeanFactoryPostProcessor`，理解常见扩展点的触发时机。
+10. 在扩展点有概念后，阅读 `registerBeanDefinition`、`getBean`、`resolveDependency`、`destroyBean`，集中攻克 Bean 生命周期主线。
+11. 生命周期读完后，建议回头复盘一次“定义注册 -> 实例化 -> 依赖注入 -> 初始化 -> 销毁”的调用链。
+12. 如果目标是理解注解驱动能力，可以继续阅读 `@Autowired`、`@Value`、`@Component`、`@Configuration`、`@Bean` 等注解相关章节。
+13. 如果目标是理解 AOP，可以先阅读 `Advice`、`Pointcut`、`Advisor`，再进入 `ProxyFactory`、`MethodInterceptor`、`AopProxy`。
+14. 阅读 AOP 时建议对照一个最小代理示例，先看增强如何定义，再看代理如何创建，最后看方法调用如何被拦截。
+15. 如果目标是理解事务，建议先阅读 `DataSource`、`Connection`、`JdbcTemplate`，确认数据库访问的基础抽象。
+16. 再阅读 `TransactionDefinition`、`PlatformTransactionManager`、`TransactionTemplate`，理解事务传播行为、隔离级别和编程式事务。
+17. 最后阅读 `EnableTransactionManagement`、`TransactionInterceptor`、`TransactionAttributeSource`，串起声明式事务的启用和拦截过程。
+18. SpEL 章节建议放在核心容器之后阅读，先看 `ExpressionParser`、`Expression`、`EvaluationContext`，再看 Resolver、Accessor、Converter 等扩展点。
+19. JSR-250 和 JSR-330 章节适合在依赖注入、生命周期和注解处理之后阅读，用来对比 Spring 原生注解与标准注解的差异。
+20. Spring MVC 章节建议放在容器、AOP、注解处理之后阅读，因为它会复用大量前置知识。
+21. 每读完一个模块，建议运行对应子目录的示例或测试，确认 README 中的调用链能在代码里找到落点。
+22. 遇到困难章节时，先跳过源码细节，记录“入口类、核心接口、最终效果”，再通过示例回看具体实现。
+23. 如果只想快速建立全局图谱，可以先读资源、元数据、BeanDefinition、BeanFactory、ApplicationContext、getBean、AOP、事务八条主线。
+24. 如果准备深入源码调试，建议按 README 链接顺序逐个打开模块，并在关键构造方法、后置处理器和拦截器处打断点。
+25. 完成第一轮后，可以按照“配置如何变成 BeanDefinition”“Bean 如何被创建”“扩展点如何插入流程”“代理和事务如何增强调用”四个问题复盘。
+26. 第二轮阅读时再关注边界条件，例如循环依赖、FactoryBean、作用域、条件装配、代理暴露和事务回滚规则。
+27. 这条路径的目标是先建立可运行的主流程，再逐步补齐高级特性，避免一开始被分支逻辑淹没。
+
 + Spring Core
   + 资源加载与访问
     - [Resource](spring-resources/spring-resource/README.md)：抽象接口，表示文件、类路径等，用于访问不同来源的资源。<img src="https://img.shields.io/badge/Level-%E7%AE%80%E5%8D%95-0099ff"></img>
